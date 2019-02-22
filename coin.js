@@ -2,12 +2,12 @@ import bn from 'bn.js';
 import * as ec from 'privacy-js-lib/lib/ec';
 const P256 = ec.P256;
 import * as constants from 'privacy-js-lib/lib/constants';
-import * as key from 'key';
-import * as keySet from 'keySet';
+import * as key from './key';
+import * as keySet from './keySet';
 import * as privacyUtils from 'privacy-js-lib/lib/privacy_utils';
 import {PedCom} from 'privacy-js-lib/lib/pedersen';
-import * as hybridEnc from 'hybridencryption';
-import {getShardIDFromLastByte} from 'common';
+import * as hybridEnc from './hybridencryption';
+import {getShardIDFromLastByte} from './common';
 
 let zeroPoint = P256.curve.point(0,0);
 
