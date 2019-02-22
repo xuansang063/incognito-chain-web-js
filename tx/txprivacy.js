@@ -244,7 +244,7 @@ async function hasSNDerivator(paymentAddr, snds) {
         "id": 1
     };
 
-    const response = await httpRequest.requestAPI(data);
+    const response = await requestAPI(data);
 
     // console.log("Response: ", response);
     if (response.status !== 200) {
