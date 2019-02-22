@@ -13,7 +13,7 @@ import {KeyWallet as keyWallet} from '../wallet/hdwallet';
 import * as constantsWallet from '../wallet/constants';
 import {knapsack, greedy} from '../knapsack';
 import bn from 'bn.js';
-import requestAPI from '../httprequest/request';
+import {requestAPI} from '../httprequest/request';
 import json from 'circular-json';
 import {getShardIDFromLastByte} from '../common';
 
@@ -332,7 +332,7 @@ async function prepareInputForTx(spendingKeyStr, paymentInfos) {
     // deserialize spending key string to key wallet
     // spendingKeyStr = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
     spendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
-    let myKeyWallet = keyWallet.KeyWallet.base58CheckDeserialize(spendingKeyStr);
+    let myKeyWallet = keyWallet.base58CheckDeserialize(spendingKeyStr);
 
     // import key set
     myKeyWallet.KeySet.importFromPrivateKey(myKeyWallet.KeySet.PrivateKey);
@@ -709,7 +709,7 @@ async function TestTx() {
     let paymentInfos = new Array(n);
 
     let receiverSpendingKeyStr1 = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
-    let receiverKeyWallet1 = keyWallet.KeyWallet.base58CheckDeserialize(receiverSpendingKeyStr1);
+    let receiverKeyWallet1 = keyWallet.base58CheckDeserialize(receiverSpendingKeyStr1);
 
     // import key set
     receiverKeyWallet1.KeySet.importFromPrivateKey(receiverKeyWallet1.KeySet.PrivateKey);
