@@ -18,7 +18,7 @@ const P256 = ec.P256;
 const TxVersion = 1;
 const ConstantID = new Uint8Array(32);
 ConstantID[0] = 4;
-const rpcClient = new RpcClient("https://localhost:9334")
+const rpcClient = new RpcClient("http://localhost:9334")
 
 const TxNormalType = 'n';
 

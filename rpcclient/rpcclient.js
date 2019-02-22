@@ -1,9 +1,15 @@
 import {requestAPI} from './request';
 import * as base58 from "../base58";
+import * as constants from 'privacy-js-lib/lib/constants';
 import json from 'circular-json';
 import {KeyWallet as keyWallet} from "../wallet/hdwallet";
 import * as constantsWallet from '../wallet/constants';
 import {knapsack, greedy} from '../knapsack';
+import bn from "bn.js"
+import * as coin from '../coin';
+import * as ec from "privacy-js-lib/lib/ec";
+
+const P256 = ec.P256;
 
 class RpcClient {
   constructor(url) {
@@ -26,7 +32,8 @@ class RpcClient {
       ],
       "id": 1
     };
-    const response = await requestAPI(data, this.url);
+    let that = this
+    const response = await requestAPI(data, that.url);
 
     if (response.status !== 200) {
       return {
@@ -341,7 +348,7 @@ class RpcClient {
     }
 
     // check whether each input coin is spent or not
-    let res = await rpcClient.hasSerialNumber(paymentAddrSerialize, serialNumberStrs);
+    let res = await this.hasSerialNumber(paymentAddrSerialize, serialNumberStrs);
     let existed = [];
     if (res.err !== null) {
       console.log('ERR when call API has serial number: ', res.err);

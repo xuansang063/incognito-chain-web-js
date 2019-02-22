@@ -7,12 +7,13 @@ async function requestAPI(data = {}, url = "http://localhost:9334", method = "PO
     return
   }
 
-  return await axios({
+  let request = await axios({
     method: method,
     url: url,
     data: data,
     ...options,
   });
+  return request;
 }
 
 module.exports = {requestAPI};
