@@ -1,14 +1,13 @@
-let BigInt = require('bn.js');
-let ec = require('./ec.js');
-let P256 = ec.P256;
-let constants = require('./constants');
-let key = require('./key');
-let keySet = require('./keyset');
-let utils = require('./privacy_utils');
-let pc = require('./pedersen');
-let hybridEnc = require('./hybridencryption');
-let common = require('./constantchain/common');
-const bn = require('bn.js');
+import bn from 'bn.js';
+import * as ec from 'privacy-js-lib/lib/ec';
+const P256 = ec.P256;
+import * as constants from 'privacy-js-lib/lib/constants';
+import * as key from 'key';
+import * as keySet from 'keySet';
+import * as privacyUtils from 'privacy-js-lib/lib/privacy_utils';
+import {PedCom} from 'privacy-js-lib/lib/pedersen';
+import * as hybridEnc from 'hybridencryption';
+import {getShardIDFromLastByte} from 'common';
 
 let zeroPoint = P256.curve.point(0,0);
 
@@ -16,10 +15,10 @@ class Coin {
     constructor() {
         this.PublicKey = zeroPoint;
         this.CoinCommitment = zeroPoint;
-        this.SNDerivator = new BigInt(0);
+        this.SNDerivator = new bn(0);
         this.SerialNumber = zeroPoint;
-        this.Randomness = new BigInt(0);
-        this.Value = new BigInt(0);
+        this.Randomness = new bn(0);
+        this.Value = new bn(0);
         this.Info = new Uint8Array(0);
         return this;
     }
@@ -235,9 +234,9 @@ class Coin {
     }
 
     commitAll(){
-        let shardId = common.getShardIDFromLastByte(this.getPubKeyLastByte());
-        let values = [new BigInt(0), this.Value, this.SNDerivator, new BigInt(shardId), this.Randomness];
-        this.CoinCommitment = pc.PedCom.CommitAll(values);
+        let shardId = getShardIDFromLastByte(this.getPubKeyLastByte());
+        let values = [new bn(0), this.Value, this.SNDerivator, new bn(shardId), this.Randomness];
+        this.CoinCommitment = PedCom.commitAll(values);
         this.CoinCommitment = this.CoinCommitment.add(this.PublicKey)
 
     }
@@ -262,7 +261,7 @@ class InputCoin {
 class OutputCoin {
     constructor() {
         this.CoinDetails = new Coin();
-        this.CoinDetailsEncrypted = new hybridEnc.Ciphertext();
+        this.CoinDetailsEncrypted = new hybridEncrypt().Ciphertext();
         return this;
     }
 
@@ -320,7 +319,7 @@ class OutputCoin {
     // encrypt encrypts output coins using recipient transmission key
     encrypt(recipientTK){
         let valueBytes = this.CoinDetails.Value.toArray();
-        let randomnessBytes = utils.addPaddingBigInt(this.CoinDetails.Randomness, constants.BIG_INT_SIZE);
+        let randomnessBytes = privacyUtils.addPaddingBigInt(this.CoinDetails.Randomness, constants.BIG_INT_SIZE);
         let msg = new Uint8Array(valueBytes.length + constants.BIG_INT_SIZE);
         msg.set(randomnessBytes, 0);
         msg.set(valueBytes, constants.BIG_INT_SIZE);
@@ -336,10 +335,10 @@ function TestCoin() {
     // console.log('viewingKey : ', keySet.ReadonlyKey);
 
     coin.PublicKey = P256.decompress(keySet.PaymentAddress.PublicKey);
-    coin.Value = new BigInt(10);
-    coin.Randomness = utils.randScalar(constants.BIG_INT_SIZE);
+    coin.Value = new bn(10);
+    coin.Randomness = privacyUtils.randScalar(constants.BIG_INT_SIZE);
     coin.SNDerivator = utils.randScalar(constants.BIG_INT_SIZE);
-    coin.SerialNumber = P256.g.derive(new BigInt(keySet.PrivateKey), coin.SNDerivator);
+    coin.SerialNumber = P256.g.derive(new bn(keySet.PrivateKey), coin.SNDerivator);
     coin.commitAll();
 
     console.log('************** INFO COIN **************');
@@ -379,11 +378,7 @@ function TestCoin() {
 
 // TestCoin();
 
-module.exports = {Coin, InputCoin, OutputCoin};
-
-
-// let res = P256.g.derive(new bn.BN(2), new bn.BN(10));
-// console.log("res: ", res.compress().join(', '));
+export {Coin, InputCoin, OutputCoin};
 
 
 

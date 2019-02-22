@@ -1,23 +1,21 @@
-const ec = require('../../ec.js');
+import * as ec from 'privacy-js-lib/lib/ec';
 const P256 = ec.P256;
-const constants = require('../../constants');
-const key = require('../../key');
-const keySet = require('../../keyset');
-const utils = require('../../privacy_utils');
-const zkp = require('../../zkps/payment');
-const coin = require('../../coin');
-const schnorr = require('../../schnorr');
-const elGamal = require('../../elgamal');
-const base58 = require('../../base58');
-const keyWallet = require('../wallet/hdwallet');
-const constantsWallet = require('../wallet/constants');
-const bn = require('bn.js');
-const httpRequest = require('../httprequest/request');
-let knapsack = require('../../knapsack').knapsack;
-let greedy = require('../../knapsack').greedy;
-const json = require('circular-json');
-
-const common = require('../common');
+import * as constants from 'privacy-js-lib/lib/constants';
+import * as key from '../key';
+import * as keySet from '../keySet';
+import * as privacyUtils from 'privacy-js-lib/lib/privacy_utils';
+import * as zkpPayment from '../payment';
+import * as schnorr from '../schnorr';
+import * as elGamal from '../elgamal';
+import * as base58 from '../base58';
+import * as coin from '../coin';
+import {KeyWallet as keyWallet} from '../wallet/hdwallet';
+import * as constantsWallet from '../wallet/constants';
+import {knapsack, greedy} from '../knapsack';
+import bn from 'bn.js';
+import requestAPI from '../httprequest/request';
+import json from 'circular-json';
+import {getShardIDFromLastByte} from '../common';
 
 const TxVersion = 1;
 const ConstantID = new Uint8Array(32);
@@ -43,7 +41,7 @@ async function getOutputCoin(paymentAdrr, viewingKey) {
         "id": 1
     };
 
-    const response = await httpRequest.requestAPI(data);
+    const response = await requestAPI(data);
 
     if (response.status !== 200) {
         return {
@@ -212,7 +210,7 @@ async function hasSerialNumber(paymentAddr, serialNumberStrs) {
         "id": 1
     };
 
-    const response = await httpRequest.requestAPI(data);
+    const response = await requestAPI(data);
 
     // console.log("Response: ", response);
     if (response.status !== 200) {
@@ -287,7 +285,7 @@ async function randomCommitmentsProcess(paymentAddr, inputCoinStrs) {
         "id": 1
     };
 
-    const response = await httpRequest.requestAPI(data);
+    const response = await requestAPI(data);
 
     // console.log("Response: ", response);
     if (response.status !== 200) {
@@ -407,7 +405,7 @@ class Tx {
         // Sign and Privacy proof
         this.SigPubKey = [];
         this.Sig = [];
-        this.Proof = new zkp.PaymentProof();
+        this.Proof = new zkpPayment.PaymentProof();
 
         this.PubKeyLastByteSender = 0x00;
 
@@ -464,7 +462,7 @@ class Tx {
 
         // set shard id
         //todo:
-        let shardID = common.getShardIDFromLastByte(pkLastByteSender);
+        let shardID = getShardIDFromLastByte(pkLastByteSender);
 
         // Calculate sum of all output coins' value
         let sumOutputValue = new bn(0);
@@ -539,7 +537,7 @@ class Tx {
         while (ok) {
             let sndOut = new bn(0);
             for (i = 0; i < paymentInfo.length; i++) {
-                sndOut = utils.randScalar();
+                sndOut = privacyUtils.randScalar();
                 let sndOutStrs = base58.checkEncode(sndOut.toArray(), constants.PRIVACY_VERSION);
 
                 while (true) {
@@ -548,7 +546,7 @@ class Tx {
 
                     // if sndOut existed, then re-random it
                     if (res.existed[0]) {
-                        sndOut = utils.randScalar();
+                        sndOut = privacyUtils.randScalar();
                         sndOutStrs = base58.checkEncode(sndOut.toArray(), constants.PRIVACY_VERSION);
                     } else {
                         break
@@ -558,7 +556,7 @@ class Tx {
             }
 
             // if sndOuts has two elements that have same value, then re-generates it
-            ok = utils.checkDuplicateBigIntArray(sndOuts);
+            ok = privacyUtils.checkDuplicateBigIntArray(sndOuts);
             if (ok) {
                 sndOuts = new Array(paymentInfo.length);
             }
@@ -576,10 +574,10 @@ class Tx {
         this.Fee = fee;
 
         // create zero knowledge proof of payment
-        this.Proof = new zkp.PaymentProof();
+        this.Proof = new zkpPayment.PaymentProof();
 
         // prepare witness for proving
-        let witness = new zkp.PaymentWitness();
+        let witness = new zkpPayment.PaymentWitness();
         witness.init(hasPrivacy, new bn(senderSK, 'be', constants.BIG_INT_SIZE), inputCoins, outputCoins, pkLastByteSender, commitmentProving, commitmentIndices, myCommitmentIndices, fee);
 
         this.Proof = witness.prove(hasPrivacy);
@@ -625,14 +623,14 @@ class Tx {
     }
 
     convertTxToByte(){
-        this.Info = utils.convertUint8ArrayToArray(this.Info);
-        this.SigPubKey = utils.convertUint8ArrayToArray(this.SigPubKey);
-        this.Sig = utils.convertUint8ArrayToArray(this.Sig);
+        this.Info = privacyUtils.convertUint8ArrayToArray(this.Info);
+        this.SigPubKey = privacyUtils.convertUint8ArrayToArray(this.SigPubKey);
+        this.Sig = privacyUtils.convertUint8ArrayToArray(this.Sig);
 
         this.Proof = base58.checkEncode(this.Proof.toBytes(), constants.PRIVACY_VERSION);
         this.Fee = 0;
 
-        // this.Proof = utils.convertUint8ArrayToArray(this.Proof.toBytes());
+        // this.Proof = privacyUtils.convertUint8ArrayToArray(this.Proof.toBytes());
         return this;
     }
 
@@ -683,7 +681,7 @@ class Tx {
 
     // hash hashes tx string to 32-byte hashing value
     hash() {
-        return utils.hashBytesToBytes(utils.stringToBytes(this.toString()));
+        return privacyUtils.hashBytesToBytes(privacyUtils.stringToBytes(this.toString()));
     }
 
     // getTxActualSize computes the actual size of a given transaction in kilobyte
@@ -746,7 +744,7 @@ async function sendTx(tx){
     // let tx1 = json.parse(txJson);
     // console.log("tx struct: ", tx1);
 
-    let serializedTxJson = base58.checkEncode(utils.stringToBytes(txJson), constants.PRIVACY_VERSION);
+    let serializedTxJson = base58.checkEncode(privacyUtils.stringToBytes(txJson), constants.PRIVACY_VERSION);
     console.log("tx json serialize: ", serializedTxJson);
 
 
@@ -760,7 +758,7 @@ async function sendTx(tx){
         "id": 1
     };
 
-    const response = await httpRequest.requestAPI(data, "POST");
+    const response = await requestAPI(data, "POST");
     console.log("response send tx: ", response);
 
     // if (response.status !== 200) {

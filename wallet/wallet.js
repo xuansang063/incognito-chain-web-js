@@ -3,7 +3,7 @@ import {KeyWallet, NewMasterKey} from "./hdwallet";
 import MnemonicGenerator from "./mnemonic";
 import CryptoJS from "crypto-js";
 import JSON from "circular-json";
-import keyset from '../keyset';
+import keyset from '../keySet';
 import key from '../key';
 
 class AccountWallet {

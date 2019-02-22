@@ -1,8 +1,8 @@
-let BigInt = require('bn.js');
-let ec = require('./ec.js');
-let P256 = ec.P256;
-let aes = require('./aes');
-let elgamal = require('./elgamal');
+import * as ec from 'privacy-js-lib/lib/ec';
+const P256 = ec.P256;
+import bn from 'bn.js';
+import * as aes from './aes';
+import * as elgamal from './elgamal';
 
 class Ciphertext {
     // constructor initializes a new empty ciphertext
@@ -51,7 +51,7 @@ function hybridEncrypt(msg, publicKey) {
 // test function for hybridEncrypt
 function testHybridEncrypt() {
     let msg = [10, 20];
-    let privateKey = new BigInt(10);
+    let privateKey = new bn(10);
     console.log('Private key : ', privateKey.toArray().join(', '));
     let publicKey = P256.g.mul(privateKey);
     console.log("public key : ", publicKey.compress().join(', '));
@@ -64,7 +64,7 @@ function testHybridEncrypt() {
 
 // testHybridEncrypt();
 
-module.exports = {
+export{
     Ciphertext,
     hybridEncrypt,
 };

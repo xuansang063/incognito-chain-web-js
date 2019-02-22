@@ -1,7 +1,7 @@
-let BigInt = require('bn.js');
-let utils = require("./privacy_utils");
-let cs = require("./constants");
-let ec = require("./ec.js");
+import bn from 'bn.js';
+import * as ec from 'privacy-js-lib/lib/ec';
+import * as privacyUtils from 'privacy-js-lib/lib/privacy_utils';
+import * as constants from 'privacy-js-lib/lib/constants';
 
 // PrivateKey sk <-- Zn
 // PublicKey  pk <-- G*sk
@@ -12,7 +12,7 @@ let ec = require("./ec.js");
 // k <-- Zn is a secret random number
 
 function derivePublicKey(privateKeyBytesArrays) {
-    let privateKey = new BigInt(privateKeyBytesArrays, 10, 'be');
+    let privateKey = new bn(privateKeyBytesArrays, 10, 'be');
     return ec.P256.g.mul(privateKey);
 }
 
@@ -20,30 +20,30 @@ function encrypt(publicKey, data) {
     if (!data.isSafe()) {
         throw new Error("Data is not safe on P256!");
     }
-    let k = utils.randScalar(32);
+    let k = privacyUtils.randScalar(32);
     let C1 = ec.P256.g.mul(k);
     let C2 = (publicKey.mul(k)).add(data);
-    let res = new Uint8Array(cs.COMPRESS_POINT_SIZE * 2);
+    let res = new Uint8Array(constants.COMPRESS_POINT_SIZE * 2);
     res.set(C1.compress(), 0);
-    res.set(C2.compress(), cs.COMPRESS_POINT_SIZE);
+    res.set(C2.compress(), constants.COMPRESS_POINT_SIZE);
     return res;
 }
 
 function decrypt(privateKeyBytesArrays, ElgamalCipherText) {
-    if (ElgamalCipherText.length != cs.ELGAMAL_CIPHERTEXT_SIZE) {
+    if (ElgamalCipherText.length != constants.ELGAMAL_CIPHERTEXT_SIZE) {
         throw new Error("Cipher in inputs is not Elgamal's ciphertext!");
     }
-    let privateKey = new BigInt(privateKeyBytesArrays, 10, 'be');
+    let privateKey = new bn(privateKeyBytesArrays, 10, 'be');
     try {
-        let C1 = ec.P256.decompress(ElgamalCipherText.slice(0, cs.COMPRESS_POINT_SIZE));
-        let C2 = ec.P256.decompress(ElgamalCipherText.slice(cs.COMPRESS_POINT_SIZE, 2 * cs.COMPRESS_POINT_SIZE));
+        let C1 = ec.P256.decompress(ElgamalCipherText.slice(0, constants.COMPRESS_POINT_SIZE));
+        let C2 = ec.P256.decompress(ElgamalCipherText.slice(constants.COMPRESS_POINT_SIZE, 2 * constants.COMPRESS_POINT_SIZE));
         return C2.sub(C1.mul(privateKey));
     } catch (error) {
         throw error;
     }
 }
 
-module.exports = {
+export {
     derivePublicKey,
     encrypt,
     decrypt
