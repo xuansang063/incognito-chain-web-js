@@ -1,5 +1,10 @@
 import {KeyWallet as keyWallet} from "../../lib/wallet/hdwallet";
 import * as key from "../../lib/key";
+import bn from 'bn.js';
+import {RpcClient} from "../../lib/rpcclient/rpcclient";
+import {Tx} from "../../lib/tx/txprivacy"
+
+const rpcClient = new RpcClient("http://localhost:9334")
 
 async function TestTx() {
   let n = 1;
@@ -15,7 +20,7 @@ async function TestTx() {
 
   try {
     let res = await rpcClient.prepareInputForTx("", paymentInfos);
-    let tx = new Tx();
+    let tx = new Tx("http://localhost:9334");
     // console.log();
     // console.log();
     // console.log("---------- BEFORE CREATE TX res input coin strs : ", res.inputCoinStrs);
