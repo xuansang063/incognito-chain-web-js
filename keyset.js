@@ -1,4 +1,4 @@
-let key = require('./key');
+import * as key from './key';
 
 class KeySet {
   constructor() {
