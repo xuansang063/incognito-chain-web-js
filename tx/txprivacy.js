@@ -345,18 +345,22 @@ async function TestTx() {
 
   paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn.BN(2300));
 
-  let res = await rpcClient.prepareInputForTx("", paymentInfos);
-  let tx = new Tx();
-  // console.log();
-  // console.log();
-  // console.log("---------- BEFORE CREATE TX res input coin strs : ", res.inputCoinStrs);
+  try {
+    let res = await rpcClient.prepareInputForTx("", paymentInfos);
+    let tx = new Tx();
+    // console.log();
+    // console.log();
+    // console.log("---------- BEFORE CREATE TX res input coin strs : ", res.inputCoinStrs);
 
 
-  await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, res.inputCoinStrs, new bn.BN(0), true, null, null, null);
-  // console.log("***************Tx: ", tx);
+    await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, res.inputCoinStrs, new bn.BN(0), true, null, null, null);
+    // console.log("***************Tx: ", tx);
 
-  await rpcClient.sendTx(tx);
-  // console.log("res: ", res);
+    await rpcClient.sendTx(tx);
+    // console.log("res: ", res);
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 TestTx();

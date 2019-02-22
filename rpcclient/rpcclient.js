@@ -2,7 +2,6 @@ import {requestAPI} from './request';
 import * as base58 from "../base58";
 import json from 'circular-json';
 import {KeyWallet as keyWallet} from "../wallet/hdwallet";
-import * as constantsWallet from "../wallet/constants";
 import * as constantsWallet from '../wallet/constants';
 import {knapsack, greedy} from '../knapsack';
 
@@ -11,7 +10,7 @@ class RpcClient {
     this.url = url;
   }
 
-  async getOutputCoin(paymentAdrr, viewingKey) {
+  getOutputCoin = async (paymentAdrr, viewingKey) => {
     const data = {
       "jsonrpc": "1.0",
       "method": "listoutputcoins",
@@ -27,8 +26,7 @@ class RpcClient {
       ],
       "id": 1
     };
-
-    const response = await requestAPI(data, 'POST', this.url);
+    const response = await requestAPI(data, this.url);
 
     if (response.status !== 200) {
       return {
@@ -44,7 +42,7 @@ class RpcClient {
   }
 
   // hasSerialNumber return true if snd existed in database
-  async hasSerialNumber(paymentAddr, serialNumberStrs) {
+  hasSerialNumber = async (paymentAddr, serialNumberStrs) => {
     const data = {
       "jsonrpc": "1.0",
       "method": "hasserialnumbers",
@@ -58,7 +56,7 @@ class RpcClient {
       "id": 1
     };
 
-    const response = await requestAPI(data);
+    const response = await requestAPI(data, this.url);
 
     // console.log("Response: ", response);
     if (response.status !== 200) {
@@ -75,7 +73,7 @@ class RpcClient {
   }
 
   // hasSNDerivator return true if snd existed in database
-  async hasSNDerivator(paymentAddr, snds) {
+  hasSNDerivator = async (paymentAddr, snds) => {
     //todo:
 
     const data = {
@@ -91,7 +89,7 @@ class RpcClient {
       "id": 1
     };
 
-    const response = await requestAPI(data);
+    const response = await requestAPI(data, this.url);
 
     // console.log("Response: ", response);
     if (response.status !== 200) {
@@ -109,7 +107,7 @@ class RpcClient {
   }
 
   // randomCommitmentsProcess randoms list commitment for proving
-  async randomCommitmentsProcess(paymentAddr, inputCoinStrs) {
+  randomCommitmentsProcess = async (paymentAddr, inputCoinStrs) => {
     const data = {
       "jsonrpc": "1.0",
       "method": "randomcommitments",
@@ -131,7 +129,7 @@ class RpcClient {
       "id": 1
     };
 
-    const response = await requestAPI(data);
+    const response = await requestAPI(data, this.url);
 
     // console.log("Response: ", response);
     if (response.status !== 200) {
@@ -173,7 +171,7 @@ class RpcClient {
     }
   }
 
-  async prepareInputForTx(spendingKeyStr, paymentInfos) {
+  prepareInputForTx = async (spendingKeyStr, paymentInfos) => {
     // deserialize spending key string to key wallet
     // spendingKeyStr = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
     spendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
@@ -227,7 +225,7 @@ class RpcClient {
   }
 
   // chooseBestCoinToSpent return list of coin to spent using Knapsack and Greedy algorithm
-  chooseBestCoinToSpent(inputCoins, amount) {
+  chooseBestCoinToSpent = (inputCoins, amount) => {
     let incoinUnknapsack = [];
     let incoinKnapsack = [];
     let valueKnapsack = [];
@@ -297,7 +295,7 @@ class RpcClient {
   }
 
   // ParseCoinFromStr convert input coin string to struct
-  parseInputCoinFromStr(coinStrs, keyWallet) {
+  parseInputCoinFromStr = (coinStrs, keyWallet) => {
     let inputCoins = new Array(coinStrs.length);
 
     let spendingKeyBN = new bn.BN(keyWallet.KeySet.PrivateKey);
@@ -332,7 +330,7 @@ class RpcClient {
     return inputCoins;
   }
 
-  async getUnspentCoin(inputCoins, paymentAddrSerialize, inCoinStrs) {
+  getUnspentCoin = async (inputCoins, paymentAddrSerialize, inCoinStrs) => {
     let unspentCoin = new Array();
     let unspentCoinStrs = new Array();
 
@@ -365,7 +363,7 @@ class RpcClient {
     };
   }
 
-  async sendTx(tx) {
+  sendTx = async (tx) => {
     // console.log("tx string : ", tx.toString());
     delete tx.sigPrivKey;
     let txJson = json.stringify(tx.convertTxToByte());
@@ -388,7 +386,7 @@ class RpcClient {
       "id": 1
     };
 
-    const response = await requestAPI(data, "POST");
+    const response = await requestAPI(data, this.url);
     console.log("response send tx: ", response);
 
     // if (response.status !== 200) {
