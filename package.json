@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/constant-money/constain-chain-web-js/issues"
   },
-  "homepage": "https://github.com/constant-money/constain-chain-web-js#readme"
+  "homepage": "https://github.com/constant-money/constain-chain-web-js#readme",
+  "dependencies": {
+    "privacy-js-lib": "git://github.com/constant-money/privacy-js-lib"
+  }
 }
