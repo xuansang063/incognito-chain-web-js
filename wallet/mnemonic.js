@@ -1,4 +1,4 @@
-import newWordList from "./wordlist";
+import {newWordList} from "./wordlist";
 import randomBytes from "random-bytes";
 import * as utils from 'privacy-js-lib/lib/privacy_utils';
 import BigInt from 'bn.js';
