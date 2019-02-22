@@ -9,8 +9,7 @@ import * as elGamal from '../elgamal';
 import * as base58 from '../base58';
 import * as coin from '../coin';
 import {KeyWallet as keyWallet} from '../wallet/hdwallet';
-import * as constantsWallet from '../wallet/constants';
-import {knapsack, greedy} from '../knapsack';
+
 import bn from 'bn.js';
 import {getShardIDFromLastByte} from '../common';
 import {RpcClient} from "../rpcclient/rpcclient"

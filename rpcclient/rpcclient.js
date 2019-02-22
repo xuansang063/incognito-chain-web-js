@@ -3,6 +3,8 @@ import * as base58 from "../base58";
 import json from 'circular-json';
 import {KeyWallet as keyWallet} from "../wallet/hdwallet";
 import * as constantsWallet from "../wallet/constants";
+import * as constantsWallet from '../wallet/constants';
+import {knapsack, greedy} from '../knapsack';
 
 class RpcClient {
   constructor(url) {
