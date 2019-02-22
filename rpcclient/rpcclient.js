@@ -8,6 +8,7 @@ import {knapsack, greedy} from '../knapsack';
 import bn from "bn.js"
 import * as coin from '../coin';
 import * as ec from "privacy-js-lib/lib/ec";
+import * as privacyUtils from 'privacy-js-lib/lib/privacy_utils';
 
 const P256 = ec.P256;
 
