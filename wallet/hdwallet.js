@@ -1,4 +1,4 @@
-import keyset from '../keyset';
+import keyset from '../keySet';
 import key from '../key';
 import * as constants from './constants';
 import * as utils from './utils';

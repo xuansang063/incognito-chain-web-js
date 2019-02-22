@@ -1,5 +1,7 @@
-let Buffer = require('safe-buffer').Buffer;
-let utils = require('./privacy_utils');
+import {Buffer} from 'safe-buffer';
+import * as privacyUtils from 'privacy-js-lib/lib/privacy_utils';
+
+
 
 let alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 let alphabetIdx0 = '1';
@@ -214,11 +216,11 @@ function checkDecode(string) {
 };
 
 function checkSumFirst4Bytes(data) {
-    let res = utils.doubleHashBytesToBytes(data);
+    let res = privacyUtils.doubleHashBytesToBytes(data);
     return res.slice(0, 4);
 }
 
-module.exports = {
+export {
     checkEncode,
     checkDecode,
     checkSumFirst4Bytes

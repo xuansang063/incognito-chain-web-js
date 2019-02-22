@@ -16,11 +16,11 @@ class KeySet {
 
   generateKey(seed) {
     this.PrivateKey = key.GenerateSpendingKey(seed);
-    this.PaymentAddress = new key.PaymentAddress()
+    this.PaymentAddress = new key.PaymentAddress();
     this.PaymentAddress.fromSpendingKey(this.PrivateKey);
     this.ReadonlyKey = new key.ViewingKey();
     this.ReadonlyKey.fromSpendingKey(this.PrivateKey);
   }
 }
 
-module.exports = {keyset: KeySet};
+module.exports = {KeySet: KeySet};
