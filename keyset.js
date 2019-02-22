@@ -23,4 +23,4 @@ class KeySet {
   }
 }
 
-module.exports = {KeySet};
+module.exports = {keyset: KeySet};

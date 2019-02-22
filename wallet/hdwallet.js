@@ -1,11 +1,11 @@
-const keyset = require('../../keyset');
-const key = require('../../key');
-const constants = require('./constants');
-const utils = require('./utils');
-const privacyConstanst = require('../../constants');
-const base58 = require('../../base58');
-let CryptoJS = require("crypto-js");
-let BigInt = require("bn.js");
+import keyset from '../keyset';
+import key from '../key';
+import * as constants from './constants';
+import * as utils from './utils';
+import * as privacyConstanst from 'privacy-js-lib/lib/constants';
+import * as base58 from '../base58';
+import CryptoJS from "crypto-js";
+import BigInt from "bn.js";
 
 
 class KeyWallet {
@@ -214,7 +214,6 @@ function TestKeyWallet() {
 }
 
 // TestKeyWallet();
-
 
 
 module.exports = {KeyWallet, NewMasterKey};

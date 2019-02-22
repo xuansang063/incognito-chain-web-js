@@ -1,9 +1,8 @@
-const newWordList = require("./wordlist").newWordList;
-const randomBytes = require("random-bytes")
-
-let utils = require('../../privacy_utils');
-let BigInt = require('bn.js');
-let pbkdf2 = require('pbkdf2')
+import newWordList from "./wordlist";
+import randomBytes from "random-bytes";
+import * as utils from 'privacy-js-lib/lib/privacy_utils';
+import BigInt from 'bn.js';
+import pbkdf2 from 'pbkdf2';
 
 // Some bitwise operands for working with big.Ints
 const last11BitsMask = new BigInt(2047)

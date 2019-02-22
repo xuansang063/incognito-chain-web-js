@@ -1,11 +1,10 @@
-const PriKeyType = require('./constants').PriKeyType;
-const KeyWallet = require("./hdwallet").KeyWallet;
-const NewMasterKey = require("./hdwallet").NewMasterKey;
-const MnemonicGenerator = require("./mnemonic").MnemonicGenerator;
-let CryptoJS = require("crypto-js");
-let JSON = require("circular-json")
-const keyset = require('../../keyset');
-const key = require('../../key');
+import PriKeyType from './constants';
+import {KeyWallet, NewMasterKey} from "./hdwallet";
+import MnemonicGenerator from "./mnemonic";
+import CryptoJS from "crypto-js";
+import JSON from "circular-json";
+import keyset from '../keyset';
+import key from '../key';
 
 class AccountWallet {
   constructor() {
