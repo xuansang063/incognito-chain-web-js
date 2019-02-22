@@ -1,10 +1,10 @@
-import {PriKeyType} from 'constants';
+import * as constantsWallet from './constants';
 import {KeyWallet, NewMasterKey} from "./hdwallet";
-import MnemonicGenerator from "./mnemonic";
+import {MnemonicGenerator} from "./mnemonic";
 import CryptoJS from "crypto-js";
 import JSON from "circular-json";
-import keyset from '../keySet';
-import key from '../key';
+import * as keyset from '../keySet';
+import * as key from '../key';
 
 class AccountWallet {
   constructor() {
@@ -74,7 +74,7 @@ class Wallet {
   }
 
   exportAccount(childIndex) {
-    return this.MasterAccount.Child[childIndex].Key.base58CheckSerialize(PriKeyType);
+    return this.MasterAccount.Child[childIndex].Key.base58CheckSerialize(constantsWallet.PriKeyType);
   }
 
   removeAccount(privakeyStr, accountName, passPhrase) {
