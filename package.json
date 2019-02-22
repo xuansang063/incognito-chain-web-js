@@ -1,0 +1,19 @@
+{
+  "name": "contain-chain-web-js",
+  "version": "1.0.0",
+  "description": "Constant-chain Javascript API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/constant-money/constain-chain-web-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/constant-money/constain-chain-web-js/issues"
+  },
+  "homepage": "https://github.com/constant-money/constain-chain-web-js#readme"
+}
