@@ -1,3 +1,3 @@
 require('babel-register');
-// require("./wallet/wallet");
-require('./tx/txprivacy');
+require("./wallet/wallet");
+// require('./tx/txprivacy');
