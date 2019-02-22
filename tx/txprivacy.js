@@ -44,7 +44,13 @@ class Tx {
     this.sigPrivKey = []; // is ALWAYS private property of struct, if privacy: 64 bytes, and otherwise, 32 bytes
   }
 
-  async init(senderSK, paymentAddrSerialize, paymentInfo, inputCoins, inputCoinStrs, fee, hasPrivacy, db, tokenID, metaData) {
+  async init(input, paymentInfo, fee, hasPrivacy, db, tokenID, metaData) {
+
+    let senderSK = input.senderKeySet.PrivateKey;
+    let paymentAddress = input.paymentAddrSerialize;
+    let inputCoins = input.inputCoins;
+    let inputCoinStrs = input.inputCoinStrs;
+
     let start = new Date().getTime();
     let i;
     // set version tx
@@ -126,7 +132,7 @@ class Tx {
 
     // console.log("my Commitment: ", inputCoins[0].CoinDetails.CoinCommitment);
     if (hasPrivacy) {
-      let randCommitments = await rpcClient.randomCommitmentsProcess(paymentAddrSerialize, inputCoinStrs);
+      let randCommitments = await rpcClient.randomCommitmentsProcess(paymentAddress, inputCoinStrs);
       for (let i = 0; i < randCommitments.commitments.length; i++) {
         console.log("randCommitments : ", randCommitments.commitments[i].compress().join(", "));
       }
@@ -171,7 +177,7 @@ class Tx {
 
         while (true) {
           // call api to check SND existence
-          let res = await rpcClient.hasSNDerivator(paymentAddrSerialize, [sndOutStrs]);
+          let res = await rpcClient.hasSNDerivator(paymentAddress, [sndOutStrs]);
 
           // if sndOut existed, then re-random it
           if (res.existed[0]) {
@@ -353,7 +359,7 @@ async function TestTx() {
     // console.log("---------- BEFORE CREATE TX res input coin strs : ", res.inputCoinStrs);
 
 
-    await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, res.inputCoinStrs, new bn.BN(0), true, null, null, null);
+    await tx.init(res, paymentInfos, new bn.BN(0), true, null, null, null);
     // console.log("***************Tx: ", tx);
 
     await rpcClient.sendTx(tx);
