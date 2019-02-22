@@ -346,7 +346,7 @@ async function TestTx() {
 
   paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn.BN(2300));
 
-  let res = await prepareInputForTx("", paymentInfos);
+  let res = await rpcClient.prepareInputForTx("", paymentInfos);
   let tx = new Tx();
   // console.log();
   // console.log();
