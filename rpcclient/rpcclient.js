@@ -1,6 +1,8 @@
 import {requestAPI} from './request';
 import * as base58 from "../base58";
 import json from 'circular-json';
+import {KeyWallet as keyWallet} from "../wallet/hdwallet";
+import * as constantsWallet from "../wallet/constants";
 
 class RpcClient {
   constructor(url) {
@@ -87,7 +89,7 @@ class RpcClient {
       "id": 1
     };
 
-    const response = await httpRequest.requestAPI(data);
+    const response = await requestAPI(data);
 
     // console.log("Response: ", response);
     if (response.status !== 200) {
@@ -167,6 +169,198 @@ class RpcClient {
         err: null
       }
     }
+  }
+
+  async prepareInputForTx(spendingKeyStr, paymentInfos) {
+    // deserialize spending key string to key wallet
+    // spendingKeyStr = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
+    spendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
+    let myKeyWallet = keyWallet.base58CheckDeserialize(spendingKeyStr);
+
+    // import key set
+    myKeyWallet.KeySet.importFromPrivateKey(myKeyWallet.KeySet.PrivateKey);
+
+    // console.log("Private key: ", myKeyWallet.KeySet.PrivateKey.join(', '));
+
+    // serialize payment address, readonlyKey
+    let paymentAddrSerialize = myKeyWallet.base58CheckSerialize(constantsWallet.PaymentAddressType);
+    let readOnlyKeySerialize = myKeyWallet.base58CheckSerialize(constantsWallet.ReadonlyKeyType);
+    // console.log("paymentAddrSerialize: ", paymentAddrSerialize);
+    // console.log("readOnlyKeySerialize: ", readOnlyKeySerialize);
+
+    // get all output coins of spendingKey
+    let res = await this.getOutputCoin(paymentAddrSerialize, readOnlyKeySerialize);
+    let allOutputCoinStrs;
+    // console.log("res :",res);
+    if (res.err === null) {
+      allOutputCoinStrs = res.outCoins
+    } else {
+      console.log('ERR when call API get output: ', res.err);
+    }
+
+    // parse input coin from string
+    let inputCoins = this.parseInputCoinFromStr(allOutputCoinStrs, myKeyWallet);
+
+    // get unspent coin
+    let resGetUnspentCoin = await this.getUnspentCoin(inputCoins, paymentAddrSerialize, allOutputCoinStrs);
+    let unspentCoins = resGetUnspentCoin.unspentCoin;
+    let unspentCoinStrs = resGetUnspentCoin.unspentCoinStrs;
+
+
+    // console.log("Unspent coin: ", unspentCoins);
+
+    // calculate amount which need to be spent
+    let amount = new bn.BN(0);
+    for (let i = 0; i < paymentInfos.length; i++) {
+      amount = amount.add(paymentInfos[i].Amount);
+    }
+
+    // get coin to spent using Knapsack
+    return {
+      senderKeySet: myKeyWallet.KeySet,
+      paymentAddrSerialize: paymentAddrSerialize,
+      inputCoins: this.chooseBestCoinToSpent(unspentCoins, amount).resultOutputCoins,
+      inputCoinStrs: unspentCoinStrs,
+    };
+  }
+
+  // chooseBestCoinToSpent return list of coin to spent using Knapsack and Greedy algorithm
+  chooseBestCoinToSpent(inputCoins, amount) {
+    let incoinUnknapsack = [];
+    let incoinKnapsack = [];
+    let valueKnapsack = [];
+    let resultOutputCoins = [];
+    let remainOutputCoins = [];
+    let sumvalueKnapsack = new bn(0);
+    for (let i = 0; i < inputCoins.length; i++) {
+      if (inputCoins[i].CoinDetails.Value.cmp(amount) > 0) {
+        incoinUnknapsack.push(inputCoins[i]);
+      } else {
+        sumvalueKnapsack = sumvalueKnapsack.add(inputCoins[i].CoinDetails.Value);
+        valueKnapsack.push(inputCoins[i].CoinDetails.Value.toNumber());
+        incoinKnapsack.push(inputCoins[i]);
+      }
+    }
+    let target = sumvalueKnapsack.clone().sub(amount);
+    let totalResultOutputCoinAmount = new bn(0);
+    if (target.cmpn(1000) > 0) {
+      inputCoins.sort(function (a, b) {
+        return a.CoinDetails.Value.cmp(b.CoinDetails.Value)
+      });
+      let choices = greedy(inputCoins, amount);
+      for (let i = 0; i < inputCoins.length; i++) {
+        if (choices[i]) {
+          totalResultOutputCoinAmount = totalResultOutputCoinAmount.add(inputCoins[i].CoinDetails.Value);
+          resultOutputCoins.push(inputCoins[i]);
+        } else {
+          remainOutputCoins.push(inputCoins[i]);
+        }
+      }
+    } else if (target.cmpn(0) > 0) {
+      let choices = knapsack(valueKnapsack, target.toNumber());
+      for (let i = 0; i < valueKnapsack.length; i++) {
+        if (choices[i]) {
+          totalResultOutputCoinAmount = totalResultOutputCoinAmount.addn(valueKnapsack[i]);
+          resultOutputCoins.push(inputCoins[i]);
+        } else {
+          remainOutputCoins.push(inputCoins[i]);
+        }
+      }
+    } else if (target == 0) {
+      totalResultOutputCoinAmount = sumvalueKnapsack;
+      resultOutputCoins = incoinKnapsack;
+      remainOutputCoins = incoinUnknapsack;
+    } else {
+      if (incoinUnknapsack.length == 0) {
+        throw new Error("Not enough coin");
+      } else {
+        let iMin = 0;
+        for (let i = 1; i < incoinUnknapsack.length; i++) {
+          iMin = (incoinUnknapsack[i].CoinDetails.Value.cmp(incoinUnknapsack[iMin].CoinDetails.Value) < 0) ? (i) : (iMin);
+        }
+        resultOutputCoins.push(incoinUnknapsack[iMin]);
+        totalResultOutputCoinAmount = incoinUnknapsack[iMin].CoinDetails.Value.clone();
+        for (let i = 0; i < incoinUnknapsack.length; i++) {
+          if (i != iMin) {
+            remainOutputCoins.push(incoinUnknapsack[i]);
+          }
+        }
+      }
+    }
+    return {
+      resultOutputCoins: resultOutputCoins,
+      remainOutputCoins: remainOutputCoins,
+      totalResultOutputCoinAmount: totalResultOutputCoinAmount
+    };
+  }
+
+  // ParseCoinFromStr convert input coin string to struct
+  parseInputCoinFromStr(coinStrs, keyWallet) {
+    let inputCoins = new Array(coinStrs.length);
+
+    let spendingKeyBN = new bn.BN(keyWallet.KeySet.PrivateKey);
+
+    for (let i = 0; i < coinStrs.length; i++) {
+
+      let publicKeyDecode = base58.checkDecode(coinStrs[i].PublicKey).bytesDecoded;
+      let commitmentDecode = base58.checkDecode(coinStrs[i].CoinCommitment).bytesDecoded;
+      let sndDecode = base58.checkDecode(coinStrs[i].SNDerivator).bytesDecoded;
+      let randDecode = base58.checkDecode(coinStrs[i].Randomness).bytesDecoded;
+
+      // console.log("publicKeyDecode", publicKeyDecode.join(", "));
+      // console.log("commitmentDecode", commitmentDecode.join(", "));
+      // console.log("sndDecode", sndDecode.join(", "));
+      // console.log("randDecode", randDecode.join(", "));
+
+      inputCoins[i] = new coin.InputCoin();
+
+      inputCoins[i].CoinDetails.set(P256.decompress(publicKeyDecode),
+        P256.decompress(commitmentDecode),
+        new bn.BN(sndDecode),
+        null,
+        new bn.BN(randDecode),
+        new bn.BN(coinStrs[i].Value),
+        base58.checkDecode(coinStrs[i].Info).bytesDecoded);
+
+      // calculate serial number for all of output coins
+
+      inputCoins[i].CoinDetails.SerialNumber = P256.g.derive(spendingKeyBN, new bn.BN(inputCoins[i].CoinDetails.SNDerivator));
+    }
+
+    return inputCoins;
+  }
+
+  async getUnspentCoin(inputCoins, paymentAddrSerialize, inCoinStrs) {
+    let unspentCoin = new Array();
+    let unspentCoinStrs = new Array();
+
+    let serialNumberStrs = new Array(inputCoins.length);
+
+    for (let i = 0; i < inputCoins.length; i++) {
+      serialNumberStrs[i] = base58.checkEncode(inputCoins[i].CoinDetails.SerialNumber.compress(), 0x00);
+    }
+
+    // check whether each input coin is spent or not
+    let res = await rpcClient.hasSerialNumber(paymentAddrSerialize, serialNumberStrs);
+    let existed = [];
+    if (res.err !== null) {
+      console.log('ERR when call API has serial number: ', res.err);
+    } else {
+      existed = res.existed;
+    }
+
+    for (let i = 0; i < existed.length; i++) {
+      if (!existed[i]) {
+        unspentCoin.push(inputCoins[i]);
+        unspentCoinStrs.push(inCoinStrs[i]);
+      }
+    }
+    // console.log("unspent input coin: ", unspentCoin);
+    // console.log("unspent input coin len : ", unspentCoin.length);
+    return {
+      unspentCoin: unspentCoin,
+      unspentCoinStrs: unspentCoinStrs
+    };
   }
 
   async sendTx(tx) {

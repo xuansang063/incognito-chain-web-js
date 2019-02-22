@@ -261,7 +261,7 @@ class InputCoin {
 class OutputCoin {
     constructor() {
         this.CoinDetails = new Coin();
-        this.CoinDetailsEncrypted = new hybridEncrypt().Ciphertext();
+        this.CoinDetailsEncrypted = new hybridEnc.Ciphertext();
         return this;
     }
 
@@ -337,7 +337,7 @@ function TestCoin() {
     coin.PublicKey = P256.decompress(keySet.PaymentAddress.PublicKey);
     coin.Value = new bn(10);
     coin.Randomness = privacyUtils.randScalar(constants.BIG_INT_SIZE);
-    coin.SNDerivator = utils.randScalar(constants.BIG_INT_SIZE);
+    coin.SNDerivator = privacyUtils.randScalar(constants.BIG_INT_SIZE);
     coin.SerialNumber = P256.g.derive(new bn(keySet.PrivateKey), coin.SNDerivator);
     coin.commitAll();
 
