@@ -29,7 +29,7 @@ async function TestTx() {
     await tx.init(res, paymentInfos, new bn.BN(0), true, null, null, null);
     // console.log("***************Tx: ", tx);
 
-    await rpcClient.sendTx(tx);
+    await rpcClient.sendRawTx(tx);
     // console.log("res: ", res);
   } catch (e) {
     console.log(e);
