@@ -1,4 +1,4 @@
-import PriKeyType from 'constants';
+import {PriKeyType} from 'constants';
 import {KeyWallet, NewMasterKey} from "./hdwallet";
 import MnemonicGenerator from "./mnemonic";
 import CryptoJS from "crypto-js";
