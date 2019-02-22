@@ -9,7 +9,7 @@ let pc = require('../pedersen');
 let constants = require('../constants');
 let utils = require('../privacy_utils');
 const bn = require('bn.js');
-const common = require('../constantchain/common');
+const common = require('./common');
 
 
 class PaymentWitness {
