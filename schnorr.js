@@ -26,7 +26,7 @@ class SchnPrivKey {
     npm
     res.set(PK.compress(), 0);
     res.set(GGenerator, constants.COMPRESS_POINT_SIZE);
-    res.set(HGenerator, constants.COMPRESS_POINT_SIZE * 2);
+    res.set(HGenerator, constants.COMPRESS_POINT_SIZE * 2);clear
     return res;
   }
 
