@@ -19,14 +19,18 @@ async function TestTx() {
   paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn.BN(2300));
 
   try {
+    console.time("rpcClient.prepareInputForTx")
     let res = await rpcClient.prepareInputForTx("", paymentInfos);
+    console.timeEnd("rpcClient.prepareInputForTx")
     let tx = new Tx("http://localhost:9334");
     // console.log();
     // console.log();
     // console.log("---------- BEFORE CREATE TX res input coin strs : ", res.inputCoinStrs);
 
 
+    console.time("tx.init")
     await tx.init(res, paymentInfos, new bn.BN(0), true, null, null, null);
+    console.timeEnd("tx.init")
     // console.log("***************Tx: ", tx);
 
     await rpcClient.sendRawTx(tx);
