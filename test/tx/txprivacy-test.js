@@ -12,15 +12,16 @@ async function TestTx() {
 
   let receiverSpendingKeyStr1 = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
   let receiverKeyWallet1 = keyWallet.base58CheckDeserialize(receiverSpendingKeyStr1);
-
   // import key set
   receiverKeyWallet1.KeySet.importFromPrivateKey(receiverKeyWallet1.KeySet.PrivateKey);
 
   paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn.BN(2300));
 
+  let spendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
+
   try {
     console.time("rpcClient.prepareInputForTx")
-    let res = await rpcClient.prepareInputForTx("", paymentInfos);
+    let res = await rpcClient.prepareInputForTx(spendingKeyStr, paymentInfos);
     console.timeEnd("rpcClient.prepareInputForTx")
     let tx = new Tx("http://localhost:9334");
     // console.log();
@@ -41,3 +42,11 @@ async function TestTx() {
 }
 
 TestTx();
+
+// let arr = new Uint8Array(10);
+// for (let i=0; i<10; i++){
+//   arr[i] = 10;
+// }
+//
+// console.log("ARR: ", arr);
+// console.log("Arr to string: ", arr.toString());
