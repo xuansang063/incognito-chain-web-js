@@ -33,7 +33,7 @@ async function TestTxCustomToken() {
         console.timeEnd("Time for creating tx custom token");
         // console.log("***************Tx: ", tx);
 
-        await rpcClient.sendRawTx(tx);
+        await rpcClient.sendRawTxCustomToken(tx);
         // console.log("res: ", res);
     } catch (e) {
         console.log(e);
