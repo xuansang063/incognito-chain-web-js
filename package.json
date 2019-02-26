@@ -18,7 +18,8 @@
   "homepage": "https://github.com/constant-money/constain-chain-web-js#readme",
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
-    "privacy-js-lib": "git://github.com/constant-money/privacy-js-lib"
+    "privacy-js-lib": "git://github.com/constant-money/privacy-js-lib",
+    "threads": "^0.12.1"
   },
   "devDependencies": {
     "babel": "^6.23.0",
