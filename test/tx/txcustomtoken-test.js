@@ -45,8 +45,8 @@ async function TestTxCustomTokenInit() {
         vouts[0].set(receiverKeyWallet1.KeySet.PaymentAddress, 100);
 
         let tokenParams = new CustomTokenParamTx();
-        tokenParams.propertyName = "abc";
-        tokenParams.propertySymbol = "abc";
+        tokenParams.propertyName = "token1";
+        tokenParams.propertySymbol = "token1";
         tokenParams.amount = 100;
         tokenParams.tokenTxType = CustomTokenInit;
         tokenParams.receivers = vouts;
@@ -57,10 +57,12 @@ async function TestTxCustomTokenInit() {
         await tx.init(res, paymentInfos, new bn.BN(0), tokenParams, listCustomToken, null, null, false);
         console.timeEnd("Time for creating tx custom token");
 
+        console.log("Token ID after initing bytes before : ", tx.txTokenData.propertyID.join(', '));
         console.log("Token ID after initing: ", common.convertHashToStr(tx.txTokenData.propertyID));
-         console.log("Token ID after initing bytes : ", tx.txTokenData.propertyID.join(', '));
+         console.log("Token ID after initing bytes after: ", tx.txTokenData.propertyID.join(', '));
 
-         // 221, 227, 69, 211, 137, 230, 150, 80, 201, 106, 219, 64, 98, 179, 126, 136, 6, 99, 41, 17, 241, 110, 54, 45, 178, 115, 235, 172, 232, 97, 190, 13
+
+         // 71, 199, 56, 75, 4, 15, 240, 157, 217, 211, 215, 107, 85, 225, 89, 3, 96, 25, 92, 225, 190, 34, 168, 182, 0, 223, 11, 56, 137, 109, 38, 243
 
 
         // console.log("***************Tx: ", tx);
@@ -73,7 +75,7 @@ async function TestTxCustomTokenInit() {
 }
 
 // TestTxCustomTokenInit();
-
+        
 async function TestTxCustomTokenTransfer() {
     let n = 0;
     let paymentInfos = new Array(n);
@@ -109,7 +111,7 @@ async function TestTxCustomTokenTransfer() {
 
         // let vins = ;
         let res0 = await rpcClient.getUnspentToken(senderKeyWallet1.base58CheckSerialize(constantWallet.PaymentAddressType),
-            "DDE345D389E69650C96ADB4062B37E8806632911F16E362DB273EBACE861BE0D");
+            "F3266D89380BDF00B6A822BEE15C19600359E1556BD7D3D99DF00F044B38C747");
 
         let vins = res0.listUnspentCustomToken;
 
@@ -126,10 +128,12 @@ async function TestTxCustomTokenTransfer() {
 
             tokenVins[i] =  new TxTokenVin();
             tokenVins[i].txCustomTokenID = vins[i].propertyID;
-            tokenVins[i].voutIndex = vins[i].index;
-            tokenVins[i].paymentAddress = vins[i].paymentAddress;
+            // tokenVins[i].voutIndex = vins[i].index;
+            console.log("aaaaaaaaa: ", vins[i].PaymentAddress.Pk);
+            tokenVins[i].paymentAddress.Pk = base58.checkDecode(vins[i].PaymentAddress.Pk);
+            tokenVins[i].paymentAddress.Tk = base58.checkDecode(vins[i].PaymentAddress.Tk);
 
-            let signature = senderKeyWallet1.KeySet.sign(vins[i].hash());
+            let signature = senderKeyWallet1.KeySet.sign(tokenVins[i].hash());
             tokenVins[i].signature = base58.checkEncode(signature, privacyConstants.PRIVACY_VERSION);
 
             voutsAmount -= vins[i].value;
@@ -140,13 +144,13 @@ async function TestTxCustomTokenTransfer() {
         }
 
         let tokenParams = new CustomTokenParamTx();
-        tokenParams.propertyName = "abc";
-        tokenParams.propertySymbol = "abc";
+        tokenParams.propertyName = "token1";
+        tokenParams.propertySymbol = "token1";
         tokenParams.amount = 100;
         tokenParams.tokenTxType = CustomTokenTransfer;
         tokenParams.receivers = vouts;
         tokenParams.vins = tokenVins;
-        tokenParams.propertyID = "DDE345D389E69650C96ADB4062B37E8806632911F16E362DB273EBACE861BE0D";
+        tokenParams.propertyID = "F3266D89380BDF00B6A822BEE15C19600359E1556BD7D3D99DF00F044B38C747";
         tokenParams.vinsAmount = vinAmount;
 
         
