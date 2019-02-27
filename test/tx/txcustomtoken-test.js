@@ -62,18 +62,3 @@ async function TestTxCustomToken() {
 }
 
 TestTxCustomToken();
-
-// let arr = new Uint8Array(10);
-// for (let i=0; i<10; i++){
-//   arr[i] = 10;
-// }
-//
-// console.log("ARR: ", arr);
-// console.log("Arr to string: ", arr.toString());
-
-
-let a = [1,2,3];
-let hashA = privacyUtils.hashBytesToBytes(a);
-console.log("HAsh A: ", hashA);
-let str = common.convertHashToStr(a);
-console.log("Str: ", str);

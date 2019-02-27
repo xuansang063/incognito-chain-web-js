@@ -4,7 +4,7 @@ import bn from 'bn.js';
 import {RpcClient} from "../../lib/rpcclient/rpcclient";
 import {Tx} from "../../lib/tx/txprivacy"
 
-const rpcClient = new RpcClient("http://localhost:9334")
+const rpcClient = new RpcClient("http://localhost:9334");
 
 async function TestTx() {
   let n = 1;
@@ -20,21 +20,24 @@ async function TestTx() {
   let spendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
 
   try {
-    console.time("rpcClient.prepareInputForTx")
+    console.time("rpcClient.prepareInputForTx");
     let res = await rpcClient.prepareInputForTx(spendingKeyStr, paymentInfos);
-    console.timeEnd("rpcClient.prepareInputForTx")
+    console.timeEnd("rpcClient.prepareInputForTx");
     let tx = new Tx("http://localhost:9334");
     // console.log();
     // console.log();
     // console.log("---------- BEFORE CREATE TX res input coin strs : ", res.inputCoinStrs);
 
 
-    console.time("tx.init")
+    console.time("tx.init");
     await tx.init(res, paymentInfos, new bn.BN(0), true, null, null, null);
-    console.timeEnd("tx.init")
+    console.timeEnd("tx.init");
     // console.log("***************Tx: ", tx);
 
-    await rpcClient.sendRawTx(tx);
+    let res2 = await rpcClient.sendRawTx(tx);
+    if (res2.err !== null){
+      console.log(err);
+    }
     // console.log("res: ", res);
   } catch (e) {
     console.log(e);
