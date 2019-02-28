@@ -112,7 +112,7 @@ async function TestTxCustomTokenTransfer() {
         let voutsAmount = 10;
 
         // let vins = ;
-        let res0 = await rpcClient.getUnspentToken(senderKeyWallet1.base58CheckSerialize(constantWallet.PaymentAddressType),
+        let res0 = await rpcClient.getUnspentCustomToken(senderKeyWallet1.base58CheckSerialize(constantWallet.PaymentAddressType),
             "F3266D89380BDF00B6A822BEE15C19600359E1556BD7D3D99DF00F044B38C747");
 
         let listToken = res0.listUnspentCustomToken;
