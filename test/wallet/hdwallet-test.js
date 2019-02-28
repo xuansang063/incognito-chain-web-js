@@ -8,12 +8,12 @@ function TestKeyWallet() {
   console.log("Spending key: ", spendingKey.join(" , "));
   let keyWallet = new KeyWallet().fromSpendingKey(spendingKey);
 
-  console.log("Key wallet : ", keyWallet);
+  console.log("key wallet : ", keyWallet);
   let keySerial = keyWallet.base58CheckSerialize(constants.PriKeyType);
-  console.log("Key serial: ", keySerial);
+  console.log("key serial: ", keySerial);
 
   let keyDeserialize = KeyWallet.base58CheckDeserialize(keySerial);
-  console.log("Key deserialize :", keyDeserialize.KeySet.PaymentAddress);
+  console.log("key deserialize :", keyDeserialize.KeySet.PaymentAddress);
 
 }
 

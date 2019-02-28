@@ -32,7 +32,7 @@ async function TestWallet() {
   let wallet = new Wallet();
   wallet.init("12345678", 0, "Wallet", storage);
   wallet.importAccount(priK, "Dat", "12345678");
-  let balance = await wallet.MasterAccount.Child[1].getBalance();
+  let balance = await wallet.MasterAccount.child[1].getBalance();
   console.log(balance)
 }
 
