@@ -64,6 +64,7 @@ async function TestTxCustomTokenInit() {
 
          // 71, 199, 56, 75, 4, 15, 240, 157, 217, 211, 215, 107, 85, 225, 89, 3, 96, 25, 92, 225, 190, 34, 168, 182, 0, 223, 11, 56, 137, 109, 38, 243
 
+        // F3266D89380BDF00B6A822BEE15C19600359E1556BD7D3D99DF00F044B38C747
 
         // console.log("***************Tx: ", tx);
         await rpcClient.sendRawTxCustomToken(tx);
@@ -81,11 +82,15 @@ async function TestTxCustomTokenTransfer() {
     let paymentInfos = new Array(n);
     // paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn.BN(2300));
 
+    // HN2
     let senderSpendingKeyStr1 = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
     let senderKeyWallet1 = keyWallet.base58CheckDeserialize(senderSpendingKeyStr1);
     // import key set
     senderKeyWallet1.KeySet.importFromPrivateKey(senderKeyWallet1.KeySet.PrivateKey);
 
+    console.log("Payment address : ", senderKeyWallet1.KeySet.PaymentAddress);
+
+    // HN1
     let receiverSpendingKeyStr1 = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
     let receiverKeyWallet1 = keyWallet.base58CheckDeserialize(receiverSpendingKeyStr1);
     // import key set
@@ -106,37 +111,37 @@ async function TestTxCustomTokenTransfer() {
 
         let voutsAmount = 10;
 
-        console.log("token id bytes", common.newHashFromStr("DDE345D389E69650C96ADB4062B37E8806632911F16E362DB273EBACE861BE0D"));
-
-
         // let vins = ;
         let res0 = await rpcClient.getUnspentToken(senderKeyWallet1.base58CheckSerialize(constantWallet.PaymentAddressType),
             "F3266D89380BDF00B6A822BEE15C19600359E1556BD7D3D99DF00F044B38C747");
 
-        let vins = res0.listUnspentCustomToken;
+        let listToken = res0.listUnspentCustomToken;
 
-        if (vins.length ===0){
+        if (listToken.length ===0){
             console.log("Balance of token is zero");
             return;
         }
 
-        let tokenVins = new Array(vins.length);
+        let tokenVouts = new Array(listToken.length);
+        let tokenVins = new Array(listToken.length);
         let vinAmount = 0;
 
-        for (let i=0; i< vins.length; i++){
-            vinAmount+= vins[i].value;
+        for (let i=0; i< listToken.length; i++){
+            vinAmount+= listToken[i].Value;
+
+            tokenVouts[i] = new TxTokenVout();
+            tokenVouts[i].set(senderKeyWallet1.KeySet.PaymentAddress, listToken[i].Value);
 
             tokenVins[i] =  new TxTokenVin();
-            tokenVins[i].txCustomTokenID = vins[i].propertyID;
-            // tokenVins[i].voutIndex = vins[i].index;
-            console.log("aaaaaaaaa: ", vins[i].PaymentAddress.Pk);
-            tokenVins[i].paymentAddress.Pk = base58.checkDecode(vins[i].PaymentAddress.Pk);
-            tokenVins[i].paymentAddress.Tk = base58.checkDecode(vins[i].PaymentAddress.Tk);
+            tokenVins[i].txCustomTokenID = common.newHashFromStr(listToken[i].TxCustomTokenID);
+            tokenVins[i].voutIndex = listToken[i].Index;
+            tokenVins[i].paymentAddress = senderKeyWallet1.KeySet.PaymentAddress;
+            console.log(":senderKeyWallet1.KeySet.PaymentAddress: ", senderKeyWallet1.KeySet.PaymentAddress);
 
-            let signature = senderKeyWallet1.KeySet.sign(tokenVins[i].hash());
+            let signature = senderKeyWallet1.KeySet.sign(tokenVouts[i].hash());
             tokenVins[i].signature = base58.checkEncode(signature, privacyConstants.PRIVACY_VERSION);
 
-            voutsAmount -= vins[i].value;
+            voutsAmount -= listToken[i].Value;
             if (voutsAmount <=0){
                 break;
             }
@@ -144,13 +149,14 @@ async function TestTxCustomTokenTransfer() {
         }
 
         let tokenParams = new CustomTokenParamTx();
+        tokenParams.propertyID = "F3266D89380BDF00B6A822BEE15C19600359E1556BD7D3D99DF00F044B38C747";
         tokenParams.propertyName = "token1";
         tokenParams.propertySymbol = "token1";
         tokenParams.amount = 100;
         tokenParams.tokenTxType = CustomTokenTransfer;
         tokenParams.receivers = vouts;
         tokenParams.vins = tokenVins;
-        tokenParams.propertyID = "F3266D89380BDF00B6A822BEE15C19600359E1556BD7D3D99DF00F044B38C747";
+
         tokenParams.vinsAmount = vinAmount;
 
         
