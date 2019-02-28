@@ -4,3 +4,4 @@ require('./test/tx/txprivacy-test');
 // require('./test/tx/txcustomtoken-test');
 
 require('./test/coin-test');
+
