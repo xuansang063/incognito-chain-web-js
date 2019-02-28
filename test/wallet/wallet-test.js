@@ -25,15 +25,17 @@ async function Test() {
   // console.log(privKey);
   // console.log("End test")
 }
-async function TestWallet(){
+
+async function TestWallet() {
   let storage = new DefaultStorage();
   let priK = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
   let wallet = new Wallet();
   wallet.init("12345678", 0, "Wallet", storage);
   wallet.importAccount(priK, "Dat", "12345678");
-  let balance = wallet.MasterAccount.Child[0].getBalance();
+  let balance = await wallet.MasterAccount.Child[1].getBalance();
   console.log(balance)
 }
+
 TestWallet();
 
 
