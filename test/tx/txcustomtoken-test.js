@@ -127,10 +127,10 @@ async function TestTxCustomTokenTransfer() {
         let vinAmount = 0;
 
         for (let i=0; i< listToken.length; i++){
-            vinAmount+= listToken[i].Value;
+            vinAmount+= listToken[i].value;
 
             tokenVouts[i] = new TxTokenVout();
-            tokenVouts[i].set(senderKeyWallet1.KeySet.PaymentAddress, listToken[i].Value);
+            tokenVouts[i].set(senderKeyWallet1.KeySet.PaymentAddress, listToken[i].value);
 
             tokenVins[i] =  new TxTokenVin();
             tokenVins[i].txCustomTokenID = common.newHashFromStr(listToken[i].TxCustomTokenID);
@@ -141,7 +141,7 @@ async function TestTxCustomTokenTransfer() {
             let signature = senderKeyWallet1.KeySet.sign(tokenVouts[i].hash());
             tokenVins[i].signature = base58.checkEncode(signature, privacyConstants.PRIVACY_VERSION);
 
-            voutsAmount -= listToken[i].Value;
+            voutsAmount -= listToken[i].value;
             if (voutsAmount <=0){
                 break;
             }

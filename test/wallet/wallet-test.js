@@ -3,7 +3,7 @@ import {Wallet, DefaultStorage} from '../../lib/wallet/wallet'
 async function Test() {
   let wallet = new Wallet()
   let priK = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
-  let ID  = "1AF5782F86BDA63F884C7D8F872FF135A6F567FC0932DA3A675ECB2DD344DA40";
+  let ID  = "0000000000000000000000000000000000000000000000000000000000000002";
   let tokenBalance = await wallet.getCustomTokenBalance(priK,ID);
   console.log(tokenBalance);
 
