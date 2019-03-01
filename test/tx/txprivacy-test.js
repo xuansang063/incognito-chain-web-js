@@ -35,11 +35,11 @@ async function TestTx() {
     //   inputCoinStrs[i] = res.inputCoins[i].convertInputCoinToStr();
     // }
 
-    let inputCoinStrs = rpcClient.parseInputCoinToStr(res.inputCoins);
+    // let inputCoinStrs = rpcClient.parseInputCoinToStr(res.inputCoins);
 
 
     console.time("tx.init");
-    let err = await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, inputCoinStrs,
+    let err = await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, res.inputCoinStrs,
         new bn(0), true, null, null);
 
 

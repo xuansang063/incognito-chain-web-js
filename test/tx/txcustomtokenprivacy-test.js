@@ -108,7 +108,7 @@ async function TestTxCustomTokenPrivacyTransfer() {
 
     // prepare token param
     let tokenParams = new CustomTokenPrivacyParamTx();
-    tokenParams.propertyID = "56783b1532273081182e0dba547ca564a6e71270580b75d6d06cd3a4cbe66377";
+    tokenParams.propertyID = "56783B1532273081182E0DBA547CA564A6E71270580B75D6D06CD3A4CBE66377";
     tokenParams.propertyName = "token2";
     tokenParams.propertySymbol = "token2";
     tokenParams.amount = 10;
