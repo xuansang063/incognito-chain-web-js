@@ -32,7 +32,7 @@ async function TestTx() {
 
 
     console.time("tx.init");
-    await tx.init(res, paymentInfos, new bn.BN(0), true, null, null);
+    await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, res.inputCoinStrs, new bn.BN(0), true, null, null);
     console.timeEnd("tx.init");
     // console.log("***************Tx: ", tx);
 

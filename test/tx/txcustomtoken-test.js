@@ -51,11 +51,10 @@ async function TestTxCustomTokenInit() {
         tokenParams.amount = 100;
         tokenParams.tokenTxType = CustomTokenInit;
         tokenParams.receivers = vouts;
-
         let res2 = await rpcClient.listCustomTokens();
         let listCustomToken = res2.listCustomToken;
 
-        await tx.init(res, paymentInfos, new bn.BN(0), tokenParams, listCustomToken, null,  false);
+        await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, res.inputCoinStrs,  new bn.BN(0), tokenParams, listCustomToken, null,  false);
         console.timeEnd("Time for creating tx custom token");
 
         console.log("Token ID after initing bytes before : ", tx.txTokenData.propertyID.join(', '));
@@ -162,12 +161,10 @@ async function TestTxCustomTokenTransfer() {
 
         tokenParams.vinsAmount = vinAmount;
 
-        
-
         let res2 = await rpcClient.listCustomTokens();
         let listCustomToken = res2.listCustomToken;
 
-        await tx.init(res, paymentInfos, new bn.BN(0), tokenParams, listCustomToken, null, false);
+        await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, res.inputCoinStrs, new bn.BN(0), tokenParams, listCustomToken, null, false);
         console.timeEnd("Time for creating tx custom token");
 
         // console.log("Token ID after initing: ", tx.txTokenData.propertyID.join(', '));
