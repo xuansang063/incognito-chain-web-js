@@ -51,10 +51,10 @@ async function TestTxCustomTokenInit() {
         tokenParams.tokenTxType = CustomTokenInit;
         tokenParams.receivers = vouts;
 
-        let res2 = await rpcClient.getListCustomTokens();
+        let res2 = await rpcClient.listCustomTokens();
         let listCustomToken = res2.listCustomToken;
 
-        await tx.init(res, paymentInfos, new bn.BN(0), tokenParams, listCustomToken, null, null, false);
+        await tx.init(res, paymentInfos, new bn.BN(0), tokenParams, listCustomToken, null,  false);
         console.timeEnd("Time for creating tx custom token");
 
         console.log("Token ID after initing bytes before : ", tx.txTokenData.propertyID.join(', '));
@@ -117,6 +117,8 @@ async function TestTxCustomTokenTransfer() {
 
         let listToken = res0.listUnspentCustomToken;
 
+        console.log("List : ", listToken);
+
         if (listToken.length ===0){
             console.log("Balance of token is zero");
             return;
@@ -130,7 +132,7 @@ async function TestTxCustomTokenTransfer() {
             vinAmount+= listToken[i].value;
 
             tokenVouts[i] = new TxTokenVout();
-            tokenVouts[i].set(senderKeyWallet1.KeySet.PaymentAddress, listToken[i].value);
+            tokenVouts[i].set(senderKeyWallet1.KeySet.PaymentAddress, listToken[i].Value);
 
             tokenVins[i] =  new TxTokenVin();
             tokenVins[i].txCustomTokenID = common.newHashFromStr(listToken[i].TxCustomTokenID);
@@ -161,10 +163,10 @@ async function TestTxCustomTokenTransfer() {
 
         
 
-        let res2 = await rpcClient.getListCustomTokens();
+        let res2 = await rpcClient.listCustomTokens();
         let listCustomToken = res2.listCustomToken;
 
-        await tx.init(res, paymentInfos, new bn.BN(0), tokenParams, listCustomToken, null, null, false);
+        await tx.init(res, paymentInfos, new bn.BN(0), tokenParams, listCustomToken, null, false);
         console.timeEnd("Time for creating tx custom token");
 
         // console.log("Token ID after initing: ", tx.txTokenData.propertyID.join(', '));
