@@ -11,6 +11,7 @@ import * as privacyUtils from 'privacy-js-lib/lib/privacy_utils';
 import * as constantWallet from '../../lib/wallet/constants';
 import * as base58 from '../../lib/base58';
 import * as privacyConstants from 'privacy-js-lib/lib/constants';
+import * as constantsTx from "../../lib/tx/constants";
 
 
 const rpcClient = new RpcClient("http://localhost:9334");
