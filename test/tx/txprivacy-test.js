@@ -16,7 +16,7 @@ async function TestTx() {
   // import key set
   receiverKeyWallet1.KeySet.importFromPrivateKey(receiverKeyWallet1.KeySet.PrivateKey);
 
-  paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn.BN(2300));
+  paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn(2300));
 
   //HN1
   let spendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
@@ -30,11 +30,24 @@ async function TestTx() {
     // console.log();
     // console.log("---------- BEFORE CREATE TX res input coin strs : ", res.inputCoinStrs);
 
+    // let inputCoinStrs = new Array(res.inputCoins.length);
+    // for (let i=0; i<res.inputCoins.length; i++){
+    //   inputCoinStrs[i] = res.inputCoins[i].convertInputCoinToStr();
+    // }
+
+    let inputCoinStrs = rpcClient.parseInputCoinToStr(res.inputCoins);
+
 
     console.time("tx.init");
-    await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, res.inputCoinStrs, new bn.BN(0), true, null, null);
+    let err = await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, inputCoinStrs,
+        new bn(0), true, null, null);
+
+
+    if (err !== null){
+      console.log("ERR when creating tx")
+    }
     console.timeEnd("tx.init");
-    // console.log("***************Tx: ", tx);
+    console.log("***************Tx: ", tx);
 
     let res2 = await rpcClient.sendRawTx(tx);
     if (res2.err !== null){

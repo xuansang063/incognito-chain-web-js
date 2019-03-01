@@ -79,7 +79,7 @@ async function TestTxCustomTokenPrivacyInit() {
     }
 }
 
-TestTxCustomTokenPrivacyInit();
+// TestTxCustomTokenPrivacyInit();
 
 
 async function TestTxCustomTokenPrivacyTransfer() {
@@ -101,89 +101,40 @@ async function TestTxCustomTokenPrivacyTransfer() {
     // import key set
     receiverKeyWallet1.KeySet.importFromPrivateKey(receiverKeyWallet1.KeySet.PrivateKey);
 
-    try {
-        console.time("Time for preparing input for fee");
-        let res = await rpcClient.prepareInputForTx(senderSpendingKeyStr1, paymentInfos);
-        console.timeEnd("Time for preparing input for fee");
-
-        let tx = new TxCustomToken("http://localhost:9334");
-
-        console.time("Time for creating tx custom token");
-
-        let vouts = new Array(1);
-        vouts[0] = new TxTokenVout();
-        vouts[0].set(receiverKeyWallet1.KeySet.PaymentAddress, 10);
-
-        let voutsAmount = 10;
-
-        // let vins = ;
-        let res0 = await rpcClient.getUnspentCustomToken(senderKeyWallet1.base58CheckSerialize(constantWallet.PaymentAddressType),
-            "F3266D89380BDF00B6A822BEE15C19600359E1556BD7D3D99DF00F044B38C747");
-
-        let listToken = res0.listUnspentCustomToken;
-
-        console.log("List : ", listToken);
-
-        if (listToken.length ===0){
-            console.log("Balance of token is zero");
-            return;
-        }
-
-        let tokenVouts = new Array(listToken.length);
-        let tokenVins = new Array(listToken.length);
-        let vinAmount = 0;
-
-        for (let i=0; i< listToken.length; i++){
-            vinAmount+= listToken[i].value;
-
-            tokenVouts[i] = new TxTokenVout();
-            tokenVouts[i].set(senderKeyWallet1.KeySet.PaymentAddress, listToken[i].Value);
-
-            tokenVins[i] =  new TxTokenVin();
-            tokenVins[i].txCustomTokenID = common.newHashFromStr(listToken[i].TxCustomTokenID);
-            tokenVins[i].voutIndex = listToken[i].Index;
-            tokenVins[i].paymentAddress = senderKeyWallet1.KeySet.PaymentAddress;
-            console.log(":senderKeyWallet1.KeySet.PaymentAddress: ", senderKeyWallet1.KeySet.PaymentAddress);
-
-            let signature = senderKeyWallet1.KeySet.sign(tokenVouts[i].hash());
-            tokenVins[i].signature = base58.checkEncode(signature, privacyConstants.PRIVACY_VERSION);
-
-            voutsAmount -= listToken[i].value;
-            if (voutsAmount <=0){
-                break;
-            }
-
-        }
-
-        let tokenParams = new CustomTokenParamTx();
-        tokenParams.propertyID = "F3266D89380BDF00B6A822BEE15C19600359E1556BD7D3D99DF00F044B38C747";
-        tokenParams.propertyName = "token1";
-        tokenParams.propertySymbol = "token1";
-        tokenParams.amount = 100;
-        tokenParams.tokenTxType = CustomTokenTransfer;
-        tokenParams.receivers = vouts;
-        tokenParams.vins = tokenVins;
-
-        tokenParams.vinsAmount = vinAmount;
+    // receiver token
+    let receivers = new Array(1);
+    receivers[0] = new PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn(10));
 
 
+    // prepare token param
+    let tokenParams = new CustomTokenPrivacyParamTx();
+    tokenParams.propertyID = "56783b1532273081182e0dba547ca564a6e71270580b75d6d06cd3a4cbe66377";
+    tokenParams.propertyName = "token2";
+    tokenParams.propertySymbol = "token2";
+    tokenParams.amount = 10;
+    tokenParams.tokenTxType = constantsTx.CustomTokenTransfer;
+    tokenParams.receiver = receivers;
 
-        let res2 = await rpcClient.listCustomTokens();
-        let listCustomToken = res2.listCustomToken;
+    let resPrepare = await rpcClient.prepareInputForTxCustomTokenPrivacy(senderSpendingKeyStr1, paymentInfos, tokenParams);
 
-        await tx.init(res, paymentInfos, new bn.BN(0), tokenParams, listCustomToken, null, false);
-        console.timeEnd("Time for creating tx custom token");
+    let txCustomTokenPrivacy = new TxCustomTokenPrivacy("http://localhost:9334");
+    tokenParams.tokenInputs = resPrepare.tokenInputs;
 
-        // console.log("Token ID after initing: ", tx.txTokenData.propertyID.join(', '));
+    await txCustomTokenPrivacy.init(resPrepare.inputTxForFee.senderKeySet.PrivateKey,
+        resPrepare.inputTxForFee.paymentAddrSerialize,
+        paymentInfos,
+        resPrepare.inputTxForFee.inputCoins,
+        resPrepare.inputTxForFee.inputCoinStrs,
+        new bn(0),
+        tokenParams,
+        resPrepare.listCustomToken, null, true);
+
+    console.timeEnd("Time for creating tx custom token");
+
 
 
         // console.log("***************Tx: ", tx);
-        await rpcClient.sendRawTxCustomToken(tx);
-
-        // console.log("res: ", res);
-    } catch (e) {
-        console.log(e);
-    }
+    await rpcClient.sendRawTxCustomTokenPrivacy(txCustomTokenPrivacy);
 }
 
-// TestTxCustomTokenPrivacyTransfer();
+TestTxCustomTokenPrivacyTransfer();
