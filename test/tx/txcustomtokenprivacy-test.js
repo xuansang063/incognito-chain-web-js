@@ -4,6 +4,7 @@ import bn from 'bn.js';
 import {RpcClient} from "../../lib/rpcclient/rpcclient";
 import {Tx} from "../../lib/tx/txprivacy";
 import {TxCustomToken} from "../../lib/tx/txcustomtoken";
+import {TxCustomTokenPrivacy} from "../../lib/tx/txcustomtokenprivacy";
 import {TxTokenData, TxTokenVout, TxTokenVin, CustomTokenParamTx} from "../../lib/tx/txcustomtokendata";
 import {CustomTokenInit, CustomTokenTransfer} from '../../lib/tx/constants';
 import * as common from '../../lib/common';
@@ -13,10 +14,13 @@ import * as base58 from '../../lib/base58';
 import * as privacyConstants from 'privacy-js-lib/lib/constants';
 import * as constantsTx from "../../lib/tx/constants";
 
+import {CustomTokenPrivacyParamTx} from "../../lib/tx/txcustomkenprivacydata";
+
+import {PaymentInfo} from '../../lib/key';
 
 const rpcClient = new RpcClient("http://localhost:9334");
 
-async function TestTxCustomTokenInit() {
+async function TestTxCustomTokenPrivacyInit() {
     let n = 0;
     let paymentInfos = new Array(n);
 
@@ -34,40 +38,40 @@ async function TestTxCustomTokenInit() {
 
     try {
         console.time("Time for preparing input for fee");
-        let res = await rpcClient.prepareInputForTx(receiverSpendingKeyStr1, paymentInfos);
+        let input = await rpcClient.prepareInputForTx(receiverSpendingKeyStr1, paymentInfos);
         console.timeEnd("Time for preparing input for fee");
 
-        let tx = new TxCustomToken("http://localhost:9334");
+        let tx = new TxCustomTokenPrivacy("http://localhost:9334");
 
         console.time("Time for creating tx custom token");
 
         let vouts = new Array(1);
-        vouts[0] = new TxTokenVout();
-        vouts[0].set(receiverKeyWallet1.KeySet.PaymentAddress, 100);
+        vouts[0] = new PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, 100);
 
-        let tokenParams = new CustomTokenParamTx();
-        tokenParams.propertyName = "token1";
-        tokenParams.propertySymbol = "token1";
+        let tokenParams = new CustomTokenPrivacyParamTx();
+        tokenParams.propertyName = "token2";
+        tokenParams.propertySymbol = "token2";
         tokenParams.amount = 100;
         tokenParams.tokenTxType = CustomTokenInit;
-        tokenParams.receivers = vouts;
-        let res2 = await rpcClient.listCustomTokens();
-        let listCustomToken = res2.listCustomToken;
+        tokenParams.receiver = vouts;
 
-        await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, res.inputCoinStrs,  new bn.BN(0), tokenParams, listCustomToken, null,  false);
+        let res2 = await rpcClient.listPrivacyCustomTokens();
+        let listPrivacyCustomToken = res2.listCustomToken;
+
+        await tx.init(input.senderKeySet.PrivateKey, input.paymentAddrSerialize, paymentInfos, input.inputCoins, input.inputCoinStrs, new bn.BN(0), tokenParams, listPrivacyCustomToken, null,  false);
         console.timeEnd("Time for creating tx custom token");
 
-        console.log("Token ID after initing bytes before : ", tx.txTokenData.propertyID.join(', '));
-        console.log("Token ID after initing: ", common.convertHashToStr(tx.txTokenData.propertyID));
-         console.log("Token ID after initing bytes after: ", tx.txTokenData.propertyID.join(', '));
+        console.log("Token ID after initing bytes before : ", tx.txTokenPrivacyData.propertyID.join(', '));
+        console.log("Token ID after initing: ", common.convertHashToStr(tx.txTokenPrivacyData.propertyID));
+        console.log("Token ID after initing bytes after: ", tx.txTokenPrivacyData.propertyID.join(', '));
 
 
-         // 71, 199, 56, 75, 4, 15, 240, 157, 217, 211, 215, 107, 85, 225, 89, 3, 96, 25, 92, 225, 190, 34, 168, 182, 0, 223, 11, 56, 137, 109, 38, 243
+        // 71, 199, 56, 75, 4, 15, 240, 157, 217, 211, 215, 107, 85, 225, 89, 3, 96, 25, 92, 225, 190, 34, 168, 182, 0, 223, 11, 56, 137, 109, 38, 243
 
         // F3266D89380BDF00B6A822BEE15C19600359E1556BD7D3D99DF00F044B38C747
 
         // console.log("***************Tx: ", tx);
-        await rpcClient.sendRawTxCustomToken(tx);
+        await rpcClient.sendRawTxCustomTokenPrivacy(tx);
 
         // console.log("res: ", res);
     } catch (e) {
@@ -75,9 +79,10 @@ async function TestTxCustomTokenInit() {
     }
 }
 
-// TestTxCustomTokenInit();
-        
-async function TestTxCustomTokenTransfer() {
+TestTxCustomTokenPrivacyInit();
+
+
+async function TestTxCustomTokenPrivacyTransfer() {
     let n = 0;
     let paymentInfos = new Array(n);
     // paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn.BN(2300));
@@ -161,10 +166,12 @@ async function TestTxCustomTokenTransfer() {
 
         tokenParams.vinsAmount = vinAmount;
 
+
+
         let res2 = await rpcClient.listCustomTokens();
         let listCustomToken = res2.listCustomToken;
 
-        await tx.init(res.senderKeySet.PrivateKey, res.paymentAddrSerialize, paymentInfos, res.inputCoins, res.inputCoinStrs, new bn.BN(0), tokenParams, listCustomToken, null, false);
+        await tx.init(res, paymentInfos, new bn.BN(0), tokenParams, listCustomToken, null, false);
         console.timeEnd("Time for creating tx custom token");
 
         // console.log("Token ID after initing: ", tx.txTokenData.propertyID.join(', '));
@@ -179,14 +186,4 @@ async function TestTxCustomTokenTransfer() {
     }
 }
 
-TestTxCustomTokenTransfer();
-//
-//
-// let a = [12];
-// let hash = privacyUtils.hashBytesToBytes(a);
-//
-// console.log(hash.join(', '));
-//
-// let str = common.convertHashToStr(hash);
-// console.log(str);
-// console.log(common.newHashFromStr(str).join(', '));
+// TestTxCustomTokenPrivacyTransfer();

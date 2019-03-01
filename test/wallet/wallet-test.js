@@ -17,7 +17,7 @@ async function Test() {
   // wallet.save("12345678")
   //
   // let wallet2 = new Wallet()
-  // wallet2.Storage = storage
+  // wallet2.storage = storage
   // wallet2.loadWallet("12345678")
   //
   // wallet2.createNewAccount("Test 2")
@@ -32,7 +32,7 @@ async function TestWallet() {
   let wallet = new Wallet();
   wallet.init("12345678", 0, "Wallet", storage);
   wallet.importAccount(priK, "Dat", "12345678");
-  let balance = await wallet.MasterAccount.child[1].getBalance();
+  let balance = await wallet.masterAccount.child[1].getBalance();
   console.log(balance)
 }
 
