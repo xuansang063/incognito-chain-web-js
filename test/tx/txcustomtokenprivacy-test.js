@@ -129,7 +129,9 @@ async function TestTxCustomTokenPrivacyTransfer() {
         tokenParams,
         resPrepare.listCustomToken, null, true);
 
-    console.timeEnd("Time for creating tx custom token");
+    // console.timeEnd("Time for creating tx custom token");
+
+    console.log("Tx privacy custom token: ", txCustomTokenPrivacy);
 
 
 
