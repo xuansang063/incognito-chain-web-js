@@ -115,25 +115,25 @@ async function TestTxCustomTokenPrivacyTransfer() {
     tokenParams.tokenTxType = constantsTx.CustomTokenTransfer;
     tokenParams.receiver = receivers;
 
-    let resPrepare = await rpcClient.prepareInputForTxCustomTokenPrivacy(senderSpendingKeyStr1, paymentInfos, tokenParams);
+    let inputForNormalTx = rpcClient.prepareInputForTx(senderSpendingKeyStr1, paymentInfos);
+
+    let inputForTxCustomTokenPrivacy = await rpcClient.prepareInputForTxCustomTokenPrivacy(senderSpendingKeyStr1, paymentInfos, tokenParams);
 
     let txCustomTokenPrivacy = new TxCustomTokenPrivacy("http://localhost:9334");
-    tokenParams.tokenInputs = resPrepare.tokenInputs;
+    tokenParams.tokenInputs = inputForTxCustomTokenPrivacy.tokenInputs;
 
-    await txCustomTokenPrivacy.init(resPrepare.inputTxForFee.senderKeySet.PrivateKey,
-        resPrepare.inputTxForFee.paymentAddrSerialize,
+    await txCustomTokenPrivacy.init(inputForNormalTx.senderKeySet.PrivateKey,
+        inputForNormalTx.paymentAddrSerialize,
         paymentInfos,
-        resPrepare.inputTxForFee.inputCoins,
-        resPrepare.inputTxForFee.inputCoinStrs,
+        inputForNormalTx.inputCoins,
+        inputForNormalTx.inputCoinStrs,
         new bn(0),
         tokenParams,
-        resPrepare.listCustomToken, null, true);
+        inputForTxCustomTokenPrivacy.listCustomToken, null, true);
 
     // console.timeEnd("Time for creating tx custom token");
 
     console.log("Tx privacy custom token: ", txCustomTokenPrivacy);
-
-
 
         // console.log("***************Tx: ", tx);
     await rpcClient.sendRawTxCustomTokenPrivacy(txCustomTokenPrivacy);
