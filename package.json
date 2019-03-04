@@ -4,7 +4,7 @@
   "description": "Constant-chain Javascript API",
   "module": "dist/index.js",
   "scripts": {
-    "babel-node": "babel-node ./test/wallet/wallet-test.js",
+    "start": "babel-node ./test/wallet/wallet-test.js",
     "build:watch": "webpack --config webpack.config.js --watch",
     "build": "webpack --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,10 +20,10 @@
   },
   "homepage": "https://github.com/constant-money/constant-chain-web-js#readme",
   "dependencies": {
-    "@babel/node": "^7.2.2",
     "privacy-js-lib": "git://github.com/constant-money/privacy-js-lib"
   },
   "devDependencies": {
+    "@babel/node": "^7.2.2",
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/plugin-proposal-class-properties": "^7.3.4",

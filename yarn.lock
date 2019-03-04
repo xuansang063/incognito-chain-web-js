@@ -3008,7 +3008,7 @@ posix-character-classes@^0.1.0:
 
 "privacy-js-lib@git://github.com/constant-money/privacy-js-lib":
   version "1.0.0"
-  resolved "git://github.com/constant-money/privacy-js-lib#8563a48959cc141a2293d54f46331d1e8937707d"
+  resolved "git://github.com/constant-money/privacy-js-lib#2a731c9a9aaea87f6f48b5b9f08259aed46f6770"
   dependencies:
     axios "^0.18.0"
     bn.js "^4.11.8"
