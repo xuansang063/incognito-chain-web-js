@@ -100,10 +100,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /*!******************!*\
   !*** ./lib/a.js ***!
   \******************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: aMethod */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-eval("function aMethod() {\n  console.log('aMethod');\n}\n\nmodule.exports = {\n  aMethod: aMethod\n};\n\n//# sourceURL=webpack:///./lib/a.js?");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"aMethod\", function() { return aMethod; });\nfunction aMethod() {\n  console.log('aMethod');\n}\n\n\n\n//# sourceURL=webpack:///./lib/a.js?");
 
 /***/ }),
 
@@ -111,11 +112,11 @@ eval("function aMethod() {\n  console.log('aMethod');\n}\n\nmodule.exports = {\n
 /*!******************!*\
   !*** ./lib/b.js ***!
   \******************/
-/*! no exports provided */
+/*! exports provided: aMethod, bMethod */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var _a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a */ \"./lib/a.js\");\n/* harmony import */ var _a__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_a__WEBPACK_IMPORTED_MODULE_0__);\n\nconsole.log('b', b, _a__WEBPACK_IMPORTED_MODULE_0__[\"aMethod\"]);\n\nfunction bMethod() {\n  console.log('bMethod', bMethod);\n}\n\nmodule.exports = {\n  aMethod: _a__WEBPACK_IMPORTED_MODULE_0__[\"aMethod\"],\n  bMethod: bMethod\n};\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node_modules/webpack/buildin/harmony-module.js */ \"./node_modules/webpack/buildin/harmony-module.js\")(module)))\n\n//# sourceURL=webpack:///./lib/b.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"bMethod\", function() { return bMethod; });\n/* harmony import */ var _a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a */ \"./lib/a.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"aMethod\", function() { return _a__WEBPACK_IMPORTED_MODULE_0__[\"aMethod\"]; });\n\n\nconsole.log('b', _a__WEBPACK_IMPORTED_MODULE_0__[\"aMethod\"]);\n\nfunction bMethod() {\n  console.log('bMethod', bMethod);\n}\n\n\n\n//# sourceURL=webpack:///./lib/b.js?");
 
 /***/ }),
 
@@ -123,22 +124,11 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* WEBPACK VAR INJECTION */(f
 /*!**********************!*\
   !*** ./lib/index.js ***!
   \**********************/
-/*! no exports provided */
+/*! exports provided: aMethod, bMethod */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var _b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./b */ \"./lib/b.js\");\n\nmodule.exports = {\n  aMethod: _b__WEBPACK_IMPORTED_MODULE_0__[\"aMethod\"],\n  bMethod: _b__WEBPACK_IMPORTED_MODULE_0__[\"bMethod\"]\n};\nconsole.log('index.js');\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node_modules/webpack/buildin/harmony-module.js */ \"./node_modules/webpack/buildin/harmony-module.js\")(module)))\n\n//# sourceURL=webpack:///./lib/index.js?");
-
-/***/ }),
-
-/***/ "./node_modules/webpack/buildin/harmony-module.js":
-/*!*******************************************!*\
-  !*** (webpack)/buildin/harmony-module.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = function(originalModule) {\n\tif (!originalModule.webpackPolyfill) {\n\t\tvar module = Object.create(originalModule);\n\t\t// module.parent = undefined by default\n\t\tif (!module.children) module.children = [];\n\t\tObject.defineProperty(module, \"loaded\", {\n\t\t\tenumerable: true,\n\t\t\tget: function() {\n\t\t\t\treturn module.l;\n\t\t\t}\n\t\t});\n\t\tObject.defineProperty(module, \"id\", {\n\t\t\tenumerable: true,\n\t\t\tget: function() {\n\t\t\t\treturn module.i;\n\t\t\t}\n\t\t});\n\t\tObject.defineProperty(module, \"exports\", {\n\t\t\tenumerable: true\n\t\t});\n\t\tmodule.webpackPolyfill = 1;\n\t}\n\treturn module;\n};\n\n\n//# sourceURL=webpack:///(webpack)/buildin/harmony-module.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./b */ \"./lib/b.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"aMethod\", function() { return _b__WEBPACK_IMPORTED_MODULE_0__[\"aMethod\"]; });\n\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"bMethod\", function() { return _b__WEBPACK_IMPORTED_MODULE_0__[\"bMethod\"]; });\n\n\nconsole.log('index.js');\n\n//# sourceURL=webpack:///./lib/index.js?");
 
 /***/ })
 
