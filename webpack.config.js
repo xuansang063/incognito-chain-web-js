@@ -2,10 +2,12 @@ var path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './lib/index.js',
+  entry: {
+    wallet: './lib/wallet/wallet.js'
+  },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js',
+    path: path.resolve(__dirname),
+    filename: 'dist/[name].js',
     library: '',
     libraryTarget:'umd'
   },
