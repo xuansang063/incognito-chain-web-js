@@ -1908,8 +1908,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var privacy_js_lib_lib_ec__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(privacy_js_lib_lib_ec__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! privacy-js-lib/lib/privacy_utils */ "./node_modules/privacy-js-lib/lib/privacy_utils.js");
 /* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../tx/txcustomtokendata */ "./lib/tx/txcustomtokendata.js");
-/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../common */ "./lib/common.js");
+/* harmony import */ var privacy_js_lib_lib_zkps_utils__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! privacy-js-lib/lib/zkps/utils */ "./node_modules/privacy-js-lib/lib/zkps/utils.js");
+/* harmony import */ var privacy_js_lib_lib_zkps_utils__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(privacy_js_lib_lib_zkps_utils__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../tx/txcustomtokendata */ "./lib/tx/txcustomtokendata.js");
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../common */ "./lib/common.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -1917,6 +1921,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -1968,7 +1973,7 @@ var RpcClient = function RpcClient(url, user, password) {
               };
 
               if (tokenID != null) {
-                data["params"][3] = tokenID;
+                data["params"][2] = tokenID;
               }
 
               that = _this;
@@ -2668,10 +2673,9 @@ var RpcClient = function RpcClient(url, user, password) {
 
             case 10:
               response = _context9.sent;
-              console.log("response send tx: ", response);
 
               if (!(response.status !== 200)) {
-                _context9.next = 16;
+                _context9.next = 15;
                 break;
               }
 
@@ -2679,7 +2683,7 @@ var RpcClient = function RpcClient(url, user, password) {
                 err: new Error("Can't request API")
               });
 
-            case 16:
+            case 15:
               console.log("**** SENDING TX CUSTOM TOKEN SUCCESS****");
               return _context9.abrupt("return", {
                 txId: response.data.Result.TxID,
@@ -2687,7 +2691,7 @@ var RpcClient = function RpcClient(url, user, password) {
                 id: response.data.Id
               });
 
-            case 18:
+            case 17:
             case "end":
               return _context9.stop();
           }
@@ -2788,9 +2792,12 @@ var RpcClient = function RpcClient(url, user, password) {
 
           case 3:
             response = _context11.sent;
+            console.log("response send tx: ", response); // return {
+            //   abc: 1
+            // };
 
             if (!(response.status !== 200)) {
-              _context11.next = 8;
+              _context11.next = 9;
               break;
             }
 
@@ -2798,8 +2805,7 @@ var RpcClient = function RpcClient(url, user, password) {
               err: new Error("Can't request API")
             });
 
-          case 8:
-            console.log("**** SENDING TX CUSTOM TOKEN SUCCESS****");
+          case 9:
             return _context11.abrupt("return", {
               listCustomToken: response.data.Result.ListCustomToken,
               err: response.data.Error,
@@ -2922,7 +2928,7 @@ var RpcClient = function RpcClient(url, user, password) {
     var _ref14 = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee14(spendingKeyStr, tokenParams) {
-      var senderKeyWallet, response, listCustomToken, _response, _listCustomToken, vOutAmount, i, response2, listUnspentCustomToken, tokenVoutsTmp, tokenVins, vinAmount, _i7, tokenVinTmp, signature;
+      var senderKeyWallet, response, listCustomToken, _response, _listCustomToken, vOutAmount, i, response2, listUnspentCustomToken, tokenVins, vinAmount, _i7, tokenVoutsTmp, tokenVinTmp, signature;
 
       return regeneratorRuntime.wrap(function _callee14$(_context14) {
         while (1) {
@@ -2931,98 +2937,108 @@ var RpcClient = function RpcClient(url, user, password) {
               senderKeyWallet = _wallet_hdwallet__WEBPACK_IMPORTED_MODULE_4__["KeyWallet"].base58CheckDeserialize(spendingKeyStr);
               senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
               _context14.t0 = tokenParams.tokenTxType;
-              _context14.next = _context14.t0 === _tx_constants__WEBPACK_IMPORTED_MODULE_6__["CustomTokenInit"] ? 5 : _context14.t0 === _tx_constants__WEBPACK_IMPORTED_MODULE_6__["CustomTokenTransfer"] ? 10 : 44;
+              _context14.next = _context14.t0 === _tx_constants__WEBPACK_IMPORTED_MODULE_6__["CustomTokenInit"] ? 5 : _context14.t0 === _tx_constants__WEBPACK_IMPORTED_MODULE_6__["CustomTokenTransfer"] ? 16 : 50;
               break;
 
             case 5:
-              _context14.next = 7;
+              _context14.prev = 5;
+              _context14.next = 8;
               return _this.listCustomTokens();
 
-            case 7:
+            case 8:
               response = _context14.sent;
+              _context14.next = 14;
+              break;
+
+            case 11:
+              _context14.prev = 11;
+              _context14.t1 = _context14["catch"](5);
+              console.log(_context14.t1);
+
+            case 14:
               listCustomToken = response.listCustomToken;
               return _context14.abrupt("return", {
-                listCustomToken: listCustomToken
+                listCustomToken: listCustomToken,
+                tokenVins: null
               });
 
-            case 10:
-              _context14.next = 12;
+            case 16:
+              _context14.next = 18;
               return _this.listCustomTokens();
 
-            case 12:
+            case 18:
               _response = _context14.sent;
               _listCustomToken = _response.listCustomToken; // sum of custom tokens' value in tokenParams.receivers
 
               vOutAmount = 0;
 
               for (i = 0; i < tokenParams.receivers.length; i++) {
-                vOutAmount += tokenParams.receivers.value;
+                vOutAmount += tokenParams.receivers[i].value;
               }
 
-              _context14.next = 18;
+              _context14.next = 24;
               return _this.getUnspentCustomToken(senderKeyWallet.base58CheckSerialize(_wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PaymentAddressType"]), tokenParams.propertyID);
 
-            case 18:
+            case 24:
               response2 = _context14.sent;
               listUnspentCustomToken = response2.listUnspentCustomToken; // console.log("List : ", listUnspentCustomToken);
 
               if (!(listUnspentCustomToken.length === 0)) {
-                _context14.next = 23;
+                _context14.next = 29;
                 break;
               }
 
               console.log("Balance of token is zero");
               return _context14.abrupt("return");
 
-            case 23:
-              tokenVoutsTmp = new Array(listUnspentCustomToken.length);
+            case 29:
               tokenVins = new Array(0);
               vinAmount = 0;
               _i7 = 0;
 
-            case 27:
+            case 32:
               if (!(_i7 < listUnspentCustomToken.length)) {
-                _context14.next = 43;
+                _context14.next = 49;
                 break;
               }
 
               vinAmount += listUnspentCustomToken[_i7].value;
-              tokenVoutsTmp[_i7] = new _tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_12__["TxTokenVout"]();
-
-              tokenVoutsTmp[_i7].set(senderKeyWallet.KeySet.PaymentAddress, listUnspentCustomToken[_i7].Value);
-
-              tokenVinTmp = new _tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_12__["TxTokenVin"]();
-              tokenVinTmp.txCustomTokenID = _common__WEBPACK_IMPORTED_MODULE_13__["newHashFromStr"](listUnspentCustomToken[_i7].TxCustomTokenID);
+              tokenVoutsTmp = new _tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_13__["TxTokenVout"]();
+              tokenVoutsTmp.set(senderKeyWallet.KeySet.PaymentAddress, listUnspentCustomToken[_i7].Value);
+              tokenVinTmp = new _tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_13__["TxTokenVin"]();
+              tokenVinTmp.txCustomTokenID = _common__WEBPACK_IMPORTED_MODULE_14__["newHashFromStr"](listUnspentCustomToken[_i7].TxCustomTokenID);
               tokenVinTmp.voutIndex = listUnspentCustomToken[_i7].Index;
               tokenVinTmp.paymentAddress = senderKeyWallet.KeySet.PaymentAddress; // console.log(":senderKeyWallet1.KeySet.PaymentAddress: ", senderKeyWallet.KeySet.PaymentAddress);
 
-              signature = senderKeyWallet.KeySet.sign(tokenVoutsTmp[_i7].hash());
-              tokenVins[_i7].signature = _base58__WEBPACK_IMPORTED_MODULE_1__["checkEncode"](signature, privacy_js_lib_lib_constants__WEBPACK_IMPORTED_MODULE_2__["PRIVACY_VERSION"]);
+              signature = senderKeyWallet.KeySet.sign(tokenVoutsTmp.hash());
+              tokenVinTmp.signature = _base58__WEBPACK_IMPORTED_MODULE_1__["checkEncode"](signature, privacy_js_lib_lib_constants__WEBPACK_IMPORTED_MODULE_2__["PRIVACY_VERSION"]);
+              tokenVins.push(tokenVinTmp);
               vOutAmount -= listUnspentCustomToken[_i7].value;
 
               if (!(vOutAmount <= 0)) {
-                _context14.next = 40;
+                _context14.next = 46;
                 break;
               }
 
-              return _context14.abrupt("break", 43);
+              return _context14.abrupt("break", 49);
 
-            case 40:
+            case 46:
               _i7++;
-              _context14.next = 27;
+              _context14.next = 32;
               break;
 
-            case 43:
+            case 49:
               return _context14.abrupt("return", {
-                listCustomToken: _listCustomToken
+                listCustomToken: _listCustomToken,
+                tokenVins: tokenVins
               });
 
-            case 44:
+            case 50:
             case "end":
               return _context14.stop();
           }
         }
-      }, _callee14);
+      }, _callee14, null, [[5, 11]]);
     }));
 
     return function (_x22, _x23) {
@@ -3035,14 +3051,32 @@ var RpcClient = function RpcClient(url, user, password) {
   function () {
     var _ref15 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee15(spendingKeyStr, paymentInfos, tokenParams) {
-      var myKeyWallet, paymentAddrSerialize, readOnlyKeySerialize, amountTokenPrivacyOutput, i, res, allOutputCoinStrs, inputCoins, unspentOutputCoins, tokenInputs, listUnspentToken;
+    regeneratorRuntime.mark(function _callee15(spendingKeyStr, tokenParams) {
+      var listUnspentToken, myKeyWallet, paymentAddrSerialize, readOnlyKeySerialize, amountTokenPrivacyOutput, i, res, allOutputCoinStrs, inputCoins, unspentOutputCoins, tokenInputs, _listUnspentToken;
+
       return regeneratorRuntime.wrap(function _callee15$(_context15) {
         while (1) {
           switch (_context15.prev = _context15.next) {
             case 0:
-              // paymentInfo for tx normal for fee
+              console.log("Token param when preparing: ", tokenParams); // paymentInfo for tx normal for fee
               // tokenParams for tx custom token privacy data, but haven't tokenParam's tokenInput
+
+              _context15.t0 = tokenParams.tokenTxType;
+              _context15.next = _context15.t0 === _tx_constants__WEBPACK_IMPORTED_MODULE_6__["CustomTokenInit"] ? 4 : _context15.t0 === _tx_constants__WEBPACK_IMPORTED_MODULE_6__["CustomTokenTransfer"] ? 8 : 27;
+              break;
+
+            case 4:
+              _context15.next = 6;
+              return _this.listPrivacyCustomTokens();
+
+            case 6:
+              listUnspentToken = _context15.sent;
+              return _context15.abrupt("return", {
+                tokenInputs: null,
+                listCustomToken: listUnspentToken.listCustomToken
+              });
+
+            case 8:
               // deserialize spending key string to key wallet
               myKeyWallet = _wallet_hdwallet__WEBPACK_IMPORTED_MODULE_4__["KeyWallet"].base58CheckDeserialize(spendingKeyStr); // import key set
 
@@ -3058,10 +3092,10 @@ var RpcClient = function RpcClient(url, user, password) {
                 amountTokenPrivacyOutput += tokenParams.receiver[i].Amount;
               }
 
-              _context15.next = 8;
+              _context15.next = 16;
               return _this.getOutputCoin(paymentAddrSerialize, readOnlyKeySerialize, tokenParams.propertyID);
 
-            case 8:
+            case 16:
               res = _context15.sent;
 
               if (res.err === null) {
@@ -3072,24 +3106,24 @@ var RpcClient = function RpcClient(url, user, password) {
 
 
               inputCoins = _this.parseInputCoinFromStr(allOutputCoinStrs, myKeyWallet);
-              _context15.next = 13;
+              _context15.next = 21;
               return _this.getUnspentPrivacyCustomToken(inputCoins, paymentAddrSerialize, allOutputCoinStrs, tokenParams.propertyID);
 
-            case 13:
+            case 21:
               unspentOutputCoins = _context15.sent;
               // get coin to spent using Knapsack
               tokenInputs = _this.chooseBestCoinToSpent(unspentOutputCoins.unspentCoin, new bn_js__WEBPACK_IMPORTED_MODULE_8___default.a(amountTokenPrivacyOutput)).resultOutputCoins;
-              _context15.next = 17;
+              _context15.next = 25;
               return _this.listPrivacyCustomTokens();
 
-            case 17:
-              listUnspentToken = _context15.sent;
+            case 25:
+              _listUnspentToken = _context15.sent;
               return _context15.abrupt("return", {
                 tokenInputs: tokenInputs,
-                listCustomToken: listUnspentToken.listCustomToken
+                listCustomToken: _listUnspentToken.listCustomToken
               });
 
-            case 19:
+            case 27:
             case "end":
               return _context15.stop();
           }
@@ -3097,10 +3131,150 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee15);
     }));
 
-    return function (_x24, _x25, _x26) {
+    return function (_x24, _x25) {
       return _ref15.apply(this, arguments);
     };
   }());
+
+  _defineProperty(this, "estimateFee",
+  /*#__PURE__*/
+  function () {
+    var _ref16 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee16(paymentAddrSerialize, inputCoins, payments, hasPrivacy, metadata, customTokenParams, privacyCustomTokenParams) {
+      var data, unitFee, response, txSize;
+      return regeneratorRuntime.wrap(function _callee16$(_context16) {
+        while (1) {
+          switch (_context16.prev = _context16.next) {
+            case 0:
+              data = {
+                "jsonrpc": "1.0",
+                "method": "estimatefeewithestimator",
+                "params": [-1, paymentAddrSerialize, 8],
+                "id": 1
+              };
+              unitFee = null; // call API to send tx
+
+              _context16.next = 4;
+              return _this.rpcHttpService.postRequest(data);
+
+            case 4:
+              response = _context16.sent;
+
+              if (!(response.status !== 200)) {
+                _context16.next = 9;
+                break;
+              }
+
+              return _context16.abrupt("return", {
+                err: new Error("Can't request API")
+              });
+
+            case 9:
+              unitFee = parseInt(response.data.Result.EstimateFeeCoinPerKb);
+
+            case 10:
+              txSize = _this.estimateTxSize(inputCoins, payments, hasPrivacy, metadata, customTokenParams, privacyCustomTokenParams);
+              return _context16.abrupt("return", txSize * unitFee);
+
+            case 12:
+            case "end":
+              return _context16.stop();
+          }
+        }
+      }, _callee16);
+    }));
+
+    return function (_x26, _x27, _x28, _x29, _x30, _x31, _x32) {
+      return _ref16.apply(this, arguments);
+    };
+  }());
+
+  _defineProperty(this, "estimateTxSize", function (inputCoins, payments, hasPrivacy, metadata, customTokenParams, privacyCustomTokenParams) {
+    var sizeVersion = 1; // int8
+
+    var sizeType = 5; // string, max : 5
+
+    var sizeLockTime = 8; // int64
+
+    var sizeFee = 8; // uint64
+
+    var sizeInfo = 0;
+
+    if (hasPrivacy) {
+      sizeInfo = 64;
+    }
+
+    var sizeSigPubKey = privacy_js_lib_lib_constants__WEBPACK_IMPORTED_MODULE_2__["SIG_PUB_KEY_SIZE"];
+    var sizeSig = privacy_js_lib_lib_constants__WEBPACK_IMPORTED_MODULE_2__["SIG_NO_PRIVACY_SIZE"];
+
+    if (hasPrivacy) {
+      sizeSig = privacy_js_lib_lib_constants__WEBPACK_IMPORTED_MODULE_2__["SIG_PRIVACY_SIZE"];
+    }
+
+    var sizeProof = privacy_js_lib_lib_zkps_utils__WEBPACK_IMPORTED_MODULE_12__["estimateProofSize"](inputCoins.length, payments.length, hasPrivacy);
+    var sizePubKeyLastByte = 1;
+    var sizeMetadata = 0; // if (metadata != null || typeof metadata !== "undefined"){
+    //   sizeMetadata += metadata.CalculateSize()
+    // }
+
+    var sizeTx = sizeVersion + sizeType + sizeLockTime + sizeFee + sizeInfo + sizeSigPubKey + sizeSig + sizeProof + sizePubKeyLastByte + sizeMetadata;
+
+    if (customTokenParams != null || typeof customTokenParams !== "undefined") {
+      var customTokenDataSize = 0;
+      customTokenDataSize += customTokenParams.propertyID.length;
+      customTokenDataSize += customTokenParams.propertySymbol.length;
+      customTokenDataSize += customTokenParams.propertyName.length;
+      customTokenDataSize += 8;
+      customTokenDataSize += 4;
+
+      for (var i = 0; i < customTokenParams.receivers.length; i++) {
+        customTokenDataSize += customTokenParams.receivers[i].paymentAddress.toBytes().length;
+        customTokenDataSize += 8;
+      }
+
+      for (var _i8 = 0; _i8 < customTokenParams.vins.length; _i8++) {
+        customTokenDataSize += customTokenParams.vins[_i8].paymentAddress.toBytes().length;
+        customTokenDataSize += customTokenParams.vins[_i8].txCustomTokenID.slice(0).length;
+        customTokenDataSize += customTokenParams.vins[_i8].signature.length;
+        customTokenDataSize += 4;
+      }
+
+      sizeTx += customTokenDataSize;
+    }
+
+    if (privacyCustomTokenParams != null || _typeof(privacyCustomTokenParams)) {
+      var _customTokenDataSize = 0;
+      _customTokenDataSize += privacyCustomTokenParams.propertyID.length;
+      _customTokenDataSize += privacyCustomTokenParams.propertySymbol.length;
+      _customTokenDataSize += privacyCustomTokenParams.propertyName.length;
+      _customTokenDataSize += 8; // for amount
+
+      _customTokenDataSize += 4; // for TokenTxType
+
+      _customTokenDataSize += 1; // int8 version
+
+      _customTokenDataSize += 5; // string, max : 5 type
+
+      _customTokenDataSize += 8; // int64 locktime
+
+      _customTokenDataSize += 8; // uint64 fee
+
+      _customTokenDataSize += 64; // info
+
+      _customTokenDataSize += privacy_js_lib_lib_constants__WEBPACK_IMPORTED_MODULE_2__["SIG_PUB_KEY_SIZE"]; // sig pubkey
+
+      _customTokenDataSize += privacy_js_lib_lib_constants__WEBPACK_IMPORTED_MODULE_2__["SIG_PRIVACY_SIZE"]; // sig
+      // Proof
+
+      _customTokenDataSize += privacy_js_lib_lib_zkps_utils__WEBPACK_IMPORTED_MODULE_12__["estimateProofSize"](privacyCustomTokenParams.tokenInput.length, privacyCustomTokenParams.receiver.length, true);
+      _customTokenDataSize += 1; //PubKeyLastByte
+
+      sizeTx += _customTokenDataSize;
+    }
+
+    return Math.ceil(sizeTx / 1024.0);
+  });
 
   this.rpcHttpService = new _rpchttpservice__WEBPACK_IMPORTED_MODULE_0__["RPCHttpService"](this.url, this.user, this.password);
 };
@@ -3349,260 +3523,6 @@ var TxCustomTokenPrivacyType = "tp"; // token  tx with supporting privacy
 
 var CustomTokenInit = 0;
 var CustomTokenTransfer = 1;
-
-
-/***/ }),
-
-/***/ "./lib/tx/txcustomtoken.js":
-/*!*********************************!*\
-  !*** ./lib/tx/txcustomtoken.js ***!
-  \*********************************/
-/*! exports provided: TxCustomToken */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TxCustomToken", function() { return TxCustomToken; });
-/* harmony import */ var _txprivacy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./txprivacy */ "./lib/tx/txprivacy.js");
-/* harmony import */ var _txcustomtokendata__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./txcustomtokendata */ "./lib/tx/txcustomtokendata.js");
-/* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! privacy-js-lib/lib/privacy_utils */ "./node_modules/privacy-js-lib/lib/privacy_utils.js");
-/* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./lib/tx/constants.js");
-/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common */ "./lib/common.js");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
-
-function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-
-
-
-
-
-
-var TxCustomToken =
-/*#__PURE__*/
-function (_Tx) {
-  _inherits(TxCustomToken, _Tx);
-
-  function TxCustomToken(rpcUrl) {
-    var _this;
-
-    _classCallCheck(this, TxCustomToken);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TxCustomToken).call(this, rpcUrl)); // call constructor of Tx
-
-    _this.txTokenData = new _txcustomtokendata__WEBPACK_IMPORTED_MODULE_1__["TxTokenData"]();
-    return _this;
-  }
-
-  _createClass(TxCustomToken, [{
-    key: "toString",
-    value: function toString() {
-      var normalTxHash = _get(_getPrototypeOf(TxCustomToken.prototype), "hash", this).call(this);
-
-      var record = normalTxHash.toString();
-      record += this.txTokenData.hash().toString();
-
-      if (this.metadata !== null) {
-        record += this.metadata.hash().toString();
-      }
-
-      return record;
-    }
-  }, {
-    key: "hash",
-    value: function hash() {
-      return privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["hashBytesToBytes"](privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["stringToBytes"](this.toString()));
-    }
-  }, {
-    key: "convertTxCustomTokenToByte",
-    value: function convertTxCustomTokenToByte() {
-      // console.log('super.convertTxToByte', super.convertTxToByte);
-      _get(_getPrototypeOf(TxCustomToken.prototype), "convertTxToByte", this).call(this);
-
-      this.txTokenData.propertyID = Object(_common__WEBPACK_IMPORTED_MODULE_4__["convertHashToStr"])(this.txTokenData.propertyID);
-
-      for (var i = 0; i < this.txTokenData.vouts.length; i++) {
-        this.txTokenData.vouts[i] = this.txTokenData.vouts[i].convertToByte();
-        delete this.txTokenData.vouts[i].index;
-        delete this.txTokenData.vouts[i].txCustomTokenID;
-      }
-
-      if (this.txTokenData.vins !== null) {
-        for (var _i = 0; _i < this.txTokenData.vins.length; _i++) {
-          this.txTokenData.vins[_i] = this.txTokenData.vins[_i].convertToByte();
-        }
-      }
-
-      return this;
-    }
-  }, {
-    key: "init",
-    value: function () {
-      var _init = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee(senderSK, paymentAddressStr, paymentInfo, inputCoins, inputCoinStrs, fee, tokenParams, listCustomTokens, metaData, hasPrivacy) {
-        var handled, receiver, vouts, res, hashTxTokenData, token, str, paymentTokenAmount, i, refundTokenAmount, _vouts, _i2;
-
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return _get(_getPrototypeOf(TxCustomToken.prototype), "init", this).call(this, senderSK, paymentAddressStr, paymentInfo, inputCoins, inputCoinStrs, fee, hasPrivacy, null, metaData);
-
-              case 2:
-                // override txCustomToken type
-                this.type = _constants__WEBPACK_IMPORTED_MODULE_3__["TxCustomTokenType"];
-                this.txTokenData = new _txcustomtokendata__WEBPACK_IMPORTED_MODULE_1__["TxTokenData"]();
-                handled = false;
-                _context.t0 = tokenParams.tokenTxType;
-                _context.next = _context.t0 === _constants__WEBPACK_IMPORTED_MODULE_3__["CustomTokenInit"] ? 8 : _context.t0 === _constants__WEBPACK_IMPORTED_MODULE_3__["CustomTokenTransfer"] ? 28 : 41;
-                break;
-
-              case 8:
-                handled = true; // create vouts for txTokenData on tokenParam's receiver
-
-                receiver = tokenParams.receivers[0];
-                vouts = new Array(1);
-                vouts[0] = new _txcustomtokendata__WEBPACK_IMPORTED_MODULE_1__["TxTokenVout"]();
-                vouts[0].set(receiver.paymentAddress, receiver.value);
-                this.txTokenData.set(tokenParams.tokenTxType, tokenParams.propertyName, tokenParams.propertySymbol, null, vouts, tokenParams.amount); // hash tx token data
-
-                res = this.txTokenData.hash();
-
-                if (!(res.err !== null)) {
-                  _context.next = 17;
-                  break;
-                }
-
-                return _context.abrupt("return", res.err);
-
-              case 17:
-                hashTxTokenData = res.data; // validate PropertyID is the only one
-
-                _context.t1 = regeneratorRuntime.keys(listCustomTokens);
-
-              case 19:
-                if ((_context.t2 = _context.t1()).done) {
-                  _context.next = 26;
-                  break;
-                }
-
-                token = _context.t2.value;
-                str = Object(_common__WEBPACK_IMPORTED_MODULE_4__["convertHashToStr"])(hashTxTokenData);
-
-                if (!(str === token.ID)) {
-                  _context.next = 24;
-                  break;
-                }
-
-                return _context.abrupt("return", new Error("Custom token is existed"));
-
-              case 24:
-                _context.next = 19;
-                break;
-
-              case 26:
-                // assign txTokenData's propertyId
-                this.txTokenData.propertyID = hashTxTokenData;
-                return _context.abrupt("break", 41);
-
-              case 28:
-                handled = true;
-                paymentTokenAmount = 0;
-
-                for (i = 0; i < tokenParams.receivers.length; i++) {
-                  paymentTokenAmount += tokenParams.receivers[i].value;
-                }
-
-                refundTokenAmount = tokenParams.vinsAmount - paymentTokenAmount;
-
-                if (!(refundTokenAmount < 0)) {
-                  _context.next = 34;
-                  break;
-                }
-
-                return _context.abrupt("return", new Error("Not enough token for transferring"));
-
-              case 34:
-                this.txTokenData = new _txcustomtokendata__WEBPACK_IMPORTED_MODULE_1__["TxTokenData"]();
-                this.txTokenData.set(tokenParams.tokenTxType, tokenParams.propertyName, tokenParams.propertySymbol, tokenParams.vins, null, null);
-                this.txTokenData.propertyID = Object(_common__WEBPACK_IMPORTED_MODULE_4__["newHashFromStr"])(tokenParams.propertyID);
-                _vouts = [];
-
-                if (refundTokenAmount > 0) {
-                  _vouts = new Array(tokenParams.receivers.length + 1);
-                  _vouts[_vouts.length - 1] = new _txcustomtokendata__WEBPACK_IMPORTED_MODULE_1__["TxTokenVout"]();
-
-                  _vouts[_vouts.length - 1].set(tokenParams.vins[0].paymentAddress, refundTokenAmount);
-
-                  console.log("aaaaaaaaaaaa: ", tokenParams.vins[0].paymentAddress);
-                } else {
-                  _vouts = new Array(tokenParams.receivers.length);
-                }
-
-                for (_i2 = 0; _i2 < tokenParams.receivers.length; _i2++) {
-                  _vouts[_i2] = new _txcustomtokendata__WEBPACK_IMPORTED_MODULE_1__["TxTokenVout"]();
-
-                  _vouts[_i2].set(tokenParams.receivers[_i2].paymentAddress, tokenParams.receivers[_i2].value);
-                }
-
-                this.txTokenData.vouts = _vouts;
-
-              case 41:
-                if (handled) {
-                  _context.next = 43;
-                  break;
-                }
-
-                return _context.abrupt("return", new Error("Wrong token tx type"));
-
-              case 43:
-                return _context.abrupt("return", null);
-
-              case 44:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function init(_x, _x2, _x3, _x4, _x5, _x6, _x7, _x8, _x9, _x10) {
-        return _init.apply(this, arguments);
-      }
-
-      return init;
-    }()
-  }]);
-
-  return TxCustomToken;
-}(_txprivacy__WEBPACK_IMPORTED_MODULE_0__["Tx"]); // can convert byte array to string?
-
-
 
 
 /***/ }),
@@ -4898,11 +4818,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _key__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../key */ "./lib/key.js");
 /* harmony import */ var _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../rpcclient/rpcclient */ "./lib/rpcclient/rpcclient.js");
 /* harmony import */ var _tx_txprivacy__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../tx/txprivacy */ "./lib/tx/txprivacy.js");
-/* harmony import */ var _tx_constants__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../tx/constants */ "./lib/tx/constants.js");
-/* harmony import */ var _tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../tx/txcustomtokendata */ "./lib/tx/txcustomtokendata.js");
-/* harmony import */ var _tx_txcustomtoken__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../tx/txcustomtoken */ "./lib/tx/txcustomtoken.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_9__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -4914,10 +4831,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-
 
 
 
@@ -5181,7 +5094,7 @@ var AccountWallet = function AccountWallet() {
               tx = new _tx_txprivacy__WEBPACK_IMPORTED_MODULE_8__["Tx"]("http://localhost:9334");
               console.time("Time for creating tx");
               _context4.next = 12;
-              return tx.init(_this.key.KeySet.PrivateKey, paymentAddressStr, paymentInfos, inputForTx.inputCoins, inputForTx.inputCoinStrs, new bn_js__WEBPACK_IMPORTED_MODULE_12___default.a(0), true, null, null);
+              return tx.init(_this.key.KeySet.PrivateKey, paymentAddressStr, paymentInfos, inputForTx.inputCoins, inputForTx.inputCoinStrs, new bn_js__WEBPACK_IMPORTED_MODULE_9___default.a(0), true, null, null);
 
             case 12:
               err = _context4.sent;
@@ -5222,58 +5135,6 @@ var AccountWallet = function AccountWallet() {
       return _ref4.apply(this, arguments);
     };
   }());
-
-  _defineProperty(this, "createAndSendCustomToken",
-  /*#__PURE__*/
-  _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee5() {
-    var paymentInfos,
-        tokenParams,
-        senderSkStr,
-        paymentAddressStr,
-        inputForTx,
-        response,
-        listCustomToken,
-        tx,
-        _args5 = arguments;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            paymentInfos = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : null;
-            tokenParams = _args5.length > 1 ? _args5[1] : undefined;
-            senderSkStr = _this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_0__["PriKeyType"]);
-            paymentAddressStr = _this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_0__["PaymentAddressType"]);
-            console.time("Time for preparing input for custom token tx");
-            _context5.next = 7;
-            return rpcClient.prepareInputForTx(senderSkStr, paymentInfos);
-
-          case 7:
-            inputForTx = _context5.sent;
-            console.timeEnd("Time for preparing input for custom token tx");
-            _context5.next = 11;
-            return rpcClient.listCustomTokens();
-
-          case 11:
-            response = _context5.sent;
-            listCustomToken = response.listCustomToken;
-            _context5.t0 = tokenParams.tokenTxType;
-            _context5.next = _context5.t0 === _tx_constants__WEBPACK_IMPORTED_MODULE_9__["CustomTokenInit"] ? 16 : _context5.t0 === _tx_constants__WEBPACK_IMPORTED_MODULE_9__["CustomTokenTransfer"] ? 19 : 19;
-            break;
-
-          case 16:
-            tx = new _tx_txcustomtoken__WEBPACK_IMPORTED_MODULE_11__["TxCustomToken"]("http://localhost:9334");
-            _context5.next = 19;
-            return tx.init(_this.key.KeySet.PrivateKey, paymentAddressStr, paymentInfos, inputForTx.inputCoins, inputForTx.inputCoinStrs, new bn_js__WEBPACK_IMPORTED_MODULE_12___default.a(0), tokenParams, listCustomToken, null, false);
-
-          case 19:
-          case "end":
-            return _context5.stop();
-        }
-      }
-    }, _callee5);
-  })));
 
   this.name = "";
   this.key = new _hdwallet__WEBPACK_IMPORTED_MODULE_1__["KeyWallet"]();
@@ -5338,7 +5199,10 @@ function () {
   }, {
     key: "createNewAccount",
     value: function createNewAccount(accountName) {
-      var newIndex = this.MasterAccount.child.length;
+      var newIndex = this.MasterAccount.child.length; // TODO: call api to get active shard
+      // random shard id
+      // loop to create child key with last byte of
+
       var childKey = this.MasterAccount.key.newChildKey(newIndex);
 
       if (accountName === "") {
@@ -5426,7 +5290,7 @@ function () {
       console.log('cipherText', cipherText); // storage
 
       if (this.Storage != null) {
-        return this.Storage.setItem("Wallet", cipherText);
+        return this.Storage.setItem("Wallet", cipherText.toString());
       }
     }
   }, {
@@ -5449,48 +5313,48 @@ function () {
     value: function () {
       var _getHistoryByAccount = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee6(accName) {
+      regeneratorRuntime.mark(function _callee5(accName) {
         var historicTrxList, index, i;
-        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
-                _context6.next = 2;
+                _context5.next = 2;
                 return this.Storage.getItem("Wallet Trx History");
 
               case 2:
-                historicTrxList = _context6.sent;
+                historicTrxList = _context5.sent;
                 index = 0;
                 i = 0;
 
               case 5:
                 if (!(i < this.MasterAccount.child.length)) {
-                  _context6.next = 12;
+                  _context5.next = 12;
                   break;
                 }
 
                 if (!(this.MasterAccount.child[i].name === accName)) {
-                  _context6.next = 9;
+                  _context5.next = 9;
                   break;
                 }
 
                 index = i;
-                return _context6.abrupt("break", 12);
+                return _context5.abrupt("break", 12);
 
               case 9:
                 i++;
-                _context6.next = 5;
+                _context5.next = 5;
                 break;
 
               case 12:
-                return _context6.abrupt("return", historicTrxList[index]);
+                return _context5.abrupt("return", historicTrxList[index]);
 
               case 13:
               case "end":
-                return _context6.stop();
+                return _context5.stop();
             }
           }
-        }, _callee6, this);
+        }, _callee5, this);
       }));
 
       function getHistoryByAccount(_x4) {
@@ -5504,34 +5368,34 @@ function () {
     value: function () {
       var _loadWallet = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee7(password) {
+      regeneratorRuntime.mark(function _callee6(password) {
         var cipherText, data, jsonStr, obj, i, temp;
-        return regeneratorRuntime.wrap(function _callee7$(_context7) {
+        return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 if (!(this.Storage != null)) {
-                  _context7.next = 22;
+                  _context6.next = 22;
                   break;
                 }
 
-                _context7.next = 3;
+                _context6.next = 3;
                 return this.Storage.getItem("Wallet");
 
               case 3:
-                cipherText = _context7.sent;
+                cipherText = _context6.sent;
 
                 if (cipherText) {
-                  _context7.next = 6;
+                  _context6.next = 6;
                   break;
                 }
 
-                return _context7.abrupt("return", false);
+                return _context6.abrupt("return", false);
 
               case 6:
                 data = crypto_js__WEBPACK_IMPORTED_MODULE_3___default.a.AES.decrypt(cipherText, password);
                 jsonStr = data.toString(crypto_js__WEBPACK_IMPORTED_MODULE_3___default.a.enc.Utf8);
-                _context7.prev = 8;
+                _context6.prev = 8;
                 obj = circular_json__WEBPACK_IMPORTED_MODULE_4___default.a.parse(jsonStr);
                 Object.setPrototypeOf(obj, Wallet.prototype);
                 Object.setPrototypeOf(obj.MasterAccount, AccountWallet.prototype);
@@ -5559,27 +5423,27 @@ function () {
                   temp.set(obj.MasterAccount.child[i].key.KeySet.PaymentAddress.Tk);
                   obj.MasterAccount.child[i].key.KeySet.PaymentAddress.Tk = temp;
                   Object.setPrototypeOf(obj.MasterAccount.child[i].key.KeySet.ReadonlyKey, _key__WEBPACK_IMPORTED_MODULE_6__["ViewingKey"].prototype);
-                  Object.setPrototypeOf(obj.MasterAccount.child[i].key.KeySet.ReadonlyKey.PublicKey, ArrayBuffer.prototype);
+                  Object.setPrototypeOf(obj.MasterAccount.child[i].key.KeySet.ReadonlyKey.Pk, ArrayBuffer.prototype);
                   temp = new Uint8Array(33);
-                  temp.set(obj.MasterAccount.child[i].key.KeySet.ReadonlyKey.PublicKey);
+                  temp.set(obj.MasterAccount.child[i].key.KeySet.ReadonlyKey.Pk);
                   obj.MasterAccount.child[i].key.KeySet.ReadonlyKey.Pk = temp;
                 }
 
                 delete obj.Storage;
                 Object.assign(this, obj);
-                return _context7.abrupt("return", this);
+                return _context6.abrupt("return", this);
 
               case 19:
-                _context7.prev = 19;
-                _context7.t0 = _context7["catch"](8);
-                throw _context7.t0;
+                _context6.prev = 19;
+                _context6.t0 = _context6["catch"](8);
+                throw _context6.t0;
 
               case 22:
               case "end":
-                return _context7.stop();
+                return _context6.stop();
             }
           }
-        }, _callee7, this, [[8, 19]]);
+        }, _callee6, this, [[8, 19]]);
       }));
 
       function loadWallet(_x5) {
@@ -5624,20 +5488,20 @@ function () {
     value: function () {
       var _setItem = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee8(key, value) {
-        return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      regeneratorRuntime.mark(function _callee7(key, value) {
+        return regeneratorRuntime.wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
                 this.Data[key] = value;
-                return _context8.abrupt("return", Promise.resolve());
+                return _context7.abrupt("return", Promise.resolve());
 
               case 2:
               case "end":
-                return _context8.stop();
+                return _context7.stop();
             }
           }
-        }, _callee8, this);
+        }, _callee7, this);
       }));
 
       function setItem(_x6, _x7) {
@@ -5651,19 +5515,19 @@ function () {
     value: function () {
       var _getItem = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee9(key) {
-        return regeneratorRuntime.wrap(function _callee9$(_context9) {
+      regeneratorRuntime.mark(function _callee8(key) {
+        return regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                return _context9.abrupt("return", this.Data[key]);
+                return _context8.abrupt("return", this.Data[key]);
 
               case 1:
               case "end":
-                return _context9.stop();
+                return _context8.stop();
             }
           }
-        }, _callee9, this);
+        }, _callee8, this);
       }));
 
       function getItem(_x8) {
