@@ -6,8 +6,9 @@ import bn from 'bn.js';
 import {CustomTokenParamTx, TxTokenVout} from "../../lib/tx/txcustomtokendata";
 import {CustomTokenInit, CustomTokenTransfer} from "../../lib/tx/constants";
 import {CustomTokenPrivacyParamTx} from "../../lib/tx/txcustomkenprivacydata";
+import {RpcClient} from "../../lib/rpcclient/rpcclient";
 
-Wallet.RpcClient = new RpcClient("http://127.0.0.1:9334", "abc", "123")
+Wallet.RpcClient = new RpcClient("http://127.0.0.1:9334", "abc", "123");
 
 async function Test() {
   // let ID  = "1AF5782F86BDA63F884C7D8F872FF135A6F567FC0932DA3A675ECB2DD344DA40";
@@ -76,7 +77,7 @@ async function TestCreateAndSendConstant() {
   await wallet.MasterAccount.child[1].createAndSendConstant(paymentInfos);
 }
 
-// TestCreateAndSendConstant();
+TestCreateAndSendConstant();
 
 async function TestCreateAndSendCustomTokenInit() {
   // sender: HN1
@@ -206,6 +207,6 @@ async function TestCreateAndSendPrivacyCustomTokenTransfer() {
   await wallet.MasterAccount.child[1].createAndSendPrivacyCustomToken(paymentInfos, tokenParams);
 }
 
-TestCreateAndSendPrivacyCustomTokenTransfer();
+// TestCreateAndSendPrivacyCustomTokenTransfer();
 
 
