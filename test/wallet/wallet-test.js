@@ -7,6 +7,8 @@ import {CustomTokenParamTx, TxTokenVout} from "../../lib/tx/txcustomtokendata";
 import {CustomTokenInit, CustomTokenTransfer} from "../../lib/tx/constants";
 import {CustomTokenPrivacyParamTx} from "../../lib/tx/txcustomkenprivacydata";
 
+Wallet.RpcClient = new RpcClient("http://127.0.0.1:9334", "abc", "123")
+
 async function Test() {
   // let ID  = "1AF5782F86BDA63F884C7D8F872FF135A6F567FC0932DA3A675ECB2DD344DA40";
   // let tokenBalance = await wallet.getCustomTokenBalance(priK,ID);
