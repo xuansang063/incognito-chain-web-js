@@ -140,7 +140,7 @@ async function TestCreateAndSendCustomTokenTransfer() {
   await wallet.MasterAccount.child[1].createAndSendCustomToken(paymentInfos, tokenParams);
 }
 
-TestCreateAndSendCustomTokenTransfer();
+// TestCreateAndSendCustomTokenTransfer();
 
 async function TestCreateAndSendPrivacyCustomTokenInit() {
   // sender: HN1
@@ -204,6 +204,6 @@ async function TestCreateAndSendPrivacyCustomTokenTransfer() {
   await wallet.MasterAccount.child[1].createAndSendPrivacyCustomToken(paymentInfos, tokenParams);
 }
 
-// TestCreateAndSendPrivacyCustomTokenTransfer();
+TestCreateAndSendPrivacyCustomTokenTransfer();
 
 
