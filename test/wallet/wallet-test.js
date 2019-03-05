@@ -167,8 +167,8 @@ async function TestCreateAndSendPrivacyCustomTokenInit() {
   tokenParams.propertySymbol = "token2";
   tokenParams.amount = 100;
   tokenParams.tokenTxType = CustomTokenInit;
-  tokenParams.receiver = new Array(1);
-  tokenParams.receiver[0] = new key.PaymentInfo(wallet.MasterAccount.child[1].key.KeySet.PaymentAddress, 100);
+  tokenParams.receivers = new Array(1);
+  tokenParams.receivers[0] = new key.PaymentInfo(wallet.MasterAccount.child[1].key.KeySet.PaymentAddress, 100);
 
   await wallet.MasterAccount.child[1].createAndSendPrivacyCustomToken(paymentInfos, tokenParams);
 
@@ -176,7 +176,7 @@ async function TestCreateAndSendPrivacyCustomTokenInit() {
   // token id: 670DEC43EED7DD63CEC4BDB4F137A32534B0CB5A31BF1907A925393B1AC2D98F
 }
 
-// TestCreateAndSendPrivacyCustomTokenInit();
+TestCreateAndSendPrivacyCustomTokenInit();
 
 async function TestCreateAndSendPrivacyCustomTokenTransfer() {
   // sender: HN1
@@ -201,12 +201,12 @@ async function TestCreateAndSendPrivacyCustomTokenTransfer() {
   tokenParams.propertySymbol = "token2";
   tokenParams.amount = 10;
   tokenParams.tokenTxType = CustomTokenTransfer;
-  tokenParams.receiver = new Array(1);
-  tokenParams.receiver[0] = new key.PaymentInfo(receiverKeyWallet.KeySet.PaymentAddress, new bn(10));
+  tokenParams.receivers = new Array(1);
+  tokenParams.receivers[0] = new key.PaymentInfo(receiverKeyWallet.KeySet.PaymentAddress, new bn(10));
 
   await wallet.MasterAccount.child[1].createAndSendPrivacyCustomToken(paymentInfos, tokenParams);
 }
 
-TestCreateAndSendPrivacyCustomTokenTransfer();
+// TestCreateAndSendPrivacyCustomTokenTransfer();
 
 

@@ -53,7 +53,7 @@ async function TestTxCustomTokenPrivacyInit() {
     tokenParams.propertySymbol = "token2";
     tokenParams.amount = 100;
     tokenParams.tokenTxType = CustomTokenInit;
-    tokenParams.receiver = vouts;
+    tokenParams.receivers = vouts;
 
     let res2 = await rpcClient.listPrivacyCustomTokens();
     let listPrivacyCustomToken = res2.listCustomToken;
@@ -101,7 +101,7 @@ async function TestTxCustomTokenPrivacyTransfer() {
   // import key set
   receiverKeyWallet1.KeySet.importFromPrivateKey(receiverKeyWallet1.KeySet.PrivateKey);
 
-  // receiver token
+  // receivers token
   let receivers = new Array(1);
   receivers[0] = new PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn(10));
 
@@ -113,7 +113,7 @@ async function TestTxCustomTokenPrivacyTransfer() {
   tokenParams.propertySymbol = "token2";
   tokenParams.amount = 10;
   tokenParams.tokenTxType = constantsTx.CustomTokenTransfer;
-  tokenParams.receiver = receivers;
+  tokenParams.receivers = receivers;
 
   let inputForNormalTx = await rpcClient.prepareInputForTx(senderSpendingKeyStr1, paymentInfos);
 
