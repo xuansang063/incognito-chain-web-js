@@ -120,7 +120,7 @@ async function TestTxCustomTokenPrivacyTransfer() {
     let inputForTxCustomTokenPrivacy = await rpcClient.prepareInputForTxCustomTokenPrivacy(senderSpendingKeyStr1, tokenParams);
 
     let txCustomTokenPrivacy = new TxCustomTokenPrivacy("http://localhost:9334");
-    tokenParams.tokenInput = inputForTxCustomTokenPrivacy.tokenInputs;
+    tokenParams.tokenInputs = inputForTxCustomTokenPrivacy.tokenInputs;
 
     await txCustomTokenPrivacy.init(senderKeyWallet1.KeySet.PrivateKey,
         inputForNormalTx.paymentAddrSerialize,
