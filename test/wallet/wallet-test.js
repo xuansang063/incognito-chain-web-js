@@ -77,7 +77,7 @@ async function TestCreateAndSendConstant() {
   await wallet.MasterAccount.child[1].createAndSendConstant(paymentInfos);
 }
 
-TestCreateAndSendConstant();
+// TestCreateAndSendConstant();
 
 async function TestCreateAndSendCustomTokenInit() {
   // sender: HN1
@@ -207,6 +207,6 @@ async function TestCreateAndSendPrivacyCustomTokenTransfer() {
   await wallet.MasterAccount.child[1].createAndSendPrivacyCustomToken(paymentInfos, tokenParams);
 }
 
-// TestCreateAndSendPrivacyCustomTokenTransfer();
+TestCreateAndSendPrivacyCustomTokenTransfer();
 
 
