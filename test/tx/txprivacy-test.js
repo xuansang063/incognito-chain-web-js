@@ -25,7 +25,7 @@ async function TestTx() {
     console.time("rpcClient.prepareInputForTx");
     let res = await rpcClient.prepareInputForTx(spendingKeyStr, paymentInfos);
     console.timeEnd("rpcClient.prepareInputForTx");
-    let tx = new Tx("http://localhost:9334");
+    let tx = new Tx(new RpcClient("http://localhost:9334"));
     // console.log();
     // console.log();
     // console.log("---------- BEFORE CREATE TX res input coin strs : ", res.inputCoinStrs);

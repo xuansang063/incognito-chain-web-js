@@ -33,7 +33,7 @@ async function TestTxCustomTokenInit() {
         let res = await rpcClient.prepareInputForTx(receiverSpendingKeyStr1, paymentInfos);
         console.timeEnd("Time for preparing input for fee");
 
-        let tx = new TxCustomToken("http://localhost:9334");
+        let tx = new TxCustomToken(new RpcClient("http://localhost:9334"));
 
         console.time("Time for creating tx custom token");
 
