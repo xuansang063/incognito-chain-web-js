@@ -60,24 +60,18 @@ async function TestCreateAndSendConstant() {
   let senderSpendingKeyStr2 = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
   let wallet = new Wallet();
   wallet.init("12345678", 0, "Wallet", storage);
-  wallet.importAccount(senderSpendingKeyStr2, "Dat", "12345678");
+  wallet.importAccount(senderSpendingKeyStr2, "acc1", "12345678");
 
-  // // receivers
-  // //HN2
-  // let receiverSpendingKeyStr1 = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
-  // let receiverKeyWallet1 = keyWallet.base58CheckDeserialize(receiverSpendingKeyStr1);
-  // receiverKeyWallet1.KeySet.importFromPrivateKey(receiverKeyWallet1.KeySet.PrivateKey);
-  // let n = 1;
-  // let paymentInfos = new Array(n);
-  // paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn(2300));
-  //
-  // // let balance1 = await wallet.MasterAccount.child[1].getBalance();
-  // // console.log("Before: ", balance1);
-  //
-  // await wallet.MasterAccount.child[1].createAndSendConstant(paymentInfos);
-  //
-  // let balance = await wallet.MasterAccount.child[1].getBalance();
-  // console.log("After: ", balance);
+  // receivers
+  //HN2
+  let receiverSpendingKeyStr1 = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
+  let receiverKeyWallet1 = keyWallet.base58CheckDeserialize(receiverSpendingKeyStr1);
+  receiverKeyWallet1.KeySet.importFromPrivateKey(receiverKeyWallet1.KeySet.PrivateKey);
+  let n = 1;
+  let paymentInfos = new Array(n);
+  paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn(2300));
+
+  await wallet.MasterAccount.child[1].createAndSendConstant(paymentInfos);
 }
 
 // TestCreateAndSendConstant();
@@ -88,7 +82,7 @@ async function TestCreateAndSendCustomTokenInit() {
   let senderSpendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
   let wallet = new Wallet();
   wallet.init("12345678", 0, "Wallet", storage);
-  wallet.importAccount(senderSpendingKeyStr, "Dat", "12345678");
+  wallet.importAccount(senderSpendingKeyStr, "acc1", "12345678");
 
   // receivers
   //HN2
@@ -99,8 +93,6 @@ async function TestCreateAndSendCustomTokenInit() {
   let paymentInfos = new Array(n);
 
   // prepare token param for tx custom token init
-
-
   let tokenParams = new CustomTokenParamTx();
   tokenParams.propertyName = "token1";
   tokenParams.propertySymbol = "token1";
@@ -111,6 +103,9 @@ async function TestCreateAndSendCustomTokenInit() {
   tokenParams.receivers[0].set(wallet.MasterAccount.child[1].key.KeySet.PaymentAddress, 100);
 
   await wallet.MasterAccount.child[1].createAndSendCustomToken(paymentInfos, tokenParams);
+
+  // token ID: 35B86FA135BDA5F54BBAD07C2D0F95D366D3126798C4B8BEF4055CA7CBA28EF2
+  // 242, 142, 162, 203, 167, 92, 5, 244, 190, 184, 196, 152, 103, 18, 211, 102, 211, 149, 15, 45, 124, 208, 186, 75, 245, 165, 189, 53, 161, 111, 184, 53
 }
 
 // TestCreateAndSendCustomTokenInit();
@@ -121,7 +116,7 @@ async function TestCreateAndSendCustomTokenTransfer() {
   let senderSpendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
   let wallet = new Wallet();
   wallet.init("12345678", 0, "Wallet", storage);
-  wallet.importAccount(senderSpendingKeyStr, "Dat", "12345678");
+  wallet.importAccount(senderSpendingKeyStr, "acc1", "12345678");
 
   // receivers
   //HN2
@@ -133,7 +128,7 @@ async function TestCreateAndSendCustomTokenTransfer() {
 
   // prepare token param for tx custom token init
   let tokenParams = new CustomTokenParamTx();
-  tokenParams.propertyID = "35b86fa135bda5f54bbad07c2d0f95d366d3126798c4b8bef4055ca7cba28ef2";
+  tokenParams.propertyID = "35B86FA135BDA5F54BBAD07C2D0F95D366D3126798C4B8BEF4055CA7CBA28EF2";
   tokenParams.propertyName = "token1";
   tokenParams.propertySymbol = "token1";
   tokenParams.amount = 10;
@@ -145,7 +140,7 @@ async function TestCreateAndSendCustomTokenTransfer() {
   await wallet.MasterAccount.child[1].createAndSendCustomToken(paymentInfos, tokenParams);
 }
 
-// TestCreateAndSendCustomTokenTransfer();
+TestCreateAndSendCustomTokenTransfer();
 
 async function TestCreateAndSendPrivacyCustomTokenInit() {
   // sender: HN1
@@ -153,7 +148,7 @@ async function TestCreateAndSendPrivacyCustomTokenInit() {
   let senderSpendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
   let wallet = new Wallet();
   wallet.init("12345678", 0, "Wallet", storage);
-  wallet.importAccount(senderSpendingKeyStr, "Dat", "12345678");
+  wallet.importAccount(senderSpendingKeyStr, "acc1", "12345678");
 
   // receivers
   //HN2
@@ -186,7 +181,7 @@ async function TestCreateAndSendPrivacyCustomTokenTransfer() {
   let senderSpendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
   let wallet = new Wallet();
   wallet.init("12345678", 0, "Wallet", storage);
-  wallet.importAccount(senderSpendingKeyStr, "Dat", "12345678");
+  wallet.importAccount(senderSpendingKeyStr, "acc1", "12345678");
 
   // receivers
   //HN2
@@ -209,6 +204,6 @@ async function TestCreateAndSendPrivacyCustomTokenTransfer() {
   await wallet.MasterAccount.child[1].createAndSendPrivacyCustomToken(paymentInfos, tokenParams);
 }
 
-TestCreateAndSendPrivacyCustomTokenTransfer();
+// TestCreateAndSendPrivacyCustomTokenTransfer();
 
 
