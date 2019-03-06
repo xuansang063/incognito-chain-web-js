@@ -71,10 +71,11 @@ async function TestCreateAndSendConstant() {
   let paymentInfos = new Array(n);
   paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn(2300));
 
-  await wallet.MasterAccount.child[1].createAndSendConstant(paymentInfos);
+  let bal = await wallet.MasterAccount.child[1].getBalance();
+  console.log(bal)
 }
 
-// TestCreateAndSendConstant();
+TestCreateAndSendConstant();
 
 async function TestCreateAndSendCustomTokenInit() {
   // sender: HN1
@@ -140,7 +141,7 @@ async function TestCreateAndSendCustomTokenTransfer() {
   await wallet.MasterAccount.child[1].createAndSendCustomToken(paymentInfos, tokenParams);
 }
 
-TestCreateAndSendCustomTokenTransfer();
+// TestCreateAndSendCustomTokenTransfer();
 
 async function TestCreateAndSendPrivacyCustomTokenInit() {
   // sender: HN1
