@@ -6,6 +6,9 @@ import bn from 'bn.js';
 import {CustomTokenParamTx, TxTokenVout} from "../../lib/tx/txcustomtokendata";
 import {CustomTokenInit, CustomTokenTransfer} from "../../lib/tx/constants";
 import {CustomTokenPrivacyParamTx} from "../../lib/tx/txcustomkenprivacydata";
+import {RpcClient} from "../../lib/rpcclient/rpcclient";
+
+Wallet.RpcClient = new RpcClient("http://127.0.0.1:9334", "abc", "123");
 
 async function Test() {
   // let ID  = "1AF5782F86BDA63F884C7D8F872FF135A6F567FC0932DA3A675ECB2DD344DA40";
@@ -165,8 +168,8 @@ async function TestCreateAndSendPrivacyCustomTokenInit() {
   tokenParams.propertySymbol = "token2";
   tokenParams.amount = 100;
   tokenParams.tokenTxType = CustomTokenInit;
-  tokenParams.receiver = new Array(1);
-  tokenParams.receiver[0] = new key.PaymentInfo(wallet.MasterAccount.child[1].key.KeySet.PaymentAddress, 100);
+  tokenParams.receivers = new Array(1);
+  tokenParams.receivers[0] = new key.PaymentInfo(wallet.MasterAccount.child[1].key.KeySet.PaymentAddress, 100);
 
   await wallet.MasterAccount.child[1].createAndSendPrivacyCustomToken(paymentInfos, tokenParams);
 
@@ -174,7 +177,7 @@ async function TestCreateAndSendPrivacyCustomTokenInit() {
   // token id: 670DEC43EED7DD63CEC4BDB4F137A32534B0CB5A31BF1907A925393B1AC2D98F
 }
 
-// TestCreateAndSendPrivacyCustomTokenInit();
+TestCreateAndSendPrivacyCustomTokenInit();
 
 async function TestCreateAndSendPrivacyCustomTokenTransfer() {
   // sender: HN1
@@ -199,8 +202,8 @@ async function TestCreateAndSendPrivacyCustomTokenTransfer() {
   tokenParams.propertySymbol = "token2";
   tokenParams.amount = 10;
   tokenParams.tokenTxType = CustomTokenTransfer;
-  tokenParams.receiver = new Array(1);
-  tokenParams.receiver[0] = new key.PaymentInfo(receiverKeyWallet.KeySet.PaymentAddress, new bn(10));
+  tokenParams.receivers = new Array(1);
+  tokenParams.receivers[0] = new key.PaymentInfo(receiverKeyWallet.KeySet.PaymentAddress, new bn(10));
 
   await wallet.MasterAccount.child[1].createAndSendPrivacyCustomToken(paymentInfos, tokenParams);
 }
