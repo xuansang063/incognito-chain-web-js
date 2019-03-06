@@ -76,7 +76,7 @@ async function TestTxCustomTokenInit() {
 async function TestTxCustomTokenTransfer() {
     let n = 0;
     let paymentInfos = new Array(n);
-    // paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new bn.BN(2300));
+    // paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet1.KeySet.PaymentAddress, new BN.BN(2300));
 
     // HN2
     let senderSpendingKeyStr1 = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";

@@ -52,7 +52,7 @@ async function TestCreateAndSendConstant() {
   // let receiverSpendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverSpendingKeyStr);
   // receiverKeyWallet.KeySet.importFromPrivateKey(receiverKeyWallet.KeySet.PrivateKey);
-  // paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet.KeySet.PaymentAddress, new bn(2300));
+  // paymentInfos[0] = new key.PaymentInfo(receiverKeyWallet.KeySet.PaymentAddress, new BN(2300));
   //
   //
   // // create and send constant tx
