@@ -21,7 +21,7 @@ async function Test() {
   await wallet2.loadWallet("12345678")
 
   wallet2.createNewAccount("Test 2")
-  let privKey = wallet2.exportAccount(0)
+  let privKey = wallet2.exportAccountPrivateKey(0)
 }
 Test()
 
