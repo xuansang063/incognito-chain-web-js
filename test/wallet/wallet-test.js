@@ -45,7 +45,7 @@ async function TestCreateAndSendConstant() {
   //
   //
   // // create and send constant tx
-  // await accountSender.createAndSendConstant(paymentInfos);
+  await accountSender.createAndSendConstant(paymentInfos);
 
   // sender: HN1
   let storage = new DefaultStorage();
