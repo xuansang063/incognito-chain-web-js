@@ -16,12 +16,12 @@ function TestKeyWallet() {
 
 
   let paymentAddress = keyWallet.base58CheckSerialize(constants.PaymentAddressType);
-  console.log("key serial: ", privateKeyStr);
+  console.log("key serial payment adress: ", paymentAddress);
   keyDeserialize = KeyWallet.base58CheckDeserialize(paymentAddress);
   console.log("key deserialize :", keyDeserialize);
 
   let readonlyKeystr = keyWallet.base58CheckSerialize(constants.ReadonlyKeyType);
-  console.log("key serial: ", readonlyKeystr);
+  console.log("key serial readonly key: ", readonlyKeystr);
   keyDeserialize = KeyWallet.base58CheckDeserialize(readonlyKeystr);
   console.log("key deserialize :", keyDeserialize);
 
