@@ -23,7 +23,7 @@ async function Test() {
   wallet2.createNewAccount("Test 2")
   let privKey = wallet2.exportAccountPrivateKey(0)
 }
-Test()
+// Test()
 
 async function TestCreateAndSendConstant() {
   // // HN1
@@ -101,7 +101,7 @@ async function TestCreateAndSendCustomTokenInit() {
   // 242, 142, 162, 203, 167, 92, 5, 244, 190, 184, 196, 152, 103, 18, 211, 102, 211, 149, 15, 45, 124, 208, 186, 75, 245, 165, 189, 53, 161, 111, 184, 53
 }
 
-// TestCreateAndSendCustomTokenInit();
+TestCreateAndSendCustomTokenInit();
 
 async function TestCreateAndSendCustomTokenTransfer() {
   // sender: HN1
@@ -166,7 +166,7 @@ async function TestCreateAndSendPrivacyCustomTokenInit() {
   // token id: 670DEC43EED7DD63CEC4BDB4F137A32534B0CB5A31BF1907A925393B1AC2D98F
 }
 
-// TestCreateAndSendPrivacyCustomTokenInit();
+TestCreateAndSendPrivacyCustomTokenInit();
 
 async function TestCreateAndSendPrivacyCustomTokenTransfer() {
   // sender: HN1
