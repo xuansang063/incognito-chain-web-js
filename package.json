@@ -20,17 +20,19 @@
   },
   "homepage": "https://github.com/constant-money/constant-chain-web-js#readme",
   "dependencies": {
+    "identicon.js": "^2.3.3",
     "privacy-js-lib": "git://github.com/constant-money/privacy-js-lib"
   },
   "devDependencies": {
-    "@babel/polyfill": "^7.2.5",
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.4",
     "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.5",
+    "fs": "0.0.1-security",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3"
   }
