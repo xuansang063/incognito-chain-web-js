@@ -201,7 +201,8 @@ async function TestCreateAndSendPrivacyCustomTokenTransfer() {
 
 
 function Test2(){
-  console.log(AccountWallet.progressTx);
+  let res = RpcClient.getTransactionByHash()
+  console.log(res);
 }
 
 Test2()
