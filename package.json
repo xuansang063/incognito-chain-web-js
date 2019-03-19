@@ -21,7 +21,7 @@
   "homepage": "https://github.com/constant-money/constant-chain-web-js#readme",
   "dependencies": {
     "identicon.js": "^2.3.3",
-    "privacy-js-lib": "git://github.com/constant-money/privacy-js-lib.git#16dba8e0dcc8a6111f26a4d94642894fff007b59"
+    "privacy-js-lib": "git://github.com/constant-money/privacy-js-lib.git"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
