@@ -35,18 +35,18 @@ function modInverse(a, m) {
   return x;
 }
 
-function power(base, power, n){
+function power(base, power, n) {
   let result = BigInt(1);
   const twoBN = BigInt(2);
 
-  while (power > 0){
+  while (power > 0) {
     // if power id odd
-    if (power % twoBN == 1){
-      result = (result*base) % n;
+    if (power % twoBN == 1) {
+      result = (result * base) % n;
     }
 
     power = power / twoBN;
-    base = (base *base) % n;
+    base = (base * base) % n;
   }
 
   return result;
@@ -83,13 +83,13 @@ for (let i = 0; i < 100; i++) {
 }
 console.timeEnd("3")
 
-console.time("power")
+/*console.time("power")
 let num1 = BigInt(1050);
 let num2 = BigInt(18);
 let modN = BigInt((new Elliptic('p256')).n.clone().toString());
 let res = power(num1, num2, modN);
 console.log("10^20 = ", res);
-console.timeEnd("power")
+console.timeEnd("power")*/
 
 
 
