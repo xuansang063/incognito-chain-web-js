@@ -13,4 +13,8 @@ require("@babel/polyfill");
 // require('./test/key-test');
 
 // bigint test
-require("./test/bigint-test");
+// require("./test/bigint-test");
+
+
+// elliptic test
+require("./test/elliptic-test");
