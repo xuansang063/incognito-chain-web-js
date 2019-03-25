@@ -72,7 +72,7 @@ async function TestTxCustomTokenInit() {
 }
 
 // TestTxCustomTokenInit();
-        
+
 async function TestTxCustomTokenTransfer() {
     let n = 0;
     let paymentInfos = new Array(n);
@@ -179,7 +179,7 @@ TestTxCustomTokenTransfer();
 //
 //
 // let a = [12];
-// let hash = privacyUtils.hashBytesToBytes(a);
+// let hash = privacyUtils.hashSha3BytesToBytes(a);
 //
 // console.log(hash.join(', '));
 //
