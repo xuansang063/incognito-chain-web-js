@@ -205,6 +205,24 @@ function Test2(){
   console.log(res);
 }
 
-Test2()
+// Test2()
+
+
+async function TestCreateAndSendStakingTx() {
+  // HN1 not change money
+  let senderSpendingKeyStr = "112t8rqnMrtPkJ4YWzXfG82pd9vCe2jvWGxqwniPM5y4hnimki6LcVNfXxN911ViJS8arTozjH4rTpfaGo5i1KKcG1ayjiMsa4E3nABGAqQh";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  let param = {type: 0} 
+  
+  // // create and send constant tx
+  await accountSender.createAndSendStakingTx(param, 2);
+}
+
+TestCreateAndSendStakingTx();
 
 
