@@ -1,4 +1,5 @@
 import * as key from "../lib/key"
+import {byteToHexString} from "../lib/common"
 
 function TestKey() {
   let sk = key.GenerateSpendingKey([123]);

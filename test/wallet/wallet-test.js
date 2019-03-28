@@ -7,6 +7,7 @@ import {CustomTokenParamTx, TxTokenVout} from "../../lib/tx/txcustomtokendata";
 import {CustomTokenInit, CustomTokenTransfer} from "../../lib/tx/constants";
 import {CustomTokenPrivacyParamTx} from "../../lib/tx/txcustomkenprivacydata";
 import {RpcClient} from "../../lib/rpcclient/rpcclient";
+import { REPL_MODE_SLOPPY } from 'repl';
 
 Wallet.RpcClient = new RpcClient("http://127.0.0.1:9334", "abc", "123");
 
@@ -223,6 +224,28 @@ async function TestCreateAndSendStakingTx() {
   await accountSender.createAndSendStakingTx(param, 2);
 }
 
-TestCreateAndSendStakingTx();
+// TestCreateAndSendStakingTx();
 
+
+async function TestDefragment() {
+  // HN1 change money
+  let senderSpendingKeyStr = "112t8rqGc71CqjrDCuReGkphJ4uWHJmiaV7rVczqNhc33pzChmJRvikZNc3Dt5V7quhdzjWW9Z4BrB2BxdK5VtHzsG9JZdZ5M7yYYGidKKZV";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+  
+  // // create and send constant tx
+  let response;
+  try{
+    response = await accountSender.defragment(100, 2, true);
+  }catch(e){
+    console.log(e);
+  }
+ 
+  console.log("REsponse defragment: ", response);
+}
+
+TestDefragment();
 
