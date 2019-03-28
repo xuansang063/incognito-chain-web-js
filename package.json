@@ -22,7 +22,7 @@
   "dependencies": {
     "big-integer": "^1.6.42",
     "identicon.js": "^2.3.3",
-    "privacy-js-lib": "git://github.com/constant-money/privacy-js-lib.git",
+    "privacy-js-lib": "git://github.com/constant-money/privacy-js-lib.git"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
