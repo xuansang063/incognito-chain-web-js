@@ -1,5 +1,6 @@
 import * as key from "../lib/key"
 import {byteToHexString} from "../lib/common"
+import * as base58 from "../lib/base58"
 
 function TestKey() {
   let sk = key.GenerateSpendingKey([123]);
@@ -25,4 +26,12 @@ function TestKey() {
   // console.log('Payment addr 2: ', paymentAddr2);
 }
 
-TestKey();
+// TestKey();
+
+function TestBase58(){
+  let pkArray =  [2, 194, 130, 176 ,102, 36, 183, 114, 109, 135, 49, 114, 177, 92, 214, 31, 25, 4 ,72, 103, 196, 161, 36, 69, 121, 102, 159, 24, 31, 131, 101, 20, 0];
+  let res = base58.checkEncode(pkArray, 0x00);
+  console.log("REs: ", res);
+}
+
+TestBase58()
