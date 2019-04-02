@@ -10,10 +10,10 @@ require("@babel/polyfill");
 // require('./test/tx/txcustomtokenprivacy-test');
 
 // require('./test/coin-test');
-// require('./test/key-test');
+require('./test/key-test');
 
 // bigint test
-require("./test/bigint-test");
+// require("./test/bigint-test");
 
 
 // elliptic test
