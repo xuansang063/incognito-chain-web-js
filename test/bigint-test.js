@@ -92,6 +92,11 @@ console.log("10^20 = ", res);
 console.timeEnd("power")*/
 
 
+let h = [167,2,34,4];
+let g = new bn(h);
+console.log("b.toNumber(): ", g.toNumber());
+
+
 
 
 
