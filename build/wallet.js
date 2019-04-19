@@ -8974,37 +8974,38 @@ function () {
       _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee17() {
-        var i, j, response;
+        var update, i, j, response;
         return regeneratorRuntime.wrap(function _callee17$(_context17) {
           while (1) {
             switch (_context17.prev = _context17.next) {
               case 0:
                 console.log("HHHH updating spending list: ");
+                update = false;
                 i = 0;
 
-              case 2:
+              case 3:
                 if (!(i < _this4.MasterAccount.child.length)) {
-                  _context17.next = 16;
+                  _context17.next = 17;
                   break;
                 }
 
                 if (!_this4.MasterAccount.child[i].spendingCoins) {
-                  _context17.next = 13;
+                  _context17.next = 14;
                   break;
                 }
 
                 j = 0;
 
-              case 5:
+              case 6:
                 if (!(j < _this4.MasterAccount.child[i].spendingCoins.length)) {
-                  _context17.next = 13;
+                  _context17.next = 14;
                   break;
                 }
 
-                _context17.next = 8;
+                _context17.next = 9;
                 return Wallet.RpcClient.getTransactionByHash(_this4.MasterAccount.child[i].spendingCoins[j].txID);
 
-              case 8:
+              case 9:
                 response = _context17.sent;
 
                 if (response.err === null && response.isInBlock || response.err != null && response.isInBlock === false && response.isInMempool === false) {
@@ -9013,22 +9014,25 @@ function () {
                   _this4.MasterAccount.child[i].removeObjectFromSpendingCoins(_this4.MasterAccount.child[i].spendingCoins[j].txID);
 
                   console.log("BBBBB this.spendingCoins after update history: ", _this4.MasterAccount.child[i].spendingCoins);
+                  update = true;
                 }
 
-              case 10:
+              case 11:
                 j++;
-                _context17.next = 5;
+                _context17.next = 6;
                 break;
 
-              case 13:
+              case 14:
                 i++;
-                _context17.next = 2;
+                _context17.next = 3;
                 break;
-
-              case 16:
-                _this4.save(_this4.PassPhrase);
 
               case 17:
+                if (update) {
+                  _this4.save(_this4.PassPhrase);
+                }
+
+              case 18:
               case "end":
                 return _context17.stop();
             }
