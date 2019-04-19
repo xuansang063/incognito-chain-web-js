@@ -4141,48 +4141,60 @@ function () {
   _createClass(RpcClient, [{
     key: "getUnspentCoinExceptSpendingCoin",
     value: function getUnspentCoinExceptSpendingCoin(unspentCoins, account) {
-      var unspentCoinExceptSpeningCoin = this.cloneInputCoinArray(unspentCoins); // console.log("unspentCoinExceptSpeningCoin getUnspentCoinExceptSpendingCoin before: ", unspentCoinExceptSpeningCoin);
+      // console.log("unspentCoinExceptSpeningCoin getUnspentCoinExceptSpendingCoin before: ", unspentCoinExceptSpeningCoin);
       // console.log(" AAAA account.spendingCoins: ", account.spendingCoins);
+      if (account.spendingCoins) {
+        var unspentCoinExceptSpeningCoin = this.cloneInputCoinArray(unspentCoins);
 
-      for (var i = 0; i < account.spendingCoins.length; i++) {
-        for (var j = 0; j < account.spendingCoins[i].spendingSNs.length; j++) {
-          // console.log("Spending coin : ", account.spendingCoins)
-          for (var k = 0; k < unspentCoinExceptSpeningCoin.length; k++) {
-            // console.log("FFF account.spendingCoins[i].spendingCoins[j].toString(): ", account.spendingCoins[i].spendingSNs[j].toString());
-            // console.log("FFF unspentCoinExceptSpeningCoin[k].coinDetails.serialNumber.compress().toString(): ", unspentCoinExceptSpeningCoin[k].coinDetails.serialNumber.compress().toString());
-            if (account.spendingCoins[i].spendingSNs[j].toString() === unspentCoinExceptSpeningCoin[k].coinDetails.serialNumber.compress().toString()) {
-              unspentCoinExceptSpeningCoin.splice(k, 1);
+        for (var i = 0; i < account.spendingCoins.length; i++) {
+          for (var j = 0; j < account.spendingCoins[i].spendingSNs.length; j++) {
+            // console.log("Spending coin : ", account.spendingCoins)
+            for (var k = 0; k < unspentCoinExceptSpeningCoin.length; k++) {
+              // console.log("FFF account.spendingCoins[i].spendingCoins[j].toString(): ", account.spendingCoins[i].spendingSNs[j].toString());
+              // console.log("FFF unspentCoinExceptSpeningCoin[k].coinDetails.serialNumber.compress().toString(): ", unspentCoinExceptSpeningCoin[k].coinDetails.serialNumber.compress().toString());
+              if (account.spendingCoins[i].spendingSNs[j].toString() === unspentCoinExceptSpeningCoin[k].coinDetails.serialNumber.compress().toString()) {
+                unspentCoinExceptSpeningCoin.splice(k, 1);
+              }
             }
           }
         }
-      }
 
-      console.log("unspentCoinExceptSpeningCoin getUnspentCoinExceptSpendingCoin after : ", unspentCoinExceptSpeningCoin);
-      return unspentCoinExceptSpeningCoin;
+        console.log("unspentCoinExceptSpeningCoin getUnspentCoinExceptSpendingCoin after : ", unspentCoinExceptSpeningCoin);
+        return unspentCoinExceptSpeningCoin;
+      } else {
+        return unspentCoins;
+      }
     }
   }, {
     key: "getUTXOsExceptSpendingCoin",
     value: function getUTXOsExceptSpendingCoin(unspentCoins, unspentCoinStrs, account) {
-      var UTXOExceptSpeningCoin = this.cloneInputCoinArray(unspentCoins);
-      var UTXOExceptSpeningCoinStrs = unspentCoinStrs;
+      if (account.spendingCoins) {
+        var UTXOExceptSpeningCoin = this.cloneInputCoinArray(unspentCoins);
+        var UTXOExceptSpeningCoinStrs = unspentCoinStrs;
 
-      for (var i = 0; i < account.spendingCoins.length; i++) {
-        for (var j = 0; j < account.spendingCoins[i].spendingSNs.length; j++) {
-          // console.log("Spending coin : ", account.spendingCoins)
-          for (var k = 0; k < UTXOExceptSpeningCoin.length; k++) {
-            if (account.spendingCoins[i].spendingSNs[j].toString() === UTXOExceptSpeningCoin[k].coinDetails.serialNumber.compress().toString()) {
-              UTXOExceptSpeningCoin.splice(k, 1);
-              UTXOExceptSpeningCoinStrs.splice(k, 1);
+        for (var i = 0; i < account.spendingCoins.length; i++) {
+          for (var j = 0; j < account.spendingCoins[i].spendingSNs.length; j++) {
+            // console.log("Spending coin : ", account.spendingCoins)
+            for (var k = 0; k < UTXOExceptSpeningCoin.length; k++) {
+              if (account.spendingCoins[i].spendingSNs[j].toString() === UTXOExceptSpeningCoin[k].coinDetails.serialNumber.compress().toString()) {
+                UTXOExceptSpeningCoin.splice(k, 1);
+                UTXOExceptSpeningCoinStrs.splice(k, 1);
+              }
             }
           }
         }
-      }
 
-      console.log("UTXOExceptSpeningCoin getUnspentCoinExceptSpendingCoin after : ", UTXOExceptSpeningCoin);
-      return {
-        UTXOExceptSpeningCoin: UTXOExceptSpeningCoin,
-        UTXOExceptSpeningCoinStrs: UTXOExceptSpeningCoinStrs
-      };
+        console.log("UTXOExceptSpeningCoin getUnspentCoinExceptSpendingCoin after : ", UTXOExceptSpeningCoin);
+        return {
+          UTXOExceptSpeningCoin: UTXOExceptSpeningCoin,
+          UTXOExceptSpeningCoinStrs: UTXOExceptSpeningCoinStrs
+        };
+      } else {
+        return {
+          UTXOExceptSpeningCoin: unspentCoins,
+          UTXOExceptSpeningCoinStrs: unspentCoinStrs
+        };
+      }
     } // cloneInputCoinArray clone array of input coins to new array
 
   }]);
