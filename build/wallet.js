@@ -4135,6 +4135,58 @@ function () {
       }, _callee24);
     })));
 
+    _defineProperty(this, "hashToIdenticon",
+    /*#__PURE__*/
+    function () {
+      var _ref25 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee25(hashStrs) {
+        var data, response;
+        return regeneratorRuntime.wrap(function _callee25$(_context25) {
+          while (1) {
+            switch (_context25.prev = _context25.next) {
+              case 0:
+                data = {
+                  "jsonrpc": "1.0",
+                  "method": "hashtoidenticon",
+                  "params": hashStrs,
+                  "id": 1
+                }; // call API 
+
+                _context25.next = 3;
+                return _this.rpcHttpService.postRequest(data);
+
+              case 3:
+                response = _context25.sent;
+
+                if (!(response.status !== 200 || response.data.Result === null)) {
+                  _context25.next = 8;
+                  break;
+                }
+
+                return _context25.abrupt("return", {
+                  err: new Error("Can't get image from hash string")
+                });
+
+              case 8:
+                return _context25.abrupt("return", {
+                  images: response.data.Result,
+                  err: null
+                });
+
+              case 9:
+              case "end":
+                return _context25.stop();
+            }
+          }
+        }, _callee25);
+      }));
+
+      return function (_x58) {
+        return _ref25.apply(this, arguments);
+      };
+    }());
+
     this.rpcHttpService = new _rpchttpservice__WEBPACK_IMPORTED_MODULE_0__["RPCHttpService"](url, user, password);
   }
 
@@ -6602,7 +6654,7 @@ function genImageFromStr(str, size) {
 /*!******************************!*\
   !*** ./lib/wallet/wallet.js ***!
   \******************************/
-/*! exports provided: Wallet, AccountWallet, DefaultStorage, TrxHistoryInfo, RpcClient, CustomTokenParamTx, CustomTokenPrivacyParamTx, PaymentInfo, KeyWallet, TxTokenVin, TxTokenVout, FailedTx, SuccessTx, ConfirmedTx, genImageFromStr, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, checkEncode */
+/*! exports provided: Wallet, AccountWallet, DefaultStorage, TrxHistoryInfo, RpcClient, CustomTokenParamTx, CustomTokenPrivacyParamTx, PaymentInfo, KeyWallet, TxTokenVin, TxTokenVout, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, checkEncode */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6644,9 +6696,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PaymentInfo", function() { return _key__WEBPACK_IMPORTED_MODULE_7__["PaymentInfo"]; });
 
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./utils */ "./lib/wallet/utils.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "genImageFromStr", function() { return _utils__WEBPACK_IMPORTED_MODULE_16__["genImageFromStr"]; });
-
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FailedTx", function() { return _constants__WEBPACK_IMPORTED_MODULE_0__["FailedTx"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SuccessTx", function() { return _constants__WEBPACK_IMPORTED_MODULE_0__["SuccessTx"]; });
@@ -6661,12 +6710,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MetaStakingShard", function() { return _constants__WEBPACK_IMPORTED_MODULE_0__["MetaStakingShard"]; });
 
-/* harmony import */ var _base58__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../base58 */ "./lib/base58.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "checkEncode", function() { return _base58__WEBPACK_IMPORTED_MODULE_17__["checkEncode"]; });
+/* harmony import */ var _base58__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../base58 */ "./lib/base58.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "checkEncode", function() { return _base58__WEBPACK_IMPORTED_MODULE_16__["checkEncode"]; });
 
-/* harmony import */ var privacy_js_lib_lib_ec__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! privacy-js-lib/lib/ec */ "./node_modules/privacy-js-lib/lib/ec.js");
-/* harmony import */ var privacy_js_lib_lib_ec__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(privacy_js_lib_lib_ec__WEBPACK_IMPORTED_MODULE_18__);
-/* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../coin */ "./lib/coin.js");
+/* harmony import */ var privacy_js_lib_lib_ec__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! privacy-js-lib/lib/ec */ "./node_modules/privacy-js-lib/lib/ec.js");
+/* harmony import */ var privacy_js_lib_lib_ec__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(privacy_js_lib_lib_ec__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../coin */ "./lib/coin.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -6701,8 +6750,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
-var P256 = privacy_js_lib_lib_ec__WEBPACK_IMPORTED_MODULE_18__["P256"];
+var P256 = privacy_js_lib_lib_ec__WEBPACK_IMPORTED_MODULE_17__["P256"];
 
 
 
@@ -6935,7 +6983,7 @@ function () {
 
                 for (k in this.derivatorPointCached) {
                   if (k != undefined && this.derivatorJsonCached[k] == undefined) {
-                    this.derivatorJsonCached[k] = _base58__WEBPACK_IMPORTED_MODULE_17__["checkEncode"](this.derivatorPointCached[k].compress(), 0x00);
+                    this.derivatorJsonCached[k] = _base58__WEBPACK_IMPORTED_MODULE_16__["checkEncode"](this.derivatorPointCached[k].compress(), 0x00);
                   }
                 } // console.log(`${this.name} mergeDerivatorCached`, this.derivatorJsonCached);
 
@@ -6976,7 +7024,7 @@ function () {
                   if (k != undefined && _this.derivatorPointCached[k] == undefined) {
                     tasks.push(new Promise(function (resolve) {
                       setTimeout(function () {
-                        _this.derivatorPointCached[k] = P256.decompress(_base58__WEBPACK_IMPORTED_MODULE_17__["checkDecode"](_this.derivatorJsonCached[k]).bytesDecoded);
+                        _this.derivatorPointCached[k] = P256.decompress(_base58__WEBPACK_IMPORTED_MODULE_16__["checkDecode"](_this.derivatorJsonCached[k]).bytesDecoded);
                         resolve();
                       }, 0);
                     }));
@@ -7033,13 +7081,13 @@ function () {
                   if (this.inputCoinCached[sndStr] == undefined) {
                     this.inputCoinCached[sndStr] = oObject;
                     jsonObject = {};
-                    jsonObject.publicKey = _base58__WEBPACK_IMPORTED_MODULE_17__["checkEncode"](oObject.coinDetails.publicKey.compress(), 0x00);
-                    jsonObject.coinCommitment = _base58__WEBPACK_IMPORTED_MODULE_17__["checkEncode"](oObject.coinDetails.coinCommitment.compress(), 0x00);
+                    jsonObject.publicKey = _base58__WEBPACK_IMPORTED_MODULE_16__["checkEncode"](oObject.coinDetails.publicKey.compress(), 0x00);
+                    jsonObject.coinCommitment = _base58__WEBPACK_IMPORTED_MODULE_16__["checkEncode"](oObject.coinDetails.coinCommitment.compress(), 0x00);
                     jsonObject.snderivator = oObject.coinDetails.snderivator.toString();
                     jsonObject.randomness = oObject.coinDetails.randomness.toString();
                     jsonObject.value = oObject.coinDetails.value.toString();
-                    jsonObject.info = _base58__WEBPACK_IMPORTED_MODULE_17__["checkEncode"](oObject.coinDetails.info, 0x00);
-                    jsonObject.serialNumber = _base58__WEBPACK_IMPORTED_MODULE_17__["checkEncode"](oObject.coinDetails.serialNumber.compress(), 0x00);
+                    jsonObject.info = _base58__WEBPACK_IMPORTED_MODULE_16__["checkEncode"](oObject.coinDetails.info, 0x00);
+                    jsonObject.serialNumber = _base58__WEBPACK_IMPORTED_MODULE_16__["checkEncode"](oObject.coinDetails.serialNumber.compress(), 0x00);
                     this.inputCoinJsonCached[sndStr] = jsonObject;
                   }
                 } // console.log(`${this.name} mergeInputCoinJsonCached`, this.inputCoinCached);
@@ -7082,14 +7130,14 @@ function () {
                     tasks.push(new Promise(function (resolve) {
                       setTimeout(function () {
                         var jsonObject = _this2.inputCoinJsonCached[sndStr];
-                        var oObject = new _coin__WEBPACK_IMPORTED_MODULE_19__["InputCoin"]();
-                        oObject.coinDetails.publicKey = P256.decompress(_base58__WEBPACK_IMPORTED_MODULE_17__["checkDecode"](jsonObject.publicKey).bytesDecoded);
-                        oObject.coinDetails.coinCommitment = P256.decompress(_base58__WEBPACK_IMPORTED_MODULE_17__["checkDecode"](jsonObject.coinCommitment).bytesDecoded);
+                        var oObject = new _coin__WEBPACK_IMPORTED_MODULE_18__["InputCoin"]();
+                        oObject.coinDetails.publicKey = P256.decompress(_base58__WEBPACK_IMPORTED_MODULE_16__["checkDecode"](jsonObject.publicKey).bytesDecoded);
+                        oObject.coinDetails.coinCommitment = P256.decompress(_base58__WEBPACK_IMPORTED_MODULE_16__["checkDecode"](jsonObject.coinCommitment).bytesDecoded);
                         oObject.coinDetails.snderivator = new bn_js__WEBPACK_IMPORTED_MODULE_14___default.a(jsonObject.snderivator);
                         oObject.coinDetails.randomness = new bn_js__WEBPACK_IMPORTED_MODULE_14___default.a(jsonObject.randomness);
                         oObject.coinDetails.value = new bn_js__WEBPACK_IMPORTED_MODULE_14___default.a(jsonObject.value);
-                        oObject.coinDetails.info = _base58__WEBPACK_IMPORTED_MODULE_17__["checkDecode"](jsonObject.info).bytesDecoded;
-                        oObject.coinDetails.serialNumber = P256.decompress(_base58__WEBPACK_IMPORTED_MODULE_17__["checkDecode"](jsonObject.serialNumber).bytesDecoded);
+                        oObject.coinDetails.info = _base58__WEBPACK_IMPORTED_MODULE_16__["checkDecode"](jsonObject.info).bytesDecoded;
+                        oObject.coinDetails.serialNumber = P256.decompress(_base58__WEBPACK_IMPORTED_MODULE_16__["checkDecode"](jsonObject.serialNumber).bytesDecoded);
                         _this2.inputCoinCached[sndStr] = oObject;
                         resolve();
                       }, 0);
@@ -7184,7 +7232,7 @@ function () {
                 }
 
                 for (_i = 0; _i < unspentCoinStrs.length; _i++) {
-                  sndDecode = _base58__WEBPACK_IMPORTED_MODULE_17__["checkDecode"](unspentCoinStrs[_i].SNDerivator).bytesDecoded;
+                  sndDecode = _base58__WEBPACK_IMPORTED_MODULE_16__["checkDecode"](unspentCoinStrs[_i].SNDerivator).bytesDecoded;
                   snderivator = new bn_js__WEBPACK_IMPORTED_MODULE_14___default.a(sndDecode);
                   _sndStr = "".concat(tokenID, "_").concat(snderivator);
                   chkAll[_sndStr] = false;
@@ -7920,46 +7968,62 @@ function () {
                 console.log("Saving custom token tx ....");
                 status = _constants__WEBPACK_IMPORTED_MODULE_0__["FailedTx"];
 
-                if (responseSendTX.txId) {
-                  tx.txId = responseSendTX.txId;
-                  status = _constants__WEBPACK_IMPORTED_MODULE_0__["SuccessTx"];
-                  responseSendTX.type = tx.type;
-                  responseSendTX.fee = tx.fee;
-                  responseSendTX.lockTime = tx.lockTime;
-                  responseSendTX.amount = tx.txTokenData.amount;
-                  responseSendTX.txStatus = status;
-                  responseSendTX.propertyName = tx.txTokenData.propertyName;
-                  responseSendTX.propertyID = tx.txTokenData.propertyID;
-                  responseSendTX.propertySymbol = tx.txTokenData.propertySymbol; // add to following token list if tx is init token
+                if (!responseSendTX.txId) {
+                  _context11.next = 87;
+                  break;
+                }
 
-                  if (tx.txTokenData.type == _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenInit"]) {
-                    txTokenData = tx.txTokenData;
-                    followingToken = {
-                      ID: txTokenData.propertyID,
-                      Image: this.getTokenImage(txTokenData.propertyID),
-                      Name: txTokenData.propertyName,
-                      Symbol: txTokenData.propertySymbol,
-                      Amount: txTokenData.amount,
-                      IsPrivacy: false,
-                      isInit: true
-                    };
-                    this.addFollowingToken(followingToken); // console.log("List following token after adding: ", this.followingTokens);
-                  }
+                tx.txId = responseSendTX.txId;
+                status = _constants__WEBPACK_IMPORTED_MODULE_0__["SuccessTx"];
+                responseSendTX.type = tx.type;
+                responseSendTX.fee = tx.fee;
+                responseSendTX.lockTime = tx.lockTime;
+                responseSendTX.amount = tx.txTokenData.amount;
+                responseSendTX.txStatus = status;
+                responseSendTX.propertyName = tx.txTokenData.propertyName;
+                responseSendTX.propertyID = tx.txTokenData.propertyID;
+                responseSendTX.propertySymbol = tx.txTokenData.propertySymbol; // add to following token list if tx is init token
 
-                  spendingSNs = [];
+                if (!(tx.txTokenData.type == _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenInit"])) {
+                  _context11.next = 81;
+                  break;
+                }
 
-                  for (i = 0; i < inputForTx.inputCoins.length; i++) {
-                    spendingSNs.push(inputForTx.inputCoins[i].coinDetails.serialNumber.compress());
-                  } // console.log("spendingSNs: ", spendingSNs);
+                txTokenData = tx.txTokenData;
+                _context11.t3 = txTokenData.propertyID;
+                _context11.next = 75;
+                return this.getTokenImage(txTokenData.propertyID);
+
+              case 75:
+                _context11.t4 = _context11.sent;
+                _context11.t5 = txTokenData.propertyName;
+                _context11.t6 = txTokenData.propertySymbol;
+                _context11.t7 = txTokenData.amount;
+                followingToken = {
+                  ID: _context11.t3,
+                  Image: _context11.t4,
+                  Name: _context11.t5,
+                  Symbol: _context11.t6,
+                  Amount: _context11.t7,
+                  IsPrivacy: false,
+                  isInit: true
+                };
+                this.addFollowingToken(followingToken); // console.log("List following token after adding: ", this.followingTokens);
+
+              case 81:
+                spendingSNs = [];
+
+                for (i = 0; i < inputForTx.inputCoins.length; i++) {
+                  spendingSNs.push(inputForTx.inputCoins[i].coinDetails.serialNumber.compress());
+                } // console.log("spendingSNs: ", spendingSNs);
 
 
-                  object = {};
-                  object.txID = responseSendTX.txId;
-                  object.spendingSNs = spendingSNs;
-                  this.addSpendingCoins(object);
-                } // check is init or transfer token
+                object = {};
+                object.txID = responseSendTX.txId;
+                object.spendingSNs = spendingSNs;
+                this.addSpendingCoins(object);
 
-
+              case 87:
                 amount = 0;
 
                 if (tx.txTokenData.type == _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenInit"]) {
@@ -7974,23 +8038,23 @@ function () {
                 }
 
                 this.saveCustomTokenTx(tx, receiverPaymentAddrStr, status, isIn, amount);
-                _context11.next = 65;
+                _context11.next = 92;
                 return Wallet.updateProgressTx(100);
 
-              case 65:
+              case 92:
                 return _context11.abrupt("return", responseSendTX);
 
-              case 68:
-                _context11.prev = 68;
-                _context11.t3 = _context11["catch"](8);
-                throw _context11.t3;
+              case 95:
+                _context11.prev = 95;
+                _context11.t8 = _context11["catch"](8);
+                throw _context11.t8;
 
-              case 71:
+              case 98:
               case "end":
                 return _context11.stop();
             }
           }
-        }, _callee11, this, [[8, 68], [10, 21], [24, 31], [39, 44]]);
+        }, _callee11, this, [[8, 95], [10, 21], [24, 31], [39, 44]]);
       }));
 
       function createAndSendCustomToken() {
@@ -8129,46 +8193,66 @@ function () {
                 console.log("Saving privacy custom token tx ....");
                 status = _constants__WEBPACK_IMPORTED_MODULE_0__["FailedTx"];
 
-                if (responseSendTX.txId) {
-                  tx.txId = responseSendTX.txId;
-                  status = _constants__WEBPACK_IMPORTED_MODULE_0__["SuccessTx"];
-                  responseSendTX.type = tx.type;
-                  responseSendTX.fee = tx.fee;
-                  responseSendTX.lockTime = tx.lockTime; // responseSendTX.amount = tx.txTokenPrivacyData.amount;
+                if (!responseSendTX.txId) {
+                  _context12.next = 93;
+                  break;
+                }
 
-                  responseSendTX.txStatus = status;
-                  responseSendTX.propertyName = tx.txTokenPrivacyData.propertyName;
-                  responseSendTX.propertyID = tx.txTokenPrivacyData.propertyID;
-                  responseSendTX.propertySymbol = tx.txTokenPrivacyData.propertySymbol; // add to following token list if tx is init token
+                tx.txId = responseSendTX.txId;
+                status = _constants__WEBPACK_IMPORTED_MODULE_0__["SuccessTx"];
+                responseSendTX.type = tx.type;
+                responseSendTX.fee = tx.fee;
+                responseSendTX.lockTime = tx.lockTime; // responseSendTX.amount = tx.txTokenPrivacyData.amount;
 
-                  if (tx.txTokenPrivacyData.type == _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenInit"]) {
-                    txTokenPrivacyData = tx.txTokenPrivacyData;
-                    this.addFollowingToken({
-                      ID: txTokenPrivacyData.propertyID,
-                      Image: this.getTokenImage(txTokenPrivacyData.propertyID),
-                      Name: txTokenPrivacyData.propertyName,
-                      Symbol: txTokenPrivacyData.propertySymbol,
-                      Amount: txTokenPrivacyData.amount,
-                      IsPrivacy: true,
-                      isInit: true
-                    });
-                    console.log("List following token after adding: ", this.followingTokens);
-                  }
+                responseSendTX.txStatus = status;
+                responseSendTX.propertyName = tx.txTokenPrivacyData.propertyName;
+                responseSendTX.propertyID = tx.txTokenPrivacyData.propertyID;
+                responseSendTX.propertySymbol = tx.txTokenPrivacyData.propertySymbol; // add to following token list if tx is init token
 
-                  spendingSNs = [];
+                if (!(tx.txTokenPrivacyData.type == _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenInit"])) {
+                  _context12.next = 87;
+                  break;
+                }
 
-                  for (i = 0; i < inputForTx.inputCoins.length; i++) {
-                    spendingSNs.push(inputForTx.inputCoins[i].coinDetails.serialNumber.compress());
-                  } // console.log("spendingSNs: ", spendingSNs);
+                txTokenPrivacyData = tx.txTokenPrivacyData;
+                _context12.t3 = this;
+                _context12.t4 = txTokenPrivacyData.propertyID;
+                _context12.next = 80;
+                return this.getTokenImage(txTokenPrivacyData.propertyID);
+
+              case 80:
+                _context12.t5 = _context12.sent;
+                _context12.t6 = txTokenPrivacyData.propertyName;
+                _context12.t7 = txTokenPrivacyData.propertySymbol;
+                _context12.t8 = txTokenPrivacyData.amount;
+                _context12.t9 = {
+                  ID: _context12.t4,
+                  Image: _context12.t5,
+                  Name: _context12.t6,
+                  Symbol: _context12.t7,
+                  Amount: _context12.t8,
+                  IsPrivacy: true,
+                  isInit: true
+                };
+
+                _context12.t3.addFollowingToken.call(_context12.t3, _context12.t9);
+
+                console.log("List following token after adding: ", this.followingTokens);
+
+              case 87:
+                spendingSNs = [];
+
+                for (i = 0; i < inputForTx.inputCoins.length; i++) {
+                  spendingSNs.push(inputForTx.inputCoins[i].coinDetails.serialNumber.compress());
+                } // console.log("spendingSNs: ", spendingSNs);
 
 
-                  object = {};
-                  object.txID = responseSendTX.txId;
-                  object.spendingSNs = spendingSNs;
-                  this.addSpendingCoins(object);
-                } // check is init or transfer token
+                object = {};
+                object.txID = responseSendTX.txId;
+                object.spendingSNs = spendingSNs;
+                this.addSpendingCoins(object);
 
-
+              case 93:
                 if (tx.txTokenPrivacyData.type == _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenInit"]) {
                   isIn = true;
                   amount = tx.txTokenPrivacyData.amount;
@@ -8178,23 +8262,23 @@ function () {
                 }
 
                 this.savePrivacyCustomTokenTx(tx, receiverPaymentAddrStr, status, isIn, amount);
-                _context12.next = 69;
+                _context12.next = 97;
                 return Wallet.updateProgressTx(100);
 
-              case 69:
+              case 97:
                 return _context12.abrupt("return", responseSendTX);
 
-              case 72:
-                _context12.prev = 72;
-                _context12.t3 = _context12["catch"](17);
-                throw _context12.t3;
+              case 100:
+                _context12.prev = 100;
+                _context12.t10 = _context12["catch"](17);
+                throw _context12.t10;
 
-              case 75:
+              case 103:
               case "end":
                 return _context12.stop();
             }
           }
-        }, _callee12, this, [[17, 72], [19, 27], [32, 39], [46, 52]]);
+        }, _callee12, this, [[17, 100], [19, 27], [32, 39], [46, 52]]);
       }));
 
       function createAndSendPrivacyCustomToken() {
@@ -8205,22 +8289,60 @@ function () {
     }()
   }, {
     key: "getTokenImage",
-    value: function getTokenImage(tokenId) {
-      return Object(_utils__WEBPACK_IMPORTED_MODULE_16__["genImageFromStr"])(tokenId, 40);
-    } // collect UTXOs have value that less than {amount} mili constant to one UTXO
+    value: function () {
+      var _getTokenImage = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee13(tokenId) {
+        var res;
+        return regeneratorRuntime.wrap(function _callee13$(_context13) {
+          while (1) {
+            switch (_context13.prev = _context13.next) {
+              case 0:
+                _context13.prev = 0;
+                _context13.next = 3;
+                return Wallet.RpcClient.hashToIdenticon([tokenId]);
+
+              case 3:
+                res = _context13.sent;
+                _context13.next = 10;
+                break;
+
+              case 6:
+                _context13.prev = 6;
+                _context13.t0 = _context13["catch"](0);
+                console.log("Error when get token image: ", _context13.t0);
+                throw _context13.t0;
+
+              case 10:
+                return _context13.abrupt("return", res.images[0]);
+
+              case 11:
+              case "end":
+                return _context13.stop();
+            }
+          }
+        }, _callee13, null, [[0, 6]]);
+      }));
+
+      function getTokenImage(_x12) {
+        return _getTokenImage.apply(this, arguments);
+      }
+
+      return getTokenImage;
+    }() // collect UTXOs have value that less than {amount} mili constant to one UTXO
 
   }, {
     key: "defragment",
     value: function () {
       var _defragment = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee13(amount, fee, isPrivacy) {
+      regeneratorRuntime.mark(function _callee14(amount, fee, isPrivacy) {
         var senderSkStr, senderPaymentAddressStr, defragmentUTXO, defragmentUTXOStr, totalAmount, result, paymentInfos, receiverPaymentAddrStr, tx, response, status, spendingSNs, i, object;
-        return regeneratorRuntime.wrap(function _callee13$(_context13) {
+        return regeneratorRuntime.wrap(function _callee14$(_context14) {
           while (1) {
-            switch (_context13.prev = _context13.next) {
+            switch (_context14.prev = _context14.next) {
               case 0:
-                _context13.next = 2;
+                _context14.next = 2;
                 return Wallet.updateProgressTx(10);
 
               case 2:
@@ -8230,30 +8352,30 @@ function () {
                 senderPaymentAddressStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_0__["PaymentAddressType"]); // totalAmount was paid for fee
 
                 console.time("getUTXOsToDefragment");
-                _context13.prev = 7;
-                _context13.next = 10;
+                _context14.prev = 7;
+                _context14.next = 10;
                 return Wallet.RpcClient.getUTXOsToDefragment(senderSkStr, fee, this, amount);
 
               case 10:
-                result = _context13.sent;
+                result = _context14.sent;
                 console.log("getUTXOsToDefragment Done");
                 defragmentUTXO = result.defragmentUTXO;
                 defragmentUTXOStr = result.defragmentUTXOStr;
                 totalAmount = result.totalAmount;
-                _context13.next = 21;
+                _context14.next = 21;
                 break;
 
               case 17:
-                _context13.prev = 17;
-                _context13.t0 = _context13["catch"](7);
-                console.log(_context13.t0);
-                throw _context13.t0;
+                _context14.prev = 17;
+                _context14.t0 = _context14["catch"](7);
+                console.log(_context14.t0);
+                throw _context14.t0;
 
               case 21:
                 console.timeEnd("getUTXOsToDefragment");
                 console.log("defragmentUTXO len: ", defragmentUTXO.length);
                 console.log("defragmentUTXO len: ", defragmentUTXO);
-                _context13.next = 26;
+                _context14.next = 26;
                 return Wallet.updateProgressTx(40);
 
               case 26:
@@ -8264,37 +8386,37 @@ function () {
                 receiverPaymentAddrStr[0] = senderPaymentAddressStr; // init tx
 
                 tx = new _tx_txprivacy__WEBPACK_IMPORTED_MODULE_8__["Tx"](Wallet.RpcClient);
-                _context13.prev = 31;
+                _context14.prev = 31;
                 console.time("Time for creating tx");
-                _context13.next = 35;
+                _context14.next = 35;
                 return tx.init(this.key.KeySet.PrivateKey, senderPaymentAddressStr, paymentInfos, defragmentUTXO, defragmentUTXOStr, fee, isPrivacy, null, null);
 
               case 35:
                 console.timeEnd("Time for creating tx");
-                _context13.next = 43;
+                _context14.next = 43;
                 break;
 
               case 38:
-                _context13.prev = 38;
-                _context13.t1 = _context13["catch"](31);
+                _context14.prev = 38;
+                _context14.t1 = _context14["catch"](31);
                 console.timeEnd("Time for creating tx");
-                console.log("ERR when creating tx: ", _context13.t1);
-                return _context13.abrupt("return", {
+                console.log("ERR when creating tx: ", _context14.t1);
+                return _context14.abrupt("return", {
                   txId: null,
-                  err: new Error("ERR when creating tx: " + _context13.t1.toString())
+                  err: new Error("ERR when creating tx: " + _context14.t1.toString())
                 });
 
               case 43:
-                _context13.next = 45;
+                _context14.next = 45;
                 return Wallet.updateProgressTx(70);
 
               case 45:
-                _context13.next = 47;
+                _context14.next = 47;
                 return Wallet.RpcClient.sendRawTx(tx);
 
               case 47:
-                response = _context13.sent;
-                _context13.next = 50;
+                response = _context14.sent;
+                _context14.next = 50;
                 return Wallet.updateProgressTx(90);
 
               case 50:
@@ -8328,21 +8450,21 @@ function () {
                 // console.timeEnd("Saving tx history: ");
 
 
-                _context13.next = 56;
+                _context14.next = 56;
                 return Wallet.updateProgressTx(100);
 
               case 56:
-                return _context13.abrupt("return", response);
+                return _context14.abrupt("return", response);
 
               case 57:
               case "end":
-                return _context13.stop();
+                return _context14.stop();
             }
           }
-        }, _callee13, this, [[7, 17], [31, 38]]);
+        }, _callee14, this, [[7, 17], [31, 38]]);
       }));
 
-      function defragment(_x12, _x13, _x14) {
+      function defragment(_x13, _x14, _x15) {
         return _defragment.apply(this, arguments);
       }
 
@@ -8689,27 +8811,27 @@ function () {
     value: function () {
       var _getHistoryByAccount = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee14(accName) {
+      regeneratorRuntime.mark(function _callee15(accName) {
         var account, nomalTxHistory;
-        return regeneratorRuntime.wrap(function _callee14$(_context14) {
+        return regeneratorRuntime.wrap(function _callee15$(_context15) {
           while (1) {
-            switch (_context14.prev = _context14.next) {
+            switch (_context15.prev = _context15.next) {
               case 0:
                 // let historicTrxList = await this.Storage.getItem("Wallet Trx History");
                 account = this.getAccountByName(accName);
                 nomalTxHistory = account.getNormalTrx(); // console.log("nomalTxHistory when getHistoryByAccount: ", nomalTxHistory);
 
-                return _context14.abrupt("return", nomalTxHistory);
+                return _context15.abrupt("return", nomalTxHistory);
 
               case 3:
               case "end":
-                return _context14.stop();
+                return _context15.stop();
             }
           }
-        }, _callee14, this);
+        }, _callee15, this);
       }));
 
-      function getHistoryByAccount(_x15) {
+      function getHistoryByAccount(_x16) {
         return _getHistoryByAccount.apply(this, arguments);
       }
 
@@ -8720,38 +8842,38 @@ function () {
     value: function () {
       var _loadWallet = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee15(password) {
+      regeneratorRuntime.mark(function _callee16(password) {
         var _this3 = this;
 
         var cipherText, data, jsonStr, tasks, _ret;
 
-        return regeneratorRuntime.wrap(function _callee15$(_context15) {
+        return regeneratorRuntime.wrap(function _callee16$(_context16) {
           while (1) {
-            switch (_context15.prev = _context15.next) {
+            switch (_context16.prev = _context16.next) {
               case 0:
                 if (!(this.Storage != null)) {
-                  _context15.next = 18;
+                  _context16.next = 18;
                   break;
                 }
 
-                _context15.next = 3;
+                _context16.next = 3;
                 return this.Storage.getItem("Wallet");
 
               case 3:
-                cipherText = _context15.sent;
+                cipherText = _context16.sent;
 
                 if (cipherText) {
-                  _context15.next = 6;
+                  _context16.next = 6;
                   break;
                 }
 
-                return _context15.abrupt("return", false);
+                return _context16.abrupt("return", false);
 
               case 6:
                 data = crypto_js__WEBPACK_IMPORTED_MODULE_4___default.a.AES.decrypt(cipherText, password);
                 jsonStr = data.toString(crypto_js__WEBPACK_IMPORTED_MODULE_4___default.a.enc.Utf8);
                 tasks = [];
-                _context15.prev = 9;
+                _context16.prev = 9;
 
                 _ret = function () {
                   var obj = circular_json__WEBPACK_IMPORTED_MODULE_5___default.a.parse(jsonStr);
@@ -8810,30 +8932,30 @@ function () {
                 }();
 
                 if (!(_typeof(_ret) === "object")) {
-                  _context15.next = 13;
+                  _context16.next = 13;
                   break;
                 }
 
-                return _context15.abrupt("return", _ret.v);
+                return _context16.abrupt("return", _ret.v);
 
               case 13:
-                _context15.next = 18;
+                _context16.next = 18;
                 break;
 
               case 15:
-                _context15.prev = 15;
-                _context15.t0 = _context15["catch"](9);
-                throw _context15.t0;
+                _context16.prev = 15;
+                _context16.t0 = _context16["catch"](9);
+                throw _context16.t0;
 
               case 18:
               case "end":
-                return _context15.stop();
+                return _context16.stop();
             }
           }
-        }, _callee15, this, [[9, 15]]);
+        }, _callee16, this, [[9, 15]]);
       }));
 
-      function loadWallet(_x16) {
+      function loadWallet(_x17) {
         return _loadWallet.apply(this, arguments);
       }
 
@@ -8860,18 +8982,18 @@ function () {
     value: function () {
       var _updateStatusHistory = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee16() {
+      regeneratorRuntime.mark(function _callee17() {
         var i, j, response, _j, _response2, _j2, _response3;
 
-        return regeneratorRuntime.wrap(function _callee16$(_context16) {
+        return regeneratorRuntime.wrap(function _callee17$(_context17) {
           while (1) {
-            switch (_context16.prev = _context16.next) {
+            switch (_context17.prev = _context17.next) {
               case 0:
                 i = 0;
 
               case 1:
                 if (!(i < this.MasterAccount.child.length)) {
-                  _context16.next = 35;
+                  _context17.next = 35;
                   break;
                 }
 
@@ -8879,20 +9001,20 @@ function () {
 
               case 3:
                 if (!(j < this.MasterAccount.child[i].trxHistory.NormalTrx.length)) {
-                  _context16.next = 12;
+                  _context17.next = 12;
                   break;
                 }
 
                 if (!(this.MasterAccount.child[i].trxHistory.NormalTrx[j].status == _constants__WEBPACK_IMPORTED_MODULE_0__["SuccessTx"])) {
-                  _context16.next = 9;
+                  _context17.next = 9;
                   break;
                 }
 
-                _context16.next = 7;
+                _context17.next = 7;
                 return Wallet.RpcClient.getTransactionByHash(this.MasterAccount.child[i].trxHistory.NormalTrx[j].txID);
 
               case 7:
-                response = _context16.sent;
+                response = _context17.sent;
 
                 if (response.err === null && response.isInBlock) {
                   this.MasterAccount.child[i].trxHistory.NormalTrx[j].status = _constants__WEBPACK_IMPORTED_MODULE_0__["ConfirmedTx"];
@@ -8900,7 +9022,7 @@ function () {
 
               case 9:
                 j++;
-                _context16.next = 3;
+                _context17.next = 3;
                 break;
 
               case 12:
@@ -8908,20 +9030,20 @@ function () {
 
               case 13:
                 if (!(_j < this.MasterAccount.child[i].trxHistory.CustomTokenTrx.length)) {
-                  _context16.next = 22;
+                  _context17.next = 22;
                   break;
                 }
 
                 if (!(this.MasterAccount.child[i].trxHistory.CustomTokenTrx[_j].status == _constants__WEBPACK_IMPORTED_MODULE_0__["SuccessTx"])) {
-                  _context16.next = 19;
+                  _context17.next = 19;
                   break;
                 }
 
-                _context16.next = 17;
+                _context17.next = 17;
                 return Wallet.RpcClient.getTransactionByHash(this.MasterAccount.child[i].trxHistory.CustomTokenTrx[_j].txID);
 
               case 17:
-                _response2 = _context16.sent;
+                _response2 = _context17.sent;
 
                 if (_response2.err === null && _response2.isInBlock) {
                   this.MasterAccount.child[i].trxHistory.CustomTokenTrx[_j].status = _constants__WEBPACK_IMPORTED_MODULE_0__["ConfirmedTx"];
@@ -8929,7 +9051,7 @@ function () {
 
               case 19:
                 _j++;
-                _context16.next = 13;
+                _context17.next = 13;
                 break;
 
               case 22:
@@ -8937,20 +9059,20 @@ function () {
 
               case 23:
                 if (!(_j2 < this.MasterAccount.child[i].trxHistory.PrivacyCustomTokenTrx.length)) {
-                  _context16.next = 32;
+                  _context17.next = 32;
                   break;
                 }
 
                 if (!(this.MasterAccount.child[i].trxHistory.PrivacyCustomTokenTrx[_j2].status == _constants__WEBPACK_IMPORTED_MODULE_0__["SuccessTx"])) {
-                  _context16.next = 29;
+                  _context17.next = 29;
                   break;
                 }
 
-                _context16.next = 27;
+                _context17.next = 27;
                 return Wallet.RpcClient.getTransactionByHash(this.MasterAccount.child[i].trxHistory.PrivacyCustomTokenTrx[_j2].txID);
 
               case 27:
-                _response3 = _context16.sent;
+                _response3 = _context17.sent;
 
                 if (_response3.err === null && _response3.isInBlock) {
                   this.MasterAccount.child[i].trxHistory.PrivacyCustomTokenTrx[_j2].status = _constants__WEBPACK_IMPORTED_MODULE_0__["ConfirmedTx"];
@@ -8958,20 +9080,20 @@ function () {
 
               case 29:
                 _j2++;
-                _context16.next = 23;
+                _context17.next = 23;
                 break;
 
               case 32:
                 i++;
-                _context16.next = 1;
+                _context17.next = 1;
                 break;
 
               case 35:
               case "end":
-                return _context16.stop();
+                return _context17.stop();
             }
           }
-        }, _callee16, this);
+        }, _callee17, this);
       }));
 
       function updateStatusHistory() {
@@ -8989,11 +9111,11 @@ function () {
       /*#__PURE__*/
       _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee17() {
+      regeneratorRuntime.mark(function _callee18() {
         var update, i, j, response;
-        return regeneratorRuntime.wrap(function _callee17$(_context17) {
+        return regeneratorRuntime.wrap(function _callee18$(_context18) {
           while (1) {
-            switch (_context17.prev = _context17.next) {
+            switch (_context18.prev = _context18.next) {
               case 0:
                 console.log("HHHH updating spending list: ");
                 update = false;
@@ -9001,12 +9123,12 @@ function () {
 
               case 3:
                 if (!(i < _this4.MasterAccount.child.length)) {
-                  _context17.next = 17;
+                  _context18.next = 17;
                   break;
                 }
 
                 if (!_this4.MasterAccount.child[i].spendingCoins) {
-                  _context17.next = 14;
+                  _context18.next = 14;
                   break;
                 }
 
@@ -9014,15 +9136,15 @@ function () {
 
               case 6:
                 if (!(j < _this4.MasterAccount.child[i].spendingCoins.length)) {
-                  _context17.next = 14;
+                  _context18.next = 14;
                   break;
                 }
 
-                _context17.next = 9;
+                _context18.next = 9;
                 return Wallet.RpcClient.getTransactionByHash(_this4.MasterAccount.child[i].spendingCoins[j].txID);
 
               case 9:
-                response = _context17.sent;
+                response = _context18.sent;
 
                 if (response.err === null && response.isInBlock || response.err != null && response.isInBlock === false && response.isInMempool === false) {
                   console.log("CCCC spendingCoins before update history: ", _this4.MasterAccount.child[i].spendingCoins);
@@ -9035,12 +9157,12 @@ function () {
 
               case 11:
                 j++;
-                _context17.next = 6;
+                _context18.next = 6;
                 break;
 
               case 14:
                 i++;
-                _context17.next = 3;
+                _context18.next = 3;
                 break;
 
               case 17:
@@ -9050,10 +9172,10 @@ function () {
 
               case 18:
               case "end":
-                return _context17.stop();
+                return _context18.stop();
             }
           }
-        }, _callee17);
+        }, _callee18);
       })), 3000);
     }
   }], [{
@@ -9068,24 +9190,24 @@ function () {
     value: function () {
       var _updateProgressTx = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee18(progress) {
-        return regeneratorRuntime.wrap(function _callee18$(_context18) {
+      regeneratorRuntime.mark(function _callee19(progress) {
+        return regeneratorRuntime.wrap(function _callee19$(_context19) {
           while (1) {
-            switch (_context18.prev = _context18.next) {
+            switch (_context19.prev = _context19.next) {
               case 0:
                 Wallet.ProgressTx = progress;
-                _context18.next = 3;
+                _context19.next = 3;
                 return Wallet.sleep(100);
 
               case 3:
               case "end":
-                return _context18.stop();
+                return _context19.stop();
             }
           }
-        }, _callee18);
+        }, _callee19);
       }));
 
-      function updateProgressTx(_x17) {
+      function updateProgressTx(_x18) {
         return _updateProgressTx.apply(this, arguments);
       }
 
@@ -9096,20 +9218,20 @@ function () {
     value: function () {
       var _resetProgressTx = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee19() {
-        return regeneratorRuntime.wrap(function _callee19$(_context19) {
+      regeneratorRuntime.mark(function _callee20() {
+        return regeneratorRuntime.wrap(function _callee20$(_context20) {
           while (1) {
-            switch (_context19.prev = _context19.next) {
+            switch (_context20.prev = _context20.next) {
               case 0:
-                _context19.next = 2;
+                _context20.next = 2;
                 return Wallet.updateProgressTx(0);
 
               case 2:
               case "end":
-                return _context19.stop();
+                return _context20.stop();
             }
           }
-        }, _callee19);
+        }, _callee20);
       }));
 
       function resetProgressTx() {
@@ -9143,23 +9265,23 @@ function () {
     value: function () {
       var _setItem = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee20(key, value) {
-        return regeneratorRuntime.wrap(function _callee20$(_context20) {
+      regeneratorRuntime.mark(function _callee21(key, value) {
+        return regeneratorRuntime.wrap(function _callee21$(_context21) {
           while (1) {
-            switch (_context20.prev = _context20.next) {
+            switch (_context21.prev = _context21.next) {
               case 0:
                 this.Data[key] = value;
-                return _context20.abrupt("return", Promise.resolve());
+                return _context21.abrupt("return", Promise.resolve());
 
               case 2:
               case "end":
-                return _context20.stop();
+                return _context21.stop();
             }
           }
-        }, _callee20, this);
+        }, _callee21, this);
       }));
 
-      function setItem(_x18, _x19) {
+      function setItem(_x19, _x20) {
         return _setItem.apply(this, arguments);
       }
 
@@ -9170,22 +9292,22 @@ function () {
     value: function () {
       var _getItem = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee21(key) {
-        return regeneratorRuntime.wrap(function _callee21$(_context21) {
+      regeneratorRuntime.mark(function _callee22(key) {
+        return regeneratorRuntime.wrap(function _callee22$(_context22) {
           while (1) {
-            switch (_context21.prev = _context21.next) {
+            switch (_context22.prev = _context22.next) {
               case 0:
-                return _context21.abrupt("return", this.Data[key]);
+                return _context22.abrupt("return", this.Data[key]);
 
               case 1:
               case "end":
-                return _context21.stop();
+                return _context22.stop();
             }
           }
-        }, _callee21, this);
+        }, _callee22, this);
       }));
 
-      function getItem(_x20) {
+      function getItem(_x21) {
         return _getItem.apply(this, arguments);
       }
 
@@ -32633,10 +32755,10 @@ utils.intFromLE = intFromLE;
 /*!********************************************!*\
   !*** ./node_modules/elliptic/package.json ***!
   \********************************************/
-/*! exports provided: _args, _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _spec, _where, author, bugs, dependencies, description, devDependencies, files, homepage, keywords, license, main, name, repository, scripts, version, default */
+/*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, dependencies, deprecated, description, devDependencies, files, homepage, keywords, license, main, name, repository, scripts, version, default */
 /***/ (function(module) {
 
-module.exports = {"_args":[["elliptic@6.4.1","/Users/thaibao/Documents/autonomous/constant-chain-web-js"]],"_from":"elliptic@6.4.1","_id":"elliptic@6.4.1","_inBundle":false,"_integrity":"sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==","_location":"/elliptic","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"elliptic@6.4.1","name":"elliptic","escapedName":"elliptic","rawSpec":"6.4.1","saveSpec":null,"fetchSpec":"6.4.1"},"_requiredBy":["/browserify-sign","/create-ecdh","/privacy-js-lib"],"_resolved":"https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz","_spec":"6.4.1","_where":"/Users/thaibao/Documents/autonomous/constant-chain-web-js","author":{"name":"Fedor Indutny","email":"fedor@indutny.com"},"bugs":{"url":"https://github.com/indutny/elliptic/issues"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"},"description":"EC cryptography","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"files":["lib"],"homepage":"https://github.com/indutny/elliptic","keywords":["EC","Elliptic","curve","Cryptography"],"license":"MIT","main":"lib/elliptic.js","name":"elliptic","repository":{"type":"git","url":"git+ssh://git@github.com/indutny/elliptic.git"},"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","test":"npm run lint && npm run unit","unit":"istanbul test _mocha --reporter=spec test/index.js","version":"grunt dist && git add dist/"},"version":"6.4.1"};
+module.exports = {"_from":"elliptic@6.4.1","_id":"elliptic@6.4.1","_inBundle":false,"_integrity":"sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==","_location":"/elliptic","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"elliptic@6.4.1","name":"elliptic","escapedName":"elliptic","rawSpec":"6.4.1","saveSpec":null,"fetchSpec":"6.4.1"},"_requiredBy":["/browserify-sign","/create-ecdh","/privacy-js-lib"],"_resolved":"https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz","_shasum":"c2d0b7776911b86722c632c3c06c60f2f819939a","_spec":"elliptic@6.4.1","_where":"/Users/autonomous/Desktop/WORK/constant-chain-web-js/node_modules/privacy-js-lib","author":{"name":"Fedor Indutny","email":"fedor@indutny.com"},"bugs":{"url":"https://github.com/indutny/elliptic/issues"},"bundleDependencies":false,"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"},"deprecated":false,"description":"EC cryptography","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"files":["lib"],"homepage":"https://github.com/indutny/elliptic","keywords":["EC","Elliptic","curve","Cryptography"],"license":"MIT","main":"lib/elliptic.js","name":"elliptic","repository":{"type":"git","url":"git+ssh://git@github.com/indutny/elliptic.git"},"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","test":"npm run lint && npm run unit","unit":"istanbul test _mocha --reporter=spec test/index.js","version":"grunt dist && git add dist/"},"version":"6.4.1"};
 
 /***/ }),
 
@@ -37462,23 +37584,23 @@ if (Base.base.BasePoint.prototype.derive) {
     console.warn("Overriding existing Base.base.BasePoint.prototype.derive. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
 }
 
-// const n = BigInt(P256.n.toString())
+const n = BigInt(P256.n.toString())
 Base.base.BasePoint.prototype.derive = function (seed, derivator) {
     let result = null;
-    try {
+    /*try {
         // if (this.isSafe()) {
-        //     console.time("1.1");
+            console.time("1.1");
             let temp;
             temp = (seed.toRed(N).redAdd(derivator.toRed(N)))
             temp = temp.redInvm().fromRed();
-            // console.timeEnd("1.1");
+            console.timeEnd("1.1");
             result = this.mul(temp)
         // }
     } catch (e) {
         console.log("ERR1", e);
-    }
+    }*/
 
-    /*try {
+    try {
         // if (this.isSafe()) {
         //     console.time("1.2");
             let temp;
@@ -37489,7 +37611,7 @@ Base.base.BasePoint.prototype.derive = function (seed, derivator) {
         // }
     } catch (e) {
         console.log("ERR2", e);
-    }*/
+    }
 
     return result;
 };
