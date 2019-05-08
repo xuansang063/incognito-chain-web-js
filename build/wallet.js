@@ -5218,8 +5218,8 @@ function CreateCustomTokenReceiverArray(data) {
     _iteratorError = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
+      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+        _iterator["return"]();
       }
     } finally {
       if (_didIteratorError) {
@@ -6424,45 +6424,43 @@ function byteArrayToWordArray(ba) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MnemonicGenerator", function() { return MnemonicGenerator; });
 /* harmony import */ var _wordlist__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./wordlist */ "./lib/wallet/wordlist.js");
-/* harmony import */ var random_bytes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! random-bytes */ "./node_modules/random-bytes/index.js");
-/* harmony import */ var random_bytes__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(random_bytes__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! privacy-js-lib/lib/privacy_utils */ "./node_modules/privacy-js-lib/lib/privacy_utils.js");
-/* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var pbkdf2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! pbkdf2 */ "./node_modules/pbkdf2/browser.js");
-/* harmony import */ var pbkdf2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(pbkdf2__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! privacy-js-lib/lib/privacy_utils */ "./node_modules/privacy-js-lib/lib/privacy_utils.js");
+/* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var pbkdf2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! pbkdf2 */ "./node_modules/pbkdf2/browser.js");
+/* harmony import */ var pbkdf2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(pbkdf2__WEBPACK_IMPORTED_MODULE_3__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-
+ // import randomBytes from "random-bytes";
 
 
 
  // Some bitwise operands for working with big.Ints
 
-var last11BitsMask = new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(2047);
-var rightShift11BitsDivider = new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(2048);
-var bigOne = new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(1);
-var bigTwo = new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(2); // used to isolate the checksum bits from the entropy+checksum byte array
+var last11BitsMask = new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(2047);
+var rightShift11BitsDivider = new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(2048);
+var bigOne = new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(1);
+var bigTwo = new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(2); // used to isolate the checksum bits from the entropy+checksum byte array
 
 var wordLengthChecksumMasksMapping = {
-  12: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(15),
-  15: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(31),
-  18: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(63),
-  21: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(127),
-  24: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(255) // used to use only the desired x of 8 available checksum bits.
+  12: new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(15),
+  15: new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(31),
+  18: new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(63),
+  21: new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(127),
+  24: new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(255) // used to use only the desired x of 8 available checksum bits.
   // 256 bit (word length 24) requires all 8 bits of the checksum,
   // and thus no shifting is needed for it (we would get a divByZero crash if we did)
 
 };
 var wordLengthChecksumShiftMapping = {
-  12: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(15),
-  15: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(8),
-  18: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(4)
+  12: new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(15),
+  15: new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(8),
+  18: new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(4)
 };
 var wordList = [];
 var wordMap = {};
@@ -6513,7 +6511,8 @@ function () {
       // random byte
 
 
-      var entropy = random_bytes__WEBPACK_IMPORTED_MODULE_1___default.a.sync(bitSize / 8);
+      var entropy = privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["randBytes"](bitSize / 8); // var entropy = randomBytes.sync(bitSize / 8);
+
       return entropy;
     } // newMnemonic will return a string consisting of the mnemonic words for
     // the given entropy.
@@ -6538,11 +6537,11 @@ function () {
       // Add to the last empty slot so we can work with LSBs instead of MSB
       // entropy as an int so we can bitmask without worrying about bytes slices
 
-      var entropyInt = new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a.BN(entropy); // Slice to hold words in
+      var entropyInt = new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a.BN(entropy); // Slice to hold words in
 
       var words = []; // Throw away big int for AND masking
 
-      var word = new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(0);
+      var word = new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(0);
 
       for (var i = sentenceLength - 1; i >= 0; i--) {
         // Get 11 right most bits and bitshift 11 to the right for next time
@@ -6552,7 +6551,7 @@ function () {
 
         var wordBytes = this.padByteSlice(word.toArray(), 2); // Convert bytes to an index and add that word to the list
 
-        var index = new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a.BN(wordBytes);
+        var index = new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a.BN(wordBytes);
         words[i] = wordList[index];
       }
 
@@ -6583,7 +6582,7 @@ function () {
       // and then set the (new) right most bit equal to checksum bit at that index
       // staring from the left
 
-      var dataBigInt = new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a.BN(data);
+      var dataBigInt = new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a.BN(data);
 
       for (var i = 0; i < checksumBitLength; i++) {
         dataBigInt = dataBigInt.mul(bigTwo);
@@ -6599,12 +6598,12 @@ function () {
   }, {
     key: "computeChecksum",
     value: function computeChecksum(data) {
-      return privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["hashSha3BytesToBytes"](data);
+      return privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["hashSha3BytesToBytes"](data);
     }
   }, {
     key: "newSeed",
     value: function newSeed(mnemonic, password) {
-      return pbkdf2__WEBPACK_IMPORTED_MODULE_4___default.a.pbkdf2Sync(mnemonic, "mnemonic" + password, 2048, 64, "sha512");
+      return pbkdf2__WEBPACK_IMPORTED_MODULE_3___default.a.pbkdf2Sync(mnemonic, "mnemonic" + password, 2048, 64, "sha512");
     }
   }]);
 
@@ -32755,333 +32754,10 @@ utils.intFromLE = intFromLE;
 /*!********************************************!*\
   !*** ./node_modules/elliptic/package.json ***!
   \********************************************/
-/*! exports provided: _args, _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _spec, _where, author, bugs, dependencies, description, devDependencies, files, homepage, keywords, license, main, name, repository, scripts, version, default */
+/*! exports provided: name, version, description, main, files, scripts, repository, keywords, author, license, bugs, homepage, devDependencies, dependencies, default */
 /***/ (function(module) {
 
-module.exports = {"_args":[["elliptic@6.4.1","/Users/thaibao/Documents/autonomous/constant-chain-web-js"]],"_from":"elliptic@6.4.1","_id":"elliptic@6.4.1","_inBundle":false,"_integrity":"sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==","_location":"/elliptic","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"elliptic@6.4.1","name":"elliptic","escapedName":"elliptic","rawSpec":"6.4.1","saveSpec":null,"fetchSpec":"6.4.1"},"_requiredBy":["/browserify-sign","/create-ecdh","/privacy-js-lib"],"_resolved":"https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz","_spec":"6.4.1","_where":"/Users/thaibao/Documents/autonomous/constant-chain-web-js","author":{"name":"Fedor Indutny","email":"fedor@indutny.com"},"bugs":{"url":"https://github.com/indutny/elliptic/issues"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"},"description":"EC cryptography","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"files":["lib"],"homepage":"https://github.com/indutny/elliptic","keywords":["EC","Elliptic","curve","Cryptography"],"license":"MIT","main":"lib/elliptic.js","name":"elliptic","repository":{"type":"git","url":"git+ssh://git@github.com/indutny/elliptic.git"},"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","test":"npm run lint && npm run unit","unit":"istanbul test _mocha --reporter=spec test/index.js","version":"grunt dist && git add dist/"},"version":"6.4.1"};
-
-/***/ }),
-
-/***/ "./node_modules/eventemitter3/index.js":
-/*!*********************************************!*\
-  !*** ./node_modules/eventemitter3/index.js ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var has = Object.prototype.hasOwnProperty
-  , prefix = '~';
-
-/**
- * Constructor to create a storage for our `EE` objects.
- * An `Events` instance is a plain object whose properties are event names.
- *
- * @constructor
- * @api private
- */
-function Events() {}
-
-//
-// We try to not inherit from `Object.prototype`. In some engines creating an
-// instance in this way is faster than calling `Object.create(null)` directly.
-// If `Object.create(null)` is not supported we prefix the event names with a
-// character to make sure that the built-in object properties are not
-// overridden or used as an attack vector.
-//
-if (Object.create) {
-  Events.prototype = Object.create(null);
-
-  //
-  // This hack is needed because the `__proto__` property is still inherited in
-  // some old browsers like Android 4, iPhone 5.1, Opera 11 and Safari 5.
-  //
-  if (!new Events().__proto__) prefix = false;
-}
-
-/**
- * Representation of a single event listener.
- *
- * @param {Function} fn The listener function.
- * @param {Mixed} context The context to invoke the listener with.
- * @param {Boolean} [once=false] Specify if the listener is a one-time listener.
- * @constructor
- * @api private
- */
-function EE(fn, context, once) {
-  this.fn = fn;
-  this.context = context;
-  this.once = once || false;
-}
-
-/**
- * Minimal `EventEmitter` interface that is molded against the Node.js
- * `EventEmitter` interface.
- *
- * @constructor
- * @api public
- */
-function EventEmitter() {
-  this._events = new Events();
-  this._eventsCount = 0;
-}
-
-/**
- * Return an array listing the events for which the emitter has registered
- * listeners.
- *
- * @returns {Array}
- * @api public
- */
-EventEmitter.prototype.eventNames = function eventNames() {
-  var names = []
-    , events
-    , name;
-
-  if (this._eventsCount === 0) return names;
-
-  for (name in (events = this._events)) {
-    if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
-  }
-
-  if (Object.getOwnPropertySymbols) {
-    return names.concat(Object.getOwnPropertySymbols(events));
-  }
-
-  return names;
-};
-
-/**
- * Return the listeners registered for a given event.
- *
- * @param {String|Symbol} event The event name.
- * @param {Boolean} exists Only check if there are listeners.
- * @returns {Array|Boolean}
- * @api public
- */
-EventEmitter.prototype.listeners = function listeners(event, exists) {
-  var evt = prefix ? prefix + event : event
-    , available = this._events[evt];
-
-  if (exists) return !!available;
-  if (!available) return [];
-  if (available.fn) return [available.fn];
-
-  for (var i = 0, l = available.length, ee = new Array(l); i < l; i++) {
-    ee[i] = available[i].fn;
-  }
-
-  return ee;
-};
-
-/**
- * Calls each of the listeners registered for a given event.
- *
- * @param {String|Symbol} event The event name.
- * @returns {Boolean} `true` if the event had listeners, else `false`.
- * @api public
- */
-EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
-  var evt = prefix ? prefix + event : event;
-
-  if (!this._events[evt]) return false;
-
-  var listeners = this._events[evt]
-    , len = arguments.length
-    , args
-    , i;
-
-  if (listeners.fn) {
-    if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);
-
-    switch (len) {
-      case 1: return listeners.fn.call(listeners.context), true;
-      case 2: return listeners.fn.call(listeners.context, a1), true;
-      case 3: return listeners.fn.call(listeners.context, a1, a2), true;
-      case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;
-      case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
-      case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
-    }
-
-    for (i = 1, args = new Array(len -1); i < len; i++) {
-      args[i - 1] = arguments[i];
-    }
-
-    listeners.fn.apply(listeners.context, args);
-  } else {
-    var length = listeners.length
-      , j;
-
-    for (i = 0; i < length; i++) {
-      if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);
-
-      switch (len) {
-        case 1: listeners[i].fn.call(listeners[i].context); break;
-        case 2: listeners[i].fn.call(listeners[i].context, a1); break;
-        case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;
-        case 4: listeners[i].fn.call(listeners[i].context, a1, a2, a3); break;
-        default:
-          if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {
-            args[j - 1] = arguments[j];
-          }
-
-          listeners[i].fn.apply(listeners[i].context, args);
-      }
-    }
-  }
-
-  return true;
-};
-
-/**
- * Add a listener for a given event.
- *
- * @param {String|Symbol} event The event name.
- * @param {Function} fn The listener function.
- * @param {Mixed} [context=this] The context to invoke the listener with.
- * @returns {EventEmitter} `this`.
- * @api public
- */
-EventEmitter.prototype.on = function on(event, fn, context) {
-  var listener = new EE(fn, context || this)
-    , evt = prefix ? prefix + event : event;
-
-  if (!this._events[evt]) this._events[evt] = listener, this._eventsCount++;
-  else if (!this._events[evt].fn) this._events[evt].push(listener);
-  else this._events[evt] = [this._events[evt], listener];
-
-  return this;
-};
-
-/**
- * Add a one-time listener for a given event.
- *
- * @param {String|Symbol} event The event name.
- * @param {Function} fn The listener function.
- * @param {Mixed} [context=this] The context to invoke the listener with.
- * @returns {EventEmitter} `this`.
- * @api public
- */
-EventEmitter.prototype.once = function once(event, fn, context) {
-  var listener = new EE(fn, context || this, true)
-    , evt = prefix ? prefix + event : event;
-
-  if (!this._events[evt]) this._events[evt] = listener, this._eventsCount++;
-  else if (!this._events[evt].fn) this._events[evt].push(listener);
-  else this._events[evt] = [this._events[evt], listener];
-
-  return this;
-};
-
-/**
- * Remove the listeners of a given event.
- *
- * @param {String|Symbol} event The event name.
- * @param {Function} fn Only remove the listeners that match this function.
- * @param {Mixed} context Only remove the listeners that have this context.
- * @param {Boolean} once Only remove one-time listeners.
- * @returns {EventEmitter} `this`.
- * @api public
- */
-EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
-  var evt = prefix ? prefix + event : event;
-
-  if (!this._events[evt]) return this;
-  if (!fn) {
-    if (--this._eventsCount === 0) this._events = new Events();
-    else delete this._events[evt];
-    return this;
-  }
-
-  var listeners = this._events[evt];
-
-  if (listeners.fn) {
-    if (
-         listeners.fn === fn
-      && (!once || listeners.once)
-      && (!context || listeners.context === context)
-    ) {
-      if (--this._eventsCount === 0) this._events = new Events();
-      else delete this._events[evt];
-    }
-  } else {
-    for (var i = 0, events = [], length = listeners.length; i < length; i++) {
-      if (
-           listeners[i].fn !== fn
-        || (once && !listeners[i].once)
-        || (context && listeners[i].context !== context)
-      ) {
-        events.push(listeners[i]);
-      }
-    }
-
-    //
-    // Reset the array, or remove it completely if we have no more listeners.
-    //
-    if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
-    else if (--this._eventsCount === 0) this._events = new Events();
-    else delete this._events[evt];
-  }
-
-  return this;
-};
-
-/**
- * Remove all listeners, or those of the specified event.
- *
- * @param {String|Symbol} [event] The event name.
- * @returns {EventEmitter} `this`.
- * @api public
- */
-EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
-  var evt;
-
-  if (event) {
-    evt = prefix ? prefix + event : event;
-    if (this._events[evt]) {
-      if (--this._eventsCount === 0) this._events = new Events();
-      else delete this._events[evt];
-    }
-  } else {
-    this._events = new Events();
-    this._eventsCount = 0;
-  }
-
-  return this;
-};
-
-//
-// Alias methods names because people roll like that.
-//
-EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
-EventEmitter.prototype.addListener = EventEmitter.prototype.on;
-
-//
-// This function doesn't apply anymore.
-//
-EventEmitter.prototype.setMaxListeners = function setMaxListeners() {
-  return this;
-};
-
-//
-// Expose the prefix.
-//
-EventEmitter.prefixed = prefix;
-
-//
-// Allow `EventEmitter` to be imported as module namespace.
-//
-EventEmitter.EventEmitter = EventEmitter;
-
-//
-// Expose the module.
-//
-if (true) {
-  module.exports = EventEmitter;
-}
-
+module.exports = {"name":"elliptic","version":"6.4.1","description":"EC cryptography","main":"lib/elliptic.js","files":["lib"],"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","unit":"istanbul test _mocha --reporter=spec test/index.js","test":"npm run lint && npm run unit","version":"grunt dist && git add dist/"},"repository":{"type":"git","url":"git@github.com:indutny/elliptic"},"keywords":["EC","Elliptic","curve","Cryptography"],"author":"Fedor Indutny <fedor@indutny.com>","license":"MIT","bugs":{"url":"https://github.com/indutny/elliptic/issues"},"homepage":"https://github.com/indutny/elliptic","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"}};
 
 /***/ }),
 
@@ -35757,392 +35433,6 @@ utils.encode = function encode(arr, enc) {
 
 /***/ }),
 
-/***/ "./node_modules/native-promise-only/lib/npo.src.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/native-promise-only/lib/npo.src.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, setImmediate) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! Native Promise Only
-    v0.8.1 (c) Kyle Simpson
-    MIT License: http://getify.mit-license.org
-*/
-
-(function UMD(name,context,definition){
-	// special form of UMD for polyfilling across evironments
-	context[name] = context[name] || definition();
-	if ( true && module.exports) { module.exports = context[name]; }
-	else if (true) { !(__WEBPACK_AMD_DEFINE_RESULT__ = (function $AMD$(){ return context[name]; }).call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); }
-})("Promise",typeof global != "undefined" ? global : this,function DEF(){
-	/*jshint validthis:true */
-	"use strict";
-
-	var builtInProp, cycle, scheduling_queue,
-		ToString = Object.prototype.toString,
-		timer = (typeof setImmediate != "undefined") ?
-			function timer(fn) { return setImmediate(fn); } :
-			setTimeout
-	;
-
-	// dammit, IE8.
-	try {
-		Object.defineProperty({},"x",{});
-		builtInProp = function builtInProp(obj,name,val,config) {
-			return Object.defineProperty(obj,name,{
-				value: val,
-				writable: true,
-				configurable: config !== false
-			});
-		};
-	}
-	catch (err) {
-		builtInProp = function builtInProp(obj,name,val) {
-			obj[name] = val;
-			return obj;
-		};
-	}
-
-	// Note: using a queue instead of array for efficiency
-	scheduling_queue = (function Queue() {
-		var first, last, item;
-
-		function Item(fn,self) {
-			this.fn = fn;
-			this.self = self;
-			this.next = void 0;
-		}
-
-		return {
-			add: function add(fn,self) {
-				item = new Item(fn,self);
-				if (last) {
-					last.next = item;
-				}
-				else {
-					first = item;
-				}
-				last = item;
-				item = void 0;
-			},
-			drain: function drain() {
-				var f = first;
-				first = last = cycle = void 0;
-
-				while (f) {
-					f.fn.call(f.self);
-					f = f.next;
-				}
-			}
-		};
-	})();
-
-	function schedule(fn,self) {
-		scheduling_queue.add(fn,self);
-		if (!cycle) {
-			cycle = timer(scheduling_queue.drain);
-		}
-	}
-
-	// promise duck typing
-	function isThenable(o) {
-		var _then, o_type = typeof o;
-
-		if (o != null &&
-			(
-				o_type == "object" || o_type == "function"
-			)
-		) {
-			_then = o.then;
-		}
-		return typeof _then == "function" ? _then : false;
-	}
-
-	function notify() {
-		for (var i=0; i<this.chain.length; i++) {
-			notifyIsolated(
-				this,
-				(this.state === 1) ? this.chain[i].success : this.chain[i].failure,
-				this.chain[i]
-			);
-		}
-		this.chain.length = 0;
-	}
-
-	// NOTE: This is a separate function to isolate
-	// the `try..catch` so that other code can be
-	// optimized better
-	function notifyIsolated(self,cb,chain) {
-		var ret, _then;
-		try {
-			if (cb === false) {
-				chain.reject(self.msg);
-			}
-			else {
-				if (cb === true) {
-					ret = self.msg;
-				}
-				else {
-					ret = cb.call(void 0,self.msg);
-				}
-
-				if (ret === chain.promise) {
-					chain.reject(TypeError("Promise-chain cycle"));
-				}
-				else if (_then = isThenable(ret)) {
-					_then.call(ret,chain.resolve,chain.reject);
-				}
-				else {
-					chain.resolve(ret);
-				}
-			}
-		}
-		catch (err) {
-			chain.reject(err);
-		}
-	}
-
-	function resolve(msg) {
-		var _then, self = this;
-
-		// already triggered?
-		if (self.triggered) { return; }
-
-		self.triggered = true;
-
-		// unwrap
-		if (self.def) {
-			self = self.def;
-		}
-
-		try {
-			if (_then = isThenable(msg)) {
-				schedule(function(){
-					var def_wrapper = new MakeDefWrapper(self);
-					try {
-						_then.call(msg,
-							function $resolve$(){ resolve.apply(def_wrapper,arguments); },
-							function $reject$(){ reject.apply(def_wrapper,arguments); }
-						);
-					}
-					catch (err) {
-						reject.call(def_wrapper,err);
-					}
-				})
-			}
-			else {
-				self.msg = msg;
-				self.state = 1;
-				if (self.chain.length > 0) {
-					schedule(notify,self);
-				}
-			}
-		}
-		catch (err) {
-			reject.call(new MakeDefWrapper(self),err);
-		}
-	}
-
-	function reject(msg) {
-		var self = this;
-
-		// already triggered?
-		if (self.triggered) { return; }
-
-		self.triggered = true;
-
-		// unwrap
-		if (self.def) {
-			self = self.def;
-		}
-
-		self.msg = msg;
-		self.state = 2;
-		if (self.chain.length > 0) {
-			schedule(notify,self);
-		}
-	}
-
-	function iteratePromises(Constructor,arr,resolver,rejecter) {
-		for (var idx=0; idx<arr.length; idx++) {
-			(function IIFE(idx){
-				Constructor.resolve(arr[idx])
-				.then(
-					function $resolver$(msg){
-						resolver(idx,msg);
-					},
-					rejecter
-				);
-			})(idx);
-		}
-	}
-
-	function MakeDefWrapper(self) {
-		this.def = self;
-		this.triggered = false;
-	}
-
-	function MakeDef(self) {
-		this.promise = self;
-		this.state = 0;
-		this.triggered = false;
-		this.chain = [];
-		this.msg = void 0;
-	}
-
-	function Promise(executor) {
-		if (typeof executor != "function") {
-			throw TypeError("Not a function");
-		}
-
-		if (this.__NPO__ !== 0) {
-			throw TypeError("Not a promise");
-		}
-
-		// instance shadowing the inherited "brand"
-		// to signal an already "initialized" promise
-		this.__NPO__ = 1;
-
-		var def = new MakeDef(this);
-
-		this["then"] = function then(success,failure) {
-			var o = {
-				success: typeof success == "function" ? success : true,
-				failure: typeof failure == "function" ? failure : false
-			};
-			// Note: `then(..)` itself can be borrowed to be used against
-			// a different promise constructor for making the chained promise,
-			// by substituting a different `this` binding.
-			o.promise = new this.constructor(function extractChain(resolve,reject) {
-				if (typeof resolve != "function" || typeof reject != "function") {
-					throw TypeError("Not a function");
-				}
-
-				o.resolve = resolve;
-				o.reject = reject;
-			});
-			def.chain.push(o);
-
-			if (def.state !== 0) {
-				schedule(notify,def);
-			}
-
-			return o.promise;
-		};
-		this["catch"] = function $catch$(failure) {
-			return this.then(void 0,failure);
-		};
-
-		try {
-			executor.call(
-				void 0,
-				function publicResolve(msg){
-					resolve.call(def,msg);
-				},
-				function publicReject(msg) {
-					reject.call(def,msg);
-				}
-			);
-		}
-		catch (err) {
-			reject.call(def,err);
-		}
-	}
-
-	var PromisePrototype = builtInProp({},"constructor",Promise,
-		/*configurable=*/false
-	);
-
-	// Note: Android 4 cannot use `Object.defineProperty(..)` here
-	Promise.prototype = PromisePrototype;
-
-	// built-in "brand" to signal an "uninitialized" promise
-	builtInProp(PromisePrototype,"__NPO__",0,
-		/*configurable=*/false
-	);
-
-	builtInProp(Promise,"resolve",function Promise$resolve(msg) {
-		var Constructor = this;
-
-		// spec mandated checks
-		// note: best "isPromise" check that's practical for now
-		if (msg && typeof msg == "object" && msg.__NPO__ === 1) {
-			return msg;
-		}
-
-		return new Constructor(function executor(resolve,reject){
-			if (typeof resolve != "function" || typeof reject != "function") {
-				throw TypeError("Not a function");
-			}
-
-			resolve(msg);
-		});
-	});
-
-	builtInProp(Promise,"reject",function Promise$reject(msg) {
-		return new this(function executor(resolve,reject){
-			if (typeof resolve != "function" || typeof reject != "function") {
-				throw TypeError("Not a function");
-			}
-
-			reject(msg);
-		});
-	});
-
-	builtInProp(Promise,"all",function Promise$all(arr) {
-		var Constructor = this;
-
-		// spec mandated checks
-		if (ToString.call(arr) != "[object Array]") {
-			return Constructor.reject(TypeError("Not an array"));
-		}
-		if (arr.length === 0) {
-			return Constructor.resolve([]);
-		}
-
-		return new Constructor(function executor(resolve,reject){
-			if (typeof resolve != "function" || typeof reject != "function") {
-				throw TypeError("Not a function");
-			}
-
-			var len = arr.length, msgs = Array(len), count = 0;
-
-			iteratePromises(Constructor,arr,function resolver(idx,msg) {
-				msgs[idx] = msg;
-				if (++count === len) {
-					resolve(msgs);
-				}
-			},reject);
-		});
-	});
-
-	builtInProp(Promise,"race",function Promise$race(arr) {
-		var Constructor = this;
-
-		// spec mandated checks
-		if (ToString.call(arr) != "[object Array]") {
-			return Constructor.reject(TypeError("Not an array"));
-		}
-
-		return new Constructor(function executor(resolve,reject){
-			if (typeof resolve != "function" || typeof reject != "function") {
-				throw TypeError("Not a function");
-			}
-
-			iteratePromises(Constructor,arr,function resolver(idx,msg){
-				resolve(msg);
-			},reject);
-		});
-	});
-
-	return Promise;
-});
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! ./../../timers-browserify/main.js */ "./node_modules/timers-browserify/main.js").setImmediate))
-
-/***/ }),
-
 /***/ "./node_modules/parse-asn1/aesid.json":
 /*!********************************************!*\
   !*** ./node_modules/parse-asn1/aesid.json ***!
@@ -38363,7 +37653,6 @@ let BigInt = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
 let utils = __webpack_require__(/*! ../privacy_utils */ "./node_modules/privacy-js-lib/lib/privacy_utils.js");
 let constant = __webpack_require__(/*! ../constants */ "./node_modules/privacy-js-lib/lib/constants.js");
 let p256 = __webpack_require__(/*! ../ec */ "./node_modules/privacy-js-lib/lib/ec.js").P256;
-const spawn = __webpack_require__(/*! threads */ "./node_modules/threads/lib/index.js").spawn;
 
 let zeroPoint = p256.curve.point(0, 0);
 let aggParams = __webpack_require__(/*! ./aggregaterangeparams */ "./node_modules/privacy-js-lib/lib/zkps/aggregaterangeparams.js");
@@ -40160,120 +39449,6 @@ module.exports = function xor (a, b) {
   return a
 }
 
-
-/***/ }),
-
-/***/ "./node_modules/random-bytes/index.js":
-/*!********************************************!*\
-  !*** ./node_modules/random-bytes/index.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/*!
- * random-bytes
- * Copyright(c) 2016 Douglas Christopher Wilson
- * MIT Licensed
- */
-
-
-
-/**
- * Module dependencies.
- * @private
- */
-
-var crypto = __webpack_require__(/*! crypto */ "./node_modules/crypto-browserify/index.js")
-
-/**
- * Module variables.
- * @private
- */
-
-var generateAttempts = crypto.randomBytes === crypto.pseudoRandomBytes ? 1 : 3
-
-/**
- * Module exports.
- * @public
- */
-
-module.exports = randomBytes
-module.exports.sync = randomBytesSync
-
-/**
- * Generates strong pseudo-random bytes.
- *
- * @param {number} size
- * @param {function} [callback]
- * @return {Promise}
- * @public
- */
-
-function randomBytes(size, callback) {
-  // validate callback is a function, if provided
-  if (callback !== undefined && typeof callback !== 'function') {
-    throw new TypeError('argument callback must be a function')
-  }
-
-  // require the callback without promises
-  if (!callback && !global.Promise) {
-    throw new TypeError('argument callback is required')
-  }
-
-  if (callback) {
-    // classic callback style
-    return generateRandomBytes(size, generateAttempts, callback)
-  }
-
-  return new Promise(function executor(resolve, reject) {
-    generateRandomBytes(size, generateAttempts, function onRandomBytes(err, str) {
-      if (err) return reject(err)
-      resolve(str)
-    })
-  })
-}
-
-/**
- * Generates strong pseudo-random bytes sync.
- *
- * @param {number} size
- * @return {Buffer}
- * @public
- */
-
-function randomBytesSync(size) {
-  var err = null
-
-  for (var i = 0; i < generateAttempts; i++) {
-    try {
-      return crypto.randomBytes(size)
-    } catch (e) {
-      err = e
-    }
-  }
-
-  throw err
-}
-
-/**
- * Generates strong pseudo-random bytes.
- *
- * @param {number} size
- * @param {number} attempts
- * @param {function} callback
- * @private
- */
-
-function generateRandomBytes(size, attempts, callback) {
-  crypto.randomBytes(size, function onRandomBytes(err, buf) {
-    if (!err) return callback(null, buf)
-    if (!--attempts) return callback(err)
-    setTimeout(generateRandomBytes.bind(null, size, attempts, callback), 10)
-  })
-}
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -44205,7 +43380,7 @@ module.exports = Sha512
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=exports.SHA3Hash=exports.SHA3=exports.Keccak=void 0;var _buffer=__webpack_require__(/*! buffer */ "./node_modules/buffer/index.js");var _sponge=_interopRequireDefault(__webpack_require__(/*! ./sponge */ "./node_modules/sha3/sponge/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var createHash=function createHash(_ref){var padding=_ref.padding;return function Hash(){var _this=this;var size=arguments.length>0&&arguments[0]!==undefined?arguments[0]:512;if(!this||this.constructor!==Hash){return new Hash(size)}var sponge=new _sponge.default({capacity:size,padding:padding});this.update=function(input){var encoding=arguments.length>1&&arguments[1]!==undefined?arguments[1]:"utf8";if(_buffer.Buffer.isBuffer(input)){sponge.absorb(input);return _this}if(typeof input==="string"){return _this.update(_buffer.Buffer.from(input,encoding))}throw new TypeError("Not a string or buffer")};this.digest=function(){var format=arguments.length>0&&arguments[0]!==undefined?arguments[0]:"binary";var buffer=sponge.squeeze();if(format&&format!=="binary"){return buffer.toString(format)}return buffer};this.reset=function(){sponge.reset();return _this};return this}};var Keccak=createHash({padding:1});exports.Keccak=Keccak;var SHA3=createHash({padding:6});exports.SHA3=SHA3;var SHA3Hash=Keccak;exports.SHA3Hash=SHA3Hash;SHA3.SHA3Hash=SHA3Hash;var _default=SHA3;exports.default=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=exports.SHA3Hash=exports.SHA3=exports.Keccak=void 0;var _buffer=__webpack_require__(/*! buffer */ "./node_modules/buffer/index.js");var _sponge=_interopRequireDefault(__webpack_require__(/*! ./sponge */ "./node_modules/sha3/sponge/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var createHash=function createHash(_ref){var padding=_ref.padding;return function Hash(){var _this=this;var size=arguments.length>0&&arguments[0]!==undefined?arguments[0]:512;if(!this||this.constructor!==Hash){return new Hash(size)}var sponge=new _sponge["default"]({capacity:size,padding:padding});this.update=function(input){var encoding=arguments.length>1&&arguments[1]!==undefined?arguments[1]:"utf8";if(_buffer.Buffer.isBuffer(input)){sponge.absorb(input);return _this}if(typeof input==="string"){return _this.update(_buffer.Buffer.from(input,encoding))}throw new TypeError("Not a string or buffer")};this.digest=function(){var format=arguments.length>0&&arguments[0]!==undefined?arguments[0]:"binary";var buffer=sponge.squeeze();if(format&&format!=="binary"){return buffer.toString(format)}return buffer};this.reset=function(){sponge.reset();return _this};return this}};var Keccak=createHash({padding:1});exports.Keccak=Keccak;var SHA3=createHash({padding:6});exports.SHA3=SHA3;var SHA3Hash=Keccak;exports.SHA3Hash=SHA3Hash;SHA3.SHA3Hash=SHA3Hash;var _default=SHA3;exports["default"]=_default;
 
 /***/ }),
 
@@ -44217,7 +43392,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports.default=exports
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _buffer=__webpack_require__(/*! buffer */ "./node_modules/buffer/index.js");var _permute=_interopRequireDefault(__webpack_require__(/*! ./permute */ "./node_modules/sha3/sponge/permute/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var allowedCapacityValues=[224,256,384,512];var writeState=function writeState(I,O){for(var i=0;i<I.length;i+=8){var o=i/4;O[o]^=I[i+7]<<24|I[i+6]<<16|I[i+5]<<8|I[i+4];O[o+1]^=I[i+3]<<24|I[i+2]<<16|I[i+1]<<8|I[i]}};var readHash=function readHash(I,n){var O=_buffer.Buffer.allocUnsafe(n);for(var o=0;o<n;o+=8){var i=o/4;O[o]=I[i+1];O[o+1]=I[i+1]>>>8;O[o+2]=I[i+1]>>>16;O[o+3]=I[i+1]>>>24;O[o+4]=I[i];O[o+5]=I[i]>>>8;O[o+6]=I[i]>>>16;O[o+7]=I[i]>>>24}return O};var Sponge=function Sponge(_ref){var _this=this;var capacity=_ref.capacity,padding=_ref.padding;if(!allowedCapacityValues.includes(capacity)){throw new Error("Unsupported hash length")}var keccak=(0,_permute.default)();var stateSize=200;var hashSize=capacity/8;var queueSize=stateSize-hashSize*2;var queueOffset=0;var state=new Uint32Array(stateSize/4);var queue=_buffer.Buffer.allocUnsafe(queueSize);this.absorb=function(buffer){for(var i=0;i<buffer.length;i++){queue[queueOffset]=buffer[i];queueOffset+=1;if(queueOffset>=queueSize){writeState(queue,state);keccak(state);queueOffset=0}}return _this};this.squeeze=function(){var output={queue:_buffer.Buffer.allocUnsafe(queueSize),state:new Uint32Array(stateSize/4)};queue.copy(output.queue);for(var i=0;i<state.length;i++){output.state[i]=state[i]}output.queue.fill(0,queueOffset);output.queue[queueOffset]|=padding;output.queue[queueSize-1]|=128;writeState(output.queue,output.state);keccak(output.state);return readHash(output.state,hashSize)};this.reset=function(){queue.fill(0);state.fill(0);queueOffset=0;return _this};return this};var _default=Sponge;exports.default=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _buffer=__webpack_require__(/*! buffer */ "./node_modules/buffer/index.js");var _permute=_interopRequireDefault(__webpack_require__(/*! ./permute */ "./node_modules/sha3/sponge/permute/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var allowedCapacityValues=[224,256,384,512];var writeState=function writeState(I,O){for(var i=0;i<I.length;i+=8){var o=i/4;O[o]^=I[i+7]<<24|I[i+6]<<16|I[i+5]<<8|I[i+4];O[o+1]^=I[i+3]<<24|I[i+2]<<16|I[i+1]<<8|I[i]}};var readHash=function readHash(I,n){var O=_buffer.Buffer.allocUnsafe(n);for(var o=0;o<n;o+=8){var i=o/4;O[o]=I[i+1];O[o+1]=I[i+1]>>>8;O[o+2]=I[i+1]>>>16;O[o+3]=I[i+1]>>>24;O[o+4]=I[i];O[o+5]=I[i]>>>8;O[o+6]=I[i]>>>16;O[o+7]=I[i]>>>24}return O};var Sponge=function Sponge(_ref){var _this=this;var capacity=_ref.capacity,padding=_ref.padding;if(!allowedCapacityValues.includes(capacity)){throw new Error("Unsupported hash length")}var keccak=(0,_permute["default"])();var stateSize=200;var hashSize=capacity/8;var queueSize=stateSize-hashSize*2;var queueOffset=0;var state=new Uint32Array(stateSize/4);var queue=_buffer.Buffer.allocUnsafe(queueSize);this.absorb=function(buffer){for(var i=0;i<buffer.length;i++){queue[queueOffset]=buffer[i];queueOffset+=1;if(queueOffset>=queueSize){writeState(queue,state);keccak(state);queueOffset=0}}return _this};this.squeeze=function(){var output={queue:_buffer.Buffer.allocUnsafe(queueSize),state:new Uint32Array(stateSize/4)};queue.copy(output.queue);for(var i=0;i<state.length;i++){output.state[i]=state[i]}output.queue.fill(0,queueOffset);output.queue[queueOffset]|=padding;output.queue[queueSize-1]|=128;writeState(output.queue,output.state);keccak(output.state);return readHash(output.state,hashSize)};this.reset=function(){queue.fill(0);state.fill(0);queueOffset=0;return _this};return this};var _default=Sponge;exports["default"]=_default;
 
 /***/ }),
 
@@ -44229,7 +43404,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var chi=function chi(_ref){var A=_ref.A,C=_ref.C;for(var y=0;y<25;y+=5){for(var x=0;x<5;x++){(0,_copy.default)(A,y+x)(C,x)}for(var _x=0;_x<5;_x++){var xy=(y+_x)*2;var x1=(_x+1)%5*2;var x2=(_x+2)%5*2;A[xy]^=~C[x1]&C[x2];A[xy+1]^=~C[x1+1]&C[x2+1]}}};var _default=chi;exports.default=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var chi=function chi(_ref){var A=_ref.A,C=_ref.C;for(var y=0;y<25;y+=5){for(var x=0;x<5;x++){(0,_copy["default"])(A,y+x)(C,x)}for(var _x=0;_x<5;_x++){var xy=(y+_x)*2;var x1=(_x+1)%5*2;var x2=(_x+2)%5*2;A[xy]^=~C[x1]&C[x2];A[xy+1]^=~C[x1+1]&C[x2+1]}}};var _default=chi;exports["default"]=_default;
 
 /***/ }),
 
@@ -44253,7 +43428,7 @@ var copy=function copy(I,i){return function(O,o){var oi=o*2;var ii=i*2;O[oi]=I[i
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _chi=_interopRequireDefault(__webpack_require__(/*! ./chi */ "./node_modules/sha3/sponge/permute/chi/index.js"));var _iota=_interopRequireDefault(__webpack_require__(/*! ./iota */ "./node_modules/sha3/sponge/permute/iota/index.js"));var _rhoPi=_interopRequireDefault(__webpack_require__(/*! ./rho-pi */ "./node_modules/sha3/sponge/permute/rho-pi/index.js"));var _theta=_interopRequireDefault(__webpack_require__(/*! ./theta */ "./node_modules/sha3/sponge/permute/theta/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var reset=function reset(){for(var _len=arguments.length,arrays=new Array(_len),_key=0;_key<_len;_key++){arrays[_key]=arguments[_key]}for(var _i=0;_i<arrays.length;_i++){var array=arrays[_i];array.fill(0)}};var permute=function permute(){var C=new Uint32Array(10);var D=new Uint32Array(10);var W=new Uint32Array(2);return function(A){for(var roundIndex=0;roundIndex<24;roundIndex++){(0,_theta.default)({A:A,C:C,D:D,W:W});(0,_rhoPi.default)({A:A,C:C,W:W});(0,_chi.default)({A:A,C:C});(0,_iota.default)({A:A,roundIndex:roundIndex})}reset(C,D,W)}};var _default=permute;exports.default=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _chi=_interopRequireDefault(__webpack_require__(/*! ./chi */ "./node_modules/sha3/sponge/permute/chi/index.js"));var _iota=_interopRequireDefault(__webpack_require__(/*! ./iota */ "./node_modules/sha3/sponge/permute/iota/index.js"));var _rhoPi=_interopRequireDefault(__webpack_require__(/*! ./rho-pi */ "./node_modules/sha3/sponge/permute/rho-pi/index.js"));var _theta=_interopRequireDefault(__webpack_require__(/*! ./theta */ "./node_modules/sha3/sponge/permute/theta/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var permute=function permute(){var C=new Uint32Array(10);var D=new Uint32Array(10);var W=new Uint32Array(2);return function(A){for(var roundIndex=0;roundIndex<24;roundIndex++){(0,_theta["default"])({A:A,C:C,D:D,W:W});(0,_rhoPi["default"])({A:A,C:C,W:W});(0,_chi["default"])({A:A,C:C});(0,_iota["default"])({A:A,roundIndex:roundIndex})}C.fill(0);D.fill(0);W.fill(0)}};var _default=permute;exports["default"]=_default;
 
 /***/ }),
 
@@ -44265,7 +43440,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _roundConstants=_interopRequireDefault(__webpack_require__(/*! ./round-constants */ "./node_modules/sha3/sponge/permute/iota/round-constants/index.js"));var _xor=_interopRequireDefault(__webpack_require__(/*! ../xor */ "./node_modules/sha3/sponge/permute/xor/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var iota=function iota(_ref){var A=_ref.A,roundIndex=_ref.roundIndex;(0,_xor.default)(A,0)(A,0,_roundConstants.default,roundIndex)};var _default=iota;exports.default=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _roundConstants=_interopRequireDefault(__webpack_require__(/*! ./round-constants */ "./node_modules/sha3/sponge/permute/iota/round-constants/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var iota=function iota(_ref){var A=_ref.A,roundIndex=_ref.roundIndex;var i=roundIndex*2;A[0]^=_roundConstants["default"][i];A[1]^=_roundConstants["default"][i+1]};var _default=iota;exports["default"]=_default;
 
 /***/ }),
 
@@ -44277,7 +43452,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var ROUND_CONSTANTS=new Uint32Array([0,1,0,32898,2147483648,32906,2147483648,2147516416,0,32907,0,2147483649,2147483648,2147516545,2147483648,32777,0,138,0,136,0,2147516425,0,2147483658,0,2147516555,2147483648,139,2147483648,32905,2147483648,32771,2147483648,32770,2147483648,128,0,32778,2147483648,2147483658,2147483648,2147516545,2147483648,32896,0,2147483649,2147483648,2147516424]);var _default=ROUND_CONSTANTS;exports.default=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var ROUND_CONSTANTS=new Uint32Array([0,1,0,32898,2147483648,32906,2147483648,2147516416,0,32907,0,2147483649,2147483648,2147516545,2147483648,32777,0,138,0,136,0,2147516425,0,2147483658,0,2147516555,2147483648,139,2147483648,32905,2147483648,32771,2147483648,32770,2147483648,128,0,32778,2147483648,2147483658,2147483648,2147516545,2147483648,32896,0,2147483649,2147483648,2147516424]);var _default=ROUND_CONSTANTS;exports["default"]=_default;
 
 /***/ }),
 
@@ -44289,7 +43464,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _piShuffles=_interopRequireDefault(__webpack_require__(/*! ./pi-shuffles */ "./node_modules/sha3/sponge/permute/rho-pi/pi-shuffles/index.js"));var _rhoOffsets=_interopRequireDefault(__webpack_require__(/*! ./rho-offsets */ "./node_modules/sha3/sponge/permute/rho-pi/rho-offsets/index.js"));var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));var _rotate=_interopRequireDefault(__webpack_require__(/*! ../rotate */ "./node_modules/sha3/sponge/permute/rotate/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var rhoPi=function rhoPi(_ref){var A=_ref.A,C=_ref.C,W=_ref.W;(0,_copy.default)(A,1)(W,0);for(var i=0;i<24;i++){var j=_piShuffles.default[i];var r=_rhoOffsets.default[i];(0,_copy.default)(A,j)(C,0);(0,_copy.default)((0,_rotate.default)(W,r),0)(A,j);(0,_copy.default)(C,0)(W,0)}};var _default=rhoPi;exports.default=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _piShuffles=_interopRequireDefault(__webpack_require__(/*! ./pi-shuffles */ "./node_modules/sha3/sponge/permute/rho-pi/pi-shuffles/index.js"));var _rhoOffsets=_interopRequireDefault(__webpack_require__(/*! ./rho-offsets */ "./node_modules/sha3/sponge/permute/rho-pi/rho-offsets/index.js"));var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var rhoPi=function rhoPi(_ref){var A=_ref.A,C=_ref.C,W=_ref.W;(0,_copy["default"])(A,1)(W,0);var H=0;var L=0;var Wi=0;var ri=32;for(var i=0;i<24;i++){var j=_piShuffles["default"][i];var r=_rhoOffsets["default"][i];(0,_copy["default"])(A,j)(C,0);H=W[0];L=W[1];ri=32-r;Wi=r<32?0:1;W[Wi]=H<<r|L>>>ri;W[(Wi+1)%2]=L<<r|H>>>ri;(0,_copy["default"])(W,0)(A,j);(0,_copy["default"])(C,0)(W,0)}};var _default=rhoPi;exports["default"]=_default;
 
 /***/ }),
 
@@ -44301,7 +43476,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var PI_SHUFFLES=[10,7,11,17,18,3,5,16,8,21,24,4,15,23,19,13,12,2,20,14,22,9,6,1];var _default=PI_SHUFFLES;exports.default=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var PI_SHUFFLES=[10,7,11,17,18,3,5,16,8,21,24,4,15,23,19,13,12,2,20,14,22,9,6,1];var _default=PI_SHUFFLES;exports["default"]=_default;
 
 /***/ }),
 
@@ -44313,19 +43488,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var RHO_OFFSETS=[1,3,6,10,15,21,28,36,45,55,2,14,27,41,56,8,25,43,62,18,39,61,20,44];var _default=RHO_OFFSETS;exports.default=_default;
-
-/***/ }),
-
-/***/ "./node_modules/sha3/sponge/permute/rotate/index.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/sha3/sponge/permute/rotate/index.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;function _slicedToArray(arr,i){return _arrayWithHoles(arr)||_iterableToArrayLimit(arr,i)||_nonIterableRest()}function _nonIterableRest(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}function _iterableToArrayLimit(arr,i){var _arr=[];var _n=true;var _d=false;var _e=undefined;try{for(var _i=arr[Symbol.iterator](),_s;!(_n=(_s=_i.next()).done);_n=true){_arr.push(_s.value);if(i&&_arr.length===i)break}}catch(err){_d=true;_e=err}finally{try{if(!_n&&_i["return"]!=null)_i["return"]()}finally{if(_d)throw _e}}return _arr}function _arrayWithHoles(arr){if(Array.isArray(arr))return arr}var M=32;var rotate=function rotate(W,r){var _W=_slicedToArray(W,2),H=_W[0],L=_W[1];var i=r<32?0:1;var j=(i+1)%2;W[i]=H<<r|L>>>M-r;W[j]=L<<r|H>>>M-r;return W};var _default=rotate;exports.default=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var RHO_OFFSETS=[1,3,6,10,15,21,28,36,45,55,2,14,27,41,56,8,25,43,62,18,39,61,20,44];var _default=RHO_OFFSETS;exports["default"]=_default;
 
 /***/ }),
 
@@ -44337,19 +43500,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));var _rotate=_interopRequireDefault(__webpack_require__(/*! ../rotate */ "./node_modules/sha3/sponge/permute/rotate/index.js"));var _xor=_interopRequireDefault(__webpack_require__(/*! ../xor */ "./node_modules/sha3/sponge/permute/xor/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var theta0=function theta0(_ref){var A=_ref.A,C=_ref.C;for(var x=0;x<5;x++){(0,_xor.default)(C,x)(A,x,A,x+5,A,x+10,A,x+15,A,x+20)}};var theta1=function theta1(_ref2){var A=_ref2.A,C=_ref2.C,D=_ref2.D,W=_ref2.W;for(var x=0;x<5;x++){(0,_copy.default)(C,(x+1)%5)(W,0);(0,_xor.default)(D,x)(C,(x+4)%5,(0,_rotate.default)(W,1),0);for(var y=0;y<25;y+=5){(0,_xor.default)(A,y+x)(A,y+x,D,x)}}};var theta=function theta(_ref3){var A=_ref3.A,C=_ref3.C,D=_ref3.D,W=_ref3.W;theta0({A:A,C:C});theta1({A:A,C:C,D:D,W:W})};var _default=theta;exports.default=_default;
-
-/***/ }),
-
-/***/ "./node_modules/sha3/sponge/permute/xor/index.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/sha3/sponge/permute/xor/index.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var xor=function xor(O,o){return function(){var oi=o*2;for(var _len=arguments.length,I=new Array(_len),_key=0;_key<_len;_key++){I[_key]=arguments[_key]}if(I.length>=2){var ii=I[1]*2;O[oi]=I[0][ii];O[oi+1]=I[0][ii+1]}for(var i=2;i<I.length;i+=2){var _ii=I[i+1]*2;O[oi]^=I[i][_ii];O[oi+1]^=I[i][_ii+1]}}};var _default=xor;exports.default=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var theta=function theta(_ref){var A=_ref.A,C=_ref.C,D=_ref.D,W=_ref.W;var H=0;var L=0;for(var x=0;x<5;x++){var x20=x*2;var x21=(x+5)*2;var x22=(x+10)*2;var x23=(x+15)*2;var x24=(x+20)*2;C[x20]=A[x20]^A[x21]^A[x22]^A[x23]^A[x24];C[x20+1]=A[x20+1]^A[x21+1]^A[x22+1]^A[x23+1]^A[x24+1]}for(var _x=0;_x<5;_x++){(0,_copy["default"])(C,(_x+1)%5)(W,0);H=W[0];L=W[1];W[0]=H<<1|L>>>31;W[1]=L<<1|H>>>31;D[_x*2]=C[(_x+4)%5*2]^W[0];D[_x*2+1]=C[(_x+4)%5*2+1]^W[1];for(var y=0;y<25;y+=5){A[(y+_x)*2]^=D[_x*2];A[(y+_x)*2+1]^=D[_x*2+1]}}};var _default=theta;exports["default"]=_default;
 
 /***/ }),
 
@@ -44798,1048 +43949,6 @@ function simpleEnd(buf) {
 
 /***/ }),
 
-/***/ "./node_modules/threads/lib/config.js":
-/*!********************************************!*\
-  !*** ./node_modules/threads/lib/config.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.getConfig = getConfig;
-exports.setConfig = setConfig;
-var configuration = {
-  basepath: {
-    node: '',
-    web: ''
-  },
-  fallback: {
-    slaveScriptUrl: ''
-  }
-};
-
-function configDeepMerge(destObj, srcObj) {
-  var ancestorProps = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-  Object.keys(srcObj).forEach(function (propKey) {
-    var srcValue = srcObj[propKey];
-    var ancestorPropsAndThis = ancestorProps.concat([propKey]);
-
-    if ((typeof srcValue === 'undefined' ? 'undefined' : _typeof(srcValue)) === 'object') {
-      if (typeof destObj[propKey] !== 'undefined' && _typeof(destObj[propKey]) !== 'object') {
-        throw new Error('Expected config property not to be an object: ' + ancestorPropsAndThis.join('.'));
-      }
-      configDeepMerge(destObj[propKey], srcValue, ancestorPropsAndThis);
-    } else {
-      if (_typeof(destObj[propKey]) === 'object') {
-        throw new Error('Expected config property to be an object: ' + ancestorPropsAndThis.join('.'));
-      }
-      destObj[propKey] = srcValue;
-    }
-  });
-}
-
-var config = {
-  get: function get() {
-    return configuration;
-  },
-
-  set: function set(newConfig) {
-    if ((typeof newConfig === 'undefined' ? 'undefined' : _typeof(newConfig)) !== 'object') {
-      throw new Error('Expected config object.');
-    }
-
-    configDeepMerge(configuration, newConfig);
-  }
-};
-
-exports.default = config;
-function getConfig() {
-  return config.get();
-}
-
-function setConfig() {
-  return config.set.apply(config, arguments);
-}
-//# sourceMappingURL=config.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/defaults.browser.js":
-/*!******************************************************!*\
-  !*** ./node_modules/threads/lib/defaults.browser.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-/*eslint-env browser*/
-
-exports.default = {
-  pool: {
-    size: navigator.hardwareConcurrency || 8
-  }
-};
-//# sourceMappingURL=defaults.browser.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/defaults.js":
-/*!**********************************************!*\
-  !*** ./node_modules/threads/lib/defaults.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-/*eslint-env node*/
-/*
- * This file is only a stub to make './defaults' resolve the './defaults.node' module.
- * Loading the browser defaults into the browser bundle is done in the gulpfile by
- * configuring a browserify override.
- */
-
-if (typeof process !== 'undefined' && process.arch !== 'browser' && 'pid' in process) {
-  module.exports = __webpack_require__(/*! ./defaults.node */ "./node_modules/threads/lib/defaults.node.js");
-} else {
-  module.exports = __webpack_require__(/*! ./defaults.browser */ "./node_modules/threads/lib/defaults.browser.js");
-}
-//# sourceMappingURL=defaults.js.map
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ "./node_modules/process/browser.js")))
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/defaults.node.js":
-/*!***************************************************!*\
-  !*** ./node_modules/threads/lib/defaults.node.js ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _os = __webpack_require__(/*! os */ 4);
-
-exports.default = {
-  pool: {
-    size: (0, _os.cpus)().length
-  }
-};
-//# sourceMappingURL=defaults.node.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/index.js":
-/*!*******************************************!*\
-  !*** ./node_modules/threads/lib/index.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.Pool = exports.defaults = exports.config = undefined;
-exports.spawn = spawn;
-
-__webpack_require__(/*! native-promise-only */ "./node_modules/native-promise-only/lib/npo.src.js");
-
-var _config = __webpack_require__(/*! ./config */ "./node_modules/threads/lib/config.js");
-
-var _config2 = _interopRequireDefault(_config);
-
-var _defaults = __webpack_require__(/*! ./defaults */ "./node_modules/threads/lib/defaults.js");
-
-var _defaults2 = _interopRequireDefault(_defaults);
-
-var _pool = __webpack_require__(/*! ./pool */ "./node_modules/threads/lib/pool.js");
-
-var _pool2 = _interopRequireDefault(_pool);
-
-var _worker = __webpack_require__(/*! ./worker */ "./node_modules/threads/lib/worker.js");
-
-var _worker2 = _interopRequireDefault(_worker);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.config = _config2.default;
-exports.defaults = _defaults2.default;
-exports.Pool = _pool2.default;
-function spawn() {
-  var runnable = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-  var importScripts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-  return new _worker2.default(runnable, importScripts, options);
-}
-
-exports.default = {
-  config: _config2.default,
-  defaults: _defaults2.default,
-  Pool: _pool2.default,
-  spawn: spawn,
-  Worker: _worker2.default
-};
-//# sourceMappingURL=index.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/job.js":
-/*!*****************************************!*\
-  !*** ./node_modules/threads/lib/job.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _eventemitter = __webpack_require__(/*! eventemitter3 */ "./node_modules/eventemitter3/index.js");
-
-var _eventemitter2 = _interopRequireDefault(_eventemitter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Job = function (_EventEmitter) {
-  _inherits(Job, _EventEmitter);
-
-  function Job(pool) {
-    _classCallCheck(this, Job);
-
-    var _this = _possibleConstructorReturn(this, _EventEmitter.call(this));
-
-    _this.pool = pool;
-    _this.thread = null;
-
-    _this.runArgs = [];
-    _this.sendArgs = [];
-
-    pool.emit('newJob', _this);
-    return _this;
-  }
-
-  Job.prototype.run = function run() {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    if (args.length === 0) {
-      throw new Error('Cannot call .run() without arguments.');
-    }
-
-    this.runArgs = args;
-    return this;
-  };
-
-  Job.prototype.send = function send() {
-    if (this.runArgs.length === 0) {
-      throw new Error('Cannot .send() before .run().');
-    }
-
-    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-
-    this.sendArgs = args;
-
-    this.emit('readyToRun');
-    return this;
-  };
-
-  Job.prototype.executeOn = function executeOn(thread) {
-    var _this2 = this,
-        _thread$on$once$once$,
-        _thread$on$once$once;
-
-    var onProgress = function onProgress() {
-      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        args[_key3] = arguments[_key3];
-      }
-
-      return _this2.emit.apply(_this2, ['progress'].concat(args));
-    };
-    var onMessage = function onMessage() {
-      for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-        args[_key4] = arguments[_key4];
-      }
-
-      _this2.emit.apply(_this2, ['done'].concat(args));
-      thread.removeListener('progress', onProgress);
-    };
-    var onError = function onError() {
-      for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-        args[_key5] = arguments[_key5];
-      }
-
-      _this2.emit.apply(_this2, ['error'].concat(args));
-      thread.removeListener('progress', onProgress);
-    };
-
-    (_thread$on$once$once$ = (_thread$on$once$once = thread.on('progress', onProgress).once('message', onMessage).once('error', onError)).run.apply(_thread$on$once$once, this.runArgs)).send.apply(_thread$on$once$once$, this.sendArgs);
-
-    this.thread = thread;
-    this.emit('threadChanged');
-    return this;
-  };
-
-  Job.prototype.promise = function promise() {
-    var _this3 = this;
-
-    // Always return a promise
-    return new Promise(function (resolve) {
-      // If the thread isn't set, listen for the threadChanged event
-      if (!_this3.thread) {
-        _this3.once('threadChanged', function () {
-          resolve(_this3.thread.promise());
-        });
-      } else {
-        resolve(_this3.thread.promise());
-      }
-    });
-  };
-
-  Job.prototype.abort = function abort() {
-    this.emit('abort');
-  };
-
-  Job.prototype.destroy = function destroy() {
-    this.removeAllListeners();
-    delete this.runArgs;
-    delete this.sendArgs;
-  };
-
-  return Job;
-}(_eventemitter2.default);
-
-exports.default = Job;
-//# sourceMappingURL=job.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/pool.js":
-/*!******************************************!*\
-  !*** ./node_modules/threads/lib/pool.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _eventemitter = __webpack_require__(/*! eventemitter3 */ "./node_modules/eventemitter3/index.js");
-
-var _eventemitter2 = _interopRequireDefault(_eventemitter);
-
-var _job = __webpack_require__(/*! ./job */ "./node_modules/threads/lib/job.js");
-
-var _job2 = _interopRequireDefault(_job);
-
-var _defaults = __webpack_require__(/*! ./defaults */ "./node_modules/threads/lib/defaults.js");
-
-var _defaults2 = _interopRequireDefault(_defaults);
-
-var _ = __webpack_require__(/*! ./ */ "./node_modules/threads/lib/index.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Pool = function (_EventEmitter) {
-  _inherits(Pool, _EventEmitter);
-
-  function Pool(threads) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    _classCallCheck(this, Pool);
-
-    var _this = _possibleConstructorReturn(this, _EventEmitter.call(this));
-
-    _this.threads = Pool.spawn(threads || _defaults2.default.pool.size, options);
-    _this.idleThreads = _this.threads.slice();
-    _this.jobQueue = [];
-    _this.runArgs = [];
-    _this.spawnOptions = options;
-
-    _this.on('newJob', function (job) {
-      return _this.handleNewJob(job);
-    });
-    _this.on('threadAvailable', function () {
-      return _this.dequeue();
-    });
-    return _this;
-  }
-
-  Pool.prototype.run = function run() {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    this.runArgs = args;
-    return this;
-  };
-
-  Pool.prototype.send = function send() {
-    var _job$run;
-
-    if (!this.runArgs) {
-      throw new Error('Pool.send() called without prior Pool.run(). You need to define what to run first.');
-    }
-
-    var job = new _job2.default(this);
-    return (_job$run = job.run.apply(job, this.runArgs)).send.apply(_job$run, arguments);
-  };
-
-  Pool.prototype.killAll = function killAll() {
-    this.threads.forEach(function (thread) {
-      thread.kill();
-    });
-  };
-
-  Pool.prototype.queueJob = function queueJob(job) {
-    var _this2 = this;
-
-    job.once('abort', function () {
-      return _this2.dropJob(job);
-    }); // triggered by job.abort()
-    this.jobQueue.push(job);
-    this.dequeue();
-  };
-
-  Pool.prototype.dropJob = function dropJob(job) {
-    var index = this.jobQueue.indexOf(job);
-    if (index !== -1) {
-      this.jobQueue.splice(index, 1);
-    }
-  };
-
-  Pool.prototype.dequeue = function dequeue() {
-    var _this3 = this;
-
-    if (this.jobQueue.length === 0 || this.idleThreads.length === 0) {
-      return;
-    }
-
-    var job = this.jobQueue.shift();
-    var thread = this.idleThreads.shift();
-
-    job.removeAllListeners('abort'); // remove previous listener
-
-    job.once('done', function () {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      return _this3.handleJobSuccess.apply(_this3, [thread, job].concat(args));
-    }).once('error', function () {
-      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        args[_key3] = arguments[_key3];
-      }
-
-      return _this3.handleJobError.apply(_this3, [thread, job].concat(args));
-    }).once('abort', function () {
-      return _this3.handleJobAbort(thread, job);
-    });
-
-    job.executeOn(thread);
-  };
-
-  Pool.prototype.handleNewJob = function handleNewJob(job) {
-    var _this4 = this;
-
-    job.once('readyToRun', function () {
-      return _this4.queueJob(job);
-    }); // triggered by job.send()
-  };
-
-  Pool.prototype.handleJobSuccess = function handleJobSuccess(thread, job) {
-    for (var _len4 = arguments.length, responseArgs = Array(_len4 > 2 ? _len4 - 2 : 0), _key4 = 2; _key4 < _len4; _key4++) {
-      responseArgs[_key4 - 2] = arguments[_key4];
-    }
-
-    this.emit.apply(this, ['done', job].concat(responseArgs));
-    this.handleJobDone(thread, job);
-  };
-
-  Pool.prototype.handleJobError = function handleJobError(thread, job, error) {
-    this.emit('error', job, error);
-    this.handleJobDone(thread, job);
-  };
-
-  Pool.prototype.handleJobDone = function handleJobDone(thread, job) {
-    var _this5 = this;
-
-    job.destroy(); // to prevent memory leak
-    this.idleThreads.push(thread);
-    this.emit('threadAvailable');
-
-    if (this.idleThreads.length === this.threads.length) {
-      // run deferred to give other job.on('done') handlers time to run first
-      setTimeout(function () {
-        _this5.emit('finished');
-      }, 0);
-    }
-  };
-
-  Pool.prototype.handleJobAbort = function handleJobAbort(thread, job) {
-    thread.kill();
-
-    var index = this.threads.indexOf(thread);
-    var newThread = (0, _.spawn)(null, [], this.spawnOptions);
-
-    this.threads.splice(index, 1, newThread);
-    this.handleJobDone(newThread, job);
-  };
-
-  return Pool;
-}(_eventemitter2.default);
-
-exports.default = Pool;
-
-
-Pool.spawn = function (threadCount, options) {
-  var threads = [];
-
-  for (var threadIndex = 0; threadIndex < threadCount; threadIndex++) {
-    threads.push((0, _.spawn)(null, [], options));
-  }
-
-  return threads;
-};
-//# sourceMappingURL=pool.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/worker.browser/slave-code-uri.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/threads/lib/worker.browser/slave-code-uri.js ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _slaveCode = __webpack_require__(/*! ./slave-code */ "./node_modules/threads/lib/worker.browser/slave-code.js");
-
-var _slaveCode2 = _interopRequireDefault(_slaveCode);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var slaveCodeDataUri = 'data:text/javascript;charset=utf-8,' + encodeURI(_slaveCode2.default);
-var createBlobURL = window.createBlobURL || window.createObjectURL;
-
-if (!createBlobURL) {
-  var URL = window.URL || window.webkitURL;
-
-  if (URL) {
-    createBlobURL = URL.createObjectURL;
-  } else {
-    throw new Error('No Blob creation implementation found.');
-  }
-}
-
-if (typeof window.BlobBuilder === 'function' && typeof createBlobURL === 'function') {
-  var blobBuilder = new window.BlobBuilder();
-  blobBuilder.append(_slaveCode2.default);
-  slaveCodeDataUri = createBlobURL(blobBuilder.getBlob());
-} else if (typeof window.Blob === 'function' && typeof createBlobURL === 'function') {
-  var blob = new window.Blob([_slaveCode2.default], { type: 'text/javascript' });
-  slaveCodeDataUri = createBlobURL(blob);
-}
-
-exports.default = slaveCodeDataUri;
-//# sourceMappingURL=slave-code-uri.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/worker.browser/slave-code.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/threads/lib/worker.browser/slave-code.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/*eslint-env worker*/\n/*global importScripts*/\n/*eslint-disable no-console*/\nself.module = {\n  exports : function() {\n    if (console) { console.error('No thread logic initialized.'); }\n  }\n};\n\nfunction handlerDone() {\n  var args = Array.prototype.slice.call(arguments, 0);\n  this.postMessage({ response : args });\n}\n\nfunction handlerProgress(progress) {\n  this.postMessage({ progress : progress });\n}\n\nfunction handlerError(error) {\n  // Need to clone error manually to avoid DataCloneError, since errors cannot be send\n  var cloned = {\n    message: error.message,\n    name: error.name,\n    stack: error.stack\n  };\n  this.postMessage({ error : cloned });\n}\n\nfunction handlerDoneTransfer() {\n  var args = Array.prototype.slice.call(arguments);\n  var lastArg = args.pop();\n\n  if (!(lastArg instanceof Array) && this.console) {\n    console.error('Expected 2nd parameter of <doneCallback>.transfer() to be an array. Got:', lastArg);\n  }\n\n  this.postMessage({ response : args }, lastArg);\n}\n\nfunction isPromise (thing) {\n  return thing && typeof thing.then === 'function';\n}\n\nself.onmessage = function (event) {\n  var scripts = event.data.scripts;\n  if (scripts && scripts.length > 0 && typeof importScripts !== 'function') {\n    throw new Error('importScripts() not supported.');\n  }\n\n  if (event.data.initByScripts) {\n    importScripts.apply(null, scripts);\n  }\n\n  if (event.data.initByMethod) {\n    // Clear `this.module.exports` first, to avoid trouble with importScripts' CommonJS detection\n    delete this.module.exports;\n  \n    if (scripts && scripts.length > 0) {\n      importScripts.apply(null, scripts);\n    }\n\n    var method = event.data.method;\n    this.module.exports = Function.apply(null, method.args.concat(method.body));\n  }\n\n  if (event.data.doRun) {\n    var handler = this.module.exports;\n\n    if (typeof handler !== 'function') {\n      throw new Error('Cannot run thread logic. No handler has been exported.');\n    }\n\n    var preparedHandlerDone = handlerDone.bind(this);\n    preparedHandlerDone.transfer = handlerDoneTransfer.bind(this);\n\n    var returned = handler.call(this, event.data.param, preparedHandlerDone, handlerProgress.bind(this));\n\n    if (isPromise(returned)) {\n      returned.then(preparedHandlerDone, handlerError.bind(this));\n    }\n  }\n}.bind(self);\n";
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/worker.browser/worker.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/threads/lib/worker.browser/worker.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _eventemitter = __webpack_require__(/*! eventemitter3 */ "./node_modules/eventemitter3/index.js");
-
-var _eventemitter2 = _interopRequireDefault(_eventemitter);
-
-var _slaveCodeUri = __webpack_require__(/*! ./slave-code-uri */ "./node_modules/threads/lib/worker.browser/slave-code-uri.js");
-
-var _slaveCodeUri2 = _interopRequireDefault(_slaveCodeUri);
-
-var _config = __webpack_require__(/*! ../config */ "./node_modules/threads/lib/config.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-if (_typeof(window.Worker) !== 'object' && typeof window.Worker !== 'function') {
-  throw new Error('Browser does not support web workers!');
-}
-
-function joinPaths(path1, path2) {
-  if (!path1 || !path2) {
-    return path1 + path2;
-  } else if (path1.charAt(path1.length - 1) === '/' || path2.charAt(0) === '/') {
-    return path1 + path2;
-  } else {
-    return path1 + '/' + path2;
-  }
-}
-
-function prependScriptUrl(scriptUrl) {
-  var prefix = (0, _config.getConfig)().basepath.web;
-  return prefix ? joinPaths(prefix, scriptUrl) : scriptUrl;
-}
-
-function argsToArray(argumentsList) {
-  return Array.prototype.slice.call(argumentsList);
-}
-
-function logError(error) {
-  if (error.stack) {
-    console.error(error.stack); // eslint-disable-line no-console
-  } else if (error.message && error.filename && error.lineno) {
-    var fileName = error.filename.match(/^data:text\/javascript/) && error.filename.length > 50 ? error.filename.substr(0, 50) + '...' : error.filename;
-    console.error(error.message + ' @' + fileName + ':' + error.lineno); // eslint-disable-line no-console
-  } else {
-    console.error(error); // eslint-disable-line no-console
-  }
-}
-
-var Worker = function (_EventEmitter) {
-  _inherits(Worker, _EventEmitter);
-
-  function Worker() {
-    var initialScript = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var importScripts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-
-    _classCallCheck(this, Worker);
-
-    // used by `run()` to decide if the worker must be re-initialized
-    var _this = _possibleConstructorReturn(this, _EventEmitter.call(this));
-
-    _this.currentRunnable = null;
-    _this.currentImportScripts = [];
-
-    _this.initWorker();
-    _this.worker.addEventListener('message', _this.handleMessage.bind(_this));
-    _this.worker.addEventListener('error', _this.handleError.bind(_this));
-
-    if (initialScript) {
-      _this.run(initialScript, importScripts);
-    }
-    return _this;
-  }
-
-  Worker.prototype.initWorker = function initWorker() {
-    try {
-      this.worker = new window.Worker(_slaveCodeUri2.default);
-    } catch (error) {
-      var slaveScriptUrl = (0, _config.getConfig)().fallback.slaveScriptUrl;
-      if (slaveScriptUrl) {
-        // try using the slave script file instead of the data URI
-        this.worker = new window.Worker(slaveScriptUrl);
-      } else {
-        // re-throw
-        throw error;
-      }
-    }
-  };
-
-  Worker.prototype.run = function run(toRun) {
-    var importScripts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-
-    if (this.alreadyInitializedToRun(toRun, importScripts)) {
-      // don't re-initialize with the new logic if it already has been
-      return this;
-    }
-
-    if (typeof toRun === 'function') {
-      this.runMethod(toRun, importScripts);
-    } else {
-      this.runScripts(toRun, importScripts);
-    }
-
-    this.currentRunnable = toRun;
-    this.currentImportScripts = importScripts;
-
-    return this;
-  };
-
-  Worker.prototype.runMethod = function runMethod(method, importScripts) {
-    var methodStr = method.toString();
-    var args = methodStr.substring(methodStr.indexOf('(') + 1, methodStr.indexOf(')')).split(',');
-    var body = methodStr.substring(methodStr.indexOf('{') + 1, methodStr.lastIndexOf('}'));
-
-    this.worker.postMessage({
-      initByMethod: true,
-      method: { args: args, body: body },
-      scripts: importScripts.map(prependScriptUrl)
-    });
-  };
-
-  Worker.prototype.runScripts = function runScripts(script, importScripts) {
-    if (!script) {
-      throw new Error('Must pass a function or a script URL to run().');
-    }
-
-    // attention: array for browser, single script for node
-    this.worker.postMessage({
-      initByScripts: true,
-      scripts: importScripts.concat([script]).map(prependScriptUrl)
-    });
-  };
-
-  Worker.prototype.send = function send(param) {
-    var transferables = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-
-    this.worker.postMessage({
-      doRun: true,
-      param: param
-    }, transferables);
-    return this;
-  };
-
-  Worker.prototype.kill = function kill() {
-    this.worker.terminate();
-    this.emit('exit');
-    return this;
-  };
-
-  Worker.prototype.promise = function promise() {
-    var _this2 = this;
-
-    return new Promise(function (resolve, reject) {
-      var resolved = void 0,
-          rejected = void 0;
-      resolved = function resolved(result) {
-        _this2.removeListener('error', rejected);
-        resolve(result);
-      };
-      rejected = function rejected(err) {
-        _this2.removeListener('message', resolved);
-        reject(err);
-      };
-
-      _this2.once('message', resolved).once('error', rejected);
-    });
-  };
-
-  Worker.prototype.alreadyInitializedToRun = function alreadyInitializedToRun(toRun, importScripts) {
-    var runnablesMatch = this.currentRunnable === toRun;
-    var importScriptsMatch = this.currentImportScripts === importScripts || importScripts.length === 0 && this.currentImportScripts.length === 0;
-
-    return runnablesMatch && importScriptsMatch;
-  };
-
-  Worker.prototype.handleMessage = function handleMessage(event) {
-    if (event.data.error) {
-      this.handleError(event.data.error);
-    } else if (event.data.progress) {
-      this.handleProgress(event.data.progress);
-    } else {
-      var responseArgs = argsToArray(event.data.response);
-      this.emit.apply(this, ['message'].concat(responseArgs));
-      this.emit.apply(this, ['done'].concat(responseArgs)); // this one is just for convenience
-    }
-  };
-
-  Worker.prototype.handleProgress = function handleProgress(progress) {
-    this.emit('progress', progress);
-  };
-
-  Worker.prototype.handleError = function handleError(error) {
-    if (!this.listeners('error', true)) {
-      logError(error);
-    }
-
-    if (error.preventDefault) {
-      error.preventDefault();
-    }
-
-    this.emit('error', error);
-  };
-
-  return Worker;
-}(_eventemitter2.default);
-
-exports.default = Worker;
-//# sourceMappingURL=worker.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/worker.js":
-/*!********************************************!*\
-  !*** ./node_modules/threads/lib/worker.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-/*eslint-env node*/
-/*
- * This file is only a stub to make './worker' resolve the './worker.node/worker' module.
- * Loading the browser worker into the browser bundle is done in the gulpfile by
- * configuring a browserify override.
- */
-
-if (typeof process !== 'undefined' && process.arch !== 'browser' && 'pid' in process) {
-  module.exports = __webpack_require__(/*! ./worker.node/worker */ "./node_modules/threads/lib/worker.node/worker.js");
-} else {
-  module.exports = __webpack_require__(/*! ./worker.browser/worker */ "./node_modules/threads/lib/worker.browser/worker.js");
-}
-//# sourceMappingURL=worker.js.map
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ "./node_modules/process/browser.js")))
-
-/***/ }),
-
-/***/ "./node_modules/threads/lib/worker.node/worker.js":
-/*!********************************************************!*\
-  !*** ./node_modules/threads/lib/worker.node/worker.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process, __dirname) {
-
-exports.__esModule = true;
-exports.resetPortCounter = undefined;
-
-var _child_process = __webpack_require__(/*! child_process */ 5);
-
-var _child_process2 = _interopRequireDefault(_child_process);
-
-var _path = __webpack_require__(/*! path */ 6);
-
-var _path2 = _interopRequireDefault(_path);
-
-var _eventemitter = __webpack_require__(/*! eventemitter3 */ "./node_modules/eventemitter3/index.js");
-
-var _eventemitter2 = _interopRequireDefault(_eventemitter);
-
-var _config = __webpack_require__(/*! ../config */ "./node_modules/threads/lib/config.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// Mutable variable with the last port used for inspect/inspect-brk.
-// This value is shared among all workers.
-var lastPort = 0;
-
-// Port used by Node.JS when there is no port specified. See
-// https://nodejs.org/en/docs/inspector/#command-line-options
-var DEFAULT_PORT = 9229;
-var buildExecArgv = function buildExecArgv() {
-  return process.execArgv.map(function (arg) {
-    var matches = arg.match(/^(--inspect(?:-brk)?)(?:=(\d+))?/);
-    if (!matches) return arg;
-
-    var command = matches[1];
-    if (lastPort === 0) lastPort = Number(matches[2]) || 9229;
-    lastPort++;
-    return command + '=' + lastPort;
-  });
-};
-
-// This function will reset the counter of ports used for inspect/inspect-brk.
-// Used for testing.
-var resetPortCounter = exports.resetPortCounter = function resetPortCounter() {
-  lastPort = 0;
-};
-
-var Worker = function (_EventEmitter) {
-  _inherits(Worker, _EventEmitter);
-
-  function Worker(initialRunnable) {
-    var importScripts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-    _classCallCheck(this, Worker);
-
-    var _this = _possibleConstructorReturn(this, _EventEmitter.call(this));
-    // `importScripts` cannot be consumed, it's just there to keep the API compatible to the browser worker
-
-
-    _this.slave = _child_process2.default.fork(_path2.default.join(__dirname, 'slave.js'), [], Object.assign({ execArgv: buildExecArgv() }, options));
-    _this.slave.on('message', _this.handleMessage.bind(_this));
-    _this.slave.on('error', _this.handleError.bind(_this));
-    _this.slave.on('exit', _this.emit.bind(_this, 'exit'));
-
-    if (initialRunnable) {
-      _this.run(initialRunnable);
-    }
-    return _this;
-  }
-
-  Worker.prototype.run = function run(toRun) {
-    if (typeof toRun === 'function') {
-      this.runMethod(toRun);
-    } else {
-      this.runScript(toRun);
-    }
-    return this;
-  };
-
-  Worker.prototype.runMethod = function runMethod(method) {
-    this.slave.send({
-      initByMethod: true,
-      method: method.toString()
-    });
-  };
-
-  Worker.prototype.runScript = function runScript(script) {
-    if (!script) {
-      throw new Error('Must pass a function or a script path to run().');
-    }
-
-    var prefixedScriptPath = _path2.default.join((0, _config.getConfig)().basepath.node, script);
-
-    // attention: single script for node, array for browser
-    this.slave.send({
-      initByScript: true,
-      script: _path2.default.resolve(prefixedScriptPath)
-    });
-  };
-
-  Worker.prototype.send = function send(param) {
-    this.slave.send({
-      doRun: true,
-      param: param
-    });
-    return this;
-  };
-
-  Worker.prototype.kill = function kill() {
-    this.slave.kill();
-    return this;
-  };
-
-  Worker.prototype.promise = function promise() {
-    var _this2 = this;
-
-    return new Promise(function (resolve, reject) {
-      var resolved = void 0,
-          rejected = void 0;
-      resolved = function resolved(result) {
-        _this2.removeListener('error', rejected);
-        resolve(result);
-      };
-      rejected = function rejected(err) {
-        _this2.removeListener('message', resolved);
-        reject(err);
-      };
-
-      _this2.once('message', resolved).once('error', rejected);
-    });
-  };
-
-  Worker.prototype.handleMessage = function handleMessage(message) {
-    if (message.error) {
-      var error = new Error(message.error.message);
-      error.stack = message.error.stack;
-
-      this.handleError(error);
-    } else if (message.progress) {
-      this.handleProgress(message.progress);
-    } else {
-      this.emit.apply(this, ['message'].concat(message.response));
-      this.emit.apply(this, ['done'].concat(message.response)); // this one is just for convenience
-    }
-  };
-
-  Worker.prototype.handleProgress = function handleProgress(progress) {
-    this.emit('progress', progress);
-  };
-
-  Worker.prototype.handleError = function handleError(error) {
-    if (!this.listeners('error', true)) {
-      console.error(error.stack || error); // eslint-disable-line no-console
-    }
-    this.emit('error', error);
-  };
-
-  return Worker;
-}(_eventemitter2.default);
-
-exports.default = Worker;
-//# sourceMappingURL=worker.js.map
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../process/browser.js */ "./node_modules/process/browser.js"), "/"))
-
-/***/ }),
-
 /***/ "./node_modules/timers-browserify/main.js":
 /*!************************************************!*\
   !*** ./node_modules/timers-browserify/main.js ***!
@@ -46243,39 +44352,6 @@ module.exports = function(module) {
 /***/ 3:
 /*!**********************!*\
   !*** util (ignored) ***!
-  \**********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-
-/***/ 4:
-/*!********************!*\
-  !*** os (ignored) ***!
-  \********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-
-/***/ 5:
-/*!*******************************!*\
-  !*** child_process (ignored) ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-
-/***/ 6:
-/*!**********************!*\
-  !*** path (ignored) ***!
   \**********************/
 /*! no static exports found */
 /***/ (function(module, exports) {
