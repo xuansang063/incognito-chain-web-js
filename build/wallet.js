@@ -6487,6 +6487,17 @@ function validateEntropyBitSize(bitSize) {
   return null;
 }
 
+function RandomBytes(numBytes) {
+  var res = new Uint8Array(numBytes);
+
+  for (var i = 0; i < numBytes; i++) {
+    res[i] = Math.floor(Math.random() * 255);
+  }
+
+  console.log("Randombytes: ", res);
+  return res;
+}
+
 var MnemonicGenerator =
 /*#__PURE__*/
 function () {
@@ -6511,7 +6522,7 @@ function () {
       // random byte
 
 
-      var entropy = privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["randBytes"](bitSize / 8); // var entropy = randomBytes.sync(bitSize / 8);
+      var entropy = RandomBytes(bitSize / 8); // var entropy = randomBytes.sync(bitSize / 8);
 
       return entropy;
     } // newMnemonic will return a string consisting of the mnemonic words for
