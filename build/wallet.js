@@ -5218,8 +5218,8 @@ function CreateCustomTokenReceiverArray(data) {
     _iteratorError = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-        _iterator["return"]();
+      if (!_iteratorNormalCompletion && _iterator.return != null) {
+        _iterator.return();
       }
     } finally {
       if (_didIteratorError) {
@@ -6430,6 +6430,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var pbkdf2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! pbkdf2 */ "./node_modules/pbkdf2/browser.js");
 /* harmony import */ var pbkdf2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(pbkdf2__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wallet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./wallet */ "./lib/wallet/wallet.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -6437,6 +6438,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
  // import randomBytes from "random-bytes";
+
 
 
 
@@ -6487,17 +6489,6 @@ function validateEntropyBitSize(bitSize) {
   return null;
 }
 
-function RandomBytes(numBytes) {
-  var res = new Uint8Array(numBytes);
-
-  for (var i = 0; i < numBytes; i++) {
-    res[i] = Math.floor(Math.random() * 255);
-  }
-
-  console.log("Randombytes: ", res);
-  return res;
-}
-
 var MnemonicGenerator =
 /*#__PURE__*/
 function () {
@@ -6522,7 +6513,17 @@ function () {
       // random byte
 
 
-      var entropy = RandomBytes(bitSize / 8); // var entropy = randomBytes.sync(bitSize / 8);
+      var entropy = null;
+
+      try {
+        entropy = randomBytes.sync(bitSize / 8);
+      } catch (e) {
+        console.log(e);
+
+        if (_wallet__WEBPACK_IMPORTED_MODULE_4__["Wallet"].RandomBytesFunc) {
+          entropy = _wallet__WEBPACK_IMPORTED_MODULE_4__["Wallet"].RandomBytesFunc(bitSize / 8);
+        }
+      }
 
       return entropy;
     } // newMnemonic will return a string consisting of the mnemonic words for
@@ -9256,6 +9257,8 @@ function () {
 }();
 
 _defineProperty(Wallet, "RpcClient", new _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_15__["RpcClient"]());
+
+_defineProperty(Wallet, "RandomBytesFunc", null);
 
 _defineProperty(Wallet, "ProgressTx", 0);
 
@@ -32765,10 +32768,10 @@ utils.intFromLE = intFromLE;
 /*!********************************************!*\
   !*** ./node_modules/elliptic/package.json ***!
   \********************************************/
-/*! exports provided: name, version, description, main, files, scripts, repository, keywords, author, license, bugs, homepage, devDependencies, dependencies, default */
+/*! exports provided: _args, _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _spec, _where, author, bugs, dependencies, description, devDependencies, files, homepage, keywords, license, main, name, repository, scripts, version, default */
 /***/ (function(module) {
 
-module.exports = {"name":"elliptic","version":"6.4.1","description":"EC cryptography","main":"lib/elliptic.js","files":["lib"],"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","unit":"istanbul test _mocha --reporter=spec test/index.js","test":"npm run lint && npm run unit","version":"grunt dist && git add dist/"},"repository":{"type":"git","url":"git@github.com:indutny/elliptic"},"keywords":["EC","Elliptic","curve","Cryptography"],"author":"Fedor Indutny <fedor@indutny.com>","license":"MIT","bugs":{"url":"https://github.com/indutny/elliptic/issues"},"homepage":"https://github.com/indutny/elliptic","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"}};
+module.exports = {"_args":[["elliptic@6.4.1","/Users/autononous/Documents/autonomous/constant-chain-web-js"]],"_from":"elliptic@6.4.1","_id":"elliptic@6.4.1","_inBundle":false,"_integrity":"sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==","_location":"/elliptic","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"elliptic@6.4.1","name":"elliptic","escapedName":"elliptic","rawSpec":"6.4.1","saveSpec":null,"fetchSpec":"6.4.1"},"_requiredBy":["/browserify-sign","/create-ecdh","/privacy-js-lib"],"_resolved":"https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz","_spec":"6.4.1","_where":"/Users/autononous/Documents/autonomous/constant-chain-web-js","author":{"name":"Fedor Indutny","email":"fedor@indutny.com"},"bugs":{"url":"https://github.com/indutny/elliptic/issues"},"dependencies":{"bn.js":"^4.4.0","brorand":"^1.0.1","hash.js":"^1.0.0","hmac-drbg":"^1.0.0","inherits":"^2.0.1","minimalistic-assert":"^1.0.0","minimalistic-crypto-utils":"^1.0.0"},"description":"EC cryptography","devDependencies":{"brfs":"^1.4.3","coveralls":"^2.11.3","grunt":"^0.4.5","grunt-browserify":"^5.0.0","grunt-cli":"^1.2.0","grunt-contrib-connect":"^1.0.0","grunt-contrib-copy":"^1.0.0","grunt-contrib-uglify":"^1.0.1","grunt-mocha-istanbul":"^3.0.1","grunt-saucelabs":"^8.6.2","istanbul":"^0.4.2","jscs":"^2.9.0","jshint":"^2.6.0","mocha":"^2.1.0"},"files":["lib"],"homepage":"https://github.com/indutny/elliptic","keywords":["EC","Elliptic","curve","Cryptography"],"license":"MIT","main":"lib/elliptic.js","name":"elliptic","repository":{"type":"git","url":"git+ssh://git@github.com/indutny/elliptic.git"},"scripts":{"jscs":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","jshint":"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js","lint":"npm run jscs && npm run jshint","test":"npm run lint && npm run unit","unit":"istanbul test _mocha --reporter=spec test/index.js","version":"grunt dist && git add dist/"},"version":"6.4.1"};
 
 /***/ }),
 
@@ -43391,7 +43394,7 @@ module.exports = Sha512
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=exports.SHA3Hash=exports.SHA3=exports.Keccak=void 0;var _buffer=__webpack_require__(/*! buffer */ "./node_modules/buffer/index.js");var _sponge=_interopRequireDefault(__webpack_require__(/*! ./sponge */ "./node_modules/sha3/sponge/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var createHash=function createHash(_ref){var padding=_ref.padding;return function Hash(){var _this=this;var size=arguments.length>0&&arguments[0]!==undefined?arguments[0]:512;if(!this||this.constructor!==Hash){return new Hash(size)}var sponge=new _sponge["default"]({capacity:size,padding:padding});this.update=function(input){var encoding=arguments.length>1&&arguments[1]!==undefined?arguments[1]:"utf8";if(_buffer.Buffer.isBuffer(input)){sponge.absorb(input);return _this}if(typeof input==="string"){return _this.update(_buffer.Buffer.from(input,encoding))}throw new TypeError("Not a string or buffer")};this.digest=function(){var format=arguments.length>0&&arguments[0]!==undefined?arguments[0]:"binary";var buffer=sponge.squeeze();if(format&&format!=="binary"){return buffer.toString(format)}return buffer};this.reset=function(){sponge.reset();return _this};return this}};var Keccak=createHash({padding:1});exports.Keccak=Keccak;var SHA3=createHash({padding:6});exports.SHA3=SHA3;var SHA3Hash=Keccak;exports.SHA3Hash=SHA3Hash;SHA3.SHA3Hash=SHA3Hash;var _default=SHA3;exports["default"]=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=exports.SHA3Hash=exports.SHA3=exports.Keccak=void 0;var _buffer=__webpack_require__(/*! buffer */ "./node_modules/buffer/index.js");var _sponge=_interopRequireDefault(__webpack_require__(/*! ./sponge */ "./node_modules/sha3/sponge/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var createHash=function createHash(_ref){var padding=_ref.padding;return function Hash(){var _this=this;var size=arguments.length>0&&arguments[0]!==undefined?arguments[0]:512;if(!this||this.constructor!==Hash){return new Hash(size)}var sponge=new _sponge.default({capacity:size,padding:padding});this.update=function(input){var encoding=arguments.length>1&&arguments[1]!==undefined?arguments[1]:"utf8";if(_buffer.Buffer.isBuffer(input)){sponge.absorb(input);return _this}if(typeof input==="string"){return _this.update(_buffer.Buffer.from(input,encoding))}throw new TypeError("Not a string or buffer")};this.digest=function(){var format=arguments.length>0&&arguments[0]!==undefined?arguments[0]:"binary";var buffer=sponge.squeeze();if(format&&format!=="binary"){return buffer.toString(format)}return buffer};this.reset=function(){sponge.reset();return _this};return this}};var Keccak=createHash({padding:1});exports.Keccak=Keccak;var SHA3=createHash({padding:6});exports.SHA3=SHA3;var SHA3Hash=Keccak;exports.SHA3Hash=SHA3Hash;SHA3.SHA3Hash=SHA3Hash;var _default=SHA3;exports.default=_default;
 
 /***/ }),
 
@@ -43403,7 +43406,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=expo
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _buffer=__webpack_require__(/*! buffer */ "./node_modules/buffer/index.js");var _permute=_interopRequireDefault(__webpack_require__(/*! ./permute */ "./node_modules/sha3/sponge/permute/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var allowedCapacityValues=[224,256,384,512];var writeState=function writeState(I,O){for(var i=0;i<I.length;i+=8){var o=i/4;O[o]^=I[i+7]<<24|I[i+6]<<16|I[i+5]<<8|I[i+4];O[o+1]^=I[i+3]<<24|I[i+2]<<16|I[i+1]<<8|I[i]}};var readHash=function readHash(I,n){var O=_buffer.Buffer.allocUnsafe(n);for(var o=0;o<n;o+=8){var i=o/4;O[o]=I[i+1];O[o+1]=I[i+1]>>>8;O[o+2]=I[i+1]>>>16;O[o+3]=I[i+1]>>>24;O[o+4]=I[i];O[o+5]=I[i]>>>8;O[o+6]=I[i]>>>16;O[o+7]=I[i]>>>24}return O};var Sponge=function Sponge(_ref){var _this=this;var capacity=_ref.capacity,padding=_ref.padding;if(!allowedCapacityValues.includes(capacity)){throw new Error("Unsupported hash length")}var keccak=(0,_permute["default"])();var stateSize=200;var hashSize=capacity/8;var queueSize=stateSize-hashSize*2;var queueOffset=0;var state=new Uint32Array(stateSize/4);var queue=_buffer.Buffer.allocUnsafe(queueSize);this.absorb=function(buffer){for(var i=0;i<buffer.length;i++){queue[queueOffset]=buffer[i];queueOffset+=1;if(queueOffset>=queueSize){writeState(queue,state);keccak(state);queueOffset=0}}return _this};this.squeeze=function(){var output={queue:_buffer.Buffer.allocUnsafe(queueSize),state:new Uint32Array(stateSize/4)};queue.copy(output.queue);for(var i=0;i<state.length;i++){output.state[i]=state[i]}output.queue.fill(0,queueOffset);output.queue[queueOffset]|=padding;output.queue[queueSize-1]|=128;writeState(output.queue,output.state);keccak(output.state);return readHash(output.state,hashSize)};this.reset=function(){queue.fill(0);state.fill(0);queueOffset=0;return _this};return this};var _default=Sponge;exports["default"]=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _buffer=__webpack_require__(/*! buffer */ "./node_modules/buffer/index.js");var _permute=_interopRequireDefault(__webpack_require__(/*! ./permute */ "./node_modules/sha3/sponge/permute/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var allowedCapacityValues=[224,256,384,512];var writeState=function writeState(I,O){for(var i=0;i<I.length;i+=8){var o=i/4;O[o]^=I[i+7]<<24|I[i+6]<<16|I[i+5]<<8|I[i+4];O[o+1]^=I[i+3]<<24|I[i+2]<<16|I[i+1]<<8|I[i]}};var readHash=function readHash(I,n){var O=_buffer.Buffer.allocUnsafe(n);for(var o=0;o<n;o+=8){var i=o/4;O[o]=I[i+1];O[o+1]=I[i+1]>>>8;O[o+2]=I[i+1]>>>16;O[o+3]=I[i+1]>>>24;O[o+4]=I[i];O[o+5]=I[i]>>>8;O[o+6]=I[i]>>>16;O[o+7]=I[i]>>>24}return O};var Sponge=function Sponge(_ref){var _this=this;var capacity=_ref.capacity,padding=_ref.padding;if(!allowedCapacityValues.includes(capacity)){throw new Error("Unsupported hash length")}var keccak=(0,_permute.default)();var stateSize=200;var hashSize=capacity/8;var queueSize=stateSize-hashSize*2;var queueOffset=0;var state=new Uint32Array(stateSize/4);var queue=_buffer.Buffer.allocUnsafe(queueSize);this.absorb=function(buffer){for(var i=0;i<buffer.length;i++){queue[queueOffset]=buffer[i];queueOffset+=1;if(queueOffset>=queueSize){writeState(queue,state);keccak(state);queueOffset=0}}return _this};this.squeeze=function(){var output={queue:_buffer.Buffer.allocUnsafe(queueSize),state:new Uint32Array(stateSize/4)};queue.copy(output.queue);for(var i=0;i<state.length;i++){output.state[i]=state[i]}output.queue.fill(0,queueOffset);output.queue[queueOffset]|=padding;output.queue[queueSize-1]|=128;writeState(output.queue,output.state);keccak(output.state);return readHash(output.state,hashSize)};this.reset=function(){queue.fill(0);state.fill(0);queueOffset=0;return _this};return this};var _default=Sponge;exports.default=_default;
 
 /***/ }),
 
@@ -43415,7 +43418,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var chi=function chi(_ref){var A=_ref.A,C=_ref.C;for(var y=0;y<25;y+=5){for(var x=0;x<5;x++){(0,_copy["default"])(A,y+x)(C,x)}for(var _x=0;_x<5;_x++){var xy=(y+_x)*2;var x1=(_x+1)%5*2;var x2=(_x+2)%5*2;A[xy]^=~C[x1]&C[x2];A[xy+1]^=~C[x1+1]&C[x2+1]}}};var _default=chi;exports["default"]=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var chi=function chi(_ref){var A=_ref.A,C=_ref.C;for(var y=0;y<25;y+=5){for(var x=0;x<5;x++){(0,_copy.default)(A,y+x)(C,x)}for(var _x=0;_x<5;_x++){var xy=(y+_x)*2;var x1=(_x+1)%5*2;var x2=(_x+2)%5*2;A[xy]^=~C[x1]&C[x2];A[xy+1]^=~C[x1+1]&C[x2+1]}}};var _default=chi;exports.default=_default;
 
 /***/ }),
 
@@ -43439,7 +43442,7 @@ var copy=function copy(I,i){return function(O,o){var oi=o*2;var ii=i*2;O[oi]=I[i
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _chi=_interopRequireDefault(__webpack_require__(/*! ./chi */ "./node_modules/sha3/sponge/permute/chi/index.js"));var _iota=_interopRequireDefault(__webpack_require__(/*! ./iota */ "./node_modules/sha3/sponge/permute/iota/index.js"));var _rhoPi=_interopRequireDefault(__webpack_require__(/*! ./rho-pi */ "./node_modules/sha3/sponge/permute/rho-pi/index.js"));var _theta=_interopRequireDefault(__webpack_require__(/*! ./theta */ "./node_modules/sha3/sponge/permute/theta/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var permute=function permute(){var C=new Uint32Array(10);var D=new Uint32Array(10);var W=new Uint32Array(2);return function(A){for(var roundIndex=0;roundIndex<24;roundIndex++){(0,_theta["default"])({A:A,C:C,D:D,W:W});(0,_rhoPi["default"])({A:A,C:C,W:W});(0,_chi["default"])({A:A,C:C});(0,_iota["default"])({A:A,roundIndex:roundIndex})}C.fill(0);D.fill(0);W.fill(0)}};var _default=permute;exports["default"]=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _chi=_interopRequireDefault(__webpack_require__(/*! ./chi */ "./node_modules/sha3/sponge/permute/chi/index.js"));var _iota=_interopRequireDefault(__webpack_require__(/*! ./iota */ "./node_modules/sha3/sponge/permute/iota/index.js"));var _rhoPi=_interopRequireDefault(__webpack_require__(/*! ./rho-pi */ "./node_modules/sha3/sponge/permute/rho-pi/index.js"));var _theta=_interopRequireDefault(__webpack_require__(/*! ./theta */ "./node_modules/sha3/sponge/permute/theta/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var reset=function reset(){for(var _len=arguments.length,arrays=new Array(_len),_key=0;_key<_len;_key++){arrays[_key]=arguments[_key]}for(var _i=0;_i<arrays.length;_i++){var array=arrays[_i];array.fill(0)}};var permute=function permute(){var C=new Uint32Array(10);var D=new Uint32Array(10);var W=new Uint32Array(2);return function(A){for(var roundIndex=0;roundIndex<24;roundIndex++){(0,_theta.default)({A:A,C:C,D:D,W:W});(0,_rhoPi.default)({A:A,C:C,W:W});(0,_chi.default)({A:A,C:C});(0,_iota.default)({A:A,roundIndex:roundIndex})}reset(C,D,W)}};var _default=permute;exports.default=_default;
 
 /***/ }),
 
@@ -43451,7 +43454,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _roundConstants=_interopRequireDefault(__webpack_require__(/*! ./round-constants */ "./node_modules/sha3/sponge/permute/iota/round-constants/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var iota=function iota(_ref){var A=_ref.A,roundIndex=_ref.roundIndex;var i=roundIndex*2;A[0]^=_roundConstants["default"][i];A[1]^=_roundConstants["default"][i+1]};var _default=iota;exports["default"]=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _roundConstants=_interopRequireDefault(__webpack_require__(/*! ./round-constants */ "./node_modules/sha3/sponge/permute/iota/round-constants/index.js"));var _xor=_interopRequireDefault(__webpack_require__(/*! ../xor */ "./node_modules/sha3/sponge/permute/xor/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var iota=function iota(_ref){var A=_ref.A,roundIndex=_ref.roundIndex;(0,_xor.default)(A,0)(A,0,_roundConstants.default,roundIndex)};var _default=iota;exports.default=_default;
 
 /***/ }),
 
@@ -43463,7 +43466,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var ROUND_CONSTANTS=new Uint32Array([0,1,0,32898,2147483648,32906,2147483648,2147516416,0,32907,0,2147483649,2147483648,2147516545,2147483648,32777,0,138,0,136,0,2147516425,0,2147483658,0,2147516555,2147483648,139,2147483648,32905,2147483648,32771,2147483648,32770,2147483648,128,0,32778,2147483648,2147483658,2147483648,2147516545,2147483648,32896,0,2147483649,2147483648,2147516424]);var _default=ROUND_CONSTANTS;exports["default"]=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var ROUND_CONSTANTS=new Uint32Array([0,1,0,32898,2147483648,32906,2147483648,2147516416,0,32907,0,2147483649,2147483648,2147516545,2147483648,32777,0,138,0,136,0,2147516425,0,2147483658,0,2147516555,2147483648,139,2147483648,32905,2147483648,32771,2147483648,32770,2147483648,128,0,32778,2147483648,2147483658,2147483648,2147516545,2147483648,32896,0,2147483649,2147483648,2147516424]);var _default=ROUND_CONSTANTS;exports.default=_default;
 
 /***/ }),
 
@@ -43475,7 +43478,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _piShuffles=_interopRequireDefault(__webpack_require__(/*! ./pi-shuffles */ "./node_modules/sha3/sponge/permute/rho-pi/pi-shuffles/index.js"));var _rhoOffsets=_interopRequireDefault(__webpack_require__(/*! ./rho-offsets */ "./node_modules/sha3/sponge/permute/rho-pi/rho-offsets/index.js"));var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var rhoPi=function rhoPi(_ref){var A=_ref.A,C=_ref.C,W=_ref.W;(0,_copy["default"])(A,1)(W,0);var H=0;var L=0;var Wi=0;var ri=32;for(var i=0;i<24;i++){var j=_piShuffles["default"][i];var r=_rhoOffsets["default"][i];(0,_copy["default"])(A,j)(C,0);H=W[0];L=W[1];ri=32-r;Wi=r<32?0:1;W[Wi]=H<<r|L>>>ri;W[(Wi+1)%2]=L<<r|H>>>ri;(0,_copy["default"])(W,0)(A,j);(0,_copy["default"])(C,0)(W,0)}};var _default=rhoPi;exports["default"]=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _piShuffles=_interopRequireDefault(__webpack_require__(/*! ./pi-shuffles */ "./node_modules/sha3/sponge/permute/rho-pi/pi-shuffles/index.js"));var _rhoOffsets=_interopRequireDefault(__webpack_require__(/*! ./rho-offsets */ "./node_modules/sha3/sponge/permute/rho-pi/rho-offsets/index.js"));var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));var _rotate=_interopRequireDefault(__webpack_require__(/*! ../rotate */ "./node_modules/sha3/sponge/permute/rotate/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var rhoPi=function rhoPi(_ref){var A=_ref.A,C=_ref.C,W=_ref.W;(0,_copy.default)(A,1)(W,0);for(var i=0;i<24;i++){var j=_piShuffles.default[i];var r=_rhoOffsets.default[i];(0,_copy.default)(A,j)(C,0);(0,_copy.default)((0,_rotate.default)(W,r),0)(A,j);(0,_copy.default)(C,0)(W,0)}};var _default=rhoPi;exports.default=_default;
 
 /***/ }),
 
@@ -43487,7 +43490,7 @@ Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var PI_SHUFFLES=[10,7,11,17,18,3,5,16,8,21,24,4,15,23,19,13,12,2,20,14,22,9,6,1];var _default=PI_SHUFFLES;exports["default"]=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var PI_SHUFFLES=[10,7,11,17,18,3,5,16,8,21,24,4,15,23,19,13,12,2,20,14,22,9,6,1];var _default=PI_SHUFFLES;exports.default=_default;
 
 /***/ }),
 
@@ -43499,7 +43502,19 @@ Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var RHO_OFFSETS=[1,3,6,10,15,21,28,36,45,55,2,14,27,41,56,8,25,43,62,18,39,61,20,44];var _default=RHO_OFFSETS;exports["default"]=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var RHO_OFFSETS=[1,3,6,10,15,21,28,36,45,55,2,14,27,41,56,8,25,43,62,18,39,61,20,44];var _default=RHO_OFFSETS;exports.default=_default;
+
+/***/ }),
+
+/***/ "./node_modules/sha3/sponge/permute/rotate/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/rotate/index.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;function _slicedToArray(arr,i){return _arrayWithHoles(arr)||_iterableToArrayLimit(arr,i)||_nonIterableRest()}function _nonIterableRest(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}function _iterableToArrayLimit(arr,i){var _arr=[];var _n=true;var _d=false;var _e=undefined;try{for(var _i=arr[Symbol.iterator](),_s;!(_n=(_s=_i.next()).done);_n=true){_arr.push(_s.value);if(i&&_arr.length===i)break}}catch(err){_d=true;_e=err}finally{try{if(!_n&&_i["return"]!=null)_i["return"]()}finally{if(_d)throw _e}}return _arr}function _arrayWithHoles(arr){if(Array.isArray(arr))return arr}var M=32;var rotate=function rotate(W,r){var _W=_slicedToArray(W,2),H=_W[0],L=_W[1];var i=r<32?0:1;var j=(i+1)%2;W[i]=H<<r|L>>>M-r;W[j]=L<<r|H>>>M-r;return W};var _default=rotate;exports.default=_default;
 
 /***/ }),
 
@@ -43511,7 +43526,19 @@ Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports["default"]=void 0;var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{"default":obj}}var theta=function theta(_ref){var A=_ref.A,C=_ref.C,D=_ref.D,W=_ref.W;var H=0;var L=0;for(var x=0;x<5;x++){var x20=x*2;var x21=(x+5)*2;var x22=(x+10)*2;var x23=(x+15)*2;var x24=(x+20)*2;C[x20]=A[x20]^A[x21]^A[x22]^A[x23]^A[x24];C[x20+1]=A[x20+1]^A[x21+1]^A[x22+1]^A[x23+1]^A[x24+1]}for(var _x=0;_x<5;_x++){(0,_copy["default"])(C,(_x+1)%5)(W,0);H=W[0];L=W[1];W[0]=H<<1|L>>>31;W[1]=L<<1|H>>>31;D[_x*2]=C[(_x+4)%5*2]^W[0];D[_x*2+1]=C[(_x+4)%5*2+1]^W[1];for(var y=0;y<25;y+=5){A[(y+_x)*2]^=D[_x*2];A[(y+_x)*2+1]^=D[_x*2+1]}}};var _default=theta;exports["default"]=_default;
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var _copy=_interopRequireDefault(__webpack_require__(/*! ../copy */ "./node_modules/sha3/sponge/permute/copy/index.js"));var _rotate=_interopRequireDefault(__webpack_require__(/*! ../rotate */ "./node_modules/sha3/sponge/permute/rotate/index.js"));var _xor=_interopRequireDefault(__webpack_require__(/*! ../xor */ "./node_modules/sha3/sponge/permute/xor/index.js"));function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var theta0=function theta0(_ref){var A=_ref.A,C=_ref.C;for(var x=0;x<5;x++){(0,_xor.default)(C,x)(A,x,A,x+5,A,x+10,A,x+15,A,x+20)}};var theta1=function theta1(_ref2){var A=_ref2.A,C=_ref2.C,D=_ref2.D,W=_ref2.W;for(var x=0;x<5;x++){(0,_copy.default)(C,(x+1)%5)(W,0);(0,_xor.default)(D,x)(C,(x+4)%5,(0,_rotate.default)(W,1),0);for(var y=0;y<25;y+=5){(0,_xor.default)(A,y+x)(A,y+x,D,x)}}};var theta=function theta(_ref3){var A=_ref3.A,C=_ref3.C,D=_ref3.D,W=_ref3.W;theta0({A:A,C:C});theta1({A:A,C:C,D:D,W:W})};var _default=theta;exports.default=_default;
+
+/***/ }),
+
+/***/ "./node_modules/sha3/sponge/permute/xor/index.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/xor/index.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports,"__esModule",{value:true});exports.default=void 0;var xor=function xor(O,o){return function(){var oi=o*2;for(var _len=arguments.length,I=new Array(_len),_key=0;_key<_len;_key++){I[_key]=arguments[_key]}if(I.length>=2){var ii=I[1]*2;O[oi]=I[0][ii];O[oi+1]=I[0][ii+1]}for(var i=2;i<I.length;i+=2){var _ii=I[i+1]*2;O[oi]^=I[i][_ii];O[oi+1]^=I[i][_ii+1]}}};var _default=xor;exports.default=_default;
 
 /***/ }),
 
