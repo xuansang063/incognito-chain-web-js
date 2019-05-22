@@ -9,7 +9,7 @@ require("@babel/polyfill");
 // require('./test/tx/txcustomtoken-test');
 // require('./test/tx/txcustomtokenprivacy-test');
 
-// require('./test/coin-test');
+require('./test/coin-test');
 // require('./test/key-test');
 
 // bigint test
@@ -23,4 +23,4 @@ require("@babel/polyfill");
 // identicon test
 // require('./test/identicon-test');
 // require('./test/hybridencryption-test');
-require('./test/aes-test');
+// require('./test/aes-test');

@@ -1,26 +1,31 @@
 var fs = require("fs");
 var path = require("path");
 import CryptoJS from "crypto-js";
+import {AES} from '../lib/aes';
+import {hashBytesToBytes, stringToBytes} from "privacy-js-lib/lib/privacy_utils";
 
 let password = '1';
 
 function FullEncryption() {
     var fullText = fs.readFileSync(path.resolve(__dirname, "text_b.txt"));
     console.log("fullText size: ", fullText.length);
-
+    // var fullText = "abc";
 
     fullText = JSON.stringify(fullText);
     console.time("Full encrypt: ");
     var fullCiphertext = CryptoJS.AES.encrypt(fullText, password);
     console.timeEnd("Full encrypt: ");
 
+    // console.log("fullCiphertext: ", fullCiphertext);
+    // console.log("fullCiphertext.toString(): ", fullCiphertext.toString());
+
     // fullCiphertext = fullCiphertext.toString();
 
     console.time("Full decrypt: ");
-    var fullEncrypted = CryptoJS.AES.decrypt(fullCiphertext, password);
+    var fullEncrypted = CryptoJS.AES.decrypt(fullCiphertext.toString(), password);
     console.timeEnd("Full decrypt: ");
 
-    // console.log("fullEncrypted: ", fullEncrypted.toString().substr(0, 10));
+    console.log("fullEncrypted: ", fullEncrypted.toString(CryptoJS.enc.Utf8));
 }
 
 // FullEncryption()
@@ -66,4 +71,40 @@ async function PartialEncryption() {
     // }
 }
 
-PartialEncryption()
+// PartialEncryption()
+
+
+function FullEncryptionAES() {
+
+    let key = hashBytesToBytes(stringToBytes(password));
+
+    let aes = new AES(key);
+
+    // let fullText = fs.readFileSync(path.resolve(__dirname, "./text-file/text.txt"));
+    // console.log("fullText size: ", fullText.length);
+
+    var fullText = "abc";
+    fullText = stringToBytes(fullText);
+    console.log("fullText: ", fullText);
+
+    // fullText = JSON.stringify(fullText);
+    console.time("Full encrypt: ");
+    var fullCiphertext = aes.encrypt(fullText);
+    console.timeEnd("Full encrypt: ");
+
+    // console.log("fullCiphertext: ", fullCiphertext);
+    // console.log("fullCiphertext.toString(): ", fullCiphertext.toString());
+
+    // fullCiphertext = fullCiphertext.toString();
+
+    console.time("Full decrypt: ");
+    var fullEncrypted = aes.decrypt(fullCiphertext);
+    console.timeEnd("Full decrypt: ");
+
+    console.log("fullEncrypted: ", fullEncrypted);
+}
+
+FullEncryptionAES()
+
+
+
