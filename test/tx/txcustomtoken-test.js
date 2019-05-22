@@ -137,7 +137,7 @@ async function TestTxCustomTokenTransfer() {
             console.log(":senderKeyWallet1.KeySet.PaymentAddress: ", senderKeyWallet1.KeySet.PaymentAddress);
 
             let signature = senderKeyWallet1.KeySet.sign(tokenVouts[i].hash());
-            tokenVins[i].signature = base58.checkEncode(signature, privacyConstants.PRIVACY_VERSION);
+            tokenVins[i].signature = base58.checkEncode(signature, ENCODE_VERSION);
 
             voutsAmount -= listToken[i].value;
             if (voutsAmount <=0){
