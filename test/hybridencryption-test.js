@@ -12,10 +12,17 @@ function testHybridEncrypt() {
   let publicKey = P256.g.mul(privateKey);
   console.log("public key : ", publicKey.compress().join(', '));
 
-  let ciphertext = h.hybridEncrypt(msg, publicKey.compress());
-  console.log("Ciphertext msg when encrypt: ", ciphertext.msgEncrypted.join(', '));
+  for (let i=0; i<10000; i++){
+    let ciphertext = h.hybridEncrypt(msg, publicKey.compress());
+    // console.log("Ciphertext msg when encrypt: ", ciphertext.msgEncrypted.join(', '));
 
-  console.log('ciphertext: ', ciphertext.toBytes().join(', '));
+    console.log('ciphertext: ', ciphertext.toBytes().join(', '));
+  }
+
+  // let ciphertext = h.hybridEncrypt(msg, publicKey.compress());
+  // console.log("Ciphertext msg when encrypt: ", ciphertext.msgEncrypted.join(', '));
+
+  // console.log('ciphertext: ', ciphertext.toBytes().join(', '));
 }
 
 testHybridEncrypt();

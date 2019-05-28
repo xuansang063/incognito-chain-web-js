@@ -21,4 +21,8 @@ require("@babel/polyfill");
 
 
 // identicon test
-require('./test/identicon-test');
+// require('./test/identicon-test');
+// require('./test/hybridencryption-test');
+// require('./test/aes-test');
+require('./test/utils-test');
+

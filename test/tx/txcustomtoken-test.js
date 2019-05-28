@@ -13,7 +13,6 @@ import * as base58 from '../../lib/base58';
 import * as privacyConstants from 'privacy-js-lib/lib/constants';
 import * as constantsTx from "../../lib/tx/constants";
 
-
 const rpcClient = new RpcClient("http://localhost:9334");
 
 async function TestTxCustomTokenInit() {
@@ -30,7 +29,7 @@ async function TestTxCustomTokenInit() {
 
     try {
         console.time("Time for preparing input for fee");
-        let res = await rpcClient.prepareInputForTx(receiverSpendingKeyStr1, paymentInfos);
+        let res = await prepareInputForTx(receiverSpendingKeyStr1, paymentInfos, rpcClient);
         console.timeEnd("Time for preparing input for fee");
 
         let tx = new TxCustomToken(new RpcClient("http://localhost:9334"));
@@ -94,7 +93,7 @@ async function TestTxCustomTokenTransfer() {
 
     try {
         console.time("Time for preparing input for fee");
-        let res = await rpcClient.prepareInputForTx(senderSpendingKeyStr1, paymentInfos);
+        let res = await prepareInputForTx(senderSpendingKeyStr1, paymentInfos, rpcClient);
         console.timeEnd("Time for preparing input for fee");
 
         let tx = new TxCustomToken("http://localhost:9334");
@@ -137,7 +136,7 @@ async function TestTxCustomTokenTransfer() {
             console.log(":senderKeyWallet1.KeySet.PaymentAddress: ", senderKeyWallet1.KeySet.PaymentAddress);
 
             let signature = senderKeyWallet1.KeySet.sign(tokenVouts[i].hash());
-            tokenVins[i].signature = base58.checkEncode(signature, privacyConstants.PRIVACY_VERSION);
+            tokenVins[i].signature = base58.checkEncode(signature, ENCODE_VERSION);
 
             voutsAmount -= listToken[i].value;
             if (voutsAmount <=0){
