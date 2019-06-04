@@ -13,7 +13,7 @@ require("@babel/polyfill");
 // require('./test/key-test');
 
 // bigint test
-// require("./test/bigint-test");
+require("./test/bigint-test");
 
 
 // elliptic test
@@ -24,5 +24,5 @@ require("@babel/polyfill");
 // require('./test/identicon-test');
 // require('./test/hybridencryption-test');
 // require('./test/aes-test');
-require('./test/utils-test');
+// require('./test/utils-test');
 
