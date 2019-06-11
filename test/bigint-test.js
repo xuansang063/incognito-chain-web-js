@@ -97,12 +97,21 @@ import bigInt from 'big-integer'
 // console.log("b.toNumber(): ", g.toNumber());
 
 
-let hhhhh = new bn(499989997);
-console.log("HHHHH ", hhhhh.toString());
+// let hhhhh = new bn(499989997);
+// console.log("HHHHH ", hhhhh.toString());
 
 
-let ggggg = new bn(parseInt("499989997"));
-console.log(ggggg.toString());
+// let ggggg = new bn(parseInt("499989997"));
+// console.log(ggggg.toString());
+
+
+let arr = [new bn(1), new bn(10), new bn(23), new bn(11),new bn(-8), new bn(12),new bn(4), new bn(18)];
+
+arr.sort(function(a, b){
+    return a.cmp(b);
+});
+
+console.log("Arr: ", arr);
 
 
 
