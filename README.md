@@ -1,4 +1,4 @@
-# Constant-chain Javascript API for constant-chain-wallet-client-2
+# Incognito-chain Javascript API for incognito-chain-wallet-client-2
 
 ## Prerequisite
 
