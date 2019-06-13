@@ -3029,7 +3029,7 @@ posix-character-classes@^0.1.0:
 
 "privacy-js-lib@git://github.com/incognitochain/privacy-js-lib.git":
   version "1.0.0"
-  resolved "git://github.com/incognitochain/privacy-js-lib.git#45c8dd3d7897dad12fd5d56a291d9b2cfd7270f1"
+  resolved "git://github.com/incognitochain/privacy-js-lib.git#7c98e359a1b2edf77918d40ce200fe420f3195de"
   dependencies:
     axios "^0.18.0"
     bn.js "^4.11.8"
