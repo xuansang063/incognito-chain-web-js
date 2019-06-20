@@ -22,7 +22,7 @@
   "homepage": "https://github.com/constant-money/constant-chain-web-js#readme",
   "dependencies": {
     "big-integer": "^1.6.42",
-    "privacy-js-lib": "git://github.com/incognitochain/privacy-js-lib.git"
+    "privacy-js-lib": "/Users/autonomous/Desktop/WORK/privacy-js-lib"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
