@@ -56,6 +56,7 @@ module.exports = (env, argv) => {
         { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
       ]
     },
+    node: { fs: 'empty' },
     ...isProduction ? prodConfig : devConfig
   };
 };
