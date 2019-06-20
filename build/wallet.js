@@ -34619,6 +34619,17 @@ utils.encode = function encode(arr, enc) {
 
 /***/ }),
 
+/***/ "./node_modules/node-libs-browser/mock/empty.js":
+/*!******************************************************!*\
+  !*** ./node_modules/node-libs-browser/mock/empty.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
 /***/ "./node_modules/node-libs-browser/node_modules/buffer/index.js":
 /*!*********************************************************************!*\
   !*** ./node_modules/node-libs-browser/node_modules/buffer/index.js ***!
@@ -38382,7 +38393,7 @@ const gobridge = __webpack_require__(/*! golang-wasm-async-loader/dist/gobridge 
 const {join} = __webpack_require__(/*! path */ "./node_modules/path-browserify/index.js");
 __webpack_require__(/*! golang-wasm-async-loader/lib/wasm_exec */ "./node_modules/golang-wasm-async-loader/lib/wasm_exec.js");
 __webpack_require__(/*! isomorphic-fetch */ "./node_modules/isomorphic-fetch/fetch-npm-browserify.js");
-var fs = Function("return requ" + "ire('fs')")();
+const fs = __webpack_require__(/*! fs */ "./node_modules/node-libs-browser/mock/empty.js");
 
 global.requestAnimationFrame = global.setImmediate;
 
