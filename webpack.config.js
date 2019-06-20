@@ -49,14 +49,17 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname),
       filename: 'build/[name].js',
       library: '',
-      libraryTarget:'umd'
+      libraryTarget: 'umd'
+    },
+    target: "web",
+    node: {
+      fs: "empty"
     },
     module: {
       rules: [
-        { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+        {test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"}
       ]
     },
-    node: { fs: 'empty' },
     ...isProduction ? prodConfig : devConfig
   };
 };
