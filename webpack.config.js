@@ -51,7 +51,9 @@ module.exports = (env, argv) => {
       library: '',
       libraryTarget: 'umd'
     },
-    target: "node",
+    node: {
+      fs: "empty"
+    },
     module: {
       rules: [
         {test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"}
