@@ -22,7 +22,7 @@
   "homepage": "https://github.com/incognitochain/incognito-chain-web-js#readme",
   "dependencies": {
     "big-integer": "^1.6.42",
-    "privacy-js-lib": "git://github.com/incognitochain/privacy-js-lib#wasm"
+    "privacy-js-lib": "git://github.com/incognitochain/privacy-js-lib#20190621_1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
