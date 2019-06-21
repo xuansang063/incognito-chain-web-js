@@ -22,7 +22,6 @@
   "homepage": "https://github.com/incognitochain/incognito-chain-web-js#readme",
   "dependencies": {
     "big-integer": "^1.6.42",
-    "browserify-fs": "^1.0.0",
     "privacy-js-lib": "git://github.com/incognitochain/privacy-js-lib#wasm"
   },
   "devDependencies": {
