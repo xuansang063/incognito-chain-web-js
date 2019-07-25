@@ -2,6 +2,8 @@
 import {KeyWallet as keyWallet} from "../../lib/wallet/hdwallet";
 import { AccountWallet, Wallet } from "../../lib/wallet/wallet";
 import {RpcClient} from "../../lib/rpcclient/rpcclient";
+import {PRVID} from "../../lib/wallet/constants"
+import {convertHashToStr} from "../../lib/common";
 
 async function TestGetRewardAmount() {
     Wallet.RpcClient = new RpcClient("https://test-node.incognito.org")
@@ -14,14 +16,23 @@ async function TestGetRewardAmount() {
     accountSender.key = senderKeyWallet;
     
     // // create and send constant tx
-    let response;
+    let response0;
     try{
-      response = await accountSender.getRewardAmount();
-    }catch(e){
+        response0 = await accountSender.getRewardAmount();
+    } catch(e){
       console.log(e);
     }
    
-    console.log("REsponse getRewardAmount: ", response);
+    console.log("REsponse getRewardAmount: ", response0);
+
+    let response;
+    try{
+      response = await accountSender.createAndSendWithdrawRewardTx("");
+    } catch(e){
+      console.log(e);
+    }
+   
+    console.log("REsponse createAndSendWithdrawRewardTx: ", response);
   }
   
   TestGetRewardAmount();
