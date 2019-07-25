@@ -3,6 +3,7 @@ require("@babel/polyfill");
 
 // wallet test
 // require("./test/wallet/wallet-test");
+require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
 
 // require('./test/tx/txprivacy-test');
@@ -13,7 +14,7 @@ require("@babel/polyfill");
 // require('./test/key-test');
 
 // bigint test
-require("./test/bigint-test");
+// require("./test/bigint-test");
 
 
 // elliptic test
