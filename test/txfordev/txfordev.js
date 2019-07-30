@@ -18,22 +18,22 @@ async function SendPRVForMultiUsers() {
     console.log("Data AAA: ", data);
 
     // set private for sender
-    let senderSpendingKeyStr = "112t8rnajMFdaHBqUTEaENTSP5jDroeMnMtKuF6vgf6frxkQc3fYzxsWZc9VRbT4dNArgVjHLng4MwXYvTCfKRvW6hi2aqWNChveot4rETiq";
+    let senderSpendingKeyStr = "112t8rnXgFuVb4pfnqh9wkwrAZZRp7WHQVtnHnxBNkaHimBoL42DvsFVLisDqXiTZpnKFAZahQsCaoWdEQ9s77FFPzRey6H9CS7JeC6ipgoB";
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
     senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
     let accountSender = new AccountWallet();
     accountSender.key = senderKeyWallet;
 
-    let fee = 1000000000; // nano PRV
+    let fee = 500000000; // nano PRV
     let isPrivacy = true;
 
     try{
         let response = await accountSender.createAndSendConstant(data.paymentInfos, fee, isPrivacy, "");
-        console.log("congratulations to you!")
+        console.log("congratulations to you! Create transaction successfully! ^.^")
         console.log("Response: ", response);
     } catch(e){
-        console.log("Sorry. You can not send this transaction. Please try again. Fighting");
+        console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
     }
 }
 
