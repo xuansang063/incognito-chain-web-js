@@ -1,8 +1,8 @@
 var fs = require("fs");
 var path = require("path");
 import CryptoJS from "crypto-js";
-import {AES} from '../lib/aes';
-import {hashBytesToBytes, stringToBytes} from "privacy-js-lib/lib/privacy_utils";
+import { AES } from '../lib/aes';
+import { hashSha3BytesToBytes, stringToBytes } from "privacy-js-lib/lib/privacy_utils";
 
 let password = '1';
 
@@ -75,8 +75,7 @@ async function PartialEncryption() {
 
 
 function FullEncryptionAES() {
-
-    let key = hashBytesToBytes(stringToBytes(password));
+    let key = hashSha3BytesToBytes(stringToBytes(password));
 
     let aes = new AES(key);
 
