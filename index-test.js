@@ -3,7 +3,7 @@ require("@babel/polyfill");
 
 // wallet test
 // require("./test/wallet/wallet-test");
-// require("./test/wallet/accountwallet-test");
+require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
 
 // require('./test/tx/txprivacy-test');
@@ -24,7 +24,7 @@ require("@babel/polyfill");
 // identicon test
 // require('./test/identicon-test');
 // require('./test/hybridencryption-test');
-require('./test/aes-test');
+// require('./test/aes-test');
 // require('./test/utils-test');
 
 // require('./test/txfordev/txfordev.js');
