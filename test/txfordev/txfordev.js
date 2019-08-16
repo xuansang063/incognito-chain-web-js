@@ -5,10 +5,15 @@ import * as key from "../../lib/key";
 import bn from 'bn.js';
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { REPL_MODE_SLOPPY } from 'repl';
+import { SSL_OP_EPHEMERAL_RSA } from 'constants';
 const fs = require('fs');
 
 Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
 async function SendPRVForMultiUsers() {
     // load file paymentAddr.json to set payment infos
@@ -28,14 +33,35 @@ async function SendPRVForMultiUsers() {
     let fee = 500000000; // nano PRV
     let isPrivacy = true;
 
-    try{
-        let response = await accountSender.createAndSendConstant(data.paymentInfos, fee, isPrivacy, "");
-        console.log("congratulations to you! Create transaction successfully! ^.^")
-        console.log("Response: ", response);
-    } catch(e){
-        console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
+    for (let i = 0; i < 100; i++){
+        try {
+            let response = await accountSender.createAndSendConstant(data.paymentInfos, fee, isPrivacy, "");
+            console.log("congratulations to you! Create transaction successfully! ^.^")
+            console.log("Response: ", response);
+            // await sleep(2*60*1000);
+        } catch(e){
+            console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
+        }
+        // console.log();
+        // console.log();
+        // console.log();
+        // console.log("Sleeping......", i);
+
+        // await Wallet.sleep(2*60*1000);
     }
+
+    
 }
 
 SendPRVForMultiUsers();
+
+
+ // {
+        //     "paymentAddressStr" : "1Uv4FgsEKPN8oPwRcw6AinU64xbZ95qeX48ptwzNuv2ao7twoBpqywhNZLxy6d7tXBqJX4QxaGy3gBXbGQUVgGkMdyRTqHxmsKhd4JE9f",
+        //     "amount" : "2000000000"
+        // },
+        // {
+        //     "paymentAddressStr" : "1Uv3bzbfQK3Pwh1VCJmkfqbJ2JMAWCotowapUsKm6U47v62d5Lq1bvczNxzriJhQTQ96JBPp6EqetjCuSdVamzU377tb89cvtvuMehNTP",
+        //     "amount" : "2000000000"
+        // }
 

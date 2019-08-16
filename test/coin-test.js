@@ -5,6 +5,8 @@ import * as constants from "privacy-js-lib/lib/constants";
 import {Coin, InputCoin, OutputCoin} from "../lib/coin";
 import * as ec from "privacy-js-lib/lib/ec";
 import bn from 'bn.js';
+import { parseInputCoinFromEncodedObject } from "../lib/tx/utils";
+import {checkDecode} from "../lib/base58";
 
 const P256 = ec.P256;
 
@@ -58,4 +60,45 @@ function TestCoin() {
   // using Golang code to decrypt ciphertext, we receive coin's info exactly
 }
 
-TestCoin();
+// TestCoin();
+
+
+function Test() {
+  let coinObject = {
+    "PublicKey": "171GWBiRH5B7pV9Sc9dpumR6a9q3T9ecp7TXf3VtgKJ1JoNKzZV",
+    "CoinCommitment": "15u8R4p5pM2nE9UY3thNfLgQWRMi63YhvuGaYzphs1yQmDonP5Q",
+    "SNDerivator": "12DsUW8WjBd6XDFciW6FEkz9jWeECjVgCtDMK1tsY7DnkN37bAe",
+    "SerialNumber": "176yfPnVDsfXJbLMEQ3apEsh48RJ1XWqncA55QJ3HJZrFgXSz9K",
+    "Randomness": "12oPrsLY1f1MnVyKmfyuWaSMM2XipdQtmeWivyfVF1LZp8Pd9oh",
+    "Value": "996484000000000",
+    "Info": "13PMpZ4"
+  };
+
+  let publicKeyDecode = checkDecode(coinObject.PublicKey).bytesDecoded;
+  let commitmentDecode = checkDecode(coinObject.CoinCommitment).bytesDecoded;
+  let sndDecode = checkDecode(coinObject.SNDerivator).bytesDecoded;
+  let randDecode = checkDecode(coinObject.Randomness).bytesDecoded;
+  let snDecode = checkDecode(coinObject.SerialNumber).bytesDecoded;
+
+  console.log("commitmentDecode: ", commitmentDecode);
+
+  let inputCoin = new InputCoin();
+  inputCoin.coinDetails.publicKey = P256.decompress(publicKeyDecode);
+  inputCoin.coinDetails.coinCommitment = P256.decompress(commitmentDecode);
+  inputCoin.coinDetails.snderivator = new bn(sndDecode);
+  inputCoin.coinDetails.randomness = new bn(randDecode);
+  inputCoin.coinDetails.value = new bn(coinObject.Value);
+  inputCoin.coinDetails.info = checkDecode(coinObject.Info).bytesDecoded;
+  inputCoin.coinDetails.serialNumber = P256.decompress(snDecode)
+
+  inputCoin.coinDetails.commitAll();
+  console.log("coinCommitment: ", inputCoin.coinDetails.coinCommitment.compress());
+
+
+  // let newSN = PedCom.G[0].derive()
+
+  // let inputCoin = parseInputCoinFromEncodedObject(coinObject);
+
+}
+
+Test()

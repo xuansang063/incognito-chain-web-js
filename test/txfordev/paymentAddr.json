@@ -1,17 +1,24 @@
 {
     "paymentInfos" : [
         {
-            "paymentAddressStr" : "1Uv4FgsEKPN8oPwRcw6AinU64xbZ95qeX48ptwzNuv2ao7twoBpqywhNZLxy6d7tXBqJX4QxaGy3gBXbGQUVgGkMdyRTqHxmsKhd4JE9f",
-            "amount" : "1000000000"
+            "paymentAddressStr" : "1Uv3cUmY7toSUMQaXz59H9Nodv9yAGUHoUdr5wXV4hA1bkSdvki8xzUPQYuvtcgdawyQjR75QqzRr3RDNtLoD5nZHsafx89Q4szinAMEM",
+            "amount" : "1750000000000"
         },
         {
-            "paymentAddressStr" : "1Uv2tDKsQZBa7wZJm9Ki41pfRSKNDKnWsPrPvYofrKrq2EELLRHnG6yAerZLsDcsLxv5iZpJhZDw31ZmsxMcC2rBAYZaqMmviFNmWThyy",
-            "amount" : "1000000000"
+            "paymentAddressStr" : "1Uv3QpyckoPNXyNgmiuaWGgamWuuCF6YqHJSLsDzu3ZB8giU71RoFWRheMghaE9JQLLXpoq5ZK4HJWfsLCZNT1fjjuK5r2bQfTvudX4rr",
+            "amount" : "1750000000000"
         },
         {
-            "paymentAddressStr" : "1Uv3c4hAXqNcxyFhKGwBzGXQ6qdR89nrawqSz7WmcQEX4yurCEVEZMDm1x7g9vJnHHy4Lno73aJhaJAf8fhGgPexmCpu5HuiXU94reXAC",
-            "amount" : "1000000000"
+            "paymentAddressStr" : "1Uv4HKsToWx5BK9NwX7tYFaYJikz2PH9n2j4bzBXqw4NZ64ohQdnUCqdzSQwgNEbQKs7d2ME5w5e2jTg8VA5B9qjWhVoy1SjvtEN9TAyd",
+            "amount" : "1750000000000"
+        },
+        {
+            "paymentAddressStr" : "1Uv3W7tPA4SHo1fYVJ9GCWC5oFbMTpnE5b6ZqsNGi3gqZWrRB6BEpXrNn18ET3QSWKCoNCmPedW8bNrdPH6hfXhTUyNq8JZBpTFsrmKc8",
+            "amount" : "1750000000000"
+        },
+        {
+            "paymentAddressStr" : "1Uv29TNcLCYZFifHZ9fCPada8zHfxbi8YKwMUUtnSXdXWu2hsjX2f6Td3R8QroWk6scpdFdxSsgXwcFyqFkN39cYF3vej7RaeLwVp9nK3",
+            "amount" : "1750000000000"
         }
-        
     ]
 }
