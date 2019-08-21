@@ -1,12 +1,12 @@
 {
     "paymentInfos" : [
         {
-            "paymentAddressStr" : "1Uv3bzbfQK3Pwh1VCJmkfqbJ2JMAWCotowapUsKm6U47v62d5Lq1bvczNxzriJhQTQ96JBPp6EqetjCuSdVamzU377tb89cvtvuMehNTP",
-            "amount" : "1000000000"
+            "paymentAddressStr" : "1Uv2AC1vRMySacx1ZHS3LDqU9Zs7xgXHRWr5spUBeSTGhD58Ag34Wtfy9MwsjoQW9qboKntE3sJBHjqsTpy7eeBCaJWf2Hj49wABGC1Le",
+            "amount" : "10000000000"
         },
         {
-            "paymentAddressStr" : "1Uv4FgsEKPN8oPwRcw6AinU64xbZ95qeX48ptwzNuv2ao7twoBpqywhNZLxy6d7tXBqJX4QxaGy3gBXbGQUVgGkMdyRTqHxmsKhd4JE9f",
-            "amount" : "1000000000"
+            "paymentAddressStr" : "1Uv4ZQWnE2j832G4NDkceANsMpEFZWHaGtquKzgYdw2XKS1Zrvre5Bxfr4eBUm87Xt7vdYakjuXmfKyEXkJVpo3fJR2fM2nhHiEiGPuKr",
+            "amount" : "10000000000"
         }
     ]
 }
