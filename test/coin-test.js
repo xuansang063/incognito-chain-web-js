@@ -7,6 +7,14 @@ import * as ec from "privacy-js-lib/lib/ec";
 import bn from 'bn.js';
 import { parseInputCoinFromEncodedObject } from "../lib/tx/utils";
 import {checkDecode} from "../lib/base58";
+import {PedCom} from 'privacy-js-lib/lib/pedersen';
+import {SK,
+  VALUE,
+  SND,
+  SHARD_ID,
+  RAND,} from "privacy-js-lib/lib/constants";
+
+  import { getShardIDFromLastByte } from '../lib/common';
 
 const P256 = ec.P256;
 
@@ -65,12 +73,12 @@ function TestCoin() {
 
 function Test() {
   let coinObject = {
-    "PublicKey": "171GWBiRH5B7pV9Sc9dpumR6a9q3T9ecp7TXf3VtgKJ1JoNKzZV",
-    "CoinCommitment": "15u8R4p5pM2nE9UY3thNfLgQWRMi63YhvuGaYzphs1yQmDonP5Q",
-    "SNDerivator": "12DsUW8WjBd6XDFciW6FEkz9jWeECjVgCtDMK1tsY7DnkN37bAe",
+    "PublicKey": "18HVeyiKRRLTKjj1jANhhP6CxDvx2XEJMWqJiYUhvb4MK8JqQP3",
+    "CoinCommitment": "18c17gvaLuw4voyZSfUBCKE8V2qKcQbMfRu7j5peuDorubobsFU",
+    "SNDerivator": "1GnN2AC8tmTbcMLj4daPse1ZByee8tB9Td5R9qrjo49KYFH26N",
     "SerialNumber": "176yfPnVDsfXJbLMEQ3apEsh48RJ1XWqncA55QJ3HJZrFgXSz9K",
-    "Randomness": "12oPrsLY1f1MnVyKmfyuWaSMM2XipdQtmeWivyfVF1LZp8Pd9oh",
-    "Value": "996484000000000",
+    "Randomness": "12TnojAatDgEjcGySPiZ7e58fns2Q5UbKBwVuvrAwAYjdkviL5m",
+    "Value": "1755000000000",
     "Info": "13PMpZ4"
   };
 
@@ -78,27 +86,51 @@ function Test() {
   let commitmentDecode = checkDecode(coinObject.CoinCommitment).bytesDecoded;
   let sndDecode = checkDecode(coinObject.SNDerivator).bytesDecoded;
   let randDecode = checkDecode(coinObject.Randomness).bytesDecoded;
-  let snDecode = checkDecode(coinObject.SerialNumber).bytesDecoded;
+  // let snDecode = checkDecode(coinObject.SerialNumber).bytesDecoded;
 
-  console.log("commitmentDecode: ", commitmentDecode);
+  console.log("commitmentDecode: ", commitmentDecode.join(" "));
+  console.log("publicKeyDecode: ", publicKeyDecode);
+  console.log("sndDecode: ", sndDecode);
+  console.log("randDecode: ", randDecode);
 
   let inputCoin = new InputCoin();
   inputCoin.coinDetails.publicKey = P256.decompress(publicKeyDecode);
-  inputCoin.coinDetails.coinCommitment = P256.decompress(commitmentDecode);
+  // inputCoin.coinDetails.coinCommitment = P256.decompress(commitmentDecode);
   inputCoin.coinDetails.snderivator = new bn(sndDecode);
   inputCoin.coinDetails.randomness = new bn(randDecode);
   inputCoin.coinDetails.value = new bn(coinObject.Value);
   inputCoin.coinDetails.info = checkDecode(coinObject.Info).bytesDecoded;
-  inputCoin.coinDetails.serialNumber = P256.decompress(snDecode)
+  // inputCoin.coinDetails.serialNumber = P256.decompress(snDecode)
 
   inputCoin.coinDetails.commitAll();
-  console.log("coinCommitment: ", inputCoin.coinDetails.coinCommitment.compress());
+  console.log("coinCommitment: ", inputCoin.coinDetails.coinCommitment.compress().join(" "));
 
+  console.log("PedCom.G[0]: ", PedCom.G[0].compress());
+  console.log("PedCom.G[1]: ", PedCom.G[1].compress());
+  console.log("PedCom.G[2]: ", PedCom.G[2].compress());
+  console.log("PedCom.G[3]: ", PedCom.G[3].compress());
+  console.log("PedCom.G[4]: ", PedCom.G[4].compress());
 
-  // let newSN = PedCom.G[0].derive()
+  let cmValue = PedCom.G[VALUE].mul(inputCoin.coinDetails.value);
+  let cmSND = PedCom.G[SND].mul(inputCoin.coinDetails.snderivator);
+  let lastBytes = inputCoin.coinDetails.getPubKeyLastByte();
+  console.log("last bytes: ", lastBytes);
+  let shardID = getShardIDFromLastByte(lastBytes);
+  console.log("ShardId : ", shardID);
+  let cmShardID = PedCom.G[SHARD_ID].mul(new bn(shardID));
+  let cmRand = PedCom.G[RAND].mul(inputCoin.coinDetails.randomness);
 
-  // let inputCoin = parseInputCoinFromEncodedObject(coinObject);
+  console.log("cmValue: ", cmValue.compress().join(" "));
+  console.log("cmSND: ", cmSND.compress().join(" "));
+  console.log("cmShardID: ", cmShardID.compress().join(" "));
+  console.log("cmRand: ", cmRand.compress().join(" "));
 
+  let cmSum = cmValue.add(cmSND);
+  cmSum = cmSum.add(cmShardID);
+  cmSum = cmSum.add(cmRand);
+  cmSum = cmSum.add(inputCoin.coinDetails.publicKey);
+
+  console.log("cmSum: ", cmSum.compress().join(" "));
 }
 
 Test()
