@@ -64,4 +64,27 @@ async function TestGetRewardAmount() {
     console.log("REsponse createAndSendBurningRequestTx: ", response0);
   }
   
-  TestBurningRequestTx();
+  // TestBurningRequestTx();
+
+  async function TestIsStaked() {
+    Wallet.RpcClient = new RpcClient("https://test-node.incognito.org")
+    // HN1 change money
+    let senderSpendingKeyStr = "112t8rnXQ8kbdo6jMvGJC8M9diyCxuVLDPXHZJaaaGTvX32Nfo2rMCMx8PhjV3EhXQQ9ouWcVFSYvSLoBf65LLNFzZEUu5exUx5nJGCNFPk5";
+    let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+    senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+    
+    let accountSender = new AccountWallet();
+    accountSender.key = senderKeyWallet;
+    
+    // // create and send constant tx
+    let response0;
+    try{
+        response0 = await accountSender.isStaked();
+    } catch(e){
+      console.log(e);
+    }
+   
+    console.log("REsponse is staked: ", response0);
+  }
+  
+  TestIsStaked();
