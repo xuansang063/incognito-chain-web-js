@@ -10,7 +10,7 @@ require("@babel/polyfill");
 // require('./test/tx/txcustomtoken-test');
 // require('./test/tx/txcustomtokenprivacy-test');
 
-require('./test/coin-test');
+// require('./test/coin-test');ma2
 // require('./test/key-test');
 
 // bigint test
@@ -28,3 +28,5 @@ require('./test/coin-test');
 // require('./test/utils-test');
 
 // require('./test/txfordev/txfordev.js');
+
+require('./test/committeekey-test');
