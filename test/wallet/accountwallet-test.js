@@ -79,7 +79,7 @@ async function TestGetRewardAmount() {
     // // create and send constant tx
     let response0;
     try{
-        response0 = await accountSender.isStaked();
+        response0 = await accountSender.stakerStatus();
     } catch(e){
       console.log(e);
     }
