@@ -73,38 +73,38 @@ function TestCoin() {
 
 
 function Test() {
-  // let coinObject = {
-  //   "PublicKey": "18HVeyiKRRLTKjj1jANhhP6CxDvx2XEJMWqJiYUhvb4MK8JqQP3",
-  //   "CoinCommitment": "18c17gvaLuw4voyZSfUBCKE8V2qKcQbMfRu7j5peuDorubobsFU",
-  //   "SNDerivator": "1GnN2AC8tmTbcMLj4daPse1ZByee8tB9Td5R9qrjo49KYFH26N",
-  //   "SerialNumber": "176yfPnVDsfXJbLMEQ3apEsh48RJ1XWqncA55QJ3HJZrFgXSz9K",
-  //   "Randomness": "12TnojAatDgEjcGySPiZ7e58fns2Q5UbKBwVuvrAwAYjdkviL5m",
-  //   "Value": "1755000000000",
-  //   "Info": "13PMpZ4"
-  // };
+  let coinObject = {
+    "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+    "CoinCommitment": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+    "SNDerivator": "12bs8tNVK2Ljkx8vivD9NEufxarjkd3dqkMYoKLUtwjQFVS77yS",
+    // "SerialNumber": "176yfPnVDsfXJbLMEQ3apEsh48RJ1XWqncA55QJ3HJZrFgXSz9K",
+    "Randomness": "15vZR4fK8MS7P2vKnYDkwkwDm7a9TL5Z5VwCkBL1FySmpyq7nU",
+    "Value": "3000000000",
+    "Info": "13PMpZ4"
+  };
 
-  // let publicKeyDecode = checkDecode(coinObject.PublicKey).bytesDecoded;
-  // let commitmentDecode = checkDecode(coinObject.CoinCommitment).bytesDecoded;
-  // let sndDecode = checkDecode(coinObject.SNDerivator).bytesDecoded;
-  // let randDecode = checkDecode(coinObject.Randomness).bytesDecoded;
-  // // let snDecode = checkDecode(coinObject.SerialNumber).bytesDecoded;
+  let publicKeyDecode = checkDecode(coinObject.PublicKey).bytesDecoded;
+  let commitmentDecode = checkDecode(coinObject.CoinCommitment).bytesDecoded;
+  let sndDecode = checkDecode(coinObject.SNDerivator).bytesDecoded;
+  let randDecode = checkDecode(coinObject.Randomness).bytesDecoded;
+  // let snDecode = checkDecode(coinObject.SerialNumber).bytesDecoded;
 
-  // console.log("commitmentDecode: ", commitmentDecode.join(" "));
+  console.log("commitmentDecode: ", commitmentDecode.join(", "));
   // console.log("publicKeyDecode: ", publicKeyDecode);
   // console.log("sndDecode: ", sndDecode);
   // console.log("randDecode: ", randDecode);
 
-  // let inputCoin = new InputCoin();
-  // inputCoin.coinDetails.publicKey = P256.decompress(publicKeyDecode);
-  // // inputCoin.coinDetails.coinCommitment = P256.decompress(commitmentDecode);
-  // inputCoin.coinDetails.snderivator = new bn(sndDecode);
-  // inputCoin.coinDetails.randomness = new bn(randDecode);
-  // inputCoin.coinDetails.value = new bn(coinObject.Value);
-  // inputCoin.coinDetails.info = checkDecode(coinObject.Info).bytesDecoded;
-  // // inputCoin.coinDetails.serialNumber = P256.decompress(snDecode)
+  let inputCoin = new InputCoin();
+  inputCoin.coinDetails.publicKey = P256.decompress(publicKeyDecode);
+  // inputCoin.coinDetails.coinCommitment = P256.decompress(commitmentDecode);
+  inputCoin.coinDetails.snderivator = new bn(sndDecode);
+  inputCoin.coinDetails.randomness = new bn(randDecode);
+  inputCoin.coinDetails.value = new bn(coinObject.Value);
+  inputCoin.coinDetails.info = checkDecode(coinObject.Info).bytesDecoded;
+  // inputCoin.coinDetails.serialNumber = P256.decompress(snDecode)
 
-  // inputCoin.coinDetails.commitAll();
-  // console.log("coinCommitment: ", inputCoin.coinDetails.coinCommitment.compress().join(" "));
+  inputCoin.coinDetails.commitAll();
+  console.log("coinCommitment: ", inputCoin.coinDetails.coinCommitment.compress().join(", "));
 
   // console.log("PedCom.G[0]: ", PedCom.G[0].compress());
   // console.log("PedCom.G[1]: ", PedCom.G[1].compress());
@@ -133,21 +133,25 @@ function Test() {
 
   // console.log("cmSum: ", cmSum.compress().join(" "));
 
-  let cmBytes = checkDecode("17Gnq79CYjUAwCrzebpfhDb7fv6vDDZFTVRQKMd9sr3iGrtSBpW").bytesDecoded;
-  console.log("cmBytes: ", cmBytes)
+  // let cmBytes = checkDecode("17Gnq79CYjUAwCrzebpfhDb7fv6vDDZFTVRQKMd9sr3iGrtSBpW").bytesDecoded;
+  // console.log("cmBytes: ", cmBytes)
 
-  let cmBytes2 = [2, 56, 117, 32, 131, 155, 5, 127, 77, 254, 233, 125, 147, 168, 254, 124, 229, 84, 56, 162, 130, 239, 28, 184, 93, 2, 220, 209, 220, 1, 237, 235, 194]
-  let cmBytesEncode = checkEncode(cmBytes2, ENCODE_VERSION)
-  console.log("cmBytesEncode: ", cmBytesEncode)
+  // let cmBytes2 = [2, 56, 117, 32, 131, 155, 5, 127, 77, 254, 233, 125, 147, 168, 254, 124, 229, 84, 56, 162, 130, 239, 28, 184, 93, 2, 220, 209, 220, 1, 237, 235, 194]
+  // let cmBytesEncode = checkEncode(cmBytes2, ENCODE_VERSION)
+  // console.log("cmBytesEncode: ", cmBytesEncode)
 
-  let cmBytes3 = [2, 166, 55, 55, 74, 84 ,165, 149, 219, 75 ,6 ,71, 204, 204, 135, 123, 94, 116, 78, 109, 84, 106, 113, 115, 62, 156, 43, 174, 251, 192, 76, 150, 172]
-  let cmBytesEncode3 = checkEncode(cmBytes3, ENCODE_VERSION)
-  console.log("cmBytesEncode3: ", cmBytesEncode3)
+  // let cmBytes3 = [2, 166, 55, 55, 74, 84 ,165, 149, 219, 75 ,6 ,71, 204, 204, 135, 123, 94, 116, 78, 109, 84, 106, 113, 115, 62, 156, 43, 174, 251, 192, 76, 150, 172]
+  // let cmBytesEncode3 = checkEncode(cmBytes3, ENCODE_VERSION)
+  // console.log("cmBytesEncode3: ", cmBytesEncode3)
 
 
-  let cmBytes4 = [2, 207, 160, 139, 226, 44, 85, 237, 115, 57, 27 ,20, 144, 133, 90, 78, 68 ,151, 179, 206, 233, 48, 83, 77, 199, 25, 81, 158, 88, 96, 13, 219, 205]
+  let cmBytes4 = [3, 251, 30, 109, 201, 165, 207, 245, 236, 52, 169, 227, 11, 20, 241, 26, 99, 14, 204, 152, 209, 4 ,164, 123, 76 ,48 ,81 ,170 ,90 ,93 ,233 ,219, 161];
   let cmBytesEncode4 = checkEncode(cmBytes4, ENCODE_VERSION)
   console.log("cmBytesEncode4: ", cmBytesEncode4)
+
+  cmBytes4 = [2, 50, 209, 212, 162, 188, 179, 1 ,129, 143, 189, 246, 200, 153, 146, 252, 26, 164, 203, 171, 227, 215, 85, 233, 149, 110, 74 ,145, 249, 149, 151, 107, 52];
+  cmBytesEncode4 = checkEncode(cmBytes4, ENCODE_VERSION)
+  console.log("cmBytesEncode5: ", cmBytesEncode4)
 }
 
 Test()
