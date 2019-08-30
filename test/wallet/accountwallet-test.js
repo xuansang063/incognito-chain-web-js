@@ -2,8 +2,9 @@
 import {KeyWallet as keyWallet} from "../../lib/wallet/hdwallet";
 import { AccountWallet, Wallet } from "../../lib/wallet/wallet";
 import {RpcClient} from "../../lib/rpcclient/rpcclient";
-import {PRVID} from "../../lib/wallet/constants"
+import {PRVID, ShardStakingType} from "../../lib/wallet/constants"
 import {convertHashToStr} from "../../lib/common";
+import { bn } from "privacy-js-lib/lib/sjcl/sjcl";
 
 async function TestGetRewardAmount() {
     Wallet.RpcClient = new RpcClient("https://dev-test-node.incognito.org")
@@ -64,4 +65,60 @@ async function TestGetRewardAmount() {
     console.log("REsponse createAndSendBurningRequestTx: ", response0);
   }
   
-  TestBurningRequestTx();
+  // TestBurningRequestTx();
+
+  async function TestIsStaked() {
+    Wallet.RpcClient = new RpcClient("https://test-node.incognito.org")
+    // HN1 change money
+    let senderSpendingKeyStr = "112t8rnXgFuVb4pfnqh9wkwrAZZRp7WHQVtnHnxBNkaHimBoL42DvsFVLisDqXiTZpnKFAZahQsCaoWdEQ9s77FFPzRey6H9CS7JeC6ipgoB";
+    let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+    senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+    
+    let accountSender = new AccountWallet();
+    accountSender.key = senderKeyWallet;
+    
+    // // create and send constant tx
+    let response0;
+    try{
+        response0 = await accountSender.stakerStatus();
+    } catch(e){
+      console.log(e);
+    }
+   
+    console.log("REsponse is staked: ", response0);
+  }
+  
+  // TestIsStaked();
+
+  async function sleep(sleepTime) {
+    return new Promise(resolve => setTimeout(resolve, sleepTime));
+  }
+
+  async function TestStaking() {
+    Wallet.RpcClient = new RpcClient("https://dev-test-node.incognito.org")
+    // HN1 change money
+    let senderSpendingKeyStr = "112t8rnXgFuVb4pfnqh9wkwrAZZRp7WHQVtnHnxBNkaHimBoL42DvsFVLisDqXiTZpnKFAZahQsCaoWdEQ9s77FFPzRey6H9CS7JeC6ipgoB";
+    let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+    senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+    
+    let accountSender = new AccountWallet();
+    accountSender.key = senderKeyWallet;
+
+    let fee = 0.5*1e9;
+    let candidatePaymentAddress = "1Uv3c4hAXqNcxyFhKGwBzGXQ6qdR89nrawqSz7WmcQEX4yurCEVEZMDm1x7g9vJnHHy4Lno73aJhaJAf8fhGgPexmCpu5HuiXU94reXAC";
+    let miningSeedKey = "1Y1uxmXqqB4kL3zYu6Qee3N4T8cn4konVBrwVAyZS9Mx88onpH";
+    let rewardReceiverPaymentAddress = "1Uv3c4hAXqNcxyFhKGwBzGXQ6qdR89nrawqSz7WmcQEX4yurCEVEZMDm1x7g9vJnHHy4Lno73aJhaJAf8fhGgPexmCpu5HuiXU94reXAC";
+    
+    await sleep(5000);
+    // // create and send constant tx
+    let response0;
+    try{
+        response0 = await accountSender.createAndSendStakingTx({type: ShardStakingType}, fee, candidatePaymentAddress, miningSeedKey, rewardReceiverPaymentAddress);
+    } catch(e){
+      console.log(e);
+    }
+   
+    console.log("REsponse staking: ", response0.txId);
+  }
+  
+  TestStaking();
