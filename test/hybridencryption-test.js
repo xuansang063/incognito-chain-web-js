@@ -14,13 +14,17 @@ function testHybridEncrypt() {
   let publicKey = P256.g.mul(privateKey);
   console.log("public key : ", publicKey.compress().join(', '));
 
-  for (let i=0; i<1000; i++){
+
+  for (let i=0; i<1000000; i++){
     let ciphertext = h.hybridEncrypt(msg, publicKey.compress());
     // console.log("Ciphertext msg when encrypt: ", ciphertext.msgEncrypted.join(', '));
 
     let msgDecrypt = h.hybridDecrypt(ciphertext, privateKey.toArray());
-
-    console.log("msgDecrypt: ", msgDecrypt);
+    if (!msgDecrypt.equals(msg)){
+      console.log("msgDecrypt: ", msgDecrypt);
+      console.log("Wrong!!!");
+      break;
+    }
 
 
     // console.log('ciphertext: ', ciphertext.toBytes().join(', '));
@@ -32,7 +36,7 @@ function testHybridEncrypt() {
   // console.log('ciphertext: ', ciphertext.toBytes().join(', '));
 }
 
-// testHybridEncrypt();
+testHybridEncrypt();
 
 function test2(){
   let keyWallet = KeyWallet.base58CheckDeserialize("1CvjJXCKYU2KBopYvJStPkSYRZdzuuopas8jeepRevxpX8VYwYCTDJxJ719uDbZHvCwEpfYuMWp1fJTfmFW7cexH8THqxMNmotdShYvP");
@@ -55,5 +59,5 @@ function test2(){
   console.log("random: ", random);
 }
 
-test2();
+// test2();
 
