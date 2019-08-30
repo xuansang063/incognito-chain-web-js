@@ -93,11 +93,16 @@ async function TestTx() {
     console.timeEnd("tx.init");
     console.log("***************Tx: ", tx);
 
-    let res2 = await rpcClient.sendRawTx(tx);
-    if (res2.err !== null){
-      console.log(err);
+    let res2 ;
+    try {
+      res2 = await rpcClient.sendRawTx(tx);
+    } catch(e){
+      throw e;
     }
-    // console.log("res: ", res);
+
+    console.log("TxId: ", res2.txId);
+    
+  
   } catch (e) {
     console.log(e);
   }
