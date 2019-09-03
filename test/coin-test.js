@@ -154,4 +154,125 @@ function Test() {
   // console.log("cmBytesEncode5: ", cmBytesEncode4)
 }
 
-Test()
+// Test()
+
+
+function Test2() {
+  let coinObjects = [
+    {
+      "CoinCommitment": "17RUKXhuzvnJaF5yTpvzLXJuCejj4nkeCE8PE6pNLiWvaEg8n38",
+      "Info": "13PMpZ4",
+      "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+      "Randomness": "12mPYkDQ4qGhQanETTsLB8DWG1uhRJSKPBN92fmjLuqYXj6emeN",
+      "SNDerivator": "1ApvSZbe93mvsfMigmtFZ2g5mApKpi47ZHCvASbkwjLcGddFsf",
+      "SerialNumber": null,
+      "Value": "1000000000"
+    },
+    {
+      "CoinCommitment": "18V3VfZnauVDaky5nDArrYDYC8s2qnB4rY1yTihHQVzMqdQHv4g",
+      "Info": "13PMpZ4",
+      "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+      "Randomness": "1FpduyCaRggeQfdftX5eBaCWkscyQoewKG6D6FX1p6E2wSpb7b",
+      "SNDerivator": "1anuW2sAECSQnG4yLupGZgwXNchNAuSyRsrfJDcWcYSYYJdqHu",
+      "SerialNumber": null,
+      "Value": "1000000000"
+    },
+    {
+      "CoinCommitment": "17kto8KrsCJ7k2b69fwqGx4pZaJRJcbPttmjtnvcAqWiDtNDMoW",
+      "Info": "13PMpZ4",
+      "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+      "Randomness": "12NrCmzSTg98L9YiJ79KoDo59bg3URscFKrtcceT5i8CSms36NG",
+      "SNDerivator": "13o2gbGNksU1PYJ1WyJmfQmQKvgapqhCZ49RP6AQMuinYrtqmT",
+      "SerialNumber": null,
+      "Value": "1000000000000"
+    },
+    {
+      "CoinCommitment": "18XqHezZ9FuC8azodB8v7zNBgdCdQgBFfhjmR3AwZ8GmtisC6ej",
+      "Info": "13PMpZ4",
+      "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+      "Randomness": "1sr1gNhM6tCovBWbN4C44R2NeJPRXu3p8ABsUexGpUC2B4Pfri",
+      "SNDerivator": "12BHeWbAfmu6JrHQgK5hucN6pn3eu4hW2DPSJpuV8QcZsBmNiNj",
+      "SerialNumber": null,
+      "Value": "1000000000000"
+    },
+    {
+      "CoinCommitment": "15R3KphSHUeTx48q6xD3chnfAzcDvxwzzL8SB9qv8264TgmYQS1",
+      "Info": "13PMpZ4",
+      "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+      "Randomness": "1mZDppHi8qBEX3t2EMdYNXr9wixQiibtS9KpixF6zMwXDZR9XP",
+      "SNDerivator": "12CGBZfMyaRbumYzLvk7yNQLYZY1bTdNMbrgTnv8CvRcYrrknUP",
+      "SerialNumber": null,
+      "Value": "1000000000000"
+    },
+    {
+      "CoinCommitment": "18FSvNXGFKMjT17E8gp5zdVxa1SMrwLPByrfVeGsQHzxuAaHDiW",
+      "Info": "13PMpZ4",
+      "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+      "Randomness": "1GfXgA3B5XjisJUtT776VkxeJvbi794idXvDRD1WBA3RQ33Kdr",
+      "SNDerivator": "128LTybze6kr15hsXf9mjH7E7xiZFEgHehWeY3UfGUyt65kXjYz",
+      "SerialNumber": null,
+      "Value": "1000000000000"
+    },
+    {
+      "CoinCommitment": "1599pTKdDRLqxPf4hCMU4mjzWNmMfdX1MJejFfs5Ak35oDR2sxL",
+      "Info": "13PMpZ4",
+      "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+      "Randomness": "1gDR4y58TdaMuSaXMg2GCwgZ3izpJdGA7UMR8ZmXgn9UHWjVFJ",
+      "SNDerivator": "12eMZEN7wrvntk4e2Y4b6BTrX3QJTLZeANPURg5rT61Cu38fFQd",
+      "SerialNumber": null,
+      "Value": "1000000000000"
+    },
+    {
+      "CoinCommitment": "18LTpyiAbeegkz2efnq9yZwjTZXhmcya3nxLEGYjAL1orFDUB2m",
+      "Info": "13PMpZ4",
+      "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+      "Randomness": "12ht226TD46D2vjc3dpmZrWLFT8gThy5zSFBL37rnMUHDMVTu5q",
+      "SNDerivator": "12DvCVw1fgfkckXrCCVyRxnf7GStv9jAd2hJCWfFmvPWDbypw1g",
+      "SerialNumber": null,
+      "Value": "176706249999980"
+    }
+  ];
+
+  // let coinObject = {
+  //   "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+  //   "CoinCommitment": "18jq2ND9L1PnAxVjRLLpNk2Eo3ztYkUifFps1eTtDfhkhxCQy6G",
+  //   "SNDerivator": "12bs8tNVK2Ljkx8vivD9NEufxarjkd3dqkMYoKLUtwjQFVS77yS",
+  //   // "SerialNumber": "176yfPnVDsfXJbLMEQ3apEsh48RJ1XWqncA55QJ3HJZrFgXSz9K",
+  //   "Randomness": "15vZR4fK8MS7P2vKnYDkwkwDm7a9TL5Z5VwCkBL1FySmpyq7nU",
+  //   "Value": "3000000000",
+  //   "Info": "13PMpZ4"
+  // };
+
+
+  for (let i =0; i<coinObjects.length; i++){
+    let publicKeyDecode = checkDecode(coinObjects[i].PublicKey).bytesDecoded;
+    let commitmentDecode = checkDecode(coinObjects[i].CoinCommitment).bytesDecoded;
+    let sndDecode = checkDecode(coinObjects[i].SNDerivator).bytesDecoded;
+    let randDecode = checkDecode(coinObjects[i].Randomness).bytesDecoded;
+    // let snDecode = checkDecode(coinObject.SerialNumber).bytesDecoded;
+
+    console.log("commitmentDecode: ", commitmentDecode.join(", "));
+    // console.log("publicKeyDecode: ", publicKeyDecode);
+    // console.log("sndDecode: ", sndDecode);
+    // console.log("randDecode: ", randDecode);
+
+    let inputCoin = new InputCoin();
+    inputCoin.coinDetails.publicKey = P256.decompress(publicKeyDecode);
+    // inputCoin.coinDetails.coinCommitment = P256.decompress(commitmentDecode);
+    inputCoin.coinDetails.snderivator = new bn(sndDecode);
+    inputCoin.coinDetails.randomness = new bn(randDecode);
+    inputCoin.coinDetails.value = new bn(coinObjects[i].Value);
+    inputCoin.coinDetails.info = checkDecode(coinObjects[i].Info).bytesDecoded;
+    // inputCoin.coinDetails.serialNumber = P256.decompress(snDecode)
+
+    inputCoin.coinDetails.commitAll();
+    console.log("coinCommitment: ", inputCoin.coinDetails.coinCommitment.compress().join(", "));
+
+    // if (!commitmentDecode.equals(inputCoin.coinDetails.coinCommitment.compress())){
+    //   console.log("Input coin: ", i);
+    // }
+  }
+  
+}
+
+Test2()
