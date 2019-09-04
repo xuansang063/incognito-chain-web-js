@@ -275,4 +275,51 @@ function Test2() {
   
 }
 
-Test2()
+// Test2()
+
+
+function Test3(){
+  // let data = [0, 174, 33, 3, 60, 123, 206, 207, 7, 52, 248, 65, 70, 49, 30, 41, 32, 61, 234, 142, 11, 181, 170, 120, 127, 187, 113, 61, 104, 145, 81, 29, 206, 12, 226, 235, 33, 3, 250, 55, 13, 132, 208, 95, 63, 41, 182, 236, 75, 192, 191, 226, 65, 213, 63, 6, 21, 170, 176, 185, 244, 136, 30, 254, 135, 114, 220, 47, 246, 101, 32, 86, 91, 14, 170, 4, 145, 115, 68, 13, 234, 139, 17, 15, 64, 246, 149, 147, 185, 30, 118, 209, 93, 62, 153, 59, 6, 19, 151, 11, 5, 73, 0, 33, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 178, 231, 244, 64, 100, 215, 171, 192, 244, 124, 143, 18, 65, 36, 229, 173, 200, 165, 92, 178, 69, 146, 49, 132, 18, 137, 133, 105, 66, 168, 81, 181, 4, 59, 154, 202, 0, 0];
+  let outCoin = new(OutputCoin)
+  outCoin.coinDetails.value = 1000000000;
+  outCoin.coinDetails.snderivator = new bn([86, 91, 14, 170, 4 ,145, 115, 68, 13, 234, 139, 17, 15, 64 ,246, 149, 147, 185, 30, 118, 209, 93, 62, 153 ,59 ,6 ,19 ,151, 11 ,5, 73, 0]);
+  outCoin.coinDetails.randomness = new bn([178, 231, 244, 64, 100, 215, 171, 192, 244, 124, 143, 18, 65, 36, 229, 173, 200, 165, 92, 178, 69, 146, 49, 132, 18, 137, 133, 105, 66, 168, 81, 181]);
+
+  let publicKeyBytes = [3, 60, 123, 206, 207, 7 ,52 ,248, 65, 70, 49, 30, 41, 32, 61, 234, 142, 11, 181, 170, 120, 127, 187, 113, 61, 104, 145, 81, 29, 206, 12, 226, 235];
+  outCoin.coinDetails.publicKey = P256.decompress(publicKeyBytes);
+
+  let commitments = outCoin.coinDetails.publicKey;
+  console.log("Commitment 1: ", commitments.compress().join(", "));
+  commitments = commitments.add(PedCom.G[VALUE].mul(outCoin.coinDetails.value));
+  console.log("Commitment 2: ", commitments.compress().join(", "));
+  commitments = commitments.add(PedCom.G[SND].mul(outCoin.coinDetails.snderivator));
+  console.log("Commitment 3: ", commitments.compress().join(", "));
+
+  commitments = commitments.add(PedCom.G[SHARD_ID].mul(new bn(getShardIDFromLastByte(outCoin.coinDetails.getPubKeyLastByte()))));
+  console.log("Commitment 4: ", commitments.compress().join(", "));
+
+  commitments = commitments.add(PedCom.G[RAND].mul(outCoin.coinDetails.randomness));
+  console.log("Commitment 5: ", commitments.compress().join(", "));
+
+  //
+  outCoin.coinDetails.commitAll();
+  console.log("Commitment all: ", outCoin.coinDetails.coinCommitment.compress().join(", "));
+
+  let snd1 = new bn([20, 11, 159, 16, 19, 37, 100, 86, 13, 227, 8, 236, 93, 32, 177, 171, 99, 4, 241, 120, 20, 14, 29, 197, 132, 209, 245, 95, 107, 225, 100]);
+  let cm1 = PedCom.G[SND].mul(snd1);
+  console.log("cm1: ", cm1.compress().join(", "));
+
+  let snd2 = new bn([20, 11, 159, 16, 19, 37, 100, 86, 13, 227, 8, 236, 93, 32, 177, 171, 99, 4, 241, 120, 20, 14, 29, 197, 132, 209, 245, 95, 107, 225, 100, 0]);
+  let cm2 = PedCom.G[SND].mul(snd2);
+  console.log("cm2: ", cm2.compress().join(", "));
+
+
+  
+  // let commitmentBytes = commitments.compress();
+  // let commitmentBytes2 = outCoins[i].coinDetails.coinCommitment.compress();
+
+
+
+}
+
+Test3()

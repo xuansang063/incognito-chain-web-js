@@ -3,14 +3,14 @@ require("@babel/polyfill");
 
 // wallet test
 // require("./test/wallet/wallet-test");
-require("./test/wallet/accountwallet-test");
+// require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
 
 // require('./test/tx/txprivacy-test');
 // require('./test/tx/txcustomtoken-test');
 // require('./test/tx/txcustomtokenprivacy-test');
 
-// require('./test/coin-test');ma2
+// require('./test/coin-test');
 // require('./test/key-test');
 
 // bigint test
@@ -27,7 +27,7 @@ require("./test/wallet/accountwallet-test");
 // require('./test/aes-test');
 // require('./test/utils-test');
 
-// require('./test/txfordev/txfordev.js');
+require('./test/txfordev/txfordev.js');
 
 // require('./test/committeekey-test');
 // require('./test/txfordev/staking.js');
