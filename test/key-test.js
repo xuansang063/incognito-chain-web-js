@@ -1,11 +1,6 @@
 import * as key from "../lib/key"
-import {byteToHexString} from "../lib/common"
 import * as base58 from "../lib/base58"
 import CryptoJS from "crypto-js";
-import SHA512 from "crypto-js/sha512";
-
-
-// const SHA512 =
 
 function TestKey() {
   let sk = key.GenerateSpendingKey([123]);
@@ -40,13 +35,3 @@ function TestBase58(){
 }
 
 // TestBase58()
-
-function byteArrayToWordArray(ba) {
-  var wa = [],
-    i;
-  for (i = 0; i < ba.length; i++) {
-    wa[(i / 4) | 0] |= ba[i] << (24 - 8 * i);
-  }
-
-  return CryptoJS.lib.WordArray.create(wa, ba.length);
-}
