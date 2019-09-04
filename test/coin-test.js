@@ -2,19 +2,21 @@ import * as keyset from "../lib/keySet";
 import * as key from "../lib/key";
 import * as privacyUtils from "privacy-js-lib/lib/privacy_utils";
 import * as constants from "privacy-js-lib/lib/constants";
-import {Coin, InputCoin, OutputCoin} from "../lib/coin";
+import { Coin, InputCoin, OutputCoin } from "../lib/coin";
 import * as ec from "privacy-js-lib/lib/ec";
 import bn from 'bn.js';
 import { parseInputCoinFromEncodedObject } from "../lib/tx/utils";
-import {checkDecode, checkEncode} from "../lib/base58";
-import {PedCom} from 'privacy-js-lib/lib/pedersen';
-import {SK,
+import { checkDecode, checkEncode } from "../lib/base58";
+import { PedCom } from 'privacy-js-lib/lib/pedersen';
+import {
+  SK,
   VALUE,
   SND,
   SHARD_ID,
-  RAND,} from "privacy-js-lib/lib/constants";
+  RAND,
+} from "privacy-js-lib/lib/constants";
 
-  import { getShardIDFromLastByte } from '../lib/common';
+import { getShardIDFromLastByte } from '../lib/common';
 import { ENCODE_VERSION } from "../lib/constants";
 
 const P256 = ec.P256;
@@ -71,8 +73,7 @@ function TestCoin() {
 
 // TestCoin();
 
-
-function Test() {
+function TestDecodeCoin() {
   let coinObject = {
     "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
     "CoinCommitment": "18jq2ND9L1PnAxVjRLLpNk2Eo3ztYkUifFps1eTtDfhkhxCQy6G",
@@ -105,53 +106,6 @@ function Test() {
 
   inputCoin.coinDetails.commitAll();
   console.log("coinCommitment: ", inputCoin.coinDetails.coinCommitment.compress().join(", "));
-
-  // console.log("PedCom.G[0]: ", PedCom.G[0].compress());
-  // console.log("PedCom.G[1]: ", PedCom.G[1].compress());
-  // console.log("PedCom.G[2]: ", PedCom.G[2].compress());
-  // console.log("PedCom.G[3]: ", PedCom.G[3].compress());
-  // console.log("PedCom.G[4]: ", PedCom.G[4].compress());
-
-  // let cmValue = PedCom.G[VALUE].mul(inputCoin.coinDetails.value);
-  // let cmSND = PedCom.G[SND].mul(inputCoin.coinDetails.snderivator);
-  // let lastBytes = inputCoin.coinDetails.getPubKeyLastByte();
-  // console.log("last bytes: ", lastBytes);
-  // let shardID = getShardIDFromLastByte(lastBytes);
-  // console.log("ShardId : ", shardID);
-  // let cmShardID = PedCom.G[SHARD_ID].mul(new bn(shardID));
-  // let cmRand = PedCom.G[RAND].mul(inputCoin.coinDetails.randomness);
-
-  // console.log("cmValue: ", cmValue.compress().join(" "));
-  // console.log("cmSND: ", cmSND.compress().join(" "));
-  // console.log("cmShardID: ", cmShardID.compress().join(" "));
-  // console.log("cmRand: ", cmRand.compress().join(" "));
-
-  // let cmSum = cmValue.add(cmSND);
-  // cmSum = cmSum.add(cmShardID);
-  // cmSum = cmSum.add(cmRand);
-  // cmSum = cmSum.add(inputCoin.coinDetails.publicKey);
-
-  // console.log("cmSum: ", cmSum.compress().join(" "));
-
-  // let cmBytes = checkDecode("17Gnq79CYjUAwCrzebpfhDb7fv6vDDZFTVRQKMd9sr3iGrtSBpW").bytesDecoded;
-  // console.log("cmBytes: ", cmBytes)
-
-  // let cmBytes2 = [2, 56, 117, 32, 131, 155, 5, 127, 77, 254, 233, 125, 147, 168, 254, 124, 229, 84, 56, 162, 130, 239, 28, 184, 93, 2, 220, 209, 220, 1, 237, 235, 194]
-  // let cmBytesEncode = checkEncode(cmBytes2, ENCODE_VERSION)
-  // console.log("cmBytesEncode: ", cmBytesEncode)
-
-  // let cmBytes3 = [2, 166, 55, 55, 74, 84 ,165, 149, 219, 75 ,6 ,71, 204, 204, 135, 123, 94, 116, 78, 109, 84, 106, 113, 115, 62, 156, 43, 174, 251, 192, 76, 150, 172]
-  // let cmBytesEncode3 = checkEncode(cmBytes3, ENCODE_VERSION)
-  // console.log("cmBytesEncode3: ", cmBytesEncode3)
-
-
-  // let cmBytes4 = [3, 251, 30, 109, 201, 165, 207, 245, 236, 52, 169, 227, 11, 20, 241, 26, 99, 14, 204, 152, 209, 4 ,164, 123, 76 ,48 ,81 ,170 ,90 ,93 ,233 ,219, 161];
-  // let cmBytesEncode4 = checkEncode(cmBytes4, ENCODE_VERSION)
-  // console.log("cmBytesEncode4: ", cmBytesEncode4)
-
-  // cmBytes4 = [2, 50, 209, 212, 162, 188, 179, 1 ,129, 143, 189, 246, 200, 153, 146, 252, 26, 164, 203, 171, 227, 215, 85, 233, 149, 110, 74 ,145, 249, 149, 151, 107, 52];
-  // cmBytesEncode4 = checkEncode(cmBytes4, ENCODE_VERSION)
-  // console.log("cmBytesEncode5: ", cmBytesEncode4)
 }
 
-Test()
+TestDecodeCoin()
