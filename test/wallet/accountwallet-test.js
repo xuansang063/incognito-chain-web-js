@@ -10,7 +10,7 @@ const rpcClient = new RpcClient("https://test-node.incognito.org");
 async function TestGetRewardAmount() {
   Wallet.RpcClient = rpcClient;
   // HN1 change money
-  let senderSpendingKeyStr = "112t8rnZ8iwXxHCW1ERzvVWxzhXDFNePExNWWfqSoBnhaemft7KYfpW7M79Jk8SbhDnSWP5ZeQnwKB2Usg1vvLosZoLJeBt36He1iDv5iFYg";
+  let senderSpendingKeyStr = "112t8rnXgFuVb4pfnqh9wkwrAZZRp7WHQVtnHnxBNkaHimBoL42DvsFVLisDqXiTZpnKFAZahQsCaoWdEQ9s77FFPzRey6H9CS7JeC6ipgoB";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -20,7 +20,7 @@ async function TestGetRewardAmount() {
   // get reward amount
   let response0;
   try {
-    response0 = await accountSender.getRewardAmount();
+    response0 = await accountSender.getRewardAmount(false, "");
   } catch (e) {
     console.log(e);
   }
@@ -28,7 +28,7 @@ async function TestGetRewardAmount() {
   console.log("REsponse getRewardAmount: ", response0);
 }
 
-// TestGetRewardAmount();
+TestGetRewardAmount();
 
 async function TestCreateAndSendRewardAmountTx() {
   Wallet.RpcClient = rpcClient;

@@ -26,7 +26,7 @@ require("./test/wallet/accountwallet-test");
 // require('./test/aes-test');
 // require('./test/utils-test');
 
-require('./test/txfordev/txfordev.js');
+// require('./test/txfordev/txfordev.js');
 
 // require('./test/committeekey-test');
 // require('./test/txfordev/staking.js');
