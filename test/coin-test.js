@@ -74,15 +74,25 @@ function TestCoin() {
 // TestCoin();
 
 function TestDecodeCoin() {
+  // let coinObject = {
+  //   "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
+  //   "CoinCommitment": "18jq2ND9L1PnAxVjRLLpNk2Eo3ztYkUifFps1eTtDfhkhxCQy6G",
+  //   "SNDerivator": "12bs8tNVK2Ljkx8vivD9NEufxarjkd3dqkMYoKLUtwjQFVS77yS",
+  //   // "SerialNumber": "176yfPnVDsfXJbLMEQ3apEsh48RJ1XWqncA55QJ3HJZrFgXSz9K",
+  //   "Randomness": "15vZR4fK8MS7P2vKnYDkwkwDm7a9TL5Z5VwCkBL1FySmpyq7nU",
+  //   "Value": "3000000000",
+  //   "Info": "13PMpZ4"
+  // };
+
   let coinObject = {
-    "PublicKey": "181pftJwY4zhvsCNa89M5Kdw7qJnXV67BaNn6qqaYKS3GNCTLKA",
-    "CoinCommitment": "18jq2ND9L1PnAxVjRLLpNk2Eo3ztYkUifFps1eTtDfhkhxCQy6G",
-    "SNDerivator": "12bs8tNVK2Ljkx8vivD9NEufxarjkd3dqkMYoKLUtwjQFVS77yS",
-    // "SerialNumber": "176yfPnVDsfXJbLMEQ3apEsh48RJ1XWqncA55QJ3HJZrFgXSz9K",
-    "Randomness": "15vZR4fK8MS7P2vKnYDkwkwDm7a9TL5Z5VwCkBL1FySmpyq7nU",
-    "Value": "3000000000",
-    "Info": "13PMpZ4"
-  };
+    "CoinCommitment": "15HhXJZzE6Kxg8SUAVd2wVmdeYF8WpQpMjScBYSQCPSxLfWeiEF",
+    "Info": "13PMpZ4",
+    "PublicKey": "16k14A5DRKLHYSYNeQ33TvK2v5wwWAw4z7aZwh3URwhNE2E7c8j",
+    "Randomness": "123dwfhDp9tUKXbaKZv4AVoLE1uowQNPUK5FN96MMvmSxWEHBmK",
+    "SNDerivator": "12Xwd6pzv3FwHN6KH4avzr2C3G5skUfc2s5nTEoddYBSXV3PPwL",
+    "SerialNumber": null,
+    "Value": "389749998920"
+  }
 
   let publicKeyDecode = checkDecode(coinObject.PublicKey).bytesDecoded;
   let commitmentDecode = checkDecode(coinObject.CoinCommitment).bytesDecoded;
@@ -91,9 +101,9 @@ function TestDecodeCoin() {
   // let snDecode = checkDecode(coinObject.SerialNumber).bytesDecoded;
 
   console.log("commitmentDecode: ", commitmentDecode.join(", "));
-  // console.log("publicKeyDecode: ", publicKeyDecode);
-  // console.log("sndDecode: ", sndDecode);
-  // console.log("randDecode: ", randDecode);
+  console.log("publicKeyDecode: ", publicKeyDecode);
+  console.log("sndDecode: ", sndDecode);
+  console.log("randDecode: ", randDecode);
 
   let inputCoin = new InputCoin();
   inputCoin.coinDetails.publicKey = P256.decompress(publicKeyDecode);
