@@ -5,7 +5,11 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { CustomTokenInit, CustomTokenTransfer } from "../../lib/tx/constants";
 import { PaymentAddressType } from "../../lib/wallet/constants";
 
-const rpcClient = new RpcClient("https://test-node.incognito.org");
+const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
+
+async function sleep(sleepTime) {
+  return new Promise(resolve => setTimeout(resolve, sleepTime));
+}
 
 async function TestGetRewardAmount() {
   Wallet.RpcClient = rpcClient;
@@ -28,7 +32,7 @@ async function TestGetRewardAmount() {
   console.log("REsponse getRewardAmount: ", response0);
 }
 
-TestGetRewardAmount();
+// TestGetRewardAmount();
 
 async function TestCreateAndSendRewardAmountTx() {
   Wallet.RpcClient = rpcClient;
@@ -245,18 +249,22 @@ async function TestCreateAndSendStakingTx() {
   let param = { type: 0 };
   let fee = 1;
   let candidatePaymentAddress = senderPaymentAddressStr;
-  let isRewardFunder = true;
+  let candidateMiningSeedKey = "12nV4WFAjMCYue9ShY6qoQ9bVNiJ95xXMq2eau3rMHHFTiwdjxT";
+  let rewardReceiverPaymentAddress = senderPaymentAddressStr;
+  let autoReStaking = false;
+
+  await sleep(5000);
 
   // create and send staking tx
   try {
-    await accountSender.createAndSendStakingTx(param, fee, candidatePaymentAddress, isRewardFunder);
+    await accountSender.createAndSendStakingTx(param, fee, candidatePaymentAddress, candidateMiningSeedKey, rewardReceiverPaymentAddress, autoReStaking);
   } catch (e) {
     console.log("Error when staking: ", e);
   }
 
 }
 
-// TestCreateAndSendStakingTx();
+TestCreateAndSendStakingTx();
 
 async function TestDefragment() {
   Wallet.RpcClient = rpcClient;
