@@ -96,6 +96,8 @@ async function TestStakerStatus() {
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
 
+  await sleep(5000);
+
   // get staker status
   let response0;
   try {
@@ -107,7 +109,7 @@ async function TestStakerStatus() {
   console.log("REsponse status staker: ", response0);
 }
 
-// TestStakerStatus();
+TestStakerStatus();
 
 async function TestCreateAndSendPRV() {
   Wallet.RpcClient = rpcClient;
@@ -264,7 +266,7 @@ async function TestCreateAndSendStakingTx() {
 
 }
 
-TestCreateAndSendStakingTx();
+// TestCreateAndSendStakingTx();
 
 async function TestDefragment() {
   Wallet.RpcClient = rpcClient;
