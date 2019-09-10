@@ -5,9 +5,11 @@ import * as key from "../../lib/key";
 import bn from 'bn.js';
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { PaymentAddressType } from '../../lib/wallet/constants';
+import { ENCODE_VERSION } from '../../lib/constants';
+import {checkEncode} from "../../lib/base58";
 const fs = require('fs');
 
-Wallet.RpcClient = new RpcClient("https://dev-test-node.incognito.org");
+Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
 
 async function sleep(sleepTime) {
@@ -40,7 +42,7 @@ async function MultiStaking() {
     
     let candidatePaymentAddress = funderPaymentAddressStr;
     let rewardReceiverPaymentAddress = funderPaymentAddressStr;
-    let candidateMiningSeedKey = funderKeyWallet.getMiningSeedKey();
+    let candidateMiningSeedKey = checkEncode(funderKeyWallet.getMiningSeedKey(), ENCODE_VERSION);
     let autoReStaking = false;
 
     try {
@@ -48,6 +50,7 @@ async function MultiStaking() {
       console.log("congratulations to you! Stake successfully! ^.^")
       console.log("Response: ", response);
     } catch (e) {
+      console.log(e);
       console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
     }
   }

@@ -29,4 +29,4 @@ require("@babel/polyfill");
 // require('./test/txfordev/txfordev.js');
 
 // require('./test/committeekey-test');
-require('./test/txfordev/muliStakingTxs.js');
+require('./test/txfordev/multiStakingTxs.js');
