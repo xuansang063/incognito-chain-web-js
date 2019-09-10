@@ -7,8 +7,12 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { PaymentAddressType } from '../../lib/wallet/constants';
 const fs = require('fs');
 
-Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+Wallet.RpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
+
+async function sleep(sleepTime) {
+  return new Promise(resolve => setTimeout(resolve, sleepTime));
+}
 
 async function MultiStaking() {
   // load file paymentAddr.json to set payment infos
@@ -16,6 +20,8 @@ async function MultiStaking() {
 
   let data = JSON.parse(jsonString);
   console.log("Data AAA: ", data);
+
+  await sleep(5000);
 
   for (let i = 0; i < data.privateKeys.length; i++) {
     // set private for funder
@@ -31,11 +37,14 @@ async function MultiStaking() {
     let param = {
       type: 0
     };
-    let isRewardFunder = false;
+    
     let candidatePaymentAddress = funderPaymentAddressStr;
+    let rewardReceiverPaymentAddress = funderPaymentAddressStr;
+    let candidateMiningSeedKey = funderKeyWallet.getMiningSeedKey();
+    let autoReStaking = false;
 
     try {
-      let response = await accountFunder.createAndSendStakingTx(param, fee, candidatePaymentAddress, isRewardFunder);
+      let response = await accountFunder.createAndSendStakingTx(param, fee, candidatePaymentAddress,  candidateMiningSeedKey, rewardReceiverPaymentAddress, autoReStaking);
       console.log("congratulations to you! Stake successfully! ^.^")
       console.log("Response: ", response);
     } catch (e) {
