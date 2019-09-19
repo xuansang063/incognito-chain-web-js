@@ -2,6 +2,9 @@ import { Wallet, DefaultStorage } from '../../lib/wallet/wallet'
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
 
 const rpcClient = new RpcClient("https://test-node.incognito.org");
+async function sleep(sleepTime) {
+  return new Promise(resolve => setTimeout(resolve, sleepTime));
+}
 
 async function TestInitWallet() {
   Wallet.RpcClient = rpcClient;
@@ -20,5 +23,10 @@ async function TestInitWallet() {
 
   let accounts = wallet2.listAccount();
   console.log("accounts: ", accounts);
+  await sleep(5000);
+  
+
+  let account2 = await wallet2.listAccountWithBLSPubKey();
+  console.log("accounts: ", account2);
 }
 TestInitWallet()

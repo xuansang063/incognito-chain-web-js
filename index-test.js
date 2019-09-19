@@ -2,7 +2,7 @@ require('@babel/register');
 require("@babel/polyfill");
 
 // wallet test
-// require("./test/wallet/wallet-test");
+require("./test/wallet/wallet-test");
 // require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
 
@@ -29,4 +29,4 @@ require("@babel/polyfill");
 // require('./test/txfordev/txfordev.js');
 
 // require('./test/committeekey-test');
-require('./test/txfordev/multiStakingTxs.js');
+// require('./test/txfordev/multiStakingTxs.js');
