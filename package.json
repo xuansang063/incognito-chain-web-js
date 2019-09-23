@@ -23,7 +23,7 @@
   "dependencies": {
     "acorn": "^7.0.0",
     "big-integer": "^1.6.42",
-    "privacy-js-lib": "git://github.com/incognitochain/privacy-js-lib"
+    "privacy-js-lib": "https://github.com/incognitochain/privacy-js-lib"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

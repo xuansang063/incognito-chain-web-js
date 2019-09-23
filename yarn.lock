@@ -3063,9 +3063,9 @@ posix-character-classes@^0.1.0:
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
   integrity sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=
 
-"privacy-js-lib@git://github.com/incognitochain/privacy-js-lib":
+"privacy-js-lib@https://github.com/incognitochain/privacy-js-lib":
   version "1.0.0"
-  resolved "git://github.com/incognitochain/privacy-js-lib#55804c78f96965386ee4d5b5bcb858bbf091f925"
+  resolved "https://github.com/incognitochain/privacy-js-lib#1493ce804d6f6d2cb3ff2caa59cb2705abdb5ee1"
   dependencies:
     axios "^0.18.0"
     base64-js "^1.3.0"
