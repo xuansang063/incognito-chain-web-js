@@ -25,4 +25,16 @@ function TestKeyWallet() {
   console.log("key deserialize :", keyDeserialize);
 }
 
-TestKeyWallet();
+// TestKeyWallet();
+
+
+function TestGetKeySetFromPrivateKeyStr(){
+  let privateKey = "112t8rneH8RSZmLfmtYibmrAxpBtpSnLtkdJY57JJmdhRdnTTF8yxrzaMxi9ctjQyXXETNZ26pTnmNL2LDPWxahVQgQQyNUKy4dHiBcFSjng"
+
+  // let keyWallet = new(KeyWallet)
+  let res = KeyWallet.getKeySetFromPrivateKeyStr(privateKey);
+  console.log("res: ", res)
+
+}
+
+TestGetKeySetFromPrivateKeyStr()
