@@ -26,7 +26,7 @@ require("@babel/polyfill");
 // require('./test/aes-test');
 // require('./test/utils-test');
 
-// require('./test/txfordev/txfordev.js');
+require('./test/txfordev/txfordev.js');
 
-require('./test/committeekey-test');
+// require('./test/committeekey-test');
 // require('./test/txfordev/multiStakingTxs.js');
