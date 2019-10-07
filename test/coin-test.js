@@ -23,7 +23,7 @@ const P256 = ec.P256;
 
 function TestCoin() {
   let coin = new Coin();
-  let spendingKey = key.GenerateSpendingKey([123]);
+  let spendingKey = key.GeneratePrivateKey([123]);
   let keySet = new keyset.KeySet();
   keySet.importFromPrivateKey(spendingKey);
   // console.log(keySet.PaymentAddress.Pk);

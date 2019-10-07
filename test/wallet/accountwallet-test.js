@@ -112,23 +112,24 @@ async function TestStakerStatus() {
 
 // TestStakerStatus();
 
-async function TestCreateAndSendPRV() {
+async function TestCreateAndSendNativeToken() {
   Wallet.RpcClient = rpcClient;
+  await sleep(5000);
 
-  // console.log("Wallet.RpcClient: ", Wallet.RpcClient);
   // sender key (private key)
-  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
-  // senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
-  // accountSender.key = senderKeyWallet;
+  accountSender.key = senderKeyWallet;
 
   // receiver key (payment address)
   let receiverPaymentAddrStr = "12RwVaYc4PtbPqvsoMMjuL8SGcKe75pp8Kh94yDVz92YU9hwhkVzsYcT3D49k5ykjJjeH6umqwrjr6bQg3rLeik3TbjDG2RwFXyKbPn";
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddrStr);
   // let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
 
-  let fee = 0;
+  let fee = 0.5 * 1e9;
   let isPrivacy = true;
   let info = "";
   let amountTransfer = 1 * 1e9; // in nano PRV
@@ -139,8 +140,6 @@ async function TestCreateAndSendPRV() {
     "amount": amountTransfer
   };
 
-  await sleep(5000);
-
   // create and send PRV
   try {
     await accountSender.createAndSendNativeToken(paymentInfosParam, fee, isPrivacy, info);
@@ -149,7 +148,7 @@ async function TestCreateAndSendPRV() {
   }
 }
 
-TestCreateAndSendPRV();
+TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;

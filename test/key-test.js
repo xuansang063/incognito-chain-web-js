@@ -2,28 +2,32 @@ import * as key from "../lib/key"
 import * as base58 from "../lib/base58"
 import CryptoJS from "crypto-js";
 
-function TestKey() {
-  let sk = key.GenerateSpendingKey([123]);
-  console.log("Spending key : ", sk);
 
-  // let pk = key.GeneratePublicKey(sk);
-  // console.log("Public key : ", pk);
+async function sleep(sleepTime) {
+  return new Promise(resolve => setTimeout(resolve, sleepTime));
+}
 
-  // let rk = key.GenerateReceivingKey(sk);
-  // console.log('Receiving key: ', rk);
+async function TestKey() {
+  await sleep(5000);
+  let sk = key.GeneratePrivateKey([123]);
+  console.log("Spending key : ", sk.join(", "));
 
-  // let tk = key.GenerateTransmissionKey(rk);
-  // console.log('Transmission key: ', tk);
+  let pk = key.GeneratePublicKey(sk);
+  console.log("Public key : ", pk.join(", "));
 
-  // let vk = new key.ViewingKey(sk);
-  // console.log('Viewing key: ', vk);
+  let rk = key.GenerateReceivingKey(sk);
+  console.log('Receiving key: ', rk.join(", "));
 
-  // let paymentAddr = new key.PaymentAddress().fromSpendingKey(sk);
-  // console.log('Payment addr: ', paymentAddr);
-  // let paymentAddrBytes = paymentAddr.toBytes();
+  let tk = key.GenerateTransmissionKey(rk);
+  console.log('Transmission key: ', tk.join(", "));
 
-  // let paymentAddr2 = new PaymentAddress().fromBytes(paymentAddrBytes);
-  // console.log('Payment addr 2: ', paymentAddr2);
+  let vk = new key.ViewingKey(sk);
+  console.log('Viewing key: ', vk.toBytes().join(", "));
+
+  let paymentAddr = new key.PaymentAddress().fromPrivateKey(sk);
+  console.log('Payment addr: ', paymentAddr);
+  let paymentAddrBytes = paymentAddr.toBytes();
+  console.log("Payment address bytes: ", paymentAddrBytes.join(", "));
 }
 
 TestKey();
