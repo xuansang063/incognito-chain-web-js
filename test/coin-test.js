@@ -84,15 +84,25 @@ function TestDecodeCoin() {
   //   "Info": "13PMpZ4"
   // };
 
+  // let coinObject = {
+  //   "CoinCommitment": "15HhXJZzE6Kxg8SUAVd2wVmdeYF8WpQpMjScBYSQCPSxLfWeiEF",
+  //   "Info": "13PMpZ4",
+  //   "PublicKey": "16k14A5DRKLHYSYNeQ33TvK2v5wwWAw4z7aZwh3URwhNE2E7c8j",
+  //   "Randomness": "123dwfhDp9tUKXbaKZv4AVoLE1uowQNPUK5FN96MMvmSxWEHBmK",
+  //   "SNDerivator": "12Xwd6pzv3FwHN6KH4avzr2C3G5skUfc2s5nTEoddYBSXV3PPwL",
+  //   "SerialNumber": null,
+  //   "Value": "389749998920"
+  // }
+
   let coinObject = {
-    "CoinCommitment": "15HhXJZzE6Kxg8SUAVd2wVmdeYF8WpQpMjScBYSQCPSxLfWeiEF",
-    "Info": "13PMpZ4",
-    "PublicKey": "16k14A5DRKLHYSYNeQ33TvK2v5wwWAw4z7aZwh3URwhNE2E7c8j",
-    "Randomness": "123dwfhDp9tUKXbaKZv4AVoLE1uowQNPUK5FN96MMvmSxWEHBmK",
-    "SNDerivator": "12Xwd6pzv3FwHN6KH4avzr2C3G5skUfc2s5nTEoddYBSXV3PPwL",
-    "SerialNumber": null,
-    "Value": "389749998920"
-  }
+    "PublicKey": "183XvUp5gn7gtTWjMBGwpBSgER6zexEMAqmvvQsd9ZavsErG89y",
+    "CoinCommitment": "17Pw2SmoW4zXojM8HHHMEpX5k3SjKL8UAeGXBDKjqpJBJKtHSkf",
+    "SNDerivator": "122qVAS24X5AjWdWsiX54npCN7WDrAyDk4VmGSbFNexWcofzNXa",
+    "SerialNumber": "18LrSQofiFy9HuiCbdPJZp7nFKg9z6xNiN1EoeRVWdCiMf6Yyrm",
+    "Randomness": "12XdvDLJ2UKASYX2wCSEKvda3xYrJKeUaP4XXmQ3f6f5hA399pg",
+    "Value": "13423728813",
+    "Info": "13PMpZ4"
+  }				
 
   let publicKeyDecode = checkDecode(coinObject.PublicKey).bytesDecoded;
   let commitmentDecode = checkDecode(coinObject.CoinCommitment).bytesDecoded;
@@ -117,5 +127,35 @@ function TestDecodeCoin() {
   inputCoin.coinDetails.commitAll();
   console.log("coinCommitment: ", inputCoin.coinDetails.coinCommitment.compress().join(", "));
 }
+// 
+// TestDecodeCoin()
 
-TestDecodeCoin()
+function Test(){
+  let a = privacyUtils.randBytes(31);
+  let aBN = new bn(a);
+  let b = privacyUtils.addPaddingBigInt(aBN, 32);
+  let bBN = new bn(b);
+
+  let p = PedCom.G[0].mul(aBN)
+  let q = PedCom.G[0].mul(bBN)
+
+  console.log("p: ", p);
+  console.log("q: ", q);
+
+  let c = new bn(123456);
+  let cBN = new bn(privacyUtils.addPaddingBigInt(c, 32))
+  console.log("C byte: ", c.toArray())
+  console.log("c padding: ", cBN)
+  
+  let point = PedCom.G[0].mul(cBN)
+  console.log("point: ", point.compress());
+}
+// Test()
+
+function Test2(){
+  let cm = "17ioQJTBFV8HGK6TYQn9mWfdT8Z7wRCMyn9GjFYhMx6dP8UrnJp";
+  let cmBytes = checkDecode(cm).bytesDecoded;
+  console.log("CMBytes: ", cmBytes.join(", "));
+}
+
+Test2()

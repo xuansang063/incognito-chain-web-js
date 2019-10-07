@@ -6,6 +6,7 @@ import { CustomTokenInit, CustomTokenTransfer } from "../../lib/tx/constants";
 import { PaymentAddressType } from "../../lib/wallet/constants";
 
 const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
+// const rpcClient = new RpcClient("http://localhost:9334");
 
 async function sleep(sleepTime) {
   return new Promise(resolve => setTimeout(resolve, sleepTime));
@@ -109,43 +110,46 @@ async function TestStakerStatus() {
   console.log("REsponse status staker: ", response0);
 }
 
-TestStakerStatus();
+// TestStakerStatus();
 
 async function TestCreateAndSendPRV() {
   Wallet.RpcClient = rpcClient;
+
+  // console.log("Wallet.RpcClient: ", Wallet.RpcClient);
   // sender key (private key)
-  let senderSpendingKeyStr = "112t8rnXgFuVb4pfnqh9wkwrAZZRp7WHQVtnHnxBNkaHimBoL42DvsFVLisDqXiTZpnKFAZahQsCaoWdEQ9s77FFPzRey6H9CS7JeC6ipgoB";
-  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  // senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
-  accountSender.key = senderKeyWallet;
+  // accountSender.key = senderKeyWallet;
 
   // receiver key (payment address)
-  let receiverPaymentAddrStr = "1Uv3c4hAXqNcxyFhKGwBzGXQ6qdR89nrawqSz7WmcQEX4yurCEVEZMDm1x7g9vJnHHy4Lno73aJhaJAf8fhGgPexmCpu5HuiXU94reXAC";
-  let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddrStr);
-  let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
+  let receiverPaymentAddrStr = "12RwVaYc4PtbPqvsoMMjuL8SGcKe75pp8Kh94yDVz92YU9hwhkVzsYcT3D49k5ykjJjeH6umqwrjr6bQg3rLeik3TbjDG2RwFXyKbPn";
+  // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddrStr);
+  // let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
 
   let fee = 0;
   let isPrivacy = true;
   let info = "";
-  let amountTransfer = 23 * 1e9; // in nano PRV
+  let amountTransfer = 1 * 1e9; // in nano PRV
 
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
-    paymentAddressStr: receiverPaymentAddrStr,
-    amount: amountTransfer
+    "paymentAddressStr": receiverPaymentAddrStr,
+    "amount": amountTransfer
   };
+
+  await sleep(5000);
 
   // create and send PRV
   try {
-    await accountSender.createAndSendConstant(paymentInfosParam, fee, isPrivacy, info);
+    await accountSender.createAndSendNativeToken(paymentInfosParam, fee, isPrivacy, info);
   } catch (e) {
     console.log("Error when send PRV: ", e);
   }
 }
 
-// TestCreateAndSendPRV();
+TestCreateAndSendPRV();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;

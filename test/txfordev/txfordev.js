@@ -26,7 +26,7 @@ async function SendPRVForMultiUsers() {
     let isPrivacy = false;
 
     try {
-        let response = await accountSender.createAndSendConstant(data.paymentInfos, fee, isPrivacy, "");
+        let response = await accountSender.createAndSendNativeToken(data.paymentInfos, fee, isPrivacy, "");
         console.log("congratulations to you! Create transaction successfully! ^.^")
         console.log("Response: ", response);
         // await sleep(2*60*1000);
