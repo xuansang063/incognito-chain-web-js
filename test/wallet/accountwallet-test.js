@@ -146,6 +146,17 @@ async function TestCreateAndSendNativeToken() {
   } catch (e) {
     console.log("Error when send PRV: ", e);
   }
+  console.log("Send tx 1 done");
+
+  await sleep(10000);
+
+  // create and send PRV
+  try {
+    await accountSender.createAndSendNativeToken(paymentInfosParam, fee, isPrivacy, info);
+  } catch (e) {
+    console.log("Error when send PRV: ", e);
+  }
+  console.log("Send tx 2 done");
 }
 
 TestCreateAndSendNativeToken();

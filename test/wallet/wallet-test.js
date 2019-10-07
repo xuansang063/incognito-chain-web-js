@@ -8,6 +8,8 @@ async function sleep(sleepTime) {
 
 async function TestInitWallet() {
   Wallet.RpcClient = rpcClient;
+
+  await sleep(5000);
   // let wallet = new Wallet()
   // let storage = new DefaultStorage();
   // wallet.init("12345678", 0, "Wallet", storage);
@@ -23,10 +25,11 @@ async function TestInitWallet() {
 
   let accounts = wallet2.listAccount();
   console.log("accounts: ", accounts);
-  await sleep(5000);
   
-
   let account2 = await wallet2.listAccountWithBLSPubKey();
   console.log("accounts: ", account2);
+
+
+  wallet2.save("1");
 }
 TestInitWallet()
