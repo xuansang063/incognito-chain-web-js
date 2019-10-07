@@ -395,6 +395,10 @@
     {
       "paymentAddressStr": "1Uv4V2PP4cPSC4wkY5nK8gqhYw2DcoJGGG3SKZKU1hrhjWyZHpWQnpVAeBa7RHoVhvKvEcvRXGRGqw1YmqnmAx2x53kTL9n11mnwYwRAH",
       "amount": "1755000000000"
+    },
+    {
+      "paymentAddressStr": "1Uv4ECTrmHZRvGuRSEGWXv7fTkpHEMHK95TZjufhC6vamRCgTXRqnemznT1BVcmcPJzJLgyWBSQ2W465DhBWJVNTCdyCnu7YCrcyKfFnp",
+      "amount": "1755000000000",
     }
   ]
 }
