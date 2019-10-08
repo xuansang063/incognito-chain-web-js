@@ -148,7 +148,7 @@ async function TestCreateAndSendNativeToken() {
   }
   console.log("Send tx 1 done");
 
-  await sleep(10000);
+  await sleep(30000);
 
   // create and send PRV
   try {
