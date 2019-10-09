@@ -4,9 +4,9 @@ import {RpcClient} from "../../lib/rpcclient/rpcclient";
 import {TxCustomTokenPrivacy} from "../../lib/tx/txcustomtokenprivacy";
 import {CustomTokenInit, CustomTokenTransfer} from '../../lib/tx/constants';
 import * as constantsTx from "../../lib/tx/constants";
-import { prepareInputForTx, prepareInputForTxCustomTokenPrivacy } from "../../lib/tx/utils";
+import { prepareInputForTx, prepareInputForTxPrivacyToken } from "../../lib/tx/utils";
 
-import {CustomTokenPrivacyParamTx} from "../../lib/tx/txcustomkenprivacydata";
+import {PrivacyTokenParamTx} from "../../lib/tx/txcustomkenprivacydata";
 import { AccountWallet } from "../../lib/wallet/wallet";
 
 import {PaymentInfo} from '../../lib/key';
@@ -35,7 +35,7 @@ async function TestInitPrivacyTokenTx() {
 
     // prepare token param
     let amountInit = 1000;
-    let tokenParams = new CustomTokenPrivacyParamTx();
+    let tokenParams = new PrivacyTokenParamTx();
     tokenParams.propertyName = "tp1";
     tokenParams.propertySymbol = "tp1";
     tokenParams.amount = amountInit;
@@ -85,7 +85,7 @@ async function TestTransferPrivacyTokenTx() {
 
   // prepare token param
   let amountTransfer = 10;
-  let tokenParams = new CustomTokenPrivacyParamTx();
+  let tokenParams = new PrivacyTokenParamTx();
   tokenParams.propertyID = "e7ad84e064ef0f51728c6ba43dcf35a31dab6697982650348c4106c5939e6cfd";
   tokenParams.propertyName = "tp1";
   tokenParams.propertySymbol = "tp1";
@@ -95,7 +95,7 @@ async function TestTransferPrivacyTokenTx() {
 
   // prepare input
   let inputForNormalTx = await prepareInputForTx(senderSpendingKeyStr1, paymentInfos, feePRV, senderAccount, rpcClient);
-  let inputForTxCustomTokenPrivacy = await prepareInputForTxCustomTokenPrivacy(senderSpendingKeyStr1, tokenParams, senderAccount, rpcClient, feePToken);
+  let inputForTxCustomTokenPrivacy = await prepareInputForTxPrivacyToken(tokenParams, senderAccount, rpcClient, feePToken);
 
   tokenParams.tokenInputs = inputForTxCustomTokenPrivacy.tokenInputs;
 
@@ -146,7 +146,7 @@ TestTransferPrivacyTokenTx();
 
 //   // prepare token param
 //   let amountTransfer = 10;
-//   let tokenParams = new CustomTokenPrivacyParamTx();
+//   let tokenParams = new PrivacyTokenParamTx();
 //   tokenParams.propertyID = "56783B1532273081182E0DBA547CA564A6E71270580B75D6D06CD3A4CBE66377";
 //   tokenParams.propertyName = "tp1";
 //   tokenParams.propertySymbol = "tp1";
@@ -156,7 +156,7 @@ TestTransferPrivacyTokenTx();
 
 //   let inputForNormalTx = await rpcClient.prepareInputForTx(senderSpendingKeyStr1, paymentInfos);
 
-//   let inputForTxCustomTokenPrivacy = await rpcClient.prepareInputForTxCustomTokenPrivacy(senderSpendingKeyStr1, tokenParams);
+//   let inputForTxCustomTokenPrivacy = await rpcClient.prepareInputForTxPrivacyToken(senderSpendingKeyStr1, tokenParams);
 
 //   let txCustomTokenPrivacy = new TxCustomTokenPrivacy(new RpcClient("http://localhost:9334"));
 //   tokenParams.tokenInputs = inputForTxCustomTokenPrivacy.tokenInputs;
