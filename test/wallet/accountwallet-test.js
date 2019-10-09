@@ -132,7 +132,7 @@ async function TestCreateAndSendNativeToken() {
   let fee = 0.5 * 1e9;
   let isPrivacy = true;
   let info = "";
-  let amountTransfer = 1 * 1e9; // in nano PRV
+  let amountTransfer = 0.5 * 1e9; // in nano PRV
 
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -148,15 +148,15 @@ async function TestCreateAndSendNativeToken() {
   }
   console.log("Send tx 1 done");
 
-  await sleep(40000);
+  // await sleep(40000);
 
   // create and send PRV
-  try {
-    await accountSender.createAndSendNativeToken(paymentInfosParam, fee, isPrivacy, info);
-  } catch (e) {
-    console.log("Error when send PRV: ", e);
-  }
-  console.log("Send tx 2 done");
+  // try {
+  //   await accountSender.createAndSendNativeToken(paymentInfosParam, fee, isPrivacy, info);
+  // } catch (e) {
+  //   console.log("Error when send PRV: ", e);
+  // }
+  // console.log("Send tx 2 done");
 }
 
 // TestCreateAndSendNativeToken();
@@ -203,7 +203,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
   }
 }
 
-TestCreateAndSendPrivacyTokenInit();
+// TestCreateAndSendPrivacyTokenInit();
 
 async function TestCreateAndSendPrivacyTokenTransfer() {
   Wallet.RpcClient = rpcClient;
@@ -222,7 +222,6 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
 
   // payment info for PRV
   let paymentInfos = [];
-
   let amountTransfer = 10;
 
   // prepare token param for tx custom token init
@@ -251,7 +250,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   }
 }
 
-// TestCreateAndSendPrivacyTokenTransfer();
+TestCreateAndSendPrivacyTokenTransfer();
 
 
 async function TestCreateAndSendStakingTx() {
