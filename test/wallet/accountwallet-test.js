@@ -265,7 +265,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
 async function TestCreateAndSendStakingTx() {
   Wallet.RpcClient = rpcClient;
   // staker
-  let senderSpendingKeyStr = "112t8rnXgFuVb4pfnqh9wkwrAZZRp7WHQVtnHnxBNkaHimBoL42DvsFVLisDqXiTZpnKFAZahQsCaoWdEQ9s77FFPzRey6H9CS7JeC6ipgoB";
+  let senderSpendingKeyStr = "112t8rnYtBB7ven2V2tSBRAqCV1rpxigcSmeqWY3njLTuLxUfTYwGnaWvwLMa7y3dSQNLauZetM4i6mJFYXo3KSzzPd2XutinqMnaekpBQ5i";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
@@ -291,7 +291,7 @@ async function TestCreateAndSendStakingTx() {
 
 }
 
-// TestCreateAndSendStakingTx();
+TestCreateAndSendStakingTx();
 
 async function TestDefragment() {
   Wallet.RpcClient = rpcClient;

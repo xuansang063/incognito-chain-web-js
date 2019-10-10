@@ -43,7 +43,7 @@ async function MultiStaking() {
     let candidatePaymentAddress = funderPaymentAddressStr;
     let rewardReceiverPaymentAddress = funderPaymentAddressStr;
     let candidateMiningSeedKey = checkEncode(funderKeyWallet.getMiningSeedKey(), ENCODE_VERSION);
-    let autoReStaking = false;
+    let autoReStaking = true;
 
     try {
       let response = await accountFunder.createAndSendStakingTx(param, fee, candidatePaymentAddress,  candidateMiningSeedKey, rewardReceiverPaymentAddress, autoReStaking);
