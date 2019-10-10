@@ -181,8 +181,8 @@ async function TestCreateAndSendPrivacyTokenInit() {
   let tokenParams = {
     Privacy: true,
     TokenID: "",
-    TokenName: "Rose",
-    TokenSymbol: "Rose",
+    TokenName: "Rose 2",
+    TokenSymbol: "Rose 2",
     TokenTxType: CustomTokenInit,
     TokenAmount: amountInit,
     TokenReceivers: {
@@ -203,7 +203,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
   }
 }
 
-//tokenID : 8d96b28046157d2b293925410638783a34ccab12969e0402e8f34b0d0cff57eb
+//tokenID : 51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436
 // txID: f0f0b918eb159928635ec12540afee68a21f4a4ca8b1954486c9858a2a68d8f5
 
 TestCreateAndSendPrivacyTokenInit();
