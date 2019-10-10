@@ -206,7 +206,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
 //tokenID : 8d96b28046157d2b293925410638783a34ccab12969e0402e8f34b0d0cff57eb
 // txID: f0f0b918eb159928635ec12540afee68a21f4a4ca8b1954486c9858a2a68d8f5
 
-// TestCreateAndSendPrivacyTokenInit();
+TestCreateAndSendPrivacyTokenInit();
 
 async function TestCreateAndSendPrivacyTokenTransfer() {
   Wallet.RpcClient = rpcClient;
