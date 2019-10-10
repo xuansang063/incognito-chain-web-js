@@ -55,7 +55,7 @@ async function TestGetEstimateFeeForSendingToken() {
   let feeToken = 0;
 
   //Todo: check with isGetTokenFee = true
-  let isGetTokenFee = false;
+  let isGetTokenFee = true;
 
   let tokenParams = {
     Privacy: true,
