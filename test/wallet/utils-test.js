@@ -71,7 +71,7 @@ async function TestGetEstimateFeeForSendingToken() {
   }
 
   // customTokenParams = null, privacyTokenParams = null, isGetTokenFee = false
-  let fee = await getEstimateFeeForSendingToken(from, to, amountTransfer, tokenParams, accountSender, rpcClient, isPrivacyForPToken, feeToken, isGetTokenFee);
+  let fee = await getEstimateFeeForSendingToken(from, to, amountTransfer, tokenParams, accountSender, rpcClient,false , isPrivacyForPToken, feeToken, isGetTokenFee);
   console.log("fee: ", fee);
 }
 
