@@ -5,8 +5,8 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { CustomTokenInit, CustomTokenTransfer } from "../../lib/tx/constants";
 import { PaymentAddressType } from "../../lib/wallet/constants";
 
-// const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
-const rpcClient = new RpcClient("http://54.39.158.106:20033");
+const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
+// const rpcClient = new RpcClient("http://54.39.158.106:20033");
 // const rpcClient = new RpcClient("http://localhost:9334");
 
 async function sleep(sleepTime) {
@@ -58,7 +58,7 @@ async function TestCreateAndSendRewardAmountTx() {
   console.log("Response createAndSendWithdrawRewardTx: ", response);
 }
 
-TestCreateAndSendRewardAmountTx();
+// TestCreateAndSendRewardAmountTx();
 
 async function TestBurningRequestTx() {
   Wallet.RpcClient = rpcClient;
@@ -206,7 +206,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
   }
 }
 
-//tokenID : 51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436 Rose
+//tokenID : 7ff6af1d9e92a572365ffc48a815e2b5cc6ea7d19ad5460df3986ab309439289 Rose 2
 
 // 7ff6af1d9e92a572365ffc48a815e2b5cc6ea7d19ad5460df3986ab309439289 Rose 2
 // txID: f0f0b918eb159928635ec12540afee68a21f4a4ca8b1954486c9858a2a68d8f5
@@ -235,9 +235,9 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // prepare token param for tx custom token init
   let tokenParams = {
     Privacy: true,
-    TokenID: "51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436",
-    TokenName: "Rose",
-    TokenSymbol: "Rose",
+    TokenID: "7ff6af1d9e92a572365ffc48a815e2b5cc6ea7d19ad5460df3986ab309439289",
+    TokenName: "Rose 2",
+    TokenSymbol: "Rose 2",
     TokenTxType: CustomTokenTransfer,
     TokenAmount: amountTransfer,
     TokenReceivers: {
