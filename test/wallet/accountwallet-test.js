@@ -5,7 +5,8 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { CustomTokenInit, CustomTokenTransfer } from "../../lib/tx/constants";
 import { PaymentAddressType } from "../../lib/wallet/constants";
 
-const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
+// const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
+const rpcClient = new RpcClient("http://54.39.158.106:20033");
 // const rpcClient = new RpcClient("http://localhost:9334");
 
 async function sleep(sleepTime) {
@@ -37,8 +38,9 @@ async function TestGetRewardAmount() {
 
 async function TestCreateAndSendRewardAmountTx() {
   Wallet.RpcClient = rpcClient;
+  await sleep(5000);
   // sender key
-  let senderSpendingKeyStr = "112t8rnZ8iwXxHCW1ERzvVWxzhXDFNePExNWWfqSoBnhaemft7KYfpW7M79Jk8SbhDnSWP5ZeQnwKB2Usg1vvLosZoLJeBt36He1iDv5iFYg";
+  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -56,12 +58,13 @@ async function TestCreateAndSendRewardAmountTx() {
   console.log("Response createAndSendWithdrawRewardTx: ", response);
 }
 
-// TestCreateAndSendRewardAmountTx();
+TestCreateAndSendRewardAmountTx();
 
 async function TestBurningRequestTx() {
   Wallet.RpcClient = rpcClient;
+  await sleep(5000);
   // sender key
-  let senderSpendingKeyStr = "112t8rqJHgJp2TPpNpLNx34aWHB5VH5Pys3hVjjhhf9tctVeCNmX2zQLBqzHau6LpUbSV52kXtG2hRZsuYWkXWF5kw2v24RJq791fWmQxVqy";
+  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -73,7 +76,7 @@ async function TestBurningRequestTx() {
   try {
     response0 = await accountSender.createAndSendBurningRequestTx(
       [],
-      { "Privacy": true, "TokenID": "96c63625c29d146fedca606dd64ab86e561c5ca0e691d21bd66448e5a80b03d9", "TokenName": "Phuong", "TokenSymbol": "pHPV", "TokenTxType": 1, "TokenAmount": 100000000, "TokenReceivers": { "PaymentAddress": "", "Amount": 100000000 } },
+      { "Privacy": true, "TokenID": "51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436", "TokenName": "Rose", "TokenSymbol": "Rose", "TokenTxType": 1, "TokenAmount": 100, "TokenReceivers": { "PaymentAddress": "", "Amount": 100 } },
       0,
       0,
       "d5808Ba261c91d640a2D4149E8cdb3fD4512efe4",
@@ -256,7 +259,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // }
 }
 
-TestCreateAndSendPrivacyTokenTransfer();
+// TestCreateAndSendPrivacyTokenTransfer();
 
 
 async function TestCreateAndSendStakingTx() {
