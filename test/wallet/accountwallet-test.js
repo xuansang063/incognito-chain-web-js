@@ -203,10 +203,12 @@ async function TestCreateAndSendPrivacyTokenInit() {
   }
 }
 
-//tokenID : 51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436
+//tokenID : 51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436 Rose
+
+// 7ff6af1d9e92a572365ffc48a815e2b5cc6ea7d19ad5460df3986ab309439289 Rose 2
 // txID: f0f0b918eb159928635ec12540afee68a21f4a4ca8b1954486c9858a2a68d8f5
 
-TestCreateAndSendPrivacyTokenInit();
+// TestCreateAndSendPrivacyTokenInit();
 
 async function TestCreateAndSendPrivacyTokenTransfer() {
   Wallet.RpcClient = rpcClient;
@@ -230,7 +232,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // prepare token param for tx custom token init
   let tokenParams = {
     Privacy: true,
-    TokenID: "4cd7d5c072a888cc1998049e68d0a3e7df51ab3d41755536e7863f98f04b45db",
+    TokenID: "51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436",
     TokenName: "Rose",
     TokenSymbol: "Rose",
     TokenTxType: CustomTokenTransfer,
@@ -244,16 +246,17 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   let feePRV = 0;
   let feePToken = 5;
   let hasPrivacyForToken = true;
-  let hasPrivacyForPRV = true;
+  let hasPrivacyForPRV = false;
 
-  try {
+  // try {
     await accountSender.createAndSendPrivacyToken(paymentInfos, tokenParams, feePRV, feePToken, hasPrivacyForPRV, hasPrivacyForToken, "");
-  } catch (e) {
-    console.log("Error when transfering ptoken: ", e);
-  }
+  // } catch (e) {
+  //   console.log("Error when transfering ptoken: ", e);
+  //   throw e;
+  // }
 }
 
-// TestCreateAndSendPrivacyTokenTransfer();
+TestCreateAndSendPrivacyTokenTransfer();
 
 
 async function TestCreateAndSendStakingTx() {
