@@ -29,7 +29,7 @@ async function TestKey() {
   console.log("Payment address bytes: ", paymentAddrBytes.join(", "));
 }
 
-// TestKey();
+TestKey();
 
 function TestBase58(){
   let pkArray =  [2, 194, 130, 176 ,102, 36, 183, 114, 109, 135, 49, 114, 177, 92, 214, 31, 25, 4 ,72, 103, 196, 161, 36, 69, 121, 102, 159, 24, 31, 131, 101, 20, 0];
