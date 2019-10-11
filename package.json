@@ -21,8 +21,6 @@
   },
   "homepage": "https://github.com/incognitochain/incognito-chain-web-js#readme",
   "dependencies": {
-    "big-integer": "^1.6.42",
-    "privacy-js-lib": "git://github.com/incognitochain/privacy-js-lib",
     "yarn": "^1.19.1"
   },
   "devDependencies": {
