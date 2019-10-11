@@ -31,8 +31,8 @@ function TestCoin() {
 
   coin.publicKey = P256.decompress(keySet.PaymentAddress.Pk);
   coin.value = new bn(10);
-  coin.randomness = privacyUtils.randScalar(constants.BIG_INT_SIZE);
-  coin.snderivator = privacyUtils.randScalar(constants.BIG_INT_SIZE);
+  coin.randomness = privacyUtils.randScalar(constants.ED25519_KEY_SIZE);
+  coin.snderivator = privacyUtils.randScalar(constants.ED25519_KEY_SIZE);
   coin.serialNumber = P256.g.derive(new bn(keySet.PrivateKey), coin.snderivator);
   coin.commitAll();
 

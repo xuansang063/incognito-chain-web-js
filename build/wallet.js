@@ -1169,6 +1169,277 @@ function estimateProofSize(nInput, nOutput, hasPrivacy) {
 
 /***/ }),
 
+/***/ "./lib/privacy/constants.js":
+/*!**********************************!*\
+  !*** ./lib/privacy/constants.js ***!
+  \**********************************/
+/*! exports provided: CM_RING_SIZE, CM_RING_SIZE_EXP, MAX_EXP, ONE_OF_MANY_PROOF_SIZE, SN_PRIVACY_PROOF_SIZE, SN_NO_PRIVACY_PROOF_SIZE, ED25519_KEY_SIZE, PC_CAPACITY, SK, VALUE, SND, SHARD_ID, RAND, FULL, UINT64_SIZE */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CM_RING_SIZE", function() { return CM_RING_SIZE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CM_RING_SIZE_EXP", function() { return CM_RING_SIZE_EXP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAX_EXP", function() { return MAX_EXP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ONE_OF_MANY_PROOF_SIZE", function() { return ONE_OF_MANY_PROOF_SIZE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SN_PRIVACY_PROOF_SIZE", function() { return SN_PRIVACY_PROOF_SIZE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SN_NO_PRIVACY_PROOF_SIZE", function() { return SN_NO_PRIVACY_PROOF_SIZE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ED25519_KEY_SIZE", function() { return ED25519_KEY_SIZE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PC_CAPACITY", function() { return PC_CAPACITY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SK", function() { return SK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VALUE", function() { return VALUE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SND", function() { return SND; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHARD_ID", function() { return SHARD_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RAND", function() { return RAND; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FULL", function() { return FULL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UINT64_SIZE", function() { return UINT64_SIZE; });
+var MAX_EXP = 64;
+var CM_RING_SIZE = 8;
+var CM_RING_SIZE_EXP = 3; // size of zero knowledge proof corresponding one input
+
+var ONE_OF_MANY_PROOF_SIZE = 704;
+var SN_PRIVACY_PROOF_SIZE = 320;
+var SN_NO_PRIVACY_PROOF_SIZE = 192;
+var SK = 0x00;
+var VALUE = 0x01;
+var SND = 0x02;
+var SHARD_ID = 0x03;
+var RAND = 0x04;
+var FULL = 0x05;
+var ED25519_KEY_SIZE = 32;
+var UINT64_SIZE = 8; // bytes
+
+var PC_CAPACITY = 5;
+
+
+/***/ }),
+
+/***/ "./lib/privacy/utils.js":
+/*!******************************!*\
+  !*** ./lib/privacy/utils.js ***!
+  \******************************/
+/*! exports provided: randScalar, addPaddingBigInt, intToByteArr, checkDuplicateBigIntArray, convertIntToBinary, convertUint8ArrayToArray, stringToBytes, hashSha3BytesToBytes, setRandBytesFunc, base64Decode, base64Encode, convertBinaryToInt, hashKeccakBytesToBytes, toHexString */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(Buffer) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "randScalar", function() { return randScalar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addPaddingBigInt", function() { return addPaddingBigInt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "intToByteArr", function() { return intToByteArr; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkDuplicateBigIntArray", function() { return checkDuplicateBigIntArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convertIntToBinary", function() { return convertIntToBinary; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convertUint8ArrayToArray", function() { return convertUint8ArrayToArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "stringToBytes", function() { return stringToBytes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hashSha3BytesToBytes", function() { return hashSha3BytesToBytes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRandBytesFunc", function() { return setRandBytesFunc; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "base64Decode", function() { return base64Decode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "base64Encode", function() { return base64Encode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convertBinaryToInt", function() { return convertBinaryToInt; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hashKeccakBytesToBytes", function() { return hashKeccakBytesToBytes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toHexString", function() { return toHexString; });
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+var _require = __webpack_require__(/*! ./constants */ "./lib/privacy/constants.js"),
+    ED25519_KEY_SIZE = _require.ED25519_KEY_SIZE; // const sjcl = require('./sjcl/sjcl');
+
+
+var _require2 = __webpack_require__(/*! sha3 */ "./node_modules/sha3/index.js"),
+    SHA3 = _require2.SHA3,
+    Keccak = _require2.Keccak;
+
+var _require3 = __webpack_require__(/*! base64-js */ "./node_modules/base64-js/index.js"),
+    toByteArray = _require3.toByteArray,
+    fromByteArray = _require3.fromByteArray;
+
+var bn = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js"); // It is used for random bytes on mobile
+
+
+var randBytesFunc = null;
+
+function setRandBytesFunc(f) {
+  randBytesFunc = f;
+}
+
+function getRandBytesFunc() {
+  return randBytesFunc;
+} // randBytes generates a random bytes array with specific size n
+// function randBytes(n = ED25519_KEY_SIZE) {
+//   try {
+//     let paranoiaLvl = 6; //256bit entropy https://github.com/bitwiseshiftleft/sjcl/issues/156
+//     let wordLength = (n >> 2) + 1;
+//     let words = sjcl.random.randomWords(wordLength, paranoiaLvl);
+//     res = sjcl.codec.bytes.fromBits(words);
+//     return res.slice(0, n);
+//   } catch (e) {
+//     console.log(e);
+//     let randomFunc = getRandBytesFunc();
+//     if (randomFunc) {
+//       return randomFunc(n);
+//     } else {
+//       throw Error('Utility.RandomBytesFunc is null');
+//     }
+//   }
+// }
+// randScalar generates a random big integer which is less than degree of the curve
+
+
+function randScalar() {
+  var n = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ED25519_KEY_SIZE;
+  var randNum = new bn("0");
+  var curveDeg = P256.n;
+
+  do {
+    var randbytes = randBytes(n);
+    randNum = new bn(randbytes, 10, "be");
+  } while (randNum.cmp(curveDeg) !== -1);
+
+  return randNum;
+} // addPaddingBigInt adds padding to a big integer with fixedSize
+
+
+function addPaddingBigInt(numInt, fixedSize) {
+  return numInt.toArray("be", fixedSize);
+} // intToByteArr receives an integer and converts it to 2-byte array
+
+
+function intToByteArr(n) {
+  var newNum = new bn(n);
+  var bytes = newNum.toArray("be");
+
+  if (bytes.length > 2) {
+    return [];
+  } else return newNum.toArray("be", 2);
+} // byteArrToInt receives 2-byte array and reverts it to an integer
+
+
+function byteArrToInt(bytesArr) {
+  var num = new bn(bytesArr, 16, "be");
+  return parseInt(num.toString(10));
+} // CheckDuplicateBigIntArray returns true if there are at least 2 elements in an array have same values
+
+
+function checkDuplicateBigIntArray(arr) {
+  var set = new Set(arr);
+
+  if (set.size !== arr.length) {
+    return true;
+  }
+
+  return false;
+} // convertIntToBinary receives an integer and converts it to binary array with length n
+
+
+function convertIntToBinary(num, n) {
+  // let bytes = new Uint8Array(n);
+  // for (let i = 0; i < n; i++) {
+  //   bytes[i] = num & 1;
+  //   num >>= 1;
+  // }
+  // return bytes;
+  var bytes = new Uint8Array(n);
+
+  for (var i = 0; i < n; i++) {
+    bytes[i] = num % 2;
+    num = num / 2;
+  }
+
+  return bytes;
+} // // convertIntToBinary receives a binary array and reverts it to integer
+
+
+function convertBinaryToInt(binary) {
+  var number = new bn(0);
+
+  for (var i = 0; i < binary.length; i++) {
+    if (binary[i] == 1) {
+      var tmp = new bn(2);
+      tmp = tmp.pow(new bn(i));
+      number = number.add(tmp);
+    }
+  }
+
+  return number;
+} // hashSha3BytesToBytes receives a bytes array data and use SHA3 to hash that data
+// returns hashing in bytes array
+
+
+function hashSha3BytesToBytes(data) {
+  data = new Uint8Array(data);
+  var temp = new Buffer(data);
+  var result = new SHA3(256).update(temp);
+  result = result.digest();
+  return _toConsumableArray(new Uint8Array(result));
+}
+
+function hashKeccakBytesToBytes(data) {
+  data = new Uint8Array(data);
+  var temp = new Buffer(data);
+  var hash = new Keccak(256);
+  var hash2 = hash.update(temp);
+  console.log("Hash: ", _toConsumableArray(new Uint8Array(hash2.digest())));
+  return _toConsumableArray(new Uint8Array(hash2.digest()));
+} // convertUint8ArrayToArray receives data in Uint8Array and returns a bytes array
+
+
+function convertUint8ArrayToArray(data) {
+  return _toConsumableArray(data);
+} // stringToBytes converts string to bytes array
+
+
+function stringToBytes(str) {
+  var ch,
+      st,
+      re = [];
+
+  for (var i = 0; i < str.length; i++) {
+    ch = str.charCodeAt(i); // get char
+
+    st = []; // set up "stack"
+
+    do {
+      st.push(ch & 0xFF); // push byte to stack
+
+      ch = ch >> 8; // shift value down by 1 byte
+    } while (ch); // add stack contents to result
+    // done because chars have "wrong" endianness
+
+
+    re = re.concat(st.reverse());
+  } // return an array of bytes
+
+
+  return re;
+} // base64Decode decodes a base64 string to bytes array
+
+
+function base64Decode(str) {
+  var bytes = toByteArray(str);
+  return bytes;
+} // base64Encode encodes a bytes array to base64 string
+
+
+function base64Encode(bytesArray) {
+  var str = fromByteArray(bytesArray);
+  return str;
+}
+
+function toHexString(byteArray) {
+  return Array.from(byteArray, function (_byte) {
+    return ('0' + (_byte & 0xFF).toString(16)).slice(-2);
+  }).join('');
+}
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/node-libs-browser/node_modules/buffer/index.js */ "./node_modules/node-libs-browser/node_modules/buffer/index.js").Buffer))
+
+/***/ }),
+
 /***/ "./lib/rpcclient/rpcclient.js":
 /*!************************************!*\
   !*** ./lib/rpcclient/rpcclient.js ***!
@@ -1181,8 +1452,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RpcClient", function() { return RpcClient; });
 /* harmony import */ var _rpchttpservice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rpchttpservice */ "./lib/rpcclient/rpchttpservice.js");
 /* harmony import */ var _base58__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../base58 */ "./lib/base58.js");
-/* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! privacy-js-lib/lib/privacy_utils */ "./node_modules/privacy-js-lib/lib/privacy_utils.js");
-/* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../privacy/utils */ "./lib/privacy/utils.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../constants */ "./lib/constants.js");
 /* harmony import */ var _errorhandler__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../errorhandler */ "./lib/errorhandler.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -1613,7 +1883,7 @@ var RpcClient = function RpcClient(url, user, password) {
 
               txJson = JSON.stringify(tx.convertTxCustomTokenToByte());
               console.log("txJson: ", txJson);
-              txBytes = Object(privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["stringToBytes"])(txJson);
+              txBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["stringToBytes"])(txJson);
               console.log('TxBytes: ', txBytes.join(', '));
               console.log('TxBytes len : ', txBytes.length); // base58 check encode tx json
 
@@ -2637,26 +2907,13 @@ var MaxInfoSize = 512;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomTokenParamTx", function() { return CustomTokenParamTx; });
-/* harmony import */ var _key__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../key */ "./lib/key.js");
-/* harmony import */ var _base58__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../base58 */ "./lib/base58.js");
-/* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! privacy-js-lib/lib/privacy_utils */ "./node_modules/privacy-js-lib/lib/privacy_utils.js");
-/* harmony import */ var privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(privacy_js_lib_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wallet_hdwallet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../wallet/hdwallet */ "./lib/wallet/hdwallet.js");
-/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common */ "./lib/common.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../constants */ "./lib/constants.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-
-
-
-
-
- // CustomTokenParamTx - use for rpc request json body
-
+// CustomTokenParamTx - use for rpc request json body
 var CustomTokenParamTx =
 /*#__PURE__*/
 function () {
@@ -5039,7 +5296,7 @@ function () {
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_7__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, fee, isPrivacy, null, null, info, inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
                 console.log("paramInitTx: ", paramInitTx);
 
-                if (!(typeof initTx == "function")) {
+                if (!(typeof initPrivacyTx == "function")) {
                   _context6.next = 47;
                   break;
                 }
@@ -5047,7 +5304,7 @@ function () {
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_12___default.a.stringify(paramInitTx);
                 console.log("paramInitTxJson: ", paramInitTxJson);
                 _context6.next = 44;
-                return initTx(paramInitTxJson);
+                return initPrivacyTx(paramInitTxJson);
 
               case 44:
                 resInitTx = _context6.sent;
