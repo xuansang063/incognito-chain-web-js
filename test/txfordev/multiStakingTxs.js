@@ -53,6 +53,7 @@ async function MultiStaking() {
       console.log(e);
       console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
     }
+    await sleep(2000);
   }
 }
 
