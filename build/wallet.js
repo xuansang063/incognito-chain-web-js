@@ -2759,7 +2759,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wallet_hdwallet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../wallet/hdwallet */ "./lib/wallet/hdwallet.js");
 /* harmony import */ var _payment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../payment */ "./lib/payment.js");
 /* harmony import */ var _tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../tx/txcustomtokendata */ "./lib/tx/txcustomtokendata.js");
-/* harmony import */ var _wallet_wallet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../wallet/wallet */ "./lib/wallet/wallet.js");
+/* harmony import */ var _tx_txprivacytokendata__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tx/txprivacytokendata */ "./lib/tx/txprivacytokendata.js");
 /* harmony import */ var _key__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../key */ "./lib/key.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../constants */ "./lib/constants.js");
 /* harmony import */ var _wallet_constants__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../wallet/constants */ "./lib/wallet/constants.js");
@@ -3550,7 +3550,7 @@ function () {
 
 
             receivers = new _key__WEBPACK_IMPORTED_MODULE_5__["PaymentInfo"](_wallet_hdwallet__WEBPACK_IMPORTED_MODULE_1__["KeyWallet"].base58CheckDeserialize(tokenObject.TokenReceivers.PaymentAddress).KeySet.PaymentAddress, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(tokenObject.TokenReceivers.Amount));
-            privacyCustomTokenParams = new _wallet_wallet__WEBPACK_IMPORTED_MODULE_4__["PrivacyTokenParamTx"]();
+            privacyCustomTokenParams = new _tx_txprivacytokendata__WEBPACK_IMPORTED_MODULE_4__["PrivacyTokenParamTx"]();
             privacyCustomTokenParams.set(id, name, symbol, amount, tokenObject.TokenTxType, [receivers], []);
             console.log("Amount before estimate fee: ", amount);
             _context5.prev = 12;
@@ -3684,7 +3684,7 @@ function _getMaxWithdrawAmount() {
             }
 
             receivers = new _key__WEBPACK_IMPORTED_MODULE_5__["PaymentInfo"](_wallet_hdwallet__WEBPACK_IMPORTED_MODULE_1__["KeyWallet"].base58CheckDeserialize(tokenObject.TokenReceivers.PaymentAddress).KeySet.PaymentAddress, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(tokenObject.TokenReceivers.Amount));
-            privacyCustomTokenParams = new _wallet_wallet__WEBPACK_IMPORTED_MODULE_4__["PrivacyTokenParamTx"]();
+            privacyCustomTokenParams = new _tx_txprivacytokendata__WEBPACK_IMPORTED_MODULE_4__["PrivacyTokenParamTx"]();
             privacyCustomTokenParams.set(id, name, symbol, 0, tokenObject.TokenTxType, [receivers], []);
             totalpTokenAmount = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
             _context7.prev = 10;
