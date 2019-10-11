@@ -259,7 +259,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // }
 }
 
-// TestCreateAndSendPrivacyTokenTransfer();
+TestCreateAndSendPrivacyTokenTransfer();
 
 
 async function TestCreateAndSendStakingTx() {

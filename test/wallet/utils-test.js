@@ -1,7 +1,7 @@
 import { KeyWallet as keyWallet } from "../../lib/wallet/hdwallet";
 import { AccountWallet, Wallet } from "../../lib/wallet/wallet";
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
-import { CustomTokenTransfer } from "../../lib/tx/constants";
+import { CustomTokenTransfer, CustomTokenInit } from "../../lib/tx/constants";
 import { getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount } from "../../lib/tx/utils";
 
 const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
@@ -31,7 +31,7 @@ async function TestGetEstimateFee() {
   console.log("fee: ", fee);
 }
 
-TestGetEstimateFee();
+// TestGetEstimateFee();
 
 async function TestGetEstimateFeeForPToken() {
   Wallet.RpcClient = rpcClient;
@@ -75,6 +75,49 @@ async function TestGetEstimateFeeForPToken() {
 }
 
 // TestGetEstimateFeeForPToken();
+
+async function TestGetEstimateFeeForPTokenInit() {
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+  // sender key (private key)
+  let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  console.log("accountSender: ", accountSender);
+  console.log("accountSender.key: ", accountSender.key);
+
+  let from = "12S4NL3DZ1KoprFRy1k5DdYSXUq81NtxFKdvUTP3PLqQypWzceL5fBBwXooAsX5s23j7cpb1Za37ddmfSaMpEJDPsnJGZuyWTXJSZZ5";
+  let to = "12Ryp47jXJfkz5Cketp4D9U7uTH4hFgFUVUEzq6k5ikvAZ94JucsYbi235siCMud5GdtRi1DoSecsTD2nkiic9TH7YNkLEoEhrvxvwt";
+  let amountTransfer = 1000;
+  let isPrivacyForPToken = true;
+  let feeToken = 0;
+
+  //Todo: check with isGetTokenFee = true
+  let isGetTokenFee = true;
+
+  let tokenParams = {
+    Privacy: true,
+    TokenID: "",
+    TokenName: "Rose",
+    TokenSymbol: "Rose",
+    TokenTxType: CustomTokenInit,
+    TokenAmount: amountTransfer,
+    TokenReceivers: {
+      PaymentAddress: to,
+      Amount: amountTransfer
+    }
+  }
+
+  // customTokenParams = null, privacyTokenParams = null, isGetTokenFee = false
+  let fee = await getEstimateFeeForPToken(from, from, amountTransfer, tokenParams, accountSender, rpcClient,false , isPrivacyForPToken, feeToken, isGetTokenFee);
+  console.log("fee: ", fee);
+}
+
+TestGetEstimateFeeForPTokenInit();
 
 async function TestGetMaxWithdrawAmount() {
   Wallet.RpcClient = rpcClient;
