@@ -1,9 +1,8 @@
 import { KeyWallet as keyWallet } from "../../lib/wallet/hdwallet";
 import { AccountWallet, Wallet } from "../../lib/wallet/wallet";
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
-import { CustomTokenInit, CustomTokenTransfer } from "../../lib/tx/constants";
-import { PaymentAddressType } from "../../lib/wallet/constants";
-import { getEstimateFee, getEstimateFeeForSendingToken, getMaxWithdrawAmount } from "../../lib/tx/utils";
+import { CustomTokenTransfer } from "../../lib/tx/constants";
+import { getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount } from "../../lib/tx/utils";
 
 const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://localhost:9334");
@@ -34,7 +33,7 @@ async function TestGetEstimateFee() {
 
 // TestGetEstimateFee();
 
-async function TestGetEstimateFeeForSendingToken() {
+async function TestGetEstimateFeeForPToken() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
   // sender key (private key)
@@ -71,11 +70,11 @@ async function TestGetEstimateFeeForSendingToken() {
   }
 
   // customTokenParams = null, privacyTokenParams = null, isGetTokenFee = false
-  let fee = await getEstimateFeeForSendingToken(from, to, amountTransfer, tokenParams, accountSender, rpcClient,false , isPrivacyForPToken, feeToken, isGetTokenFee);
+  let fee = await getEstimateFeeForPToken(from, to, amountTransfer, tokenParams, accountSender, rpcClient,false , isPrivacyForPToken, feeToken, isGetTokenFee);
   console.log("fee: ", fee);
 }
 
-// TestGetEstimateFeeForSendingToken();
+// TestGetEstimateFeeForPToken();
 
 async function TestGetMaxWithdrawAmount() {
   Wallet.RpcClient = rpcClient;
@@ -95,7 +94,6 @@ async function TestGetMaxWithdrawAmount() {
   let to = "12Ryp47jXJfkz5Cketp4D9U7uTH4hFgFUVUEzq6k5ikvAZ94JucsYbi235siCMud5GdtRi1DoSecsTD2nkiic9TH7YNkLEoEhrvxvwt";
   let amountTransfer = 100;
   let isPrivacyForPToken = true;
-  let feeToken = 0;
 
   //Todo: check with isGetTokenFee = true
   let isGetTokenFee = true;
@@ -114,7 +112,7 @@ async function TestGetMaxWithdrawAmount() {
   }
 
   // customTokenParams = null, privacyTokenParams = null, isGetTokenFee = false
-  let result = await getMaxWithdrawAmount(from, to, tokenParams, accountSender, rpcClient,false , isPrivacyForPToken);
+  let result = await getMaxWithdrawAmount(from, to, tokenParams, accountSender, rpcClient, isPrivacyForPToken);
   console.log("result: ", result);
 }
 

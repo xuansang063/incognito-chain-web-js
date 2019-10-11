@@ -329,31 +329,15 @@ async function TestGetBalance() {
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
 
-  // receiver key (payment address)
-  // let receiverPaymentAddrStr = "12RwVaYc4PtbPqvsoMMjuL8SGcKe75pp8Kh94yDVz92YU9hwhkVzsYcT3D49k5ykjJjeH6umqwrjr6bQg3rLeik3TbjDG2RwFXyKbPn";
-  // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddrStr);
-  // let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
-
-  // let fee = 0.5 * 1e9;
-  // let isPrivacy = true;
-  // let info = "";
-  // let amountTransfer = 1 * 1e9; // in nano PRV
-
-  // let paymentInfosParam = [];
-  // paymentInfosParam[0] = {
-  //   "paymentAddressStr": receiverPaymentAddrStr,
-  //   "amount": amountTransfer
-  // };
-
   let tokenID = "4cd7d5c072a888cc1998049e68d0a3e7df51ab3d41755536e7863f98f04b45db";
 
   // create and send PRV
   try {
-    let balance = await accountSender.getBalance(tokenID);
+    let balance = await accountSender.getBalance(null);
     console.log("balance: ", balance);
   } catch (e) {
     console.log("Error when get balance: ", e);
   }
 }
 
-// TestGetBalance();
+TestGetBalance();
