@@ -1110,11 +1110,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "estimateProofSize", function() { return estimateProofSize; });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./lib/constants.js");
 /* harmony import */ var _privacy_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./privacy/constants */ "./lib/privacy/constants.js");
+/* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./privacy/utils */ "./lib/privacy/utils.js");
+
 
 
 
 function estimateMultiRangeProofSize(nOutput) {
-  return parseInt((nOutput + 2 * Math.log2(_privacy_constants__WEBPACK_IMPORTED_MODULE_1__["MAX_EXP"] * pad(nOutput)) + 5) * _constants__WEBPACK_IMPORTED_MODULE_0__["ED25519_KEY_SIZE"] + 5 * _constants__WEBPACK_IMPORTED_MODULE_0__["ED25519_KEY_SIZE"] + 2);
+  return parseInt((nOutput + 2 * Math.log2(_privacy_constants__WEBPACK_IMPORTED_MODULE_1__["MAX_EXP"] * Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["pad"])(nOutput)) + 5) * _constants__WEBPACK_IMPORTED_MODULE_0__["ED25519_KEY_SIZE"] + 5 * _constants__WEBPACK_IMPORTED_MODULE_0__["ED25519_KEY_SIZE"] + 2);
 }
 
 function estimateProofSize(nInput, nOutput, hasPrivacy) {
@@ -4154,7 +4156,7 @@ sjcl.codec.arrayBuffer = {
 /*!******************************!*\
   !*** ./lib/privacy/utils.js ***!
   \******************************/
-/*! exports provided: randScalar, addPaddingBigInt, intToByteArr, randBytes, checkDuplicateBigIntArray, convertIntToBinary, convertUint8ArrayToArray, stringToBytes, hashSha3BytesToBytes, setRandBytesFunc, base64Decode, base64Encode, convertBinaryToInt, hashKeccakBytesToBytes, toHexString */
+/*! exports provided: randScalar, addPaddingBigInt, intToByteArr, randBytes, checkDuplicateBigIntArray, convertIntToBinary, convertUint8ArrayToArray, stringToBytes, hashSha3BytesToBytes, setRandBytesFunc, base64Decode, base64Encode, convertBinaryToInt, hashKeccakBytesToBytes, toHexString, pad */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4174,6 +4176,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convertBinaryToInt", function() { return convertBinaryToInt; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hashKeccakBytesToBytes", function() { return hashKeccakBytesToBytes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toHexString", function() { return toHexString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pad", function() { return pad; });
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -4376,6 +4379,32 @@ function toHexString(byteArray) {
   return Array.from(byteArray, function (_byte) {
     return ('0' + (_byte & 0xFF).toString(16)).slice(-2);
   }).join('');
+}
+
+function pad(l) {
+  var deg = 0;
+
+  while (l > 0) {
+    if (l % 2 === 0) {
+      deg++;
+      l = l >> 1;
+    } else {
+      break;
+    }
+  }
+
+  var i = 0;
+
+  for (;;) {
+    if (Math.pow(2, i) < l) {
+      i++;
+    } else {
+      l = Math.pow(2, i + deg);
+      break;
+    }
+  }
+
+  return l;
 }
 
 
@@ -6711,8 +6740,7 @@ function () {
         id,
         name,
         symbol,
-        receivers,
-        privacyCustomTokenParams,
+        privacyTokenParam,
         inputForPrivacyToken,
         fee,
         _args5 = arguments;
@@ -6767,49 +6795,59 @@ function () {
             // } else if (tokenObject.Privacy === true) {
 
 
-            receivers = new _key__WEBPACK_IMPORTED_MODULE_5__["PaymentInfo"](_wallet_hdwallet__WEBPACK_IMPORTED_MODULE_1__["KeyWallet"].base58CheckDeserialize(tokenObject.TokenReceivers.PaymentAddress).KeySet.PaymentAddress, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(tokenObject.TokenReceivers.Amount));
-            privacyCustomTokenParams = new _tx_txprivacytokendata__WEBPACK_IMPORTED_MODULE_4__["PrivacyTokenParamTx"]();
-            privacyCustomTokenParams.set(id, name, symbol, amount, tokenObject.TokenTxType, [receivers], []);
+            privacyTokenParam = {
+              propertyID: id,
+              propertyName: name,
+              propertySymbol: symbol,
+              amount: amount,
+              tokenTxType: tokenObject.TokenTxType,
+              fee: feeToken,
+              paymentInfoForPToken: [{
+                paymentAddressStr: tokenObject.TokenReceivers.PaymentAddress,
+                amount: tokenObject.TokenReceivers.Amount
+              }],
+              tokenInputs: []
+            };
             console.log("Amount before estimate fee: ", amount);
-            _context5.prev = 12;
-            _context5.next = 15;
-            return prepareInputForTxPrivacyToken(privacyCustomTokenParams, account, rpcClient, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(feeToken), isPrivacyForPrivateToken);
+            _context5.prev = 10;
+            _context5.next = 13;
+            return prepareInputForTxPrivacyToken(privacyTokenParam, account, rpcClient, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(feeToken), isPrivacyForPrivateToken);
 
-          case 15:
+          case 13:
             inputForPrivacyToken = _context5.sent;
-            privacyCustomTokenParams.tokenInputs = inputForPrivacyToken.tokenInputs;
-            _context5.next = 22;
+            privacyTokenParam.tokenInputs = inputForPrivacyToken.tokenInputs;
+            _context5.next = 20;
             break;
 
-          case 19:
-            _context5.prev = 19;
-            _context5.t0 = _context5["catch"](12);
+          case 17:
+            _context5.prev = 17;
+            _context5.t0 = _context5["catch"](10);
             throw _context5.t0;
 
-          case 22:
-            _context5.prev = 22;
-            _context5.next = 25;
-            return getEstimateFee(from, to, amount, account, isPrivacyForNativeToken, isPrivacyForPrivateToken, rpcClient, null, privacyCustomTokenParams, isGetTokenFee);
+          case 20:
+            _context5.prev = 20;
+            _context5.next = 23;
+            return getEstimateFee(from, to, amount, account, isPrivacyForNativeToken, isPrivacyForPrivateToken, rpcClient, null, privacyTokenParam, isGetTokenFee);
 
-          case 25:
+          case 23:
             fee = _context5.sent;
-            _context5.next = 31;
+            _context5.next = 29;
             break;
 
-          case 28:
-            _context5.prev = 28;
-            _context5.t1 = _context5["catch"](22);
+          case 26:
+            _context5.prev = 26;
+            _context5.t1 = _context5["catch"](20);
             throw _context5.t1;
 
-          case 31:
+          case 29:
             return _context5.abrupt("return", fee);
 
-          case 32:
+          case 30:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[12, 19], [22, 28]]);
+    }, _callee5, null, [[10, 17], [20, 26]]);
   }));
 
   return function getEstimateFeeForPToken(_x26, _x27, _x28, _x29, _x30, _x31, _x32, _x33, _x34) {
@@ -6872,7 +6910,7 @@ function getMaxWithdrawAmount(_x35, _x36, _x37, _x38, _x39, _x40) {
  * @param {bool} hasPrivacyForPToken 
  * @param {*} metadata 
  * @param {CustomTokenParamTx} customTokenParams 
- * @param {PrivacyTokenParamTx} privacyCustomTokenParams 
+ * @param {PrivacyTokenParamTxObject} privacyCustomTokenParams 
  */
 
 
@@ -7040,7 +7078,7 @@ var estimateTxSize = function estimateTxSize(numInputCoins, numOutputCoins, hasP
     // Proof
 
     if (privacyCustomTokenParams.tokenInputs !== null) {
-      privacyTokenDataSize += Object(_payment__WEBPACK_IMPORTED_MODULE_2__["estimateProofSize"])(privacyCustomTokenParams.tokenInputs.length, privacyCustomTokenParams.receivers.length, hasPrivacyForPToken);
+      privacyTokenDataSize += Object(_payment__WEBPACK_IMPORTED_MODULE_2__["estimateProofSize"])(privacyCustomTokenParams.tokenInputs.length, privacyCustomTokenParams.paymentInfoForPToken.length, hasPrivacyForPToken);
     }
 
     privacyTokenDataSize += 1; //PubKeyLastByte

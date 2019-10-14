@@ -88,7 +88,7 @@ async function TestBurningRequestTx() {
   console.log("Response createAndSendBurningRequestTx: ", response0);
 }
 
-// TestBurningRequestTx();
+TestBurningRequestTx();
 
 async function TestStakerStatus() {
   Wallet.RpcClient = rpcClient;
@@ -206,10 +206,10 @@ async function TestCreateAndSendPrivacyTokenInit() {
   }
 }
 
-// tokenID: 7ff6af1d9e92a572365ffc48a815e2b5cc6ea7d19ad5460df3986ab309439289 Rose 2
+// tokenID: 51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436 Rose
 // txID: f0f0b918eb159928635ec12540afee68a21f4a4ca8b1954486c9858a2a68d8f5
 
-TestCreateAndSendPrivacyTokenInit();
+// TestCreateAndSendPrivacyTokenInit();
 
 async function TestCreateAndSendPrivacyTokenTransfer() {
   Wallet.RpcClient = rpcClient;
@@ -233,9 +233,9 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // prepare token param for tx custom token init
   let tokenParams = {
     Privacy: true,
-    TokenID: "7ff6af1d9e92a572365ffc48a815e2b5cc6ea7d19ad5460df3986ab309439289",
-    TokenName: "Rose 2",
-    TokenSymbol: "Rose 2",
+    TokenID: "51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436",
+    TokenName: "Rose",
+    TokenSymbol: "Rose",
     TokenTxType: CustomTokenTransfer,
     TokenAmount: amountTransfer,
     TokenReceivers: {
@@ -339,4 +339,4 @@ async function TestGetBalance() {
   }
 }
 
-TestGetBalance();
+// TestGetBalance();

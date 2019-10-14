@@ -4,8 +4,9 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { CustomTokenTransfer, CustomTokenInit } from "../../lib/tx/constants";
 import { getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount } from "../../lib/tx/utils";
 
-const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
+// const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://localhost:9334");
+const rpcClient = new RpcClient("http://54.39.158.106:20032");
 
 async function sleep(sleepTime) {
   return new Promise(resolve => setTimeout(resolve, sleepTime));
@@ -24,7 +25,7 @@ async function TestGetEstimateFee() {
 
   let from = "12S4NL3DZ1KoprFRy1k5DdYSXUq81NtxFKdvUTP3PLqQypWzceL5fBBwXooAsX5s23j7cpb1Za37ddmfSaMpEJDPsnJGZuyWTXJSZZ5";
   let to = "12Ryp47jXJfkz5Cketp4D9U7uTH4hFgFUVUEzq6k5ikvAZ94JucsYbi235siCMud5GdtRi1DoSecsTD2nkiic9TH7YNkLEoEhrvxvwt";
-  let amount = 1000000000;
+  let amount = 1 * 1e9; // 1 PRV
   let isPrivacy = true;
   // customTokenParams = null, privacyTokenParams = null, isGetTokenFee = false
   let fee = await getEstimateFee(from, to, amount, accountSender, isPrivacy, false, rpcClient);
@@ -58,9 +59,9 @@ async function TestGetEstimateFeeForPToken() {
 
   let tokenParams = {
     Privacy: true,
-    TokenID: "7ff6af1d9e92a572365ffc48a815e2b5cc6ea7d19ad5460df3986ab309439289",
-    TokenName: "Rose 2",
-    TokenSymbol: "Rose 2",
+    TokenID: "51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436",
+    TokenName: "Rose",
+    TokenSymbol: "Rose",
     TokenTxType: CustomTokenTransfer,
     TokenAmount: amountTransfer,
     TokenReceivers: {
@@ -74,7 +75,7 @@ async function TestGetEstimateFeeForPToken() {
   console.log("fee: ", fee);
 }
 
-// TestGetEstimateFeeForPToken();
+TestGetEstimateFeeForPToken();
 
 async function TestGetEstimateFeeForPTokenInit() {
   Wallet.RpcClient = rpcClient;
@@ -117,7 +118,7 @@ async function TestGetEstimateFeeForPTokenInit() {
   console.log("fee: ", fee);
 }
 
-TestGetEstimateFeeForPTokenInit();
+// TestGetEstimateFeeForPTokenInit();
 
 async function TestGetMaxWithdrawAmount() {
   Wallet.RpcClient = rpcClient;
