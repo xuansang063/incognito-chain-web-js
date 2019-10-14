@@ -184,8 +184,8 @@ async function TestCreateAndSendPrivacyTokenInit() {
   let tokenParams = {
     Privacy: true,
     TokenID: "",
-    TokenName: "Rose 2",
-    TokenSymbol: "Rose 2",
+    TokenName: "Rose",
+    TokenSymbol: "Rose",
     TokenTxType: CustomTokenInit,
     TokenAmount: amountInit,
     TokenReceivers: {
@@ -206,12 +206,10 @@ async function TestCreateAndSendPrivacyTokenInit() {
   }
 }
 
-//tokenID : 7ff6af1d9e92a572365ffc48a815e2b5cc6ea7d19ad5460df3986ab309439289 Rose 2
-
-// 7ff6af1d9e92a572365ffc48a815e2b5cc6ea7d19ad5460df3986ab309439289 Rose 2
+// tokenID: 7ff6af1d9e92a572365ffc48a815e2b5cc6ea7d19ad5460df3986ab309439289 Rose 2
 // txID: f0f0b918eb159928635ec12540afee68a21f4a4ca8b1954486c9858a2a68d8f5
 
-// TestCreateAndSendPrivacyTokenInit();
+TestCreateAndSendPrivacyTokenInit();
 
 async function TestCreateAndSendPrivacyTokenTransfer() {
   Wallet.RpcClient = rpcClient;
@@ -292,7 +290,7 @@ async function TestCreateAndSendStakingTx() {
 
 }
 
-TestCreateAndSendStakingTx();
+// TestCreateAndSendStakingTx();
 
 async function TestDefragment() {
   Wallet.RpcClient = rpcClient;
@@ -341,4 +339,4 @@ async function TestGetBalance() {
   }
 }
 
-// TestGetBalance();
+TestGetBalance();
