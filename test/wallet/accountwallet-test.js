@@ -88,7 +88,7 @@ async function TestBurningRequestTx() {
   console.log("Response createAndSendBurningRequestTx: ", response0);
 }
 
-TestBurningRequestTx();
+// TestBurningRequestTx();
 
 async function TestStakerStatus() {
   Wallet.RpcClient = rpcClient;
@@ -128,7 +128,7 @@ async function TestCreateAndSendNativeToken() {
   accountSender.key = senderKeyWallet;
 
   // receiver key (payment address)
-  let receiverPaymentAddrStr = "12RwVaYc4PtbPqvsoMMjuL8SGcKe75pp8Kh94yDVz92YU9hwhkVzsYcT3D49k5ykjJjeH6umqwrjr6bQg3rLeik3TbjDG2RwFXyKbPn";
+  let receiverPaymentAddrStr = "12S1UiWudZZcWFrh6GZVC5t483Sa6HDLfNtb4w8omYWZuE7dgQuqWhGDGsyVC349RPoX2QYKYwDYBDVuCYA1y9RitJ59ZmjeUj7NC7f";
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddrStr);
   // let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
 
@@ -279,18 +279,15 @@ async function TestCreateAndSendStakingTx() {
   let rewardReceiverPaymentAddress = senderPaymentAddressStr;
   let autoReStaking = true;
 
- 
-
   // create and send staking tx
   try {
     await accountSender.createAndSendStakingTx(param, fee, candidatePaymentAddress, candidateMiningSeedKey, rewardReceiverPaymentAddress, autoReStaking);
   } catch (e) {
     console.log("Error when staking: ", e);
   }
-
 }
 
-// TestCreateAndSendStakingTx();
+TestCreateAndSendStakingTx();
 
 async function TestDefragment() {
   Wallet.RpcClient = rpcClient;

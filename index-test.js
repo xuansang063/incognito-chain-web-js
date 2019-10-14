@@ -3,9 +3,9 @@ require("@babel/polyfill");
 
 // wallet test
 // require("./test/wallet/wallet-test");
-// require("./test/wallet/accountwallet-test");
+require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
-require("./test/wallet/utils-test");
+// require("./test/wallet/utils-test");
 
 // require('./test/tx/txprivacy-test');
 // require('./test/tx/txprivacytoken-test');

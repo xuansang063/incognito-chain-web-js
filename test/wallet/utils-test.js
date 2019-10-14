@@ -75,7 +75,7 @@ async function TestGetEstimateFeeForPToken() {
   console.log("fee: ", fee);
 }
 
-TestGetEstimateFeeForPToken();
+// TestGetEstimateFeeForPToken();
 
 async function TestGetEstimateFeeForPTokenInit() {
   Wallet.RpcClient = rpcClient;
@@ -118,7 +118,7 @@ async function TestGetEstimateFeeForPTokenInit() {
   console.log("fee: ", fee);
 }
 
-// TestGetEstimateFeeForPTokenInit();
+TestGetEstimateFeeForPTokenInit();
 
 async function TestGetMaxWithdrawAmount() {
   Wallet.RpcClient = rpcClient;

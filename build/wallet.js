@@ -8577,7 +8577,7 @@ function () {
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_7__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, feeNativeToken, false, null, meta, "", inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
                 console.log("paramInitTx: ", paramInitTx);
 
-                if (!(typeof initTx == "function")) {
+                if (!(typeof staking == "function")) {
                   _context7.next = 71;
                   break;
                 }
