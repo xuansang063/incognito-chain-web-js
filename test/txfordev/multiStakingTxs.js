@@ -9,7 +9,8 @@ import { ENCODE_VERSION } from '../../lib/constants';
 import {checkEncode} from "../../lib/base58";
 const fs = require('fs');
 
-Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+// Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+Wallet.RpcClient = new RpcClient("http://54.39.158.106:20032");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
 
 async function sleep(sleepTime) {

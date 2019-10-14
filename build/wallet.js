@@ -402,9 +402,9 @@ function _generateCommitteeKeyFromHashPrivateKey() {
               "bls": Object(_common__WEBPACK_IMPORTED_MODULE_6__["base64ArrayBuffer"])(blsKeyPair.blsPublicKey),
               "dsa": Object(_common__WEBPACK_IMPORTED_MODULE_6__["base64ArrayBuffer"])(ecdsaKeyPair.ecdsaPublicKey)
             };
-            console.log("HHH mining pub key bls: ", blsKeyPair.blsPublicKey.join(", "));
-            console.log("HHH mining pub key dsa: ", ecdsaKeyPair.ecdsaPublicKey.join(", "));
-            console.log("HHH incognito pub key: ", incPubKey.join(", "));
+            console.log("Generate committee key bls public key: ", blsKeyPair.blsPublicKey.join(", "));
+            console.log("Generate committee key mining pub key dsa: ", ecdsaKeyPair.ecdsaPublicKey.join(", "));
+            console.log("Generate committee key incognito pub key: ", incPubKey.join(", "));
             committeeKey = {
               IncPubKey: Object(_common__WEBPACK_IMPORTED_MODULE_6__["base64ArrayBuffer"])(incPubKey),
               MiningPubKey: miningPubKey // JSON marshal commiteeKey 
@@ -888,7 +888,6 @@ function GeneratePrivateKey(seed) {
   var privateKeyB64Encode;
 
   if (typeof generateKeyFromSeed == "function") {
-    console.log("generateKeyFromSeed: ", generateKeyFromSeed);
     privateKeyB64Encode = generateKeyFromSeed(seedB64Encode);
   }
 
@@ -1202,10 +1201,7 @@ function _generateBLSKeyPair() {
             keyPairEncoded = _context.sent;
             keyPairBytes = base64Decode(keyPairEncoded);
             privateKey = keyPairBytes.slice(0, 32);
-            publicKey = keyPairBytes.slice(32); // console.log("bls privateKey: ", privateKey);
-            // console.log("bls publicKey: ", publicKey);
-            // console.log("bls publicKey len: ", publicKey.length)
-
+            publicKey = keyPairBytes.slice(32);
             return _context.abrupt("return", {
               blsPrivateKey: privateKey,
               blsPublicKey: publicKey
@@ -4223,7 +4219,7 @@ function randBytes() {
     res = sjcl.codec.bytes.fromBits(words);
     return res.slice(0, n);
   } catch (e) {
-    console.log(e);
+    console.log("Rand bytes sjcl error: ", e);
     var randomFunc = getRandBytesFunc();
 
     if (randomFunc) {
@@ -4328,7 +4324,6 @@ function hashKeccakBytesToBytes(data) {
   var temp = new Buffer(data);
   var hash = new Keccak(256);
   var hash2 = hash.update(temp);
-  console.log("Hash: ", _toConsumableArray(new Uint8Array(hash2.digest())));
   return _toConsumableArray(new Uint8Array(hash2.digest()));
 } // convertUint8ArrayToArray receives data in Uint8Array and returns a bytes array
 
@@ -4693,43 +4688,42 @@ var RpcClient = function RpcClient(url, user, password) {
                 "params": [paymentAddr, inputCoinStrs],
                 "id": 1
               };
-              console.log("inputCoinStrs: ", inputCoinStrs);
 
               if (tokenID != null) {
                 data["params"][2] = tokenID;
               }
 
-              _context4.prev = 4;
-              _context4.next = 7;
+              _context4.prev = 3;
+              _context4.next = 6;
               return _this.rpcHttpService.postRequest(data);
 
-            case 7:
+            case 6:
               response = _context4.sent;
-              _context4.next = 13;
+              _context4.next = 12;
               break;
 
-            case 10:
-              _context4.prev = 10;
-              _context4.t0 = _context4["catch"](4);
+            case 9:
+              _context4.prev = 9;
+              _context4.t0 = _context4["catch"](3);
               throw _context4.t0;
 
-            case 13:
+            case 12:
               if (!(response.status !== 200)) {
-                _context4.next = 17;
+                _context4.next = 16;
                 break;
               }
 
               throw new Error("Can't request API random commitments");
 
-            case 17:
+            case 16:
               if (!response.data.Error) {
-                _context4.next = 19;
+                _context4.next = 18;
                 break;
               }
 
               throw response.data.Error;
 
-            case 19:
+            case 18:
               commitmentStrs = response.data.Result.Commitments; // // deserialize commitments
               // let commitments = new Array(commitmentStrs.length);
               // for (let i = 0; i < commitments.length; i++) {
@@ -4746,12 +4740,12 @@ var RpcClient = function RpcClient(url, user, password) {
                 myCommitmentIndices: response.data.Result.MyCommitmentIndexs
               });
 
-            case 21:
+            case 20:
             case "end":
               return _context4.stop();
           }
         }
-      }, _callee4, null, [[4, 10]]);
+      }, _callee4, null, [[3, 9]]);
     }));
 
     return function (_x7, _x8) {
@@ -4770,20 +4764,6 @@ var RpcClient = function RpcClient(url, user, password) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
-              // console.log("SENDING TX ........");
-              // // hide private key for signing
-              // delete tx.sigPrivKey;
-              // // set rpcClient
-              // tx.rpcClient = null;
-              // if (tx.type == TxCustomTokenPrivacyType) {
-              //   tx.txTokenPrivacyData.txNormal.rpcClient = null;
-              // }
-              // // convert tx to json
-              // let txJson = json.stringify(tx.convertTxToByte());
-              // // base58 check encode tx json
-              // console.log("base58 check encode tx json .....");
-              // let serializedTxJson = checkEncode(stringToBytes(txJson), ENCODE_VERSION);
-              // console.log("HHHH tx json serialize: ", serializedTxJson);
               data = {
                 "jsonrpc": "1.0",
                 "method": "sendtransaction",
@@ -4821,7 +4801,7 @@ var RpcClient = function RpcClient(url, user, password) {
               throw response.data.Error;
 
             case 16:
-              console.log("**** SENDING TX SUCCESS****");
+              console.log("**** SENDING TX SUCCESS, TxID: ", response.data.Result.TxID);
               return _context5.abrupt("return", {
                 txId: response.data.Result.TxID
               });
@@ -4928,18 +4908,6 @@ var RpcClient = function RpcClient(url, user, password) {
         while (1) {
           switch (_context7.prev = _context7.next) {
             case 0:
-              // // hide private key for signing
-              // delete tx.sigPrivKey;
-              // delete tx.txTokenPrivacyData.txNormal.sigPrivKey;
-              // // convert tx to json
-              // let txJson = JSON.stringify(tx.convertTxCustomTokenPrivacyToByte());
-              // console.log("txJson: ", txJson);
-              // let txBytes = stringToBytes(txJson);
-              // console.log('TxBytes: ', txBytes.join(', '));
-              // console.log('TxBytes len : ', txBytes.length);
-              // // base58 check encode tx json
-              // let serializedTxJson = checkEncode(txBytes, ENCODE_VERSION);
-              // // console.log("tx json serialize: ", serializedTxJson);
               data = {
                 "jsonrpc": "1.0",
                 "method": "sendrawprivacycustomtokentransaction",
@@ -4977,7 +4945,7 @@ var RpcClient = function RpcClient(url, user, password) {
               throw response.data.Error;
 
             case 16:
-              console.log("**** SENDING TX SUCCESS****");
+              console.log("**** SENDING TX SUCCESS, TxID: ", response.data.Result.TxID);
               return _context7.abrupt("return", {
                 txId: response.data.Result.TxID
               });
@@ -6059,35 +6027,36 @@ function () {
 
           case 3:
             unspentCoinStrs = _context.sent;
-            // remove spending coins from list of unspent coins
+            console.log("prepareInputForTx unspentCoinStrs: ", unspentCoinStrs); // remove spending coins from list of unspent coins
+
             unspentCoinExceptSpendingCoin = getUnspentCoinExceptSpendingCoin(unspentCoinStrs, account);
-            console.log("unspentCoinExceptSpeningCoin: ", unspentCoinExceptSpendingCoin); // total amount transfer and fee
+            console.log("prepareInputForTx unspentCoinExceptSpeningCoin: ", unspentCoinExceptSpendingCoin); // total amount transfer and fee
 
             amountTransfer = amountTransfer.add(fee);
-            console.log("amountTransfer: ", amountTransfer);
-            _context.prev = 8;
+            console.log("prepareInputForTx amountTransfer add fee: ", amountTransfer);
+            _context.prev = 9;
             respChooseBestCoin = chooseBestCoinToSpent(unspentCoinExceptSpendingCoin, amountTransfer);
-            _context.next = 16;
+            _context.next = 17;
             break;
 
-          case 12:
-            _context.prev = 12;
-            _context.t0 = _context["catch"](8);
+          case 13:
+            _context.prev = 13;
+            _context.t0 = _context["catch"](9);
             console.log("Error when chooseBestCoinToSpent", _context.t0);
             throw _context.t0;
 
-          case 16:
+          case 17:
             inputCoinsToSpent = respChooseBestCoin.resultInputCoins;
-            console.log("inputCoinsToSpent: ", inputCoinsToSpent);
+            console.log("prepareInputForTx inputCoinsToSpent: ", inputCoinsToSpent);
 
             if (!(inputCoinsToSpent.length == 0 && amountTransfer.cmp(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0)) != 0)) {
-              _context.next = 20;
+              _context.next = 21;
               break;
             }
 
             throw new _errorhandler__WEBPACK_IMPORTED_MODULE_9__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_9__["ErrorObject"].NotEnoughCoinError, "Not enough coin to spend");
 
-          case 20:
+          case 21:
             // prepare random comitment list
             commitmentIndices = []; // array index random of commitments in db
 
@@ -6097,23 +6066,22 @@ function () {
             // call api to random commitments list
 
             if (!hasPrivacy) {
-              _context.next = 42;
+              _context.next = 44;
               break;
             }
 
-            _context.prev = 24;
-            _context.next = 27;
+            _context.prev = 25;
+            _context.next = 28;
             return rpcClient.randomCommitmentsProcess(paymentAddrSerialize, inputCoinsToSpent, tokenID);
 
-          case 27:
+          case 28:
             response = _context.sent;
-            console.log("response random commitments: ", response);
             _context.next = 34;
             break;
 
           case 31:
             _context.prev = 31;
-            _context.t1 = _context["catch"](24);
+            _context.t1 = _context["catch"](25);
             throw _context.t1;
 
           case 34:
@@ -6122,24 +6090,26 @@ function () {
             myCommitmentIndices = response.myCommitmentIndices; // index in array index random of commitment in db
 
             commitmentStrs = response.commitmentStrs;
-            console.log("Random commitment ok!!!!!"); // Check number of list of random commitments, list of random commitment indices
+            console.log("prepareInputForTx commitmentIndices: ", commitmentIndices);
+            console.log("prepareInputForTx commitmentStrs: ", commitmentStrs);
+            console.log("prepareInputForTx myCommitmentIndices: ", myCommitmentIndices); // Check number of list of random commitments, list of random commitment indices
 
             if (!(commitmentIndices.length !== inputCoinsToSpent.length * _privacy_constants__WEBPACK_IMPORTED_MODULE_10__["CM_RING_SIZE"])) {
-              _context.next = 40;
+              _context.next = 42;
               break;
             }
 
             throw new Error("Invalid random commitments");
 
-          case 40:
+          case 42:
             if (!(myCommitmentIndices.length !== inputCoinsToSpent.length)) {
-              _context.next = 42;
+              _context.next = 44;
               break;
             }
 
             throw new Error("Number of list my commitment indices must be equal to number of input coins");
 
-          case 42:
+          case 44:
             totalValueInput = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
 
             for (i = 0; i < inputCoinsToSpent.length; i++) {
@@ -6155,86 +6125,18 @@ function () {
               commitmentStrs: commitmentStrs
             });
 
-          case 45:
+          case 47:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[8, 12], [24, 31]]);
+    }, _callee, null, [[9, 13], [25, 31]]);
   }));
 
   return function prepareInputForTx(_x, _x2, _x3, _x4, _x5, _x6) {
     return _ref.apply(this, arguments);
   };
-}(); // const prepareInputForCustomTokenTx = async (spendingKeyStr, tokenParams, rpcClient) => {
-//   let senderKeyWallet = keyWallet.base58CheckDeserialize(spendingKeyStr);
-//   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
-//   let response;
-//   try {
-//     response = await rpcClient.listCustomTokens();
-//   } catch (e) {
-//     throw e;
-//   }
-//   let listCustomToken = response.listCustomToken;
-//   switch (tokenParams.tokenTxType) {
-//     case CustomTokenInit: {
-//       return {
-//         listCustomToken: listCustomToken,
-//         tokenVins: null,
-//       }
-//     }
-//     case CustomTokenTransfer: {
-//       // sum of custom tokens' value in tokenParams.receivers
-//       let vOutAmount = 0;
-//       for (let i = 0; i < tokenParams.receivers.length; i++) {
-//         vOutAmount += tokenParams.receivers[i].value;
-//       }
-//       // get unspent custom token with propertyID
-//       try {
-//         response = await rpcClient.getUnspentCustomToken(
-//           senderKeyWallet.base58CheckSerialize(PaymentAddressType),
-//           tokenParams.propertyID
-//         );
-//       } catch (e) {
-//         throw new CustomError(ErrorObject.GetUnspentCustomTokenErr, e.message || e.Message);
-//       }
-//       let listUnspentCustomToken = response.listUnspentCustomToken;
-//       if (listUnspentCustomToken.length === 0) {
-//         throw new CustomError(ErrorObject.NotEnoughTokenError, "Balance of token is zero");
-//       }
-//       // get enough cutsom token for spending
-//       let tokenVins = new Array(0);
-//       let vinAmount = 0;
-//       for (let i = 0; i < listUnspentCustomToken.length; i++) {
-//         vinAmount += listUnspentCustomToken[i].Value;
-//         let tokenVoutsTmp = new TxTokenVout();
-//         tokenVoutsTmp.set(senderKeyWallet.KeySet.PaymentAddress, listUnspentCustomToken[i].Value);
-//         let tokenVinTmp = new TxTokenVin();
-//         tokenVinTmp.txCustomTokenID = newHashFromStr(listUnspentCustomToken[i].TxCustomTokenID);
-//         tokenVinTmp.voutIndex = listUnspentCustomToken[i].Index;
-//         tokenVinTmp.paymentAddress = senderKeyWallet.KeySet.PaymentAddress;
-//         // console.log(":senderKeyWallet1.KeySet.PaymentAddress: ", senderKeyWallet.KeySet.PaymentAddress);
-//         let signature = senderKeyWallet.KeySet.sign(tokenVoutsTmp.hash());
-//         tokenVinTmp.signature = checkEncode(signature, ENCODE_VERSION);
-//         tokenVins.push(tokenVinTmp);
-//         vOutAmount -= listUnspentCustomToken[i].Value;
-//         if (vOutAmount <= 0) {
-//           break;
-//         }
-//       }
-//       // check whether enough token amount or not
-//       if (vOutAmount > 0) {
-//         throw new CustomError(ErrorObject.NotEnoughTokenError, "Balance of token is insuffient");
-//       }
-//       return {
-//         listCustomToken: listCustomToken,
-//         tokenVins: tokenVins,
-//         vinsAmount: vinAmount,
-//       }
-//     }
-//   }
-// };
-
+}();
 /**
  * 
  * @param {PrivacyTokenParamTx} tokenParams 
@@ -6257,33 +6159,31 @@ function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            console.log("account prepareInputForTxPrivacyToken: ", account);
             paymentAddressStr = account.key.base58CheckSerialize(_wallet_constants__WEBPACK_IMPORTED_MODULE_7__["PaymentAddressType"]);
-            console.log("Token param when preparing: ", tokenParams);
-            _context2.prev = 3;
-            _context2.next = 6;
+            _context2.prev = 1;
+            _context2.next = 4;
             return rpcClient.listPrivacyCustomTokens();
 
-          case 6:
+          case 4:
             response = _context2.sent;
-            _context2.next = 12;
+            _context2.next = 10;
             break;
 
-          case 9:
-            _context2.prev = 9;
-            _context2.t0 = _context2["catch"](3);
+          case 7:
+            _context2.prev = 7;
+            _context2.t0 = _context2["catch"](1);
             throw _context2.t0;
 
-          case 12:
+          case 10:
             listPrivacyToken = response.listPrivacyToken;
-            console.log("listPrivacyToken: ", listPrivacyToken); // paymentInfo for tx normal
+            console.log("prepareInputForTxPrivacyToken listPrivacyToken: ", listPrivacyToken); // paymentInfo for tx normal
             // tokenParams for tx custom token privacy data, but haven't tokenParam's tokenInputs
 
             _context2.t1 = tokenParams.tokenTxType;
-            _context2.next = _context2.t1 === _tx_constants__WEBPACK_IMPORTED_MODULE_8__["CustomTokenInit"] ? 17 : _context2.t1 === _tx_constants__WEBPACK_IMPORTED_MODULE_8__["CustomTokenTransfer"] ? 18 : 69;
+            _context2.next = _context2.t1 === _tx_constants__WEBPACK_IMPORTED_MODULE_8__["CustomTokenInit"] ? 15 : _context2.t1 === _tx_constants__WEBPACK_IMPORTED_MODULE_8__["CustomTokenTransfer"] ? 16 : 68;
             break;
 
-          case 17:
+          case 15:
             return _context2.abrupt("return", {
               tokenInputs: [],
               listPrivacyToken: listPrivacyToken,
@@ -6293,54 +6193,54 @@ function () {
               commitmentStrs: []
             });
 
-          case 18:
+          case 16:
             // prepare tokenParams' tokenInputs for tx custom token privacy
             amountTokenPrivacyOutput = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
 
             for (i = 0; i < tokenParams.paymentInfoForPToken.length; i++) {
               amountTokenPrivacyOutput = amountTokenPrivacyOutput.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(tokenParams.paymentInfoForPToken[i].amount));
-              console.log("BBBB tokenParams.receivers[", i, "].Amount: ", tokenParams.paymentInfoForPToken[i].amount);
+              console.log("prepareInputForTxPrivacyToken tokenParams.receivers[", i, "].Amount: ", tokenParams.paymentInfoForPToken[i].amount);
             }
 
             if (feeToken) {
               amountTokenPrivacyOutput = amountTokenPrivacyOutput.add(feeToken);
             }
 
-            console.log("BBBB amountTokenPrivacyOutput: ", amountTokenPrivacyOutput);
-            console.log("BBBB feeToken: ", feeToken.toNumber()); // get unspent pToken 
+            console.log("prepareInputForTxPrivacyToken amount transfer add fee: ", amountTokenPrivacyOutput);
+            console.log("prepareInputForTxPrivacyToken feeToken: ", feeToken.toNumber()); // get unspent pToken 
 
-            _context2.prev = 23;
-            _context2.next = 26;
+            _context2.prev = 21;
+            _context2.next = 24;
             return account.getUnspentToken(tokenParams.propertyID.toLowerCase(), rpcClient);
 
-          case 26:
+          case 24:
             unspentCoinStrs = _context2.sent;
-            _context2.next = 32;
+            _context2.next = 30;
             break;
 
-          case 29:
-            _context2.prev = 29;
-            _context2.t2 = _context2["catch"](23);
+          case 27:
+            _context2.prev = 27;
+            _context2.t2 = _context2["catch"](21);
             throw new _errorhandler__WEBPACK_IMPORTED_MODULE_9__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_9__["ErrorObject"].GetUnspentPrivacyTokenErr, _context2.t2.message || _context2.t2.Message || "Can not get unspent privacy token");
 
-          case 32:
-            console.log("pToken unspentCoinStrs: ", unspentCoinStrs); // remove spending coins from list of unspent coins
+          case 30:
+            console.log("prepareInputForTxPrivacyToken unspentCoinStrs: ", unspentCoinStrs); // remove spending coins from list of unspent coins
 
             unspentCoinExceptSpendingCoin = getUnspentCoinExceptSpendingCoin(unspentCoinStrs, account);
-            console.log("pToken unspentCoinExceptSpeningCoin: ", unspentCoinExceptSpendingCoin); // get coin to spent using Knapsack
+            console.log("prepareInputForTxPrivacyToken unspentCoinExceptSpeningCoin: ", unspentCoinExceptSpendingCoin); // get coin to spent using Knapsack
 
-            _context2.prev = 35;
+            _context2.prev = 33;
             tokenInputs = chooseBestCoinToSpent(unspentCoinExceptSpendingCoin, amountTokenPrivacyOutput).resultInputCoins;
-            _context2.next = 42;
+            _context2.next = 40;
             break;
 
-          case 39:
-            _context2.prev = 39;
-            _context2.t3 = _context2["catch"](35);
+          case 37:
+            _context2.prev = 37;
+            _context2.t3 = _context2["catch"](33);
             throw _context2.t3;
 
-          case 42:
-            console.log("pToken tokenInputs: ", tokenInputs); // prepare random comitment list
+          case 40:
+            console.log("prepareInputForTxPrivacyToken tokenInputs: ", tokenInputs); // prepare random comitment list
 
             commitmentIndices = []; // array index random of commitments in db
 
@@ -6350,56 +6250,57 @@ function () {
             // call api to random commitments list
 
             if (!hasPrivacyForPToken) {
-              _context2.next = 65;
+              _context2.next = 64;
               break;
             }
 
-            _context2.prev = 47;
-            _context2.next = 50;
+            _context2.prev = 45;
+            _context2.next = 48;
             return rpcClient.randomCommitmentsProcess(paymentAddressStr, tokenInputs, tokenParams.propertyID.toLowerCase());
 
-          case 50:
+          case 48:
             _response = _context2.sent;
-            console.log("pToken response random commitments: ", _response);
-            _context2.next = 57;
+            _context2.next = 54;
             break;
 
-          case 54:
-            _context2.prev = 54;
-            _context2.t4 = _context2["catch"](47);
+          case 51:
+            _context2.prev = 51;
+            _context2.t4 = _context2["catch"](45);
             throw _context2.t4;
 
-          case 57:
+          case 54:
             commitmentIndices = _response.commitmentIndices; // array index random of commitments in db
 
             myCommitmentIndices = _response.myCommitmentIndices; // index in array index random of commitment in db
 
             commitmentStrs = _response.commitmentStrs;
-            console.log("pToken Random commitment ok!!!!!"); // Check number of list of random commitments, list of random commitment indices
+            console.log("prepareInputForTxPrivacyToken commitmentIndices: ", commitmentIndices);
+            console.log("prepareInputForTxPrivacyToken commitmentStrs: ", commitmentStrs);
+            console.log("prepareInputForTxPrivacyToken myCommitmentIndices: ", myCommitmentIndices); // Check number of list of random commitments, list of random commitment indices
 
             if (!(commitmentIndices.length !== tokenInputs.length * _privacy_constants__WEBPACK_IMPORTED_MODULE_10__["CM_RING_SIZE"])) {
-              _context2.next = 63;
+              _context2.next = 62;
               break;
             }
 
-            throw new Error("pToken  Invalid random commitments");
+            throw new Error("pToken Invalid random commitments");
 
-          case 63:
+          case 62:
             if (!(myCommitmentIndices.length !== tokenInputs.length)) {
-              _context2.next = 65;
+              _context2.next = 64;
               break;
             }
 
             throw new Error("pToken Number of list my commitment indices must be equal to number of input coins");
 
-          case 65:
+          case 64:
             totalValueInput = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
 
             for (_i = 0; _i < tokenInputs.length; _i++) {
               totalValueInput = totalValueInput.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(tokenInputs[_i].Value));
             }
 
-            console.log("pToken totalValueInput: ", totalValueInput);
+            console.log("prepareInputForTxPrivacyToken totalValueInput: ", totalValueInput);
             return _context2.abrupt("return", {
               tokenInputs: tokenInputs,
               listPrivacyToken: listPrivacyToken,
@@ -6409,25 +6310,21 @@ function () {
               commitmentStrs: commitmentStrs
             });
 
-          case 69:
+          case 68:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[3, 9], [23, 29], [35, 39], [47, 54]]);
+    }, _callee2, null, [[1, 7], [21, 27], [33, 37], [45, 51]]);
   }));
 
   return function prepareInputForTxPrivacyToken(_x7, _x8, _x9, _x10, _x11) {
     return _ref2.apply(this, arguments);
   };
-}(); // chooseBestCoinToSpent return list of coins to spent using Knapsack and Greedy algorithm
+}(); // chooseBestCoinToSpent return list of coins to spent using Greedy algorithm
 
 
 var chooseBestCoinToSpent = function chooseBestCoinToSpent(inputCoins, amount) {
-  console.log("HHHHHH amount: ", amount);
-  console.log("HHHHHH inputCoins: ", inputCoins);
-  console.log("Amount: ", amount.toNumber()); // let cloneInputCoins = cloneInputCoinArray(inputCoins)
-
   console.time("chooseBestCoinToSpent");
 
   if (amount.cmp(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0)) === 0) {
@@ -6446,12 +6343,9 @@ var chooseBestCoinToSpent = function chooseBestCoinToSpent(inputCoins, amount) {
   var inCoinsUnderAmount = [];
 
   for (var i = 0; i < inputCoins.length; i++) {
-    console.log("compare AAAAA", new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(inputCoins[i].Value).cmp(amount));
-
     if (new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(inputCoins[i].Value).cmp(amount) === -1) {
       inCoinsUnderAmount.push(inputCoins[i]);
     } else if (inCoinOverAmount === null) {
-      console.log("AAAAA");
       inCoinOverAmount = inputCoins[i];
     } else if (new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(inCoinOverAmount.Value).cmp(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(inputCoins[i].Value)) === 1) {
       remainInputCoins.push(inputCoins[i]);
@@ -6474,7 +6368,7 @@ var chooseBestCoinToSpent = function chooseBestCoinToSpent(inputCoins, amount) {
     }
   }
 
-  console.log("inCoinOverAmount: ", inCoinOverAmount);
+  console.log("chooseBestCoinToSpent inCoinOverAmount: ", inCoinOverAmount);
 
   if (inCoinOverAmount != null && (new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(inCoinOverAmount.Value).cmp(amount.mul(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(2))) === 1 || totalResultInputCoinAmount.cmp(amount) === -1)) {
     remainInputCoins.push(resultInputCoins);
@@ -6578,7 +6472,7 @@ function () {
 
           case 14:
             txSize = estimateTxSize(numInputCoins, numOutputs, hasPrivacyForNativeToken, hasPrivacyForPToken, metadata, customTokenParams, privacyTokenParams);
-            console.log("TX size when estimate fee: ", txSize); // check tx size
+            console.log("estimateFee TX size: ", txSize); // check tx size
 
             if (!(txSize > _wallet_constants__WEBPACK_IMPORTED_MODULE_7__["MaxTxSize"])) {
               _context3.next = 18;
@@ -6808,46 +6702,45 @@ function () {
               }],
               tokenInputs: []
             };
-            console.log("Amount before estimate fee: ", amount);
-            _context5.prev = 10;
-            _context5.next = 13;
+            _context5.prev = 9;
+            _context5.next = 12;
             return prepareInputForTxPrivacyToken(privacyTokenParam, account, rpcClient, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(feeToken), isPrivacyForPrivateToken);
 
-          case 13:
+          case 12:
             inputForPrivacyToken = _context5.sent;
             privacyTokenParam.tokenInputs = inputForPrivacyToken.tokenInputs;
-            _context5.next = 20;
+            _context5.next = 19;
             break;
 
-          case 17:
-            _context5.prev = 17;
-            _context5.t0 = _context5["catch"](10);
+          case 16:
+            _context5.prev = 16;
+            _context5.t0 = _context5["catch"](9);
             throw _context5.t0;
 
-          case 20:
-            _context5.prev = 20;
-            _context5.next = 23;
+          case 19:
+            _context5.prev = 19;
+            _context5.next = 22;
             return getEstimateFee(from, to, amount, account, isPrivacyForNativeToken, isPrivacyForPrivateToken, rpcClient, null, privacyTokenParam, isGetTokenFee);
 
-          case 23:
+          case 22:
             fee = _context5.sent;
-            _context5.next = 29;
+            _context5.next = 28;
             break;
 
-          case 26:
-            _context5.prev = 26;
-            _context5.t1 = _context5["catch"](20);
+          case 25:
+            _context5.prev = 25;
+            _context5.t1 = _context5["catch"](19);
             throw _context5.t1;
 
-          case 29:
+          case 28:
             return _context5.abrupt("return", fee);
 
-          case 30:
+          case 29:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[10, 17], [20, 26]]);
+    }, _callee5, null, [[9, 16], [19, 25]]);
   }));
 
   return function getEstimateFeeForPToken(_x26, _x27, _x28, _x29, _x30, _x31, _x32, _x33, _x34) {
@@ -7033,8 +6926,6 @@ var estimateTxSize = function estimateTxSize(numInputCoins, numOutputCoins, hasP
     customTokenDataSize += customTokenParams.propertyName.length;
     customTokenDataSize += 8;
     customTokenDataSize += 4;
-    console.log("************* customTokenParams.receivers: ", customTokenParams.receivers);
-    console.log("************* customTokenParams.vins: ", customTokenParams.vins);
 
     for (var i = 0; i < customTokenParams.receivers.length; i++) {
       customTokenDataSize += customTokenParams.receivers[i].paymentAddress.toBytes().length;
@@ -7212,7 +7103,7 @@ var getUnspentCoinExceptSpendingCoin = function getUnspentCoinExceptSpendingCoin
         }
       }
 
-      console.log("unspentCoinExceptSpeningCoin getUnspentCoinExceptSpendingCoin after : ", unspentCoinExceptSpendingCoin);
+      console.log("getUnspentCoinExceptSpendingCoin unspentCoinExceptSpeningCoin after : ", unspentCoinExceptSpendingCoin);
       return unspentCoinExceptSpendingCoin;
     }
   }
@@ -7233,15 +7124,15 @@ function () {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
+            console.log("getUnspentCoin inCoinStrs before: ", inCoinStrs);
             unspentCoinStrs = new Array();
             serialNumberStrs = new Array();
-            console.log("AA inCoinStrs: ", inCoinStrs);
 
             for (i = 0; i < inCoinStrs.length; i++) {
               serialNumberStrs.push(inCoinStrs[i].SerialNumber);
             }
 
-            console.log("AA serialNumberStrs when call api: ", serialNumberStrs); // check whether each input coin is spent or not
+            console.log("getUnspentCoin serialNumberStrs: ", serialNumberStrs); // check whether each input coin is spent or not
 
             _context6.prev = 5;
             _context6.next = 8;
@@ -7274,14 +7165,12 @@ function () {
               }
             }
 
-            console.log("unspent input coin: ", unspentCoinStrs); // console.log("unspent input coin len : ", unspentCoin.length);
-
-            console.timeEnd("Getunspent coin:");
+            console.log("getUnspentCoin unspentCoinStrs: ", unspentCoinStrs);
             return _context6.abrupt("return", {
               unspentCoinStrs: unspentCoinStrs
             });
 
-          case 21:
+          case 20:
           case "end":
             return _context6.stop();
         }
