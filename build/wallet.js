@@ -8378,9 +8378,7 @@ function () {
             paymentAddressStr,
             type,
             meta,
-            paymentInfos,
-            receiverPaymentAddrStr,
-            keyWallet,
+            paramPaymentInfos,
             inputForTx,
             nOutput,
             sndOutputStrs,
@@ -8463,67 +8461,71 @@ function () {
                   CommitteePublicKey: committeeKey,
                   AutoReStaking: autoReStaking
                 }; // create paymentInfos
+                // let paymentInfos = new Array(1);
+                // let receiverPaymentAddrStr = new Array(1);
+                // receiverPaymentAddrStr[0] = BurnAddress;
+                // let keyWallet;
+                // try{
+                //   keyWallet = KeyWallet.base58CheckDeserialize(
+                //     receiverPaymentAddrStr[0]
+                //   );
+                // } catch(e){
+                //   console.log("Can not deserialize burning address");
+                //   throw CustomError(ErrorObject.InvalidBurnAddress, "Can not deserialize burning address");
+                // }
+                // paymentInfos[0] = new PaymentInfo(
+                //   keyWallet.KeySet.PaymentAddress,
+                //   amountBN
+                // );
 
-                paymentInfos = new Array(1);
-                receiverPaymentAddrStr = new Array(1);
-                receiverPaymentAddrStr[0] = _constants__WEBPACK_IMPORTED_MODULE_5__["BurnAddress"];
-                _context7.prev = 36;
-                keyWallet = _hdwallet__WEBPACK_IMPORTED_MODULE_2__["KeyWallet"].base58CheckDeserialize(receiverPaymentAddrStr[0]);
-                _context7.next = 44;
-                break;
-
-              case 40:
-                _context7.prev = 40;
-                _context7.t2 = _context7["catch"](36);
-                console.log("Can not deserialize burning address");
-                throw Object(_errorhandler__WEBPACK_IMPORTED_MODULE_16__["CustomError"])(_errorhandler__WEBPACK_IMPORTED_MODULE_16__["ErrorObject"].InvalidBurnAddress, "Can not deserialize burning address");
-
-              case 44:
-                paymentInfos[0] = new _key__WEBPACK_IMPORTED_MODULE_3__["PaymentInfo"](keyWallet.KeySet.PaymentAddress, amountBN);
+                paramPaymentInfos = [{
+                  paymentAddressStr: _constants__WEBPACK_IMPORTED_MODULE_5__["BurnAddress"],
+                  amount: amount
+                }];
                 console.time("Time for create and send tx");
-                _context7.prev = 46;
+                _context7.prev = 35;
                 // prepare input for tx
                 console.time("Time for preparing input for constant tx"); // console.log("Wallet: ", Wallet.RpcClient);
 
-                _context7.prev = 48;
-                _context7.next = 51;
+                _context7.prev = 37;
+                _context7.next = 40;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_7__["prepareInputForTx"])(amountBN, feeBN, false, null, this, _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].RpcClient);
 
-              case 51:
+              case 40:
                 inputForTx = _context7.sent;
                 console.log("input after prepare: ", inputForTx);
-                _context7.next = 58;
+                _context7.next = 47;
                 break;
 
-              case 55:
-                _context7.prev = 55;
-                _context7.t3 = _context7["catch"](48);
-                throw _context7.t3;
+              case 44:
+                _context7.prev = 44;
+                _context7.t2 = _context7["catch"](37);
+                throw _context7.t2;
 
-              case 58:
+              case 47:
                 console.log("inputForTx: ", inputForTx);
                 console.timeEnd("Time for preparing input for constant tx");
-                _context7.next = 62;
+                _context7.next = 51;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(30);
 
-              case 62:
+              case 51:
                 nOutput = paramPaymentInfos.length;
 
-                if (inputForTx.totalValueInput.cmp(totalAmountTransfer) == 1) {
+                if (inputForTx.totalValueInput.cmp(amountBN) == 1) {
                   nOutput++;
                 }
 
                 sndOutputs = new Array(nOutput);
 
                 if (!(typeof randomScalars == "function")) {
-                  _context7.next = 71;
+                  _context7.next = 60;
                   break;
                 }
 
-                _context7.next = 68;
+                _context7.next = 57;
                 return randomScalars(nOutput.toString());
 
-              case 68:
+              case 57:
                 sndOutputStrs = _context7.sent;
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_15__["base64Decode"])(sndOutputStrs);
 
@@ -8532,32 +8534,32 @@ function () {
                   sndOutputs[i] = Object(_base58__WEBPACK_IMPORTED_MODULE_6__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_8__["ENCODE_VERSION"]);
                 }
 
-              case 71:
+              case 60:
                 console.log("sndOutputs: ", sndOutputs);
-                paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_7__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, fee, isPrivacy, null, meta, info, inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
+                paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_7__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, feeNativeToken, false, null, meta, "", inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
                 console.log("paramInitTx: ", paramInitTx);
 
                 if (!(typeof initTx == "function")) {
-                  _context7.next = 82;
+                  _context7.next = 71;
                   break;
                 }
 
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_12___default.a.stringify(paramInitTx);
                 console.log("paramInitTxJson: ", paramInitTxJson);
-                _context7.next = 79;
+                _context7.next = 68;
                 return staking(paramInitTxJson);
 
-              case 79:
+              case 68:
                 resInitTx = _context7.sent;
 
                 if (!(resInitTx == null)) {
-                  _context7.next = 82;
+                  _context7.next = 71;
                   break;
                 }
 
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_16__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_16__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-              case 82:
+              case 71:
                 console.log("resInitTx: ", resInitTx); //base64 decode txjson
 
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_15__["base64Decode"])(resInitTx); // get b58 check encode tx json
@@ -8566,32 +8568,32 @@ function () {
 
                 lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
-                _context7.next = 89;
+                _context7.next = 78;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(60);
 
-              case 89:
+              case 78:
                 console.time("Time for sending tx");
                 listUTXOForPRV = [];
-                _context7.prev = 91;
-                _context7.next = 94;
+                _context7.prev = 80;
+                _context7.next = 83;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 94:
+              case 83:
                 _response = _context7.sent;
-                _context7.next = 101;
+                _context7.next = 90;
                 break;
 
-              case 97:
-                _context7.prev = 97;
-                _context7.t4 = _context7["catch"](91);
-                console.log("ERR when sending tx: ", _context7.t4);
+              case 86:
+                _context7.prev = 86;
+                _context7.t3 = _context7["catch"](80);
+                console.log("ERR when sending tx: ", _context7.t3);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_16__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_16__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
 
-              case 101:
-                _context7.next = 103;
+              case 90:
+                _context7.next = 92;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(90);
 
-              case 103:
+              case 92:
                 console.timeEnd("Time for sending tx");
                 console.log("CREATE AND SEND NORMAL TX DONE!!!!");
                 console.timeEnd("Time for create and send tx"); // saving history tx
@@ -8627,24 +8629,24 @@ function () {
 
                 this.saveNormalTx(_response, receiverPaymentAddrStr, false, false, listUTXOForPRV, "");
                 console.log("History account after saving: ", this.txHistory.NormalTx);
-                _context7.next = 114;
+                _context7.next = 103;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(100);
 
-              case 114:
+              case 103:
                 return _context7.abrupt("return", _response);
 
-              case 117:
-                _context7.prev = 117;
-                _context7.t5 = _context7["catch"](46);
-                console.log("Error when create staking tx: ", _context7.t5);
-                throw _context7.t5;
+              case 106:
+                _context7.prev = 106;
+                _context7.t4 = _context7["catch"](35);
+                console.log("Error when create staking tx: ", _context7.t4);
+                throw _context7.t4;
 
-              case 121:
+              case 110:
               case "end":
                 return _context7.stop();
             }
           }
-        }, _callee7, this, [[3, 10], [19, 26], [36, 40], [46, 117], [48, 55], [91, 97]]);
+        }, _callee7, this, [[3, 10], [19, 26], [35, 106], [37, 44], [80, 86]]);
       }));
 
       function createAndSendStakingTx(_x10, _x11, _x12, _x13, _x14) {
@@ -12145,7 +12147,7 @@ var isWASMRunned = false;
 
 try {
   if (!isWASMRunned) {
-    __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'isomorphic-fetch'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+    __webpack_require__(/*! isomorphic-fetch */ "./node_modules/isomorphic-fetch/fetch-npm-browserify.js");
 
     __webpack_require__(/*! ../../wasm_exec */ "./wasm_exec.js");
 
@@ -36249,6 +36251,23 @@ module.exports = Array.isArray || function (arr) {
 
 /***/ }),
 
+/***/ "./node_modules/isomorphic-fetch/fetch-npm-browserify.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/isomorphic-fetch/fetch-npm-browserify.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// the whatwg-fetch polyfill installs the fetch() function
+// on the global object (window or self)
+//
+// Return that as the export for use in Webpack, Browserify etc.
+__webpack_require__(/*! whatwg-fetch */ "./node_modules/whatwg-fetch/fetch.js");
+module.exports = self.fetch.bind(self);
+
+
+/***/ }),
+
 /***/ "./node_modules/md5.js/index.js":
 /*!**************************************!*\
   !*** ./node_modules/md5.js/index.js ***!
@@ -45297,6 +45316,540 @@ module.exports = function(module) {
 	}
 	return module;
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/whatwg-fetch/fetch.js":
+/*!********************************************!*\
+  !*** ./node_modules/whatwg-fetch/fetch.js ***!
+  \********************************************/
+/*! exports provided: Headers, Request, Response, DOMException, fetch */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Headers", function() { return Headers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Request", function() { return Request; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Response", function() { return Response; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DOMException", function() { return DOMException; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetch", function() { return fetch; });
+var support = {
+  searchParams: 'URLSearchParams' in self,
+  iterable: 'Symbol' in self && 'iterator' in Symbol,
+  blob:
+    'FileReader' in self &&
+    'Blob' in self &&
+    (function() {
+      try {
+        new Blob()
+        return true
+      } catch (e) {
+        return false
+      }
+    })(),
+  formData: 'FormData' in self,
+  arrayBuffer: 'ArrayBuffer' in self
+}
+
+function isDataView(obj) {
+  return obj && DataView.prototype.isPrototypeOf(obj)
+}
+
+if (support.arrayBuffer) {
+  var viewClasses = [
+    '[object Int8Array]',
+    '[object Uint8Array]',
+    '[object Uint8ClampedArray]',
+    '[object Int16Array]',
+    '[object Uint16Array]',
+    '[object Int32Array]',
+    '[object Uint32Array]',
+    '[object Float32Array]',
+    '[object Float64Array]'
+  ]
+
+  var isArrayBufferView =
+    ArrayBuffer.isView ||
+    function(obj) {
+      return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1
+    }
+}
+
+function normalizeName(name) {
+  if (typeof name !== 'string') {
+    name = String(name)
+  }
+  if (/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name)) {
+    throw new TypeError('Invalid character in header field name')
+  }
+  return name.toLowerCase()
+}
+
+function normalizeValue(value) {
+  if (typeof value !== 'string') {
+    value = String(value)
+  }
+  return value
+}
+
+// Build a destructive iterator for the value list
+function iteratorFor(items) {
+  var iterator = {
+    next: function() {
+      var value = items.shift()
+      return {done: value === undefined, value: value}
+    }
+  }
+
+  if (support.iterable) {
+    iterator[Symbol.iterator] = function() {
+      return iterator
+    }
+  }
+
+  return iterator
+}
+
+function Headers(headers) {
+  this.map = {}
+
+  if (headers instanceof Headers) {
+    headers.forEach(function(value, name) {
+      this.append(name, value)
+    }, this)
+  } else if (Array.isArray(headers)) {
+    headers.forEach(function(header) {
+      this.append(header[0], header[1])
+    }, this)
+  } else if (headers) {
+    Object.getOwnPropertyNames(headers).forEach(function(name) {
+      this.append(name, headers[name])
+    }, this)
+  }
+}
+
+Headers.prototype.append = function(name, value) {
+  name = normalizeName(name)
+  value = normalizeValue(value)
+  var oldValue = this.map[name]
+  this.map[name] = oldValue ? oldValue + ', ' + value : value
+}
+
+Headers.prototype['delete'] = function(name) {
+  delete this.map[normalizeName(name)]
+}
+
+Headers.prototype.get = function(name) {
+  name = normalizeName(name)
+  return this.has(name) ? this.map[name] : null
+}
+
+Headers.prototype.has = function(name) {
+  return this.map.hasOwnProperty(normalizeName(name))
+}
+
+Headers.prototype.set = function(name, value) {
+  this.map[normalizeName(name)] = normalizeValue(value)
+}
+
+Headers.prototype.forEach = function(callback, thisArg) {
+  for (var name in this.map) {
+    if (this.map.hasOwnProperty(name)) {
+      callback.call(thisArg, this.map[name], name, this)
+    }
+  }
+}
+
+Headers.prototype.keys = function() {
+  var items = []
+  this.forEach(function(value, name) {
+    items.push(name)
+  })
+  return iteratorFor(items)
+}
+
+Headers.prototype.values = function() {
+  var items = []
+  this.forEach(function(value) {
+    items.push(value)
+  })
+  return iteratorFor(items)
+}
+
+Headers.prototype.entries = function() {
+  var items = []
+  this.forEach(function(value, name) {
+    items.push([name, value])
+  })
+  return iteratorFor(items)
+}
+
+if (support.iterable) {
+  Headers.prototype[Symbol.iterator] = Headers.prototype.entries
+}
+
+function consumed(body) {
+  if (body.bodyUsed) {
+    return Promise.reject(new TypeError('Already read'))
+  }
+  body.bodyUsed = true
+}
+
+function fileReaderReady(reader) {
+  return new Promise(function(resolve, reject) {
+    reader.onload = function() {
+      resolve(reader.result)
+    }
+    reader.onerror = function() {
+      reject(reader.error)
+    }
+  })
+}
+
+function readBlobAsArrayBuffer(blob) {
+  var reader = new FileReader()
+  var promise = fileReaderReady(reader)
+  reader.readAsArrayBuffer(blob)
+  return promise
+}
+
+function readBlobAsText(blob) {
+  var reader = new FileReader()
+  var promise = fileReaderReady(reader)
+  reader.readAsText(blob)
+  return promise
+}
+
+function readArrayBufferAsText(buf) {
+  var view = new Uint8Array(buf)
+  var chars = new Array(view.length)
+
+  for (var i = 0; i < view.length; i++) {
+    chars[i] = String.fromCharCode(view[i])
+  }
+  return chars.join('')
+}
+
+function bufferClone(buf) {
+  if (buf.slice) {
+    return buf.slice(0)
+  } else {
+    var view = new Uint8Array(buf.byteLength)
+    view.set(new Uint8Array(buf))
+    return view.buffer
+  }
+}
+
+function Body() {
+  this.bodyUsed = false
+
+  this._initBody = function(body) {
+    this._bodyInit = body
+    if (!body) {
+      this._bodyText = ''
+    } else if (typeof body === 'string') {
+      this._bodyText = body
+    } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+      this._bodyBlob = body
+    } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+      this._bodyFormData = body
+    } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+      this._bodyText = body.toString()
+    } else if (support.arrayBuffer && support.blob && isDataView(body)) {
+      this._bodyArrayBuffer = bufferClone(body.buffer)
+      // IE 10-11 can't handle a DataView body.
+      this._bodyInit = new Blob([this._bodyArrayBuffer])
+    } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
+      this._bodyArrayBuffer = bufferClone(body)
+    } else {
+      this._bodyText = body = Object.prototype.toString.call(body)
+    }
+
+    if (!this.headers.get('content-type')) {
+      if (typeof body === 'string') {
+        this.headers.set('content-type', 'text/plain;charset=UTF-8')
+      } else if (this._bodyBlob && this._bodyBlob.type) {
+        this.headers.set('content-type', this._bodyBlob.type)
+      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+        this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+      }
+    }
+  }
+
+  if (support.blob) {
+    this.blob = function() {
+      var rejected = consumed(this)
+      if (rejected) {
+        return rejected
+      }
+
+      if (this._bodyBlob) {
+        return Promise.resolve(this._bodyBlob)
+      } else if (this._bodyArrayBuffer) {
+        return Promise.resolve(new Blob([this._bodyArrayBuffer]))
+      } else if (this._bodyFormData) {
+        throw new Error('could not read FormData body as blob')
+      } else {
+        return Promise.resolve(new Blob([this._bodyText]))
+      }
+    }
+
+    this.arrayBuffer = function() {
+      if (this._bodyArrayBuffer) {
+        return consumed(this) || Promise.resolve(this._bodyArrayBuffer)
+      } else {
+        return this.blob().then(readBlobAsArrayBuffer)
+      }
+    }
+  }
+
+  this.text = function() {
+    var rejected = consumed(this)
+    if (rejected) {
+      return rejected
+    }
+
+    if (this._bodyBlob) {
+      return readBlobAsText(this._bodyBlob)
+    } else if (this._bodyArrayBuffer) {
+      return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer))
+    } else if (this._bodyFormData) {
+      throw new Error('could not read FormData body as text')
+    } else {
+      return Promise.resolve(this._bodyText)
+    }
+  }
+
+  if (support.formData) {
+    this.formData = function() {
+      return this.text().then(decode)
+    }
+  }
+
+  this.json = function() {
+    return this.text().then(JSON.parse)
+  }
+
+  return this
+}
+
+// HTTP methods whose capitalization should be normalized
+var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+function normalizeMethod(method) {
+  var upcased = method.toUpperCase()
+  return methods.indexOf(upcased) > -1 ? upcased : method
+}
+
+function Request(input, options) {
+  options = options || {}
+  var body = options.body
+
+  if (input instanceof Request) {
+    if (input.bodyUsed) {
+      throw new TypeError('Already read')
+    }
+    this.url = input.url
+    this.credentials = input.credentials
+    if (!options.headers) {
+      this.headers = new Headers(input.headers)
+    }
+    this.method = input.method
+    this.mode = input.mode
+    this.signal = input.signal
+    if (!body && input._bodyInit != null) {
+      body = input._bodyInit
+      input.bodyUsed = true
+    }
+  } else {
+    this.url = String(input)
+  }
+
+  this.credentials = options.credentials || this.credentials || 'same-origin'
+  if (options.headers || !this.headers) {
+    this.headers = new Headers(options.headers)
+  }
+  this.method = normalizeMethod(options.method || this.method || 'GET')
+  this.mode = options.mode || this.mode || null
+  this.signal = options.signal || this.signal
+  this.referrer = null
+
+  if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+    throw new TypeError('Body not allowed for GET or HEAD requests')
+  }
+  this._initBody(body)
+}
+
+Request.prototype.clone = function() {
+  return new Request(this, {body: this._bodyInit})
+}
+
+function decode(body) {
+  var form = new FormData()
+  body
+    .trim()
+    .split('&')
+    .forEach(function(bytes) {
+      if (bytes) {
+        var split = bytes.split('=')
+        var name = split.shift().replace(/\+/g, ' ')
+        var value = split.join('=').replace(/\+/g, ' ')
+        form.append(decodeURIComponent(name), decodeURIComponent(value))
+      }
+    })
+  return form
+}
+
+function parseHeaders(rawHeaders) {
+  var headers = new Headers()
+  // Replace instances of \r\n and \n followed by at least one space or horizontal tab with a space
+  // https://tools.ietf.org/html/rfc7230#section-3.2
+  var preProcessedHeaders = rawHeaders.replace(/\r?\n[\t ]+/g, ' ')
+  preProcessedHeaders.split(/\r?\n/).forEach(function(line) {
+    var parts = line.split(':')
+    var key = parts.shift().trim()
+    if (key) {
+      var value = parts.join(':').trim()
+      headers.append(key, value)
+    }
+  })
+  return headers
+}
+
+Body.call(Request.prototype)
+
+function Response(bodyInit, options) {
+  if (!options) {
+    options = {}
+  }
+
+  this.type = 'default'
+  this.status = options.status === undefined ? 200 : options.status
+  this.ok = this.status >= 200 && this.status < 300
+  this.statusText = 'statusText' in options ? options.statusText : 'OK'
+  this.headers = new Headers(options.headers)
+  this.url = options.url || ''
+  this._initBody(bodyInit)
+}
+
+Body.call(Response.prototype)
+
+Response.prototype.clone = function() {
+  return new Response(this._bodyInit, {
+    status: this.status,
+    statusText: this.statusText,
+    headers: new Headers(this.headers),
+    url: this.url
+  })
+}
+
+Response.error = function() {
+  var response = new Response(null, {status: 0, statusText: ''})
+  response.type = 'error'
+  return response
+}
+
+var redirectStatuses = [301, 302, 303, 307, 308]
+
+Response.redirect = function(url, status) {
+  if (redirectStatuses.indexOf(status) === -1) {
+    throw new RangeError('Invalid status code')
+  }
+
+  return new Response(null, {status: status, headers: {location: url}})
+}
+
+var DOMException = self.DOMException
+try {
+  new DOMException()
+} catch (err) {
+  DOMException = function(message, name) {
+    this.message = message
+    this.name = name
+    var error = Error(message)
+    this.stack = error.stack
+  }
+  DOMException.prototype = Object.create(Error.prototype)
+  DOMException.prototype.constructor = DOMException
+}
+
+function fetch(input, init) {
+  return new Promise(function(resolve, reject) {
+    var request = new Request(input, init)
+
+    if (request.signal && request.signal.aborted) {
+      return reject(new DOMException('Aborted', 'AbortError'))
+    }
+
+    var xhr = new XMLHttpRequest()
+
+    function abortXhr() {
+      xhr.abort()
+    }
+
+    xhr.onload = function() {
+      var options = {
+        status: xhr.status,
+        statusText: xhr.statusText,
+        headers: parseHeaders(xhr.getAllResponseHeaders() || '')
+      }
+      options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL')
+      var body = 'response' in xhr ? xhr.response : xhr.responseText
+      resolve(new Response(body, options))
+    }
+
+    xhr.onerror = function() {
+      reject(new TypeError('Network request failed'))
+    }
+
+    xhr.ontimeout = function() {
+      reject(new TypeError('Network request failed'))
+    }
+
+    xhr.onabort = function() {
+      reject(new DOMException('Aborted', 'AbortError'))
+    }
+
+    xhr.open(request.method, request.url, true)
+
+    if (request.credentials === 'include') {
+      xhr.withCredentials = true
+    } else if (request.credentials === 'omit') {
+      xhr.withCredentials = false
+    }
+
+    if ('responseType' in xhr && support.blob) {
+      xhr.responseType = 'blob'
+    }
+
+    request.headers.forEach(function(value, name) {
+      xhr.setRequestHeader(name, value)
+    })
+
+    if (request.signal) {
+      request.signal.addEventListener('abort', abortXhr)
+
+      xhr.onreadystatechange = function() {
+        // DONE (success or failure)
+        if (xhr.readyState === 4) {
+          request.signal.removeEventListener('abort', abortXhr)
+        }
+      }
+    }
+
+    xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+  })
+}
+
+fetch.polyfill = true
+
+if (!self.fetch) {
+  self.fetch = fetch
+  self.Headers = Headers
+  self.Request = Request
+  self.Response = Response
+}
 
 
 /***/ }),

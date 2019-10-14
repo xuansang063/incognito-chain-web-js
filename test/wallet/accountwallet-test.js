@@ -5,8 +5,8 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { CustomTokenInit, CustomTokenTransfer } from "../../lib/tx/constants";
 import { PaymentAddressType } from "../../lib/wallet/constants";
 
-const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
-// const rpcClient = new RpcClient("http://54.39.158.106:20033");
+// const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
+const rpcClient = new RpcClient("http://54.39.158.106:20032");
 // const rpcClient = new RpcClient("http://localhost:9334");
 
 async function sleep(sleepTime) {
@@ -259,13 +259,14 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // }
 }
 
-TestCreateAndSendPrivacyTokenTransfer();
+// TestCreateAndSendPrivacyTokenTransfer();
 
 
 async function TestCreateAndSendStakingTx() {
   Wallet.RpcClient = rpcClient;
+  await sleep(5000);
   // staker
-  let senderSpendingKeyStr = "112t8rnYtBB7ven2V2tSBRAqCV1rpxigcSmeqWY3njLTuLxUfTYwGnaWvwLMa7y3dSQNLauZetM4i6mJFYXo3KSzzPd2XutinqMnaekpBQ5i";
+  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
@@ -276,11 +277,11 @@ async function TestCreateAndSendStakingTx() {
   let param = { type: 0 };
   let fee = 1;
   let candidatePaymentAddress = senderPaymentAddressStr;
-  let candidateMiningSeedKey = "12nV4WFAjMCYue9ShY6qoQ9bVNiJ95xXMq2eau3rMHHFTiwdjxT";
+  let candidateMiningSeedKey = "12VH5z8JCn9B8SyHvB3aYP4ZGr1Wf9Rywx2ZSBe3eQneADzJ3bL";
   let rewardReceiverPaymentAddress = senderPaymentAddressStr;
-  let autoReStaking = false;
+  let autoReStaking = true;
 
-  await sleep(5000);
+ 
 
   // create and send staking tx
   try {
@@ -340,4 +341,4 @@ async function TestGetBalance() {
   }
 }
 
-TestGetBalance();
+// TestGetBalance();
