@@ -328,6 +328,52 @@ function checkSumFirst4Bytes(data) {
 
 /***/ }),
 
+/***/ "./lib/coin.js":
+/*!*********************!*\
+  !*** ./lib/coin.js ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Coin =
+/*#__PURE__*/
+function () {
+  function Coin(params) {
+    _classCallCheck(this, Coin);
+
+    this.PublicKey = "";
+    this.CoinCommitment = "";
+    this.SNDerivator = "";
+    this.Randomness = "";
+    this.SerialNumber = "";
+    this.Value = "";
+    this.Info = "";
+  }
+
+  _createClass(Coin, [{
+    key: "set",
+    value: function set(publicKey, coinCommitment, snderivator, randomness, serialNumber, value, info) {
+      this.PublicKey = publicKey;
+      this.CoinCommitment = coinCommitment;
+      this.SNDerivator = snderivator;
+      this.Randomness = randomness;
+      this.SerialNumber = serialNumber;
+      this.Value = value;
+      this.Info = info;
+    }
+  }]);
+
+  return Coin;
+}();
+
+/***/ }),
+
 /***/ "./lib/committeekey.js":
 /*!*****************************!*\
   !*** ./lib/committeekey.js ***!
@@ -5983,9 +6029,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tx_constants__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../tx/constants */ "./lib/tx/constants.js");
 /* harmony import */ var _errorhandler__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../errorhandler */ "./lib/errorhandler.js");
 /* harmony import */ var _privacy_constants__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../privacy/constants */ "./lib/privacy/constants.js");
+/* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../coin */ "./lib/coin.js");
+/* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_coin__WEBPACK_IMPORTED_MODULE_11__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -6395,7 +6444,7 @@ var cloneInputCoinJsonArray = function cloneInputCoinJsonArray(inputCoinsJson) {
   var inputCoinsClone = new Array(inputCoinsJson.length);
 
   for (var i = 0; i < inputCoinsClone.length; i++) {
-    var object = new Object();
+    var object = new _coin__WEBPACK_IMPORTED_MODULE_11__["Coin"]();
     object.PublicKey = inputCoinsJson[i].PublicKey;
     object.CoinCommitment = inputCoinsJson[i].CoinCommitment;
     object.SNDerivator = inputCoinsJson[i].SNDerivator;
@@ -6811,7 +6860,7 @@ function _getMaxWithdrawAmount() {
   _getMaxWithdrawAmount = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee7(from, to, tokenObject, account, rpcClient, isPrivacyForPrivateToken) {
-    var id, name, symbol, receivers, privacyCustomTokenParams, totalpTokenAmount, unspentToken, i, fee, maxWithdrawAmount;
+    var id, name, symbol, tokenParamJson, totalpTokenAmount, unspentToken, i, fee, maxWithdrawAmount;
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
@@ -6830,48 +6879,61 @@ function _getMaxWithdrawAmount() {
 
             if (tokenObject.TokenSymbol !== null) {
               symbol = tokenObject.TokenSymbol;
-            }
+            } // token param
+            // get current token to get token param
 
-            receivers = new _key__WEBPACK_IMPORTED_MODULE_5__["PaymentInfo"](_wallet_hdwallet__WEBPACK_IMPORTED_MODULE_1__["KeyWallet"].base58CheckDeserialize(tokenObject.TokenReceivers.PaymentAddress).KeySet.PaymentAddress, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(tokenObject.TokenReceivers.Amount));
-            privacyCustomTokenParams = new _tx_txprivacytokendata__WEBPACK_IMPORTED_MODULE_4__["PrivacyTokenParamTx"]();
-            privacyCustomTokenParams.set(id, name, symbol, 0, tokenObject.TokenTxType, [receivers], []);
+
+            tokenParamJson = {
+              propertyID: id,
+              propertyName: name,
+              propertySymbol: symbol,
+              amount: 0,
+              tokenTxType: tokenObject.TokenTxType,
+              fee: 0,
+              paymentInfoForPToken: [{
+                paymentAddressStr: tokenObject.TokenReceivers.PaymentAddress,
+                amount: tokenObject.TokenReceivers.Amount
+              }],
+              tokenInputs: []
+            };
+            console.log("tokenParamJson: ", tokenParamJson);
             totalpTokenAmount = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
-            _context7.prev = 10;
-            _context7.next = 13;
-            return account.getUnspentToken(privacyCustomTokenParams.propertyID.toLowerCase(), rpcClient);
+            _context7.prev = 9;
+            _context7.next = 12;
+            return account.getUnspentToken(tokenParamJson.propertyID.toLowerCase(), rpcClient);
 
-          case 13:
+          case 12:
             unspentToken = _context7.sent;
-            privacyCustomTokenParams.tokenInputs = unspentToken;
+            tokenParamJson.tokenInputs = unspentToken;
 
             for (i = 0; i < unspentToken.length; i++) {
               totalpTokenAmount = totalpTokenAmount.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(unspentToken[i].Value));
             }
 
-            _context7.next = 21;
+            _context7.next = 20;
             break;
 
-          case 18:
-            _context7.prev = 18;
-            _context7.t0 = _context7["catch"](10);
+          case 17:
+            _context7.prev = 17;
+            _context7.t0 = _context7["catch"](9);
             throw _context7.t0;
 
-          case 21:
-            _context7.prev = 21;
-            _context7.next = 24;
-            return getEstimateFee(from, to, 0, account, false, isPrivacyForPrivateToken, rpcClient, null, privacyCustomTokenParams, true);
+          case 20:
+            _context7.prev = 20;
+            _context7.next = 23;
+            return getEstimateFee(from, to, 0, account, false, isPrivacyForPrivateToken, rpcClient, null, tokenParamJson, true);
 
-          case 24:
+          case 23:
             fee = _context7.sent;
-            _context7.next = 30;
+            _context7.next = 29;
             break;
 
-          case 27:
-            _context7.prev = 27;
-            _context7.t1 = _context7["catch"](21);
+          case 26:
+            _context7.prev = 26;
+            _context7.t1 = _context7["catch"](20);
             throw _context7.t1;
 
-          case 30:
+          case 29:
             maxWithdrawAmount = totalpTokenAmount.sub(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(fee));
             return _context7.abrupt("return", {
               maxWithdrawAmount: maxWithdrawAmount.toNumber(),
@@ -6879,12 +6941,12 @@ function _getMaxWithdrawAmount() {
               feeForBurn: fee
             });
 
-          case 32:
+          case 31:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[10, 18], [21, 27]]);
+    }, _callee7, null, [[9, 17], [20, 26]]);
   }));
   return _getMaxWithdrawAmount.apply(this, arguments);
 }
@@ -7323,6 +7385,7 @@ function () {
 
   _createClass(AccountWallet, [{
     key: "addSpendingCoins",
+    // addSpendingCoins adds spending coin object to spending coins list
 
     /**
      * @param {txID: string, spendingSNs: array} spendingCoinObj 
@@ -7334,6 +7397,11 @@ function () {
 
       this.spendingCoins.push(spendingCoinObj);
     } // removeObjectFromSpendingCoins removes spending coins in txId from list of spending coins
+
+    /**
+     * 
+     * @param {string} txId 
+     */
 
   }, {
     key: "removeObjectFromSpendingCoins",
@@ -7351,7 +7419,13 @@ function () {
     value: function clearCached() {
       this.derivatorToSerialNumberCache = {};
       this.spentCoinCached = {};
-    } // saveAccountCached saves derivatorToSerialNumberCache, inputCoinJsonCached and spentCoinCached for account
+    } // saveAccountCached saves derivatorToSerialNumberCache and spentCoinCached for account
+
+    /**
+     * 
+     * @param {string} password 
+     * @param {object} storage 
+     */
 
   }, {
     key: "saveAccountCached",
@@ -7373,6 +7447,12 @@ function () {
       }
     } // loadAccountCached loads cache that includes derivatorToSerialNumberCache, inputCoinJsonCached and spentCoinCached for account
 
+    /**
+     * 
+     * @param {string} password 
+     * @param {object} storage 
+     */
+
   }, {
     key: "loadAccountCached",
     value: function () {
@@ -7385,7 +7465,7 @@ function () {
             switch (_context.prev = _context.next) {
               case 0:
                 if (!(storage != null)) {
-                  _context.next = 21;
+                  _context.next = 18;
                   break;
                 }
 
@@ -7394,39 +7474,36 @@ function () {
 
               case 3:
                 cipherText = _context.sent;
-                console.log("Ciphertext: ", cipherText);
 
                 if (cipherText) {
-                  _context.next = 7;
+                  _context.next = 6;
                   break;
                 }
 
                 return _context.abrupt("return", false);
 
-              case 7:
+              case 6:
                 data = crypto_js__WEBPACK_IMPORTED_MODULE_11___default.a.AES.decrypt(cipherText, password);
                 jsonStr = data.toString(crypto_js__WEBPACK_IMPORTED_MODULE_11___default.a.enc.Utf8);
-                console.log("jsonStr: ", jsonStr);
-                _context.prev = 10;
+                _context.prev = 8;
                 cacheObject = circular_json__WEBPACK_IMPORTED_MODULE_12___default.a.parse(jsonStr);
                 this.derivatorToSerialNumberCache = cacheObject.derivatorToSerialNumberCache;
                 this.spentCoinCached = cacheObject.spentCoinCached;
-                console.log("this.derivatorToSerialNumberCache: ", this.derivatorToSerialNumberCache);
-                console.log("this.spentCoinCached: ", this.spentCoinCached);
-                _context.next = 21;
+                _context.next = 18;
                 break;
 
-              case 18:
-                _context.prev = 18;
-                _context.t0 = _context["catch"](10);
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](8);
+                console.log("loadAccountCached error: ", _context.t0);
                 throw _context.t0;
 
-              case 21:
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[10, 18]]);
+        }, _callee, this, [[8, 14]]);
       }));
 
       function loadAccountCached(_x, _x2) {
@@ -7435,6 +7512,12 @@ function () {
 
       return loadAccountCached;
     }() // analyzeOutputCoinFromCached devides allOutputCoinStrs into list of cached output coins and list of uncached output coins
+
+    /**
+     * 
+     * @param {[Coin]} allOutputCoinStrs 
+     * @param {string} tokenID 
+     */
 
   }, {
     key: "analyzeOutputCoinFromCached",
@@ -7445,9 +7528,7 @@ function () {
         tokenID = 'PRV';
       }
 
-      this.derivatorToSerialNumberCache = this.derivatorToSerialNumberCache === undefined ? {} : this.derivatorToSerialNumberCache; // console.log(`${this.name} analyzeOutputCoinFromCached allOutputCoinStrs`, allOutputCoinStrs);
-      // console.log(`${this.name} analyzeOutputCoinFromCached tokenID`, tokenID);
-
+      this.derivatorToSerialNumberCache = this.derivatorToSerialNumberCache === undefined ? {} : this.derivatorToSerialNumberCache;
       var uncachedOutputCoinStrs = [];
       var cachedOutputCoinStrs = [];
 
@@ -7460,16 +7541,20 @@ function () {
         } else {
           uncachedOutputCoinStrs.push(allOutputCoinStrs[i]);
         }
-      } // console.log(`${this.name} analyzeOutputCoinFromCached leftOutputCoinStrs`, leftOutputCoinStrs);
-      // console.log(`${this.name} analyzeOutputCoinFromCached cachedOutputCoinStrs`, cachedOutputCoinStrs);
-      // console.log(`${this.name} analyzeOutputCoinFromCached cachedInputCoins`, cachedInputCoins);
-
+      }
 
       return {
         uncachedOutputCoinStrs: uncachedOutputCoinStrs,
         cachedOutputCoinStrs: cachedOutputCoinStrs
       };
     } // mergeSpentCoinCached caches spent input coins to spentCoinCached
+
+    /**
+     * 
+     * @param {[Coin]} unspentCoinStrs 
+     * @param {[Coin]} unspentCoinStrsFromCache 
+     * @param {string} tokenID 
+     */
 
   }, {
     key: "mergeSpentCoinCached",
@@ -7530,6 +7615,12 @@ function () {
       return mergeSpentCoinCached;
     }() // analyzeSpentCoinFromCached returns input coins which it not existed in list of cached spent input coins
 
+    /**
+     * 
+     * @param {[Coin]} inCoinStrs 
+     * @param {string} tokenID 
+     */
+
   }, {
     key: "analyzeSpentCoinFromCached",
     value: function analyzeSpentCoinFromCached(inCoinStrs) {
@@ -7553,7 +7644,15 @@ function () {
       return {
         unspentInputCoinsFromCachedStrs: unspentInputCoinsFromCachedStrs
       };
-    }
+    } // deriveSerialNumbers returns list of serial numbers of input coins
+
+    /**
+     * 
+     * @param {string} spendingKeyStr 
+     * @param {[Coin]} inCoinStrs 
+     * @param {string} tokenID 
+     */
+
   }, {
     key: "deriveSerialNumbers",
     value: function () {
@@ -7583,7 +7682,6 @@ function () {
                   tokenID = 'PRV';
                 }
 
-                console.time("Getunspent coin:");
                 serialNumberStrs = new Array(inCoinStrs.length);
                 serialNumberBytes = new Array(inCoinStrs.length);
                 snds = new Array(inCoinStrs.length); // calculate serial number (Call WASM/gomobile function)
@@ -7592,53 +7690,52 @@ function () {
                   snds[i] = inCoinStrs[i].SNDerivator;
                 }
 
-                console.log("snds: ", snds);
+                console.log("deriveSerialNumbers snds list: ", snds);
                 param = {
                   "privateKey": spendingKeyStr,
                   "snds": snds
                 };
                 paramJson = circular_json__WEBPACK_IMPORTED_MODULE_12___default.a.stringify(param);
-                console.log("paramJson: ", paramJson);
 
                 if (!(typeof deriveSerialNumber == "function")) {
-                  _context3.next = 20;
+                  _context3.next = 18;
                   break;
                 }
 
-                _context3.next = 14;
+                _context3.next = 12;
                 return deriveSerialNumber(paramJson);
 
-              case 14:
+              case 12:
                 res = _context3.sent;
 
                 if (!(res == null)) {
-                  _context3.next = 18;
+                  _context3.next = 16;
                   break;
                 }
 
                 console.log("Can not derive serial number");
                 throw new Error("Can not derive serial number");
 
-              case 18:
+              case 16:
                 tmpBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_15__["base64Decode"])(res);
 
                 for (_i2 = 0; _i2 < snds.length; _i2++) {
                   serialNumberBytes[_i2] = tmpBytes.slice(_i2 * _constants__WEBPACK_IMPORTED_MODULE_8__["ED25519_KEY_SIZE"], (_i2 + 1) * _constants__WEBPACK_IMPORTED_MODULE_8__["ED25519_KEY_SIZE"]);
                   serialNumberStrs[_i2] = Object(_base58__WEBPACK_IMPORTED_MODULE_6__["checkEncode"])(serialNumberBytes[_i2], _constants__WEBPACK_IMPORTED_MODULE_8__["ENCODE_VERSION"]);
-                  inCoinStrs[_i2].SerialNumber = serialNumberStrs[_i2]; // cache snd to corressponding to serial number
+                  inCoinStrs[_i2].SerialNumber = serialNumberStrs[_i2]; // cache snd and corressponding serial number
 
                   sndStr = "".concat(tokenID, "_").concat(snds[_i2]);
                   this.derivatorToSerialNumberCache[sndStr] = serialNumberStrs[_i2];
                 }
 
-              case 20:
-                console.log("serialNumberStrs: ", serialNumberStrs);
+              case 18:
+                console.log("deriveSerialNumbers serialNumberStrs list: ", serialNumberStrs);
                 return _context3.abrupt("return", {
                   serialNumberStrs: serialNumberStrs,
                   inCoinStrs: inCoinStrs
                 });
 
-              case 22:
+              case 20:
               case "end":
                 return _context3.stop();
             }
@@ -7660,6 +7757,7 @@ function () {
     }
   }, {
     key: "addFollowingToken",
+    // addFollowingToken adds token data array to following token list
 
     /**
      * @param {...{ID: string, Image: string, Name: string, Symbol: string, Amount: number, IsPrivacy: boolean, isInit: boolean, metaData: object}} tokenData - tokens to follow
@@ -7689,14 +7787,20 @@ function () {
   }, {
     key: "removeFollowingToken",
     // removeFollowingToken removes token which has tokenId from list of following tokens
+
+    /**
+     * 
+     * @param {string} tokenId 
+     */
     value: function removeFollowingToken(tokenId) {
       var removedIndex = this.followingTokens.findIndex(function (token) {
         return token.ID === tokenId;
       });
       this.followingTokens.splice(removedIndex, 1);
-    }
+    } // saveNormalTx save history of normal tx to history account
+
     /**
-     * @param {{txId: string, type: string, amount: number, fee: number, statusTx: number}} tx
+     * @param {{txId: string, typeTx: string, amountNativeToken: number, feeNativeToken: number, txStatus: number, lockTime: number}} tx
      *  @param {[string]} receivers
      * @param {bool} isIn
      * @param {bool} isPrivacy
@@ -7738,29 +7842,18 @@ function () {
     }
   }, {
     key: "savePrivacyCustomTokenTx",
-    // saveCustomTokenTx(tx, amount, receivers, status, isIn) {
-    //   let txHistory = new TxHistoryInfo();
-    //   let historyObj = {
-    //     amount: amount,
-    //     fee: toPRV(tx.fee),
-    //     feePToken: 0,
-    //     txID: tx.txId,
-    //     type: tx.type,
-    //     receivers: receivers,
-    //     tokenName: tx.txTokenData.propertyName,
-    //     tokenID: tx.txTokenData.propertyID,
-    //     tokenSymbol: tx.txTokenData.propertySymbol,
-    //     isIn: isIn,
-    //     time: tx.lockTime * 1000,
-    //     status: status,
-    //     isPrivacy: isPrivacy,
-    //     listUTXOForPRV: [],
-    //     listUTXOForPToken: [],
-    //     hashOriginalTx: hashOriginalTx,
-    //   }
-    //   txHistory.setHistoryInfo(historyObj);
-    //   this.txHistory.CustomTokenTx.unshift(txHistory);
-    // };
+    // savePrivacyCustomTokenTx save history of privacy token tx to history account
+
+    /**
+     * @param {{txId: string, typeTx: string, amountNativeToken: number, amountPToken: number, feeNativeToken: number, feePToken: number,  txStatus: number, lockTime: number}} tx
+     *  @param {[string]} receivers
+     * @param {bool} isIn
+     * @param {bool} isPrivacyNativeToken
+     * @param {bool} isPrivacyForPToken
+     * @param {[string]} listUTXOForPRV
+     * @param {[string]} listUTXOForPToken
+     * @param {string} hashOriginalTx
+     */
     value: function savePrivacyCustomTokenTx(tx, receivers, isIn, isPrivacyNativeToken, isPrivacyForPToken, listUTXOForPRV, listUTXOForPToken) {
       var hashOriginalTx = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : "";
       var txHistory = new _history__WEBPACK_IMPORTED_MODULE_10__["TxHistoryInfo"]();
@@ -7793,11 +7886,13 @@ function () {
     }
   }, {
     key: "getNormalTx",
+    // getNormalTx return history of normal txs
     value: function getNormalTx() {
       return this.txHistory.NormalTx;
     }
   }, {
     key: "getPrivacyCustomTokenTx",
+    // getPrivacyCustomTokenTx return history of normal txs
     value: function getPrivacyCustomTokenTx() {
       return this.txHistory.PrivacyCustomTokenTx;
     }
@@ -7886,18 +7981,18 @@ function () {
               case 11:
                 _context4.prev = 11;
                 _context4.t0 = _context4["catch"](5);
-                console.log("Error when get output coins: ", _context4.t0);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_16__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_16__["ErrorObject"].GetOutputCoinsErr, _context4.t0.message || "Can not get output coins when preparing input coins");
+                console.log("getUnspentToken Error when get output coins: ", _context4.t0);
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_16__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_16__["ErrorObject"].GetOutputCoinsErr, _context4.t0.message || "Can not get output coins when get unspent token");
 
               case 15:
                 allOutputCoinStrs = response.outCoins;
-                console.log("AA List out put coins: ", allOutputCoinStrs); // devide all of output coins into uncached and cached out put coins list
+                console.log("getUnspentToken list of output coins: ", allOutputCoinStrs); // devide all of output coins into uncached and cached out put coins list
 
                 _this$analyzeOutputCo = this.analyzeOutputCoinFromCached(allOutputCoinStrs), uncachedOutputCoinStrs = _this$analyzeOutputCo.uncachedOutputCoinStrs, cachedOutputCoinStrs = _this$analyzeOutputCo.cachedOutputCoinStrs;
-                console.log("this.derivatorToSerialNumberCache before: ", this.derivatorToSerialNumberCache);
-                console.log("this.spentCoinCached before: ", this.spentCoinCached);
-                console.log("AA cachedOutputCoinStrs: ", cachedOutputCoinStrs);
-                console.log("AA uncachedOutputCoinStrs: ", uncachedOutputCoinStrs); // calculate serial number uncachedOutputCoinStrs and cache
+                console.log("getUnspentToken derivatorToSerialNumberCache before caching: ", this.derivatorToSerialNumberCache);
+                console.log("getUnspentToken spentCoinCached before caching: ", this.spentCoinCached);
+                console.log("getUnspentToken cachedOutputCoinStrs: ", cachedOutputCoinStrs);
+                console.log("getUnspentToken uncachedOutputCoinStrs: ", uncachedOutputCoinStrs); // calculate serial number uncachedOutputCoinStrs and cache
 
                 if (!(uncachedOutputCoinStrs.length > 0)) {
                   _context4.next = 29;
@@ -7910,14 +8005,14 @@ function () {
               case 25:
                 res = _context4.sent;
                 uncachedOutputCoinStrs = res.inCoinStrs;
-                console.log("AA this.derivatorToSerialNumberCache after calculate serial number: ", this.derivatorToSerialNumberCache);
+                console.log("getUnspentToken this.derivatorToSerialNumberCache after calculate serial number: ", this.derivatorToSerialNumberCache);
                 allOutputCoinStrs = cachedOutputCoinStrs.concat(uncachedOutputCoinStrs);
 
               case 29:
-                console.log("AA allOutputCoinStrs after: ", allOutputCoinStrs); // get unspent output coin from cache
+                console.log("getUnspentToken allOutputCoinStrs after: ", allOutputCoinStrs); // get unspent output coin from cache
 
                 _this$analyzeSpentCoi = this.analyzeSpentCoinFromCached(allOutputCoinStrs), unspentInputCoinsFromCachedStrs = _this$analyzeSpentCoi.unspentInputCoinsFromCachedStrs;
-                console.log("AA unspentInputCoinsFromCachedStrs: ", unspentInputCoinsFromCachedStrs); // check whether unspent coin from cache is spent or not
+                console.log("getUnspentToken unspentInputCoinsFromCachedStrs: ", unspentInputCoinsFromCachedStrs); // check whether unspent coin from cache is spent or not
 
                 _context4.next = 34;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_7__["getUnspentCoin"])(spendingKeyStr, paymentAddrSerialize, unspentInputCoinsFromCachedStrs, tokenID, rpcClient);
@@ -7925,10 +8020,10 @@ function () {
               case 34:
                 _ref = _context4.sent;
                 unspentCoinStrs = _ref.unspentCoinStrs;
-                console.log("AA unspentCoinStrs: ", unspentCoinStrs); // cache spent output coins
+                console.log("getUnspentToken unspentCoinStrs: ", unspentCoinStrs); // cache spent output coins
 
                 this.mergeSpentCoinCached(unspentCoinStrs, unspentInputCoinsFromCachedStrs, tokenID);
-                console.log("AA this.spentCoinCached after cache:", this.spentCoinCached);
+                console.log("getUnspentToken spentCoinCached after caching:", this.spentCoinCached);
                 return _context4.abrupt("return", unspentCoinStrs);
 
               case 40:
@@ -7945,7 +8040,7 @@ function () {
 
       return getUnspentToken;
     }() // getBalance returns balance for token
-    // for PRV: tokenID is null
+    // tokenID default is null: for PRV
 
   }, {
     key: "getBalance",
@@ -7968,14 +8063,14 @@ function () {
 
               case 3:
                 unspentCoinStrs = _context5.sent;
-                console.log("unspentCoinStrs: ", unspentCoinStrs);
+                console.log("getBalance unspentCoinStrs: ", unspentCoinStrs);
                 accountBalance = 0;
 
                 for (i = 0; i < unspentCoinStrs.length; i++) {
                   accountBalance += parseInt(unspentCoinStrs[i].Value);
                 }
 
-                console.log("Balance: ", accountBalance);
+                console.log("getBalance Balance: ", accountBalance);
                 return _context5.abrupt("return", accountBalance);
 
               case 9:
@@ -7991,57 +8086,7 @@ function () {
       }
 
       return getBalance;
-    }() // async getPrivacyCustomTokenBalance(privacyCustomTokenID) {
-    //   let paymentAddrSerialize = this.key.base58CheckSerialize(PaymentAddressType);
-    //   let readOnlyKeySerialize = this.key.base58CheckSerialize(ReadonlyKeyType);
-    //   let response;
-    //   try {
-    //     response = await Wallet.RpcClient.getOutputCoin(paymentAddrSerialize, readOnlyKeySerialize, privacyCustomTokenID);
-    //   } catch (e) {
-    //     throw e;
-    //   }
-    //   let allOutputCoinStrs = response.outCoins;
-    //   if (allOutputCoinStrs.length == 0) {
-    //     return 0;
-    //   }
-    //   // parse input coin from string
-    //   const { uncachedOutputCoinStrs, cachedOutputCoinStrs, cachedInputCoins } = this.analyzeOutputCoinFromCached(allOutputCoinStrs, privacyCustomTokenID);
-    //   let inputCoins = cachedInputCoins;
-    //   if (uncachedOutputCoinStrs.length > 0) {
-    //     let uncachedInputCoins = parseInputCoinFromEncodedObject(uncachedOutputCoinStrs, this.key, this.derivatorPointCached, privacyCustomTokenID);
-    //     this.mergeDerivatorCached();
-    //     this.mergeInputCoinJsonCached(uncachedOutputCoinStrs, uncachedInputCoins, privacyCustomTokenID);
-    //     inputCoins = inputCoins.concat(uncachedInputCoins);
-    //     allOutputCoinStrs = cachedOutputCoinStrs.concat(uncachedOutputCoinStrs);
-    //   }
-    //   let { unspentInputCoinsFromCached, unspentInputCoinsFromCachedStrs } = this.analyzeSpentCoinFromCached(inputCoins, allOutputCoinStrs, privacyCustomTokenID);
-    //   let unspentCoinList = await getUnspentCoin(unspentInputCoinsFromCached, paymentAddrSerialize, unspentInputCoinsFromCachedStrs, privacyCustomTokenID, Wallet.RpcClient);
-    //   this.mergeSpentCoinCached(unspentCoinList.unspentCoinStrs, inputCoins, privacyCustomTokenID);
-    //   var unspentCoinString = unspentCoinList.unspentCoinStrs;
-    //   let accountBalance = 0;
-    //   for (let i = 0; i < unspentCoinString.length; i++) {
-    //     accountBalance += parseInt(unspentCoinString[i].Value)
-    //   }
-    //   return accountBalance
-    // }
-    // async getCustomTokenBalance(customTokenIDStr) {
-    //   let res;
-    //   try {
-    //     res = await Wallet.RpcClient.getUnspentCustomToken(
-    //       this.key.base58CheckSerialize(PaymentAddressType),
-    //       customTokenIDStr
-    //     );
-    //   } catch (e) {
-    //     throw e;
-    //   }
-    //   let vins = res.listUnspentCustomToken;
-    //   let accountBalance = 0;
-    //   for (let i = 0; i < vins.length; i++) {
-    //     accountBalance += parseInt(vins[i].Value)
-    //   }
-    //   return accountBalance
-    // };
-
+    }()
     /**
      * 
      * @param {{paymentAddressStr: string (B58checkencode), amount: number}} paramPaymentInfos 
@@ -8101,38 +8146,37 @@ function () {
                   totalAmountTransfer = totalAmountTransfer.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfos[i].amount));
                 }
 
-                console.log("totalAmountTransfer: ", totalAmountTransfer);
+                console.log("createAndSendNativeToken totalAmountTransfer: ", totalAmountTransfer);
                 senderSkStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_5__["PriKeyType"]); // let paymentAddressStr = this.key.base58CheckSerialize(PaymentAddressType);
                 // let viewingKeyStr = this.key.base58CheckSerialize(ReadonlyKeyType);
 
-                console.log("senderSkStr: ", senderSkStr);
                 console.time("Time for create and send tx");
-                _context6.prev = 11;
+                _context6.prev = 10;
                 // prepare input for tx
-                console.time("Time for preparing input for constant tx"); // console.log("Wallet: ", Wallet.RpcClient);
+                console.time("Time for preparing input for privacy tx"); // console.log("Wallet: ", Wallet.RpcClient);
 
-                _context6.prev = 13;
-                _context6.next = 16;
+                _context6.prev = 12;
+                _context6.next = 15;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_7__["prepareInputForTx"])(totalAmountTransfer, feeBN, isPrivacy, null, this, _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].RpcClient);
 
-              case 16:
+              case 15:
                 inputForTx = _context6.sent;
                 console.log("input after prepare: ", inputForTx);
-                _context6.next = 23;
+                _context6.next = 22;
                 break;
 
-              case 20:
-                _context6.prev = 20;
-                _context6.t0 = _context6["catch"](13);
+              case 19:
+                _context6.prev = 19;
+                _context6.t0 = _context6["catch"](12);
                 throw _context6.t0;
 
-              case 23:
-                console.log("inputForTx: ", inputForTx);
-                console.timeEnd("Time for preparing input for constant tx");
-                _context6.next = 27;
+              case 22:
+                console.log("createAndSendNativeToken inputForTx: ", inputForTx);
+                console.timeEnd("Time for preparing input for privacy tx");
+                _context6.next = 26;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(30);
 
-              case 27:
+              case 26:
                 nOutput = paramPaymentInfos.length;
 
                 if (inputForTx.totalValueInput.cmp(totalAmountTransfer) == 1) {
@@ -8142,14 +8186,14 @@ function () {
                 sndOutputs = new Array(nOutput);
 
                 if (!(typeof randomScalars == "function")) {
-                  _context6.next = 36;
+                  _context6.next = 35;
                   break;
                 }
 
-                _context6.next = 33;
+                _context6.next = 32;
                 return randomScalars(nOutput.toString());
 
-              case 33:
+              case 32:
                 sndOutputStrs = _context6.sent;
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_15__["base64Decode"])(sndOutputStrs);
 
@@ -8158,33 +8202,33 @@ function () {
                   sndOutputs[_i3] = Object(_base58__WEBPACK_IMPORTED_MODULE_6__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_8__["ENCODE_VERSION"]);
                 }
 
-              case 36:
-                console.log("sndOutputs: ", sndOutputs);
+              case 35:
+                console.log("createAndSendNativeToken sndOutputs: ", sndOutputs);
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_7__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, fee, isPrivacy, null, null, info, inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
-                console.log("paramInitTx: ", paramInitTx);
+                console.log("createAndSendNativeToken paramInitTx: ", paramInitTx);
 
                 if (!(typeof initPrivacyTx == "function")) {
-                  _context6.next = 47;
+                  _context6.next = 46;
                   break;
                 }
 
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_12___default.a.stringify(paramInitTx);
                 console.log("paramInitTxJson: ", paramInitTxJson);
-                _context6.next = 44;
+                _context6.next = 43;
                 return initPrivacyTx(paramInitTxJson);
 
-              case 44:
+              case 43:
                 resInitTx = _context6.sent;
 
                 if (!(resInitTx == null)) {
-                  _context6.next = 47;
+                  _context6.next = 46;
                   break;
                 }
 
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_16__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_16__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-              case 47:
-                console.log("resInitTx: ", resInitTx); //base64 decode txjson
+              case 46:
+                console.log("createAndSendNativeToken resInitTx: ", resInitTx); //base64 decode txjson
 
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_15__["base64Decode"])(resInitTx); // get b58 check encode tx json
 
@@ -8192,38 +8236,35 @@ function () {
 
                 lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
-                _context6.next = 54;
+                _context6.next = 53;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(60);
 
-              case 54:
+              case 53:
                 console.time("Time for sending tx");
                 listUTXOForPRV = [];
-                _context6.prev = 56;
-                _context6.next = 59;
+                _context6.prev = 55;
+                _context6.next = 58;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 59:
+              case 58:
                 response = _context6.sent;
-                _context6.next = 66;
+                _context6.next = 65;
                 break;
 
-              case 62:
-                _context6.prev = 62;
-                _context6.t1 = _context6["catch"](56);
-                console.log("ERR when sending tx: ", _context6.t1);
+              case 61:
+                _context6.prev = 61;
+                _context6.t1 = _context6["catch"](55);
+                console.log("createAndSendNativeToken Error when sending tx: ", _context6.t1);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_16__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_16__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
 
-              case 66:
-                _context6.next = 68;
+              case 65:
+                _context6.next = 67;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(90);
 
-              case 68:
+              case 67:
                 console.timeEnd("Time for sending tx");
-                console.log("CREATE AND SEND NORMAL TX DONE!!!!");
                 console.timeEnd("Time for create and send tx"); // saving history tx
-
-                console.log("Saving tx history.....");
-                console.time("Saving tx history: "); // check status of tx and add coins to spending coins
+                // check status of tx and add coins to spending coins
 
                 status = _constants__WEBPACK_IMPORTED_MODULE_5__["FailedTx"];
 
@@ -8247,34 +8288,34 @@ function () {
                     txID: response.txId,
                     spendingSNs: spendingSNs
                   });
-                  console.log("Spending coin list after saving: ", this.spendingCoins);
+                  console.log("createAndSendNativeToken Spending coin list after saving : ", this.spendingCoins);
                 } // saving history tx
 
 
                 this.saveNormalTx(response, receiverPaymentAddrStr, false, isPrivacy, listUTXOForPRV, "");
-                console.log("History account after saving: ", this.txHistory.NormalTx);
-                _context6.next = 79;
+                console.log("createAndSendNativeToken History account after saving: ", this.txHistory.NormalTx);
+                _context6.next = 75;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(100);
 
-              case 79:
+              case 75:
                 return _context6.abrupt("return", response);
 
-              case 82:
-                _context6.prev = 82;
-                _context6.t2 = _context6["catch"](11);
-                _context6.next = 86;
+              case 78:
+                _context6.prev = 78;
+                _context6.t2 = _context6["catch"](10);
+                _context6.next = 82;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(0);
 
-              case 86:
+              case 82:
                 console.log(_context6.t2);
                 throw _context6.t2;
 
-              case 88:
+              case 84:
               case "end":
                 return _context6.stop();
             }
           }
-        }, _callee6, this, [[11, 82], [13, 20], [56, 62]]);
+        }, _callee6, this, [[10, 78], [12, 19], [55, 61]]);
       }));
 
       function createAndSendNativeToken(_x7, _x8, _x9) {
@@ -8285,9 +8326,19 @@ function () {
     }()
   }, {
     key: "createAndSendStakingTx",
-    // staking tx always send constant to burning address
-    // param.type: 0 : shard, 1: beacon
-    // fee in Number
+    // staking tx always send PRV to burning address with no privacy
+    // type: 0 for shard
+    // type: 1 for beacon
+
+    /**
+     * 
+     * @param {{type: number}} param 
+     * @param {number} feeNativeToken 
+     * @param {string} candidatePaymentAddress 
+     * @param {string} candidateMiningSeedKey 
+     * @param {string} rewardReceiverPaymentAddress 
+     * @param {bool} autoReStaking 
+     */
     value: function () {
       var _createAndSendStakingTx = _asyncToGenerator(
       /*#__PURE__*/
@@ -8387,24 +8438,7 @@ function () {
                   StakingAmountShard: amount,
                   CommitteePublicKey: committeeKey,
                   AutoReStaking: autoReStaking
-                }; // create paymentInfos
-                // let paymentInfos = new Array(1);
-                // let receiverPaymentAddrStr = new Array(1);
-                // receiverPaymentAddrStr[0] = BurnAddress;
-                // let keyWallet;
-                // try{
-                //   keyWallet = KeyWallet.base58CheckDeserialize(
-                //     receiverPaymentAddrStr[0]
-                //   );
-                // } catch(e){
-                //   console.log("Can not deserialize burning address");
-                //   throw CustomError(ErrorObject.InvalidBurnAddress, "Can not deserialize burning address");
-                // }
-                // paymentInfos[0] = new PaymentInfo(
-                //   keyWallet.KeySet.PaymentAddress,
-                //   amountBN
-                // );
-
+                };
                 paramPaymentInfos = [{
                   paymentAddressStr: _constants__WEBPACK_IMPORTED_MODULE_5__["BurnAddress"],
                   amount: amount
@@ -8502,25 +8536,26 @@ function () {
                 console.time("Time for sending tx");
                 listUTXOForPRV = [];
                 _context7.prev = 80;
-                _context7.next = 83;
+                console.log("Sending tx ..... ");
+                _context7.next = 84;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 83:
+              case 84:
                 _response = _context7.sent;
-                _context7.next = 90;
+                _context7.next = 91;
                 break;
 
-              case 86:
-                _context7.prev = 86;
+              case 87:
+                _context7.prev = 87;
                 _context7.t3 = _context7["catch"](80);
                 console.log("ERR when sending tx: ", _context7.t3);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_16__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_16__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
 
-              case 90:
-                _context7.next = 92;
+              case 91:
+                _context7.next = 93;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(90);
 
-              case 92:
+              case 93:
                 console.timeEnd("Time for sending tx");
                 console.log("CREATE AND SEND NORMAL TX DONE!!!!");
                 console.timeEnd("Time for create and send tx"); // saving history tx
@@ -8556,24 +8591,24 @@ function () {
 
                 this.saveNormalTx(_response, receiverPaymentAddrStr, false, false, listUTXOForPRV, "");
                 console.log("History account after saving: ", this.txHistory.NormalTx);
-                _context7.next = 103;
+                _context7.next = 104;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(100);
 
-              case 103:
+              case 104:
                 return _context7.abrupt("return", _response);
 
-              case 106:
-                _context7.prev = 106;
+              case 107:
+                _context7.prev = 107;
                 _context7.t4 = _context7["catch"](35);
                 console.log("Error when create staking tx: ", _context7.t4);
                 throw _context7.t4;
 
-              case 110:
+              case 111:
               case "end":
                 return _context7.stop();
             }
           }
-        }, _callee7, this, [[3, 10], [19, 26], [35, 106], [37, 44], [80, 86]]);
+        }, _callee7, this, [[3, 10], [19, 26], [35, 107], [37, 44], [80, 87]]);
       }));
 
       function createAndSendStakingTx(_x10, _x11, _x12, _x13, _x14) {

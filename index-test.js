@@ -5,7 +5,7 @@ require("@babel/polyfill");
 // require("./test/wallet/wallet-test");
 // require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
-// require("./test/wallet/utils-test");
+require("./test/wallet/utils-test");
 
 // require('./test/tx/txprivacy-test');
 // require('./test/tx/txprivacytoken-test');
@@ -30,5 +30,5 @@ require("@babel/polyfill");
 // require('./test/txfordev/txfordev.js');
 
 // require('./test/committeekey-test');
-require('./test/txfordev/multiStakingTxs.js');
+// require('./test/txfordev/multiStakingTxs.js');
 
