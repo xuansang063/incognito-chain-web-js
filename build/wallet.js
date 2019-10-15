@@ -313,9 +313,12 @@ function checkSumFirst4Bytes(data) {
 /*!*********************!*\
   !*** ./lib/coin.js ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: Coin */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Coin", function() { return Coin; });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -325,7 +328,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Coin =
 /*#__PURE__*/
 function () {
-  function Coin(params) {
+  function Coin() {
     _classCallCheck(this, Coin);
 
     this.PublicKey = "";
@@ -352,6 +355,8 @@ function () {
 
   return Coin;
 }();
+
+
 
 /***/ }),
 
@@ -6011,7 +6016,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _errorhandler__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../errorhandler */ "./lib/errorhandler.js");
 /* harmony import */ var _privacy_constants__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../privacy/constants */ "./lib/privacy/constants.js");
 /* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../coin */ "./lib/coin.js");
-/* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_coin__WEBPACK_IMPORTED_MODULE_11__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
