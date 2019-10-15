@@ -22,7 +22,7 @@ async function MultiStaking() {
   let jsonString = fs.readFileSync('./test/txfordev/privateKeyStaking.json');
 
   let data = JSON.parse(jsonString);
-  console.log("Data AAA: ", data);
+  console.log("Data multi staking: ", data);
 
   await sleep(5000);
 

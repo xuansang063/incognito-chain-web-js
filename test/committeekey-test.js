@@ -10,7 +10,6 @@ async function testCommitteeKey(){
     let candidateHashPrivateKey = "12nV4WFAjMCYue9ShY6qoQ9bVNiJ95xXMq2eau3rMHHFTiwdjxT";
     let candidatePaymentAddress = "1Uv3bzbfQK3Pwh1VCJmkfqbJ2JMAWCotowapUsKm6U47v62d5Lq1bvczNxzriJhQTQ96JBPp6EqetjCuSdVamzU377tb89cvtvuMehNTP";
 
-    console.log("Wait for WASM be started");
     await sleep(5000);
 
     // generate committee key

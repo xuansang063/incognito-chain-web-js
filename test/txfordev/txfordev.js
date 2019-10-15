@@ -19,7 +19,7 @@ async function SendPRVForMultiUsers() {
     let jsonString = fs.readFileSync('./test/txfordev/paymentAddr.json');
 
     let data = JSON.parse(jsonString);
-    console.log("Data AAA: ", data);
+    console.log("Data send multi users: ", data);
     await sleep(5000);
     let paymentInfos = data.paymentInfos;
 
