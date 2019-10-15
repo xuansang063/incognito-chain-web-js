@@ -1,5 +1,6 @@
 require('@babel/register');
 require("@babel/polyfill");
+require("./loadwasm");
 
 // wallet test
 // require("./test/wallet/wallet-test");
