@@ -7373,7 +7373,7 @@ function () {
     this.txHistory = {
       NormalTx: [],
       CustomTokenTx: [],
-      PrivacyCustomTokenTx: []
+      PrivacyTokenTx: []
     }; // derivatorPointCached is used for saving derivator (encoded) with corresponding encoded serial number in bytes array that was calculated before
 
     this.derivatorToSerialNumberCache = {}; // spentCoinCached is used for cache spent coin
@@ -7797,7 +7797,7 @@ function () {
         return token.ID === tokenId;
       });
       this.followingTokens.splice(removedIndex, 1);
-    } // saveNormalTx save history of normal tx to history account
+    } // saveNormalTxHistory save history of normal tx to history account
 
     /**
      * @param {{txId: string, typeTx: string, amountNativeToken: number, feeNativeToken: number, txStatus: number, lockTime: number}} tx
@@ -7809,8 +7809,8 @@ function () {
      */
 
   }, {
-    key: "saveNormalTx",
-    value: function saveNormalTx(tx, receivers, isIn, isPrivacyNativeToken, listUTXOForPRV) {
+    key: "saveNormalTxHistory",
+    value: function saveNormalTxHistory(tx, receivers, isIn, isPrivacyNativeToken, listUTXOForPRV) {
       var hashOriginalTx = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : "";
       var txHistory = new _history__WEBPACK_IMPORTED_MODULE_10__["TxHistoryInfo"]();
       var historyObj = {
@@ -7841,8 +7841,8 @@ function () {
       this.txHistory.NormalTx.unshift(txHistory);
     }
   }, {
-    key: "savePrivacyCustomTokenTx",
-    // savePrivacyCustomTokenTx save history of privacy token tx to history account
+    key: "savePrivacyTokenTxHistory",
+    // savePrivacyTokenTxHistory save history of privacy token tx to history account
 
     /**
      * @param {{txId: string, typeTx: string, amountNativeToken: number, amountPToken: number, feeNativeToken: number, feePToken: number,  txStatus: number, lockTime: number}} tx
@@ -7854,7 +7854,7 @@ function () {
      * @param {[string]} listUTXOForPToken
      * @param {string} hashOriginalTx
      */
-    value: function savePrivacyCustomTokenTx(tx, receivers, isIn, isPrivacyNativeToken, isPrivacyForPToken, listUTXOForPRV, listUTXOForPToken) {
+    value: function savePrivacyTokenTxHistory(tx, receivers, isIn, isPrivacyNativeToken, isPrivacyForPToken, listUTXOForPRV, listUTXOForPToken) {
       var hashOriginalTx = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : "";
       var txHistory = new _history__WEBPACK_IMPORTED_MODULE_10__["TxHistoryInfo"]();
       var historyObj = {
@@ -7882,19 +7882,19 @@ function () {
         hashOriginalTx: hashOriginalTx
       };
       txHistory.setHistoryInfo(historyObj);
-      this.txHistory.PrivacyCustomTokenTx.unshift(txHistory);
+      this.txHistory.PrivacyTokenTx.unshift(txHistory);
     }
   }, {
-    key: "getNormalTx",
-    // getNormalTx return history of normal txs
-    value: function getNormalTx() {
+    key: "getNormalTxHistory",
+    // getNormalTxHistory return history of normal txs
+    value: function getNormalTxHistory() {
       return this.txHistory.NormalTx;
     }
   }, {
-    key: "getPrivacyCustomTokenTx",
-    // getPrivacyCustomTokenTx return history of normal txs
-    value: function getPrivacyCustomTokenTx() {
-      return this.txHistory.PrivacyCustomTokenTx;
+    key: "getPrivacyTokenTxHistory",
+    // getPrivacyTokenTxHistory return history of normal txs
+    value: function getPrivacyTokenTxHistory() {
+      return this.txHistory.PrivacyTokenTx;
     }
   }, {
     key: "getCustomTokenTx",
@@ -7903,22 +7903,34 @@ function () {
     }
   }, {
     key: "getTxHistoryByTxID",
+    // getTxHistoryByTxID returns tx history for specific tx id
+
+    /**
+     * 
+     * @param {string} txID 
+     */
     value: function getTxHistoryByTxID(txID) {
       return this.txHistory.NormalTx.find(function (item) {
         return item.txID === txID;
-      }) || this.txHistory.PrivacyCustomTokenTx.find(function (item) {
+      }) || this.txHistory.PrivacyTokenTx.find(function (item) {
         return item.txID === txID;
       }) || this.txHistory.CustomTokenTx.find(function (item) {
         return item.txID === txID;
       });
-    }
+    } // getPrivacyTokenTxHistoryByTokenID returns privacy token tx history with specific tokenID
+
+    /**
+     * 
+     * @param {string} id 
+     */
+
   }, {
-    key: "getPrivacyCustomTokenTxByTokenID",
-    value: function getPrivacyCustomTokenTxByTokenID(id) {
+    key: "getPrivacyTokenTxHistoryByTokenID",
+    value: function getPrivacyTokenTxHistoryByTokenID(id) {
       var queryResult = new Array();
 
-      for (var i = 0; i < this.txHistory.PrivacyCustomTokenTx.length; i++) {
-        if (this.txHistory.PrivacyCustomTokenTx[i].tokenID === id) queryResult.push(this.txHistory.PrivacyCustomTokenTx[i]);
+      for (var i = 0; i < this.txHistory.PrivacyTokenTx.length; i++) {
+        if (this.txHistory.PrivacyTokenTx[i].tokenID === id) queryResult.push(this.txHistory.PrivacyTokenTx[i]);
       }
 
       return queryResult;
@@ -8292,7 +8304,7 @@ function () {
                 } // saving history tx
 
 
-                this.saveNormalTx(response, receiverPaymentAddrStr, false, isPrivacy, listUTXOForPRV, "");
+                this.saveNormalTxHistory(response, receiverPaymentAddrStr, false, isPrivacy, listUTXOForPRV, "");
                 console.log("createAndSendNativeToken History account after saving: ", this.txHistory.NormalTx);
                 _context6.next = 75;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(100);
@@ -8589,7 +8601,7 @@ function () {
                 } // saving history tx
 
 
-                this.saveNormalTx(_response, receiverPaymentAddrStr, false, false, listUTXOForPRV, "");
+                this.saveNormalTxHistory(_response, receiverPaymentAddrStr, false, false, listUTXOForPRV, "");
                 console.log("History account after saving: ", this.txHistory.NormalTx);
                 _context7.next = 104;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(100);
@@ -9117,7 +9129,7 @@ function () {
                   isIn = false;
                 }
 
-                this.savePrivacyCustomTokenTx(response, [submitParam.TokenReceivers.PaymentAddress], isIn, hasPrivacyForNativeToken, hasPrivacyForPToken, listUTXOForPRV, listUTXOForPToken, "");
+                this.savePrivacyTokenTxHistory(response, [submitParam.TokenReceivers.PaymentAddress], isIn, hasPrivacyForNativeToken, hasPrivacyForPToken, listUTXOForPRV, listUTXOForPToken, "");
                 _context8.next = 147;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(100);
 
@@ -9302,7 +9314,7 @@ function () {
     //     }
     //     this.addSpendingCoins({ txID: response.txId, spendingSNs: spendingSNs });
     //   }
-    //   this.saveNormalTx(tx, txHistory.amount, txHistory.receivers, status, false, txHistory.isPrivacy, listUTXO, txHistory.txID);
+    //   this.saveNormalTxHistory(tx, txHistory.amount, txHistory.receivers, status, false, txHistory.isPrivacy, listUTXO, txHistory.txID);
     //   console.log("history after saving: ", this.txHistory);
     //   console.timeEnd("Saving tx history: ");
     //   await Wallet.updateProgressTx(100);
@@ -9429,7 +9441,7 @@ function () {
     //     object.spendingSNs = spendingSNs;
     //     this.addSpendingCoins(object);
     //   }
-    //   this.savePrivacyCustomTokenTx(tx, txHistory.receivers, status, txHistory.isIn, txHistory.amount, txHistory.listUTXOForPRV, txHistory.listUTXOForPToken, txHistory.txID);
+    //   this.savePrivacyTokenTxHistory(tx, txHistory.receivers, status, txHistory.isIn, txHistory.amount, txHistory.listUTXOForPRV, txHistory.listUTXOForPToken, txHistory.txID);
     //   console.log("History HHHHH: ", this.txHistory);
     //   await Wallet.updateProgressTx(100);
     //   return response;
@@ -9808,7 +9820,7 @@ function () {
                 }
 
                 isIn = false;
-                this.savePrivacyCustomTokenTx(response, [_constants__WEBPACK_IMPORTED_MODULE_5__["BurnAddress"]], isIn, false, false, listUTXOForPRV, listUTXOForPToken, "");
+                this.savePrivacyTokenTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_5__["BurnAddress"]], isIn, false, false, listUTXOForPRV, listUTXOForPToken, "");
                 _context9.next = 128;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(100);
 
@@ -10043,10 +10055,7 @@ function () {
                   response.lockTime = lockTime;
                   response.amountNativeToken = 0;
                   response.txStatus = status;
-                } // saving history tx
-                // this.saveNormalTx(response, [], false, isPrivacy, listUTXOForPRV, "");
-                // console.log("History account after saving: ", this.txHistory.NormalTx);
-
+                }
 
                 _context11.next = 64;
                 return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"].updateProgressTx(100);
@@ -11389,7 +11398,7 @@ function () {
             switch (_context.prev = _context.next) {
               case 0:
                 account = this.getAccountByName(accName);
-                return _context.abrupt("return", account.getNormalTx());
+                return _context.abrupt("return", account.getNormalTxHistory());
 
               case 2:
               case "end":
@@ -11776,7 +11785,7 @@ function () {
                 break;
 
               case 39:
-                if (!this.MasterAccount.child[i].txHistory.PrivacyCustomTokenTx) {
+                if (!this.MasterAccount.child[i].txHistory.PrivacyTokenTx) {
                   _context6.next = 57;
                   break;
                 }
@@ -11784,12 +11793,12 @@ function () {
                 _j2 = 0;
 
               case 41:
-                if (!(_j2 < this.MasterAccount.child[i].txHistory.PrivacyCustomTokenTx.length)) {
+                if (!(_j2 < this.MasterAccount.child[i].txHistory.PrivacyTokenTx.length)) {
                   _context6.next = 57;
                   break;
                 }
 
-                if (!(this.MasterAccount.child[i].txHistory.PrivacyCustomTokenTx[_j2].status == _constants__WEBPACK_IMPORTED_MODULE_10__["SuccessTx"])) {
+                if (!(this.MasterAccount.child[i].txHistory.PrivacyTokenTx[_j2].status == _constants__WEBPACK_IMPORTED_MODULE_10__["SuccessTx"])) {
                   _context6.next = 54;
                   break;
                 }
@@ -11797,7 +11806,7 @@ function () {
                 _response2 = void 0;
                 _context6.prev = 44;
                 _context6.next = 47;
-                return Wallet.RpcClient.getTransactionByHash(this.MasterAccount.child[i].txHistory.PrivacyCustomTokenTx[_j2].txID);
+                return Wallet.RpcClient.getTransactionByHash(this.MasterAccount.child[i].txHistory.PrivacyTokenTx[_j2].txID);
 
               case 47:
                 _response2 = _context6.sent;
@@ -11811,7 +11820,7 @@ function () {
 
               case 53:
                 if (_response2.isInBlock) {
-                  this.MasterAccount.child[i].txHistory.PrivacyCustomTokenTx[_j2].status = _constants__WEBPACK_IMPORTED_MODULE_10__["ConfirmedTx"];
+                  this.MasterAccount.child[i].txHistory.PrivacyTokenTx[_j2].status = _constants__WEBPACK_IMPORTED_MODULE_10__["ConfirmedTx"];
                 }
 
               case 54:
