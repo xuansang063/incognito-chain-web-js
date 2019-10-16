@@ -8587,7 +8587,7 @@ function () {
                 } // saving history tx
 
 
-                this.saveNormalTxHistory(_response, receiverPaymentAddrStr, false, false, listUTXOForPRV, "");
+                this.saveNormalTxHistory(_response, _constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"], false, false, listUTXOForPRV, "");
                 console.log("createAndSendStakingTx History account after saving: ", this.txHistory.NormalTx);
                 _context7.next = 99;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
