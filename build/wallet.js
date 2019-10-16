@@ -1129,10 +1129,10 @@ function () {
 
 /***/ }),
 
-/***/ "./lib/payment.js":
-/*!************************!*\
-  !*** ./lib/payment.js ***!
-  \************************/
+/***/ "./lib/paymentproof.js":
+/*!*****************************!*\
+  !*** ./lib/paymentproof.js ***!
+  \*****************************/
 /*! exports provided: estimateProofSize */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6006,7 +6006,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wallet_hdwallet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../wallet/hdwallet */ "./lib/wallet/hdwallet.js");
-/* harmony import */ var _payment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../payment */ "./lib/payment.js");
+/* harmony import */ var _paymentproof__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../paymentproof */ "./lib/paymentproof.js");
 /* harmony import */ var _tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../tx/txcustomtokendata */ "./lib/tx/txcustomtokendata.js");
 /* harmony import */ var _tx_txprivacytokendata__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tx/txprivacytokendata */ "./lib/tx/txprivacytokendata.js");
 /* harmony import */ var _key__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../key */ "./lib/key.js");
@@ -6958,7 +6958,7 @@ var estimateTxSize = function estimateTxSize(numInputCoins, numOutputCoins, hasP
     sizeSig = _constants__WEBPACK_IMPORTED_MODULE_6__["SIG_PRIVACY_SIZE"];
   }
 
-  var sizeProof = Object(_payment__WEBPACK_IMPORTED_MODULE_2__["estimateProofSize"])(numInputCoins, numOutputCoins, hasPrivacyForNativeToken);
+  var sizeProof = Object(_paymentproof__WEBPACK_IMPORTED_MODULE_2__["estimateProofSize"])(numInputCoins, numOutputCoins, hasPrivacyForNativeToken);
   var sizePubKeyLastByte = 1;
   var sizeMetadata = 0; // if (metadata != null || typeof metadata !== "undefined"){
   //   sizeMetadata += metadata.CalculateSize()
@@ -7016,7 +7016,7 @@ var estimateTxSize = function estimateTxSize(numInputCoins, numOutputCoins, hasP
     // Proof
 
     if (privacyCustomTokenParams.tokenInputs !== null) {
-      privacyTokenDataSize += Object(_payment__WEBPACK_IMPORTED_MODULE_2__["estimateProofSize"])(privacyCustomTokenParams.tokenInputs.length, privacyCustomTokenParams.paymentInfoForPToken.length, hasPrivacyForPToken);
+      privacyTokenDataSize += Object(_paymentproof__WEBPACK_IMPORTED_MODULE_2__["estimateProofSize"])(privacyCustomTokenParams.tokenInputs.length, privacyCustomTokenParams.paymentInfoForPToken.length, hasPrivacyForPToken);
     }
 
     privacyTokenDataSize += 1; //PubKeyLastByte
@@ -7389,9 +7389,9 @@ function () {
   }, {
     key: "removeObjectFromSpendingCoins",
     value: function removeObjectFromSpendingCoins(txId) {
-      for (var _i = 0; _i < this.spendingCoins.length; _i++) {
-        if (this.spendingCoins[_i].txID === txId) {
-          this.spendingCoins.splice(_i, 1);
+      for (var i = 0; i < this.spendingCoins.length; i++) {
+        if (this.spendingCoins[i].txID === txId) {
+          this.spendingCoins.splice(i, 1);
           break;
         }
       }
@@ -7515,14 +7515,14 @@ function () {
       var uncachedOutputCoinStrs = [];
       var cachedOutputCoinStrs = [];
 
-      for (var _i2 = 0; _i2 < allOutputCoinStrs.length; _i2++) {
-        var sndStr = "".concat(tokenID, "_").concat(allOutputCoinStrs[_i2].SNDerivator);
+      for (var i = 0; i < allOutputCoinStrs.length; i++) {
+        var sndStr = "".concat(tokenID, "_").concat(allOutputCoinStrs[i].SNDerivator);
 
         if (this.derivatorToSerialNumberCache[sndStr] !== undefined) {
-          allOutputCoinStrs[_i2].SerialNumber = this.derivatorToSerialNumberCache[sndStr];
-          cachedOutputCoinStrs.push(allOutputCoinStrs[_i2]);
+          allOutputCoinStrs[i].SerialNumber = this.derivatorToSerialNumberCache[sndStr];
+          cachedOutputCoinStrs.push(allOutputCoinStrs[i]);
         } else {
-          uncachedOutputCoinStrs.push(allOutputCoinStrs[_i2]);
+          uncachedOutputCoinStrs.push(allOutputCoinStrs[i]);
         }
       }
 
@@ -7547,9 +7547,9 @@ function () {
       regeneratorRuntime.mark(function _callee2(unspentCoinStrs, unspentCoinStrsFromCache) {
         var tokenID,
             chkAll,
-            _i3,
+            i,
             sndStr,
-            _i4,
+            _i,
             _sndStr,
             _sndStr2,
             _args2 = arguments;
@@ -7567,13 +7567,13 @@ function () {
                 this.spentCoinCached = this.spentCoinCached == undefined ? {} : this.spentCoinCached;
                 chkAll = {};
 
-                for (_i3 = 0; _i3 < unspentCoinStrsFromCache.length; _i3++) {
-                  sndStr = "".concat(tokenID, "_").concat(unspentCoinStrsFromCache[_i3].SNDerivator);
+                for (i = 0; i < unspentCoinStrsFromCache.length; i++) {
+                  sndStr = "".concat(tokenID, "_").concat(unspentCoinStrsFromCache[i].SNDerivator);
                   chkAll[sndStr] = true;
                 }
 
-                for (_i4 = 0; _i4 < unspentCoinStrs.length; _i4++) {
-                  _sndStr = "".concat(tokenID, "_").concat(unspentCoinStrs[_i4].SNDerivator);
+                for (_i = 0; _i < unspentCoinStrs.length; _i++) {
+                  _sndStr = "".concat(tokenID, "_").concat(unspentCoinStrs[_i].SNDerivator);
                   chkAll[_sndStr] = false;
                 }
 
@@ -7616,11 +7616,11 @@ function () {
       this.spentCoinCached = this.spentCoinCached == undefined ? {} : this.spentCoinCached;
       var unspentInputCoinsFromCachedStrs = [];
 
-      for (var _i5 = 0; _i5 < inCoinStrs.length; _i5++) {
-        var sndStr = "".concat(tokenID, "_").concat(inCoinStrs[_i5].SNDerivator);
+      for (var i = 0; i < inCoinStrs.length; i++) {
+        var sndStr = "".concat(tokenID, "_").concat(inCoinStrs[i].SNDerivator);
 
         if (this.spentCoinCached[sndStr] == undefined) {
-          unspentInputCoinsFromCachedStrs.push(inCoinStrs[_i5]);
+          unspentInputCoinsFromCachedStrs.push(inCoinStrs[i]);
         }
       }
 
@@ -7646,12 +7646,12 @@ function () {
             serialNumberStrs,
             serialNumberBytes,
             snds,
-            _i6,
+            i,
             param,
             paramJson,
             res,
             tmpBytes,
-            _i7,
+            _i2,
             sndStr,
             _args3 = arguments;
 
@@ -7669,8 +7669,8 @@ function () {
                 serialNumberBytes = new Array(inCoinStrs.length);
                 snds = new Array(inCoinStrs.length); // calculate serial number (Call WASM/gomobile function)
 
-                for (_i6 = 0; _i6 < inCoinStrs.length; _i6++) {
-                  snds[_i6] = inCoinStrs[_i6].SNDerivator;
+                for (i = 0; i < inCoinStrs.length; i++) {
+                  snds[i] = inCoinStrs[i].SNDerivator;
                 }
 
                 console.log("deriveSerialNumbers snds list: ", snds);
@@ -7702,13 +7702,13 @@ function () {
               case 16:
                 tmpBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(res);
 
-                for (_i7 = 0; _i7 < snds.length; _i7++) {
-                  serialNumberBytes[_i7] = tmpBytes.slice(_i7 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i7 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  serialNumberStrs[_i7] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(serialNumberBytes[_i7], _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
-                  inCoinStrs[_i7].SerialNumber = serialNumberStrs[_i7]; // cache snd and corressponding serial number
+                for (_i2 = 0; _i2 < snds.length; _i2++) {
+                  serialNumberBytes[_i2] = tmpBytes.slice(_i2 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i2 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  serialNumberStrs[_i2] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(serialNumberBytes[_i2], _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                  inCoinStrs[_i2].SerialNumber = serialNumberStrs[_i2]; // cache snd and corressponding serial number
 
-                  sndStr = "".concat(tokenID, "_").concat(snds[_i7]);
-                  this.derivatorToSerialNumberCache[sndStr] = serialNumberStrs[_i7];
+                  sndStr = "".concat(tokenID, "_").concat(snds[_i2]);
+                  this.derivatorToSerialNumberCache[sndStr] = serialNumberStrs[_i2];
                 }
 
               case 18:
@@ -7912,8 +7912,8 @@ function () {
     value: function getPrivacyTokenTxHistoryByTokenID(id) {
       var queryResult = new Array();
 
-      for (var _i8 = 0; _i8 < this.txHistory.PrivacyTokenTx.length; _i8++) {
-        if (this.txHistory.PrivacyTokenTx[_i8].tokenID === id) queryResult.push(this.txHistory.PrivacyTokenTx[_i8]);
+      for (var i = 0; i < this.txHistory.PrivacyTokenTx.length; i++) {
+        if (this.txHistory.PrivacyTokenTx[i].tokenID === id) queryResult.push(this.txHistory.PrivacyTokenTx[i]);
       }
 
       return queryResult;
@@ -7923,8 +7923,8 @@ function () {
     value: function getCustomTokenTxByTokenID(id) {
       var queryResult = new Array();
 
-      for (var _i9 = 0; _i9 < this.txHistory.CustomTokenTx.length; _i9++) {
-        if (this.txHistory.CustomTokenTx[_i9].tokenID === id) queryResult.push(this.txHistory.CustomTokenTx[_i9]);
+      for (var i = 0; i < this.txHistory.CustomTokenTx.length; i++) {
+        if (this.txHistory.CustomTokenTx[i].tokenID === id) queryResult.push(this.txHistory.CustomTokenTx[i]);
       }
 
       return queryResult;
@@ -8057,9 +8057,8 @@ function () {
         var tokenID,
             unspentCoinStrs,
             accountBalance,
-            _i10,
+            i,
             _args5 = arguments;
-
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
@@ -8073,8 +8072,8 @@ function () {
                 console.log("getBalance unspentCoinStrs: ", unspentCoinStrs);
                 accountBalance = 0;
 
-                for (_i10 = 0; _i10 < unspentCoinStrs.length; _i10++) {
-                  accountBalance += parseInt(unspentCoinStrs[_i10].Value);
+                for (i = 0; i < unspentCoinStrs.length; i++) {
+                  accountBalance += parseInt(unspentCoinStrs[i].Value);
                 }
 
                 console.log("getBalance Balance: ", accountBalance);
@@ -8112,14 +8111,14 @@ function () {
             feeBN,
             receiverPaymentAddrStr,
             totalAmountTransfer,
-            _i11,
+            i,
             senderSkStr,
             inputForTx,
             nOutput,
             sndOutputStrs,
             sndOutputs,
             sndDecodes,
-            _i12,
+            _i3,
             sndBytes,
             paramInitTx,
             resInitTx,
@@ -8132,7 +8131,7 @@ function () {
             listUTXOForPRV,
             status,
             spendingSNs,
-            _i13,
+            _i4,
             _args6 = arguments;
 
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
@@ -8148,9 +8147,9 @@ function () {
                 receiverPaymentAddrStr = new Array(paramPaymentInfos.length);
                 totalAmountTransfer = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
 
-                for (_i11 = 0; _i11 < paramPaymentInfos.length; _i11++) {
-                  receiverPaymentAddrStr[_i11] = paramPaymentInfos[_i11].paymentAddressStr;
-                  totalAmountTransfer = totalAmountTransfer.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfos[_i11].amount));
+                for (i = 0; i < paramPaymentInfos.length; i++) {
+                  receiverPaymentAddrStr[i] = paramPaymentInfos[i].paymentAddressStr;
+                  totalAmountTransfer = totalAmountTransfer.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfos[i].amount));
                 }
 
                 console.log("createAndSendNativeToken totalAmountTransfer: ", totalAmountTransfer);
@@ -8204,9 +8203,9 @@ function () {
                 sndOutputStrs = _context6.sent;
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrs);
 
-                for (_i12 = 0; _i12 < nOutput; _i12++) {
-                  sndBytes = sndDecodes.slice(_i12 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i12 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputs[_i12] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i3 = 0; _i3 < nOutput; _i3++) {
+                  sndBytes = sndDecodes.slice(_i3 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i3 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputs[_i3] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 35:
@@ -8286,9 +8285,9 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i13 = 0; _i13 < inputForTx.inputCoinStrs.length; _i13++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i13].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i13].SNDerivator);
+                  for (_i4 = 0; _i4 < inputForTx.inputCoinStrs.length; _i4++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i4].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i4].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -8369,7 +8368,7 @@ function () {
             sndOutputStrs,
             sndOutputs,
             sndDecodes,
-            _i14,
+            i,
             sndBytes,
             paramInitTx,
             resInitTx,
@@ -8382,7 +8381,7 @@ function () {
             listUTXOForPRV,
             status,
             spendingSNs,
-            _i15,
+            _i5,
             _args7 = arguments;
 
         return regeneratorRuntime.wrap(function _callee7$(_context7) {
@@ -8494,9 +8493,9 @@ function () {
                 sndOutputStrs = _context7.sent;
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrs);
 
-                for (_i14 = 0; _i14 < nOutput; _i14++) {
-                  sndBytes = sndDecodes.slice(_i14 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i14 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputs[_i14] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (i = 0; i < nOutput; i++) {
+                  sndBytes = sndDecodes.slice(i * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (i + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputs[i] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 59:
@@ -8575,9 +8574,9 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i15 = 0; _i15 < inputForTx.inputCoinStrs.length; _i15++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i15].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i15].SNDerivator);
+                  for (_i5 = 0; _i5 < inputForTx.inputCoinStrs.length; _i5++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i5].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i5].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -8642,25 +8641,25 @@ function () {
             info,
             paymentInfoForPRV,
             amountTransferPRV,
-            _i16,
+            i,
             tokenParamJson,
             amountTransferPToken,
             senderSkStr,
             inputForTx,
             inputForPrivacyTokenTx,
             listCustomTokens,
-            _i17,
+            _i6,
             nOutputForNativeToken,
             sndOutputStrsForNativeToken,
             sndOutputsForNativeToken,
             sndDecodes,
-            _i18,
+            _i7,
             sndBytes,
             nOutputForPToken,
             sndOutputStrsForPToken,
             sndOutputsForPToken,
             _sndDecodes,
-            _i19,
+            _i8,
             _sndBytes,
             paramInitTx,
             resInitTx,
@@ -8671,13 +8670,13 @@ function () {
             lockTime,
             tokenIDBytes,
             tokenID,
-            _i20,
+            _i9,
             response,
             listUTXOForPRV,
             listUTXOForPToken,
             status,
             spendingSNs,
-            _i21,
+            _i10,
             identicon,
             isIn,
             _args8 = arguments;
@@ -8700,9 +8699,9 @@ function () {
                 paymentInfoForPRV = new Array(paramPaymentInfosForNativeToken.length);
                 amountTransferPRV = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
 
-                for (_i16 = 0; _i16 < paymentInfoForPRV.length; _i16++) {
-                  paymentInfoForPRV[_i16] = new _key__WEBPACK_IMPORTED_MODULE_3__["PaymentInfo"](_hdwallet__WEBPACK_IMPORTED_MODULE_2__["KeyWallet"].base58CheckDeserialize(paramPaymentInfosForNativeToken[_i16].paymentAddressStr).KeySet.PaymentAddress, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfosForNativeToken[_i16].amount));
-                  amountTransferPRV = amountTransferPRV.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfosForNativeToken[_i16].amount));
+                for (i = 0; i < paymentInfoForPRV.length; i++) {
+                  paymentInfoForPRV[i] = new _key__WEBPACK_IMPORTED_MODULE_3__["PaymentInfo"](_hdwallet__WEBPACK_IMPORTED_MODULE_2__["KeyWallet"].base58CheckDeserialize(paramPaymentInfosForNativeToken[i].paymentAddressStr).KeySet.PaymentAddress, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfosForNativeToken[i].amount));
+                  amountTransferPRV = amountTransferPRV.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfosForNativeToken[i].amount));
                 } // token param
                 // get current token to get token param
 
@@ -8776,16 +8775,16 @@ function () {
                   break;
                 }
 
-                _i17 = 0;
-                _i17 = 0;
+                _i6 = 0;
+                _i6 = 0;
 
               case 48:
-                if (!(_i17 < listCustomTokens.length)) {
+                if (!(_i6 < listCustomTokens.length)) {
                   _context8.next = 54;
                   break;
                 }
 
-                if (!(listCustomTokens[_i17].ID.toLowerCase() === tokenParamJson.propertyID)) {
+                if (!(listCustomTokens[_i6].ID.toLowerCase() === tokenParamJson.propertyID)) {
                   _context8.next = 51;
                   break;
                 }
@@ -8793,12 +8792,12 @@ function () {
                 return _context8.abrupt("break", 54);
 
               case 51:
-                _i17++;
+                _i6++;
                 _context8.next = 48;
                 break;
 
               case 54:
-                if (!(_i17 === listCustomTokens.length)) {
+                if (!(_i6 === listCustomTokens.length)) {
                   _context8.next = 56;
                   break;
                 }
@@ -8827,9 +8826,9 @@ function () {
                 sndOutputStrsForNativeToken = _context8.sent;
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForNativeToken);
 
-                for (_i18 = 0; _i18 < nOutputForNativeToken; _i18++) {
-                  sndBytes = sndDecodes.slice(_i18 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i18 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForNativeToken[_i18] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i7 = 0; _i7 < nOutputForNativeToken; _i7++) {
+                  sndBytes = sndDecodes.slice(_i7 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i7 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForNativeToken[_i7] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 65:
@@ -8855,9 +8854,9 @@ function () {
                 sndOutputStrsForPToken = _context8.sent;
                 _sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i19 = 0; _i19 < nOutputForPToken; _i19++) {
-                  _sndBytes = _sndDecodes.slice(_i19 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i19 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i19] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i8 = 0; _i8 < nOutputForPToken; _i8++) {
+                  _sndBytes = _sndDecodes.slice(_i8 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i8 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i8] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 75:
@@ -8902,15 +8901,15 @@ function () {
                   break;
                 }
 
-                _i20 = 0;
+                _i9 = 0;
 
               case 95:
-                if (!(_i20 < listCustomTokens.length)) {
+                if (!(_i9 < listCustomTokens.length)) {
                   _context8.next = 101;
                   break;
                 }
 
-                if (!(tokenID === listCustomTokens[_i20].ID.toLowerCase())) {
+                if (!(tokenID === listCustomTokens[_i9].ID.toLowerCase())) {
                   _context8.next = 98;
                   break;
                 }
@@ -8918,7 +8917,7 @@ function () {
                 throw new Error("privacy token privacy is existed");
 
               case 98:
-                _i20++;
+                _i9++;
                 _context8.next = 95;
                 break;
 
@@ -8972,10 +8971,10 @@ function () {
 
                 spendingSNs = [];
 
-                for (_i21 = 0; _i21 < inputForTx.inputCoinStrs.length; _i21++) {
-                  spendingSNs.push(inputForTx.inputCoinStrs[_i21].SerialNumber);
-                  listUTXOForPRV.push(inputForTx.inputCoinStrs[_i21].SNDerivator);
-                  listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[_i21].SNDerivator);
+                for (_i10 = 0; _i10 < inputForTx.inputCoinStrs.length; _i10++) {
+                  spendingSNs.push(inputForTx.inputCoinStrs[_i10].SerialNumber);
+                  listUTXOForPRV.push(inputForTx.inputCoinStrs[_i10].SNDerivator);
+                  listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[_i10].SNDerivator);
                 }
 
                 this.addSpendingCoins({
@@ -9352,7 +9351,7 @@ function () {
             remoteAddress,
             paymentInfoForPRV,
             amountTransferPRV,
-            _i22,
+            i,
             tokenParamJson,
             amountTransferPToken,
             senderSkStr,
@@ -9365,13 +9364,13 @@ function () {
             sndOutputStrsForNativeToken,
             sndOutputsForNativeToken,
             sndDecodes,
-            _i23,
+            _i11,
             sndBytes,
             nOutputForPToken,
             sndOutputStrsForPToken,
             sndOutputsForPToken,
             _sndDecodes2,
-            _i24,
+            _i12,
             _sndBytes2,
             burningReqMetadata,
             paramInitTx,
@@ -9388,7 +9387,7 @@ function () {
             listUTXOForPToken,
             status,
             spendingSNs,
-            _i25,
+            _i13,
             isIn,
             _args9 = arguments;
 
@@ -9410,16 +9409,12 @@ function () {
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(10);
 
               case 8:
-                _context9.next = 10;
-                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(10);
-
-              case 10:
                 paymentInfoForPRV = new Array(paramPaymentInfosForNativeToken.length);
                 amountTransferPRV = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
 
-                for (_i22 = 0; _i22 < paymentInfoForPRV.length; _i22++) {
-                  paymentInfoForPRV[_i22] = new _key__WEBPACK_IMPORTED_MODULE_3__["PaymentInfo"](_hdwallet__WEBPACK_IMPORTED_MODULE_2__["KeyWallet"].base58CheckDeserialize(paramPaymentInfosForNativeToken[_i22].paymentAddressStr).KeySet.PaymentAddress, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfosForNativeToken[_i22].amount));
-                  amountTransferPRV = amountTransferPRV.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfosForNativeToken[_i22].amount));
+                for (i = 0; i < paymentInfoForPRV.length; i++) {
+                  paymentInfoForPRV[i] = new _key__WEBPACK_IMPORTED_MODULE_3__["PaymentInfo"](_hdwallet__WEBPACK_IMPORTED_MODULE_2__["KeyWallet"].base58CheckDeserialize(paramPaymentInfosForNativeToken[i].paymentAddressStr).KeySet.PaymentAddress, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfosForNativeToken[i].amount));
+                  amountTransferPRV = amountTransferPRV.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfosForNativeToken[i].amount));
                 } // token param
                 // get current token to get token param
 
@@ -9441,46 +9436,46 @@ function () {
                 amountTransferPToken = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(submitParam.TokenReceivers.Amount);
                 senderSkStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PriKeyType"]);
                 paymentAddressStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PaymentAddressType"]);
-                _context9.prev = 18;
+                _context9.prev = 16;
                 console.time("Time for preparing input for custom token tx");
-                _context9.next = 22;
+                _context9.next = 20;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["prepareInputForTx"])(amountTransferPRV, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(feeNativeToken), false, null, this, _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
-              case 22:
+              case 20:
                 inputForTx = _context9.sent;
                 console.timeEnd("Time for preparing input for custom token tx");
-                _context9.next = 29;
+                _context9.next = 27;
                 break;
 
-              case 26:
-                _context9.prev = 26;
-                _context9.t0 = _context9["catch"](18);
+              case 24:
+                _context9.prev = 24;
+                _context9.t0 = _context9["catch"](16);
                 throw _context9.t0;
 
-              case 29:
-                _context9.next = 31;
+              case 27:
+                _context9.next = 29;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(30);
 
-              case 31:
-                _context9.prev = 31;
-                _context9.next = 34;
+              case 29:
+                _context9.prev = 29;
+                _context9.next = 32;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["prepareInputForTxPrivacyToken"])(tokenParamJson, this, _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(feePToken));
 
-              case 34:
+              case 32:
                 inputForPrivacyTokenTx = _context9.sent;
-                _context9.next = 40;
+                _context9.next = 38;
                 break;
 
-              case 37:
-                _context9.prev = 37;
-                _context9.t1 = _context9["catch"](31);
+              case 35:
+                _context9.prev = 35;
+                _context9.t1 = _context9["catch"](29);
                 throw _context9.t1;
 
-              case 40:
-                _context9.next = 42;
+              case 38:
+                _context9.next = 40;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(50);
 
-              case 42:
+              case 40:
                 tokenParamJson.tokenInputs = inputForPrivacyTokenTx.tokenInputs;
                 console.log("createAndSendBurningRequestTx tokenParamJson: ", tokenParamJson); // verify tokenID is valid or not
 
@@ -9488,33 +9483,33 @@ function () {
                 k = 0;
                 k = 0;
 
-              case 47:
+              case 45:
                 if (!(k < listCustomTokens.length)) {
-                  _context9.next = 53;
+                  _context9.next = 51;
                   break;
                 }
 
-                if (!(listCustomTokens[i].ID.toLowerCase() === tokenParamJson.propertyID)) {
-                  _context9.next = 50;
+                if (!(listCustomTokens[k].ID.toLowerCase() === tokenParamJson.propertyID)) {
+                  _context9.next = 48;
                   break;
                 }
 
-                return _context9.abrupt("break", 53);
+                return _context9.abrupt("break", 51);
 
-              case 50:
+              case 48:
                 k++;
-                _context9.next = 47;
+                _context9.next = 45;
                 break;
 
-              case 53:
+              case 51:
                 if (!(k === listCustomTokens.length)) {
-                  _context9.next = 55;
+                  _context9.next = 53;
                   break;
                 }
 
                 throw new Error("invalid token ID");
 
-              case 55:
+              case 53:
                 nOutputForNativeToken = paramPaymentInfosForNativeToken.length;
 
                 if (inputForTx.totalValueInput.cmp(amountTransferPRV) == 1) {
@@ -9525,23 +9520,23 @@ function () {
                 sndOutputsForNativeToken = new Array(nOutputForNativeToken);
 
                 if (!(typeof randomScalars == "function")) {
-                  _context9.next = 64;
+                  _context9.next = 62;
                   break;
                 }
 
-                _context9.next = 61;
+                _context9.next = 59;
                 return randomScalars(nOutputForNativeToken.toString());
 
-              case 61:
+              case 59:
                 sndOutputStrsForNativeToken = _context9.sent;
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForNativeToken);
 
-                for (_i23 = 0; _i23 < nOutputForNativeToken; _i23++) {
-                  sndBytes = sndDecodes.slice(_i23 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i23 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForNativeToken[_i23] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i11 = 0; _i11 < nOutputForNativeToken; _i11++) {
+                  sndBytes = sndDecodes.slice(_i11 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i11 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForNativeToken[_i11] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
-              case 64:
+              case 62:
                 console.log("createAndSendBurningRequestTx sndOutputsForNativeToken: ", sndOutputsForNativeToken); // random snd for output native token
 
                 nOutputForPToken = tokenParamJson.paymentInfoForPToken.length;
@@ -9553,23 +9548,23 @@ function () {
                 sndOutputsForPToken = new Array(nOutputForPToken);
 
                 if (!(typeof randomScalars == "function")) {
-                  _context9.next = 74;
+                  _context9.next = 72;
                   break;
                 }
 
-                _context9.next = 71;
+                _context9.next = 69;
                 return randomScalars(nOutputForPToken.toString());
 
-              case 71:
+              case 69:
                 sndOutputStrsForPToken = _context9.sent;
                 _sndDecodes2 = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i24 = 0; _i24 < nOutputForPToken; _i24++) {
-                  _sndBytes2 = _sndDecodes2.slice(_i24 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i24 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i24] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes2, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i12 = 0; _i12 < nOutputForPToken; _i12++) {
+                  _sndBytes2 = _sndDecodes2.slice(_i12 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i12 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i12] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes2, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
-              case 74:
+              case 72:
                 console.log("createAndSendBurningRequestTx sndOutputsForPToken: ", sndOutputsForPToken); // prepare meta data for tx
 
                 burningReqMetadata = {
@@ -9584,25 +9579,25 @@ function () {
                 console.log("createAndSendBurningRequestTx paramInitTx: ", paramInitTx);
 
                 if (!(typeof initBurningRequestTx == "function")) {
-                  _context9.next = 85;
+                  _context9.next = 83;
                   break;
                 }
 
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_11___default.a.stringify(paramInitTx);
-                _context9.next = 82;
+                _context9.next = 80;
                 return initBurningRequestTx(paramInitTxJson);
 
-              case 82:
+              case 80:
                 resInitTx = _context9.sent;
 
                 if (!(resInitTx == null)) {
-                  _context9.next = 85;
+                  _context9.next = 83;
                   break;
                 }
 
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-              case 85:
+              case 83:
                 console.log("createAndSendBurningRequestTx resInitTx: ", resInitTx); //base64 decode txjson
 
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(resInitTx); // get b58 check encode tx json
@@ -9614,29 +9609,29 @@ function () {
                 tokenIDBytes = resInitTxBytes.slice(resInitTxBytes.length - 32);
                 tokenID = Object(_common__WEBPACK_IMPORTED_MODULE_12__["convertHashToStr"])(tokenIDBytes).toLowerCase();
                 console.log("createAndSendBurningRequestTx tokenID: ", tokenID);
-                _context9.next = 95;
+                _context9.next = 93;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(80);
 
-              case 95:
-                _context9.prev = 95;
-                _context9.next = 98;
+              case 93:
+                _context9.prev = 93;
+                _context9.next = 96;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTxCustomTokenPrivacy(b58CheckEncodeTx);
 
-              case 98:
+              case 96:
                 response = _context9.sent;
-                _context9.next = 104;
+                _context9.next = 102;
                 break;
 
-              case 101:
-                _context9.prev = 101;
-                _context9.t2 = _context9["catch"](95);
+              case 99:
+                _context9.prev = 99;
+                _context9.t2 = _context9["catch"](93);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx");
 
-              case 104:
-                _context9.next = 106;
+              case 102:
+                _context9.next = 104;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
 
-              case 106:
+              case 104:
                 // saving history tx
                 // check status of tx
                 listUTXOForPRV = [];
@@ -9659,10 +9654,10 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i25 = 0; _i25 < inputForTx.inputCoinStrs.length; _i25++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i25].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i25].SNDerivator);
-                    listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[_i25].SNDerivator);
+                  for (_i13 = 0; _i13 < inputForTx.inputCoinStrs.length; _i13++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i13].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i13].SNDerivator);
+                    listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[_i13].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -9674,18 +9669,18 @@ function () {
 
                 isIn = false;
                 this.savePrivacyTokenTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], isIn, false, false, listUTXOForPRV, listUTXOForPToken, "");
-                _context9.next = 114;
+                _context9.next = 112;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 114:
+              case 112:
                 return _context9.abrupt("return", response);
 
-              case 115:
+              case 113:
               case "end":
                 return _context9.stop();
             }
           }
-        }, _callee9, this, [[18, 26], [31, 37], [95, 101]]);
+        }, _callee9, this, [[16, 24], [29, 35], [93, 99]]);
       }));
 
       function createAndSendBurningRequestTx() {
@@ -9961,7 +9956,7 @@ function () {
      */
     // stakerStatus return status of staker
     // return object {{Role: int, ShardID: int}}
-    //  Role: -1: is not staked, 0: candidate, 1: validator
+    // Role: -1: is not staked, 0: candidate, 1: validator
     // ShardID: beacon: -1, shardID: 0->MaxShardNumber
 
   }, {
