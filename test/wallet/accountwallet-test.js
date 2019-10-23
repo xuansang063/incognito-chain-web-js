@@ -5,18 +5,20 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { CustomTokenInit, CustomTokenTransfer } from "../../lib/tx/constants";
 import { PaymentAddressType } from "../../lib/wallet/constants";
 
-// const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
-const rpcClient = new RpcClient("http://54.39.158.106:20032");
+const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
+// const rpcClient = new RpcClient("http://54.39.158.106:20032");
 // const rpcClient = new RpcClient("http://localhost:9334");
 
 async function sleep(sleepTime) {
   return new Promise(resolve => setTimeout(resolve, sleepTime));
 }
 
+
 async function TestGetRewardAmount() {
   Wallet.RpcClient = rpcClient;
+  await sleep(5000);
   // HN1 change money
-  let senderSpendingKeyStr = "112t8rnXgFuVb4pfnqh9wkwrAZZRp7WHQVtnHnxBNkaHimBoL42DvsFVLisDqXiTZpnKFAZahQsCaoWdEQ9s77FFPzRey6H9CS7JeC6ipgoB";
+  let senderSpendingKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -40,7 +42,7 @@ async function TestCreateAndSendRewardAmountTx() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
   // sender key
-  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderSpendingKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -58,7 +60,7 @@ async function TestCreateAndSendRewardAmountTx() {
   console.log("Response createAndSendWithdrawRewardTx: ", response);
 }
 
-// TestCreateAndSendRewardAmountTx();
+TestCreateAndSendRewardAmountTx();
 
 async function TestBurningRequestTx() {
   Wallet.RpcClient = rpcClient;
@@ -287,7 +289,7 @@ async function TestCreateAndSendStakingTx() {
   }
 }
 
-TestCreateAndSendStakingTx();
+// TestCreateAndSendStakingTx();
 
 async function TestDefragment() {
   Wallet.RpcClient = rpcClient;
@@ -318,7 +320,7 @@ async function TestGetBalance() {
   await sleep(5000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderPrivateKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 

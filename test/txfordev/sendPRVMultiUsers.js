@@ -5,30 +5,29 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { AST_Array } from 'terser';
 const fs = require('fs');
 
-// Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
-const rpcClient = new RpcClient("http://54.39.158.106:20032");
+// const rpcClient = new RpcClient("http://54.39.158.106:20032");
 
 async function sleep(sleepTime) {
     return new Promise(resolve => setTimeout(resolve, sleepTime));
 }
 
 async function SendPRVForMultiUsers() {
-    Wallet.RpcClient = rpcClient;
     // load file paymentAddr.json to set payment infos
-    let jsonString = fs.readFileSync('./test/txfordev/paymentAddr.json');
+    let jsonString = fs.readFileSync('./test/txfordev/paymentAddrList.json');
 
     let data = JSON.parse(jsonString);
     console.log("Data send multi users: ", data);
     await sleep(5000);
     let paymentInfos = data.paymentInfos;
 
-    for (let i =0; i<paymentInfos.length; i++){
+    for (let i = 0; i < paymentInfos.length; i++) {
         paymentInfos[i].amount = parseInt(paymentInfos[i].amount);
     }
 
     // set private for sender
-    let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+    let senderSpendingKeyStr = "";
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
     senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 

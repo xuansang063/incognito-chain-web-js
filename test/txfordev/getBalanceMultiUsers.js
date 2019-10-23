@@ -1,13 +1,7 @@
-import { Wallet, DefaultStorage } from '../../lib/wallet/wallet'
+import { Wallet } from '../../lib/wallet/wallet'
 import { KeyWallet as keyWallet } from "../../lib/wallet/hdwallet";
 import { AccountWallet } from "../../lib/wallet/accountWallet";
-import * as key from "../../lib/key";
-import bn from 'bn.js';
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
-import { PaymentAddressType } from '../../lib/wallet/constants';
-import { ENCODE_VERSION } from '../../lib/constants';
-import {checkEncode} from "../../lib/base58";
-import { SSL_OP_EPHEMERAL_RSA } from 'constants';
 const fs = require('fs');
 
 Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
@@ -18,7 +12,7 @@ async function sleep(sleepTime) {
   return new Promise(resolve => setTimeout(resolve, sleepTime));
 }
 
-async function MultiStaking() {
+async function GetBalanceMultiUsers() {
   // load file paymentAddr.json to set payment infos
   let jsonString = fs.readFileSync('./test/txfordev/privateKeyList.json');
 
@@ -26,41 +20,36 @@ async function MultiStaking() {
   console.log("Data multi staking: ", data);
 
   await sleep(5000);
-  let wrongCount = 0;
 
   for (let i = 0; i < data.privateKeys.length; i++) {
     // set private for funder
     let funderPrivateKeyStr = data.privateKeys[i];
     let funderKeyWallet = keyWallet.base58CheckDeserialize(funderPrivateKeyStr);
     funderKeyWallet.KeySet.importFromPrivateKey(funderKeyWallet.KeySet.PrivateKey);
-    let funderPaymentAddressStr = funderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
     let accountFunder = new AccountWallet();
     accountFunder.key = funderKeyWallet;
 
-    let fee = 0 * 1e9; // nano PRV
-    let param = {
-      type: 0
-    };
-    
-    let candidatePaymentAddress = funderPaymentAddressStr;
-    let rewardReceiverPaymentAddress = funderPaymentAddressStr;
-    let candidateMiningSeedKey = checkEncode(funderKeyWallet.getMiningSeedKey(), ENCODE_VERSION);
-    let autoReStaking = true;
+    let expectedBalance = 1755 * 1e9;
+    let wrongCount = 0;
 
     try {
-      let response = await accountFunder.createAndSendStakingTx(param, fee, candidatePaymentAddress,  candidateMiningSeedKey, rewardReceiverPaymentAddress, autoReStaking);
-      console.log("congratulations to you! Stake successfully! ^.^")
-      console.log("Response: ", response);
+      let response = await accountFunder.getBalance();
+      if (response != expectedBalance){
+        console.log("[RES] Private key ", data.privateKeys[i], "has : ", response);
+        wrongCount++;
+      } else{
+
+        console.log("Has expected amoount : ", data.privateKeys[i]);
+      }
     } catch (e) {
-      wrongCount++;
       console.log(e);
       console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
     }
-    await sleep(1000);
+
+    console.log("Running get balance test with wrong count: ", wrongCount);
   }
-  console.log("Running staking test with wrong count: ", wrongCount);
 }
 
-MultiStaking();
+GetBalanceMultiUsers();
 

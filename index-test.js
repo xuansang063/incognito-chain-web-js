@@ -6,7 +6,7 @@ require("./loadwasm");
 // require("./test/wallet/wallet-test");
 // require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
-require("./test/wallet/utils-test");
+// require("./test/wallet/utils-test");
 
 // require('./test/tx/txprivacy-test');
 // require('./test/tx/txprivacytoken-test');
@@ -27,9 +27,9 @@ require("./test/wallet/utils-test");
 // require('./test/hybridencryption-test');
 // require('./test/aes-test');
 // require('./test/utils-test');
-
-// require('./test/txfordev/txfordev.js');
-
 // require('./test/committeekey-test');
-// require('./test/txfordev/multiStakingTxs.js');
+
+// require('./test/txfordev/sendPRVMultiUsers');
+// require('./test/txfordev/getBalanceMultiUsers');
+require('./test/txfordev/multiStakingTxs.js');
 
