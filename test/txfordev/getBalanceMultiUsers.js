@@ -4,7 +4,7 @@ import { AccountWallet } from "../../lib/wallet/accountWallet";
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
 const fs = require('fs');
 
-Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 // Wallet.RpcClient = new RpcClient("http://54.39.158.106:20032");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
 

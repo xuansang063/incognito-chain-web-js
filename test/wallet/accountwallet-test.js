@@ -5,7 +5,7 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { CustomTokenInit, CustomTokenTransfer } from "../../lib/tx/constants";
 import { PaymentAddressType } from "../../lib/wallet/constants";
 
-const rpcClient = new RpcClient("https://test-node.incognito.org");
+const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 // const rpcClient = new RpcClient("http://54.39.158.106:20032");
 // const rpcClient = new RpcClient("http://localhost:9334");
 
@@ -60,7 +60,7 @@ async function TestCreateAndSendRewardAmountTx() {
   console.log("Response createAndSendWithdrawRewardTx: ", response);
 }
 
-TestCreateAndSendRewardAmountTx();
+// TestCreateAndSendRewardAmountTx();
 
 async function TestBurningRequestTx() {
   Wallet.RpcClient = rpcClient;
@@ -122,7 +122,7 @@ async function TestCreateAndSendNativeToken() {
   await sleep(5000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderPrivateKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -130,14 +130,14 @@ async function TestCreateAndSendNativeToken() {
   accountSender.key = senderKeyWallet;
 
   // receiver key (payment address)
-  let receiverPaymentAddrStr = "12S1UiWudZZcWFrh6GZVC5t483Sa6HDLfNtb4w8omYWZuE7dgQuqWhGDGsyVC349RPoX2QYKYwDYBDVuCYA1y9RitJ59ZmjeUj7NC7f";
+  let receiverPaymentAddrStr = "12S3PBj1WpsyueZFmspmbeorDJV51JfzYLLLi39mpj5bRFn8vxi2PX898hQeg7Squ9J9n699rcju6t9SyTy92GyF7mownE1qLUnoSE8";
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddrStr);
   // let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
 
   let fee = 0.5 * 1e9;
   let isPrivacy = true;
   let info = "";
-  let amountTransfer = 0.5 * 1e9; // in nano PRV
+  let amountTransfer = 100 * 1e9; // in nano PRV
 
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -164,7 +164,7 @@ async function TestCreateAndSendNativeToken() {
   // console.log("Send tx 2 done");
 }
 
-// TestCreateAndSendNativeToken();
+TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;

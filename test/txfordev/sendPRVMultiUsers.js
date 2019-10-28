@@ -5,7 +5,7 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { AST_Array } from 'terser';
 const fs = require('fs');
 
-Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
 // const rpcClient = new RpcClient("http://54.39.158.106:20032");
 
@@ -34,7 +34,7 @@ async function SendPRVForMultiUsers() {
     let accountSender = new AccountWallet();
     accountSender.key = senderKeyWallet;
 
-    let fee = 0; // nano PRV
+    let fee = 0.5*1e9; // nano PRV
     let isPrivacy = false;
 
     try {
