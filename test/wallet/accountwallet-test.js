@@ -60,7 +60,7 @@ async function TestCreateAndSendRewardAmountTx() {
   console.log("Response createAndSendWithdrawRewardTx: ", response);
 }
 
-// TestCreateAndSendRewardAmountTx();
+TestCreateAndSendRewardAmountTx();
 
 async function TestBurningRequestTx() {
   Wallet.RpcClient = rpcClient;
@@ -289,7 +289,7 @@ async function TestCreateAndSendStakingTx() {
   }
 }
 
-TestCreateAndSendStakingTx();
+// TestCreateAndSendStakingTx();
 
 async function TestDefragment() {
   Wallet.RpcClient = rpcClient;
