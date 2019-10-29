@@ -31,5 +31,5 @@ require("./loadwasm");
 
 // require('./test/txfordev/sendPRVMultiUsers');
 // require('./test/txfordev/getBalanceMultiUsers');
-require('./test/txfordev/multiStakingTxs.js');
+// require('./test/txfordev/multiStakingTxs.js');
 

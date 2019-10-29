@@ -321,7 +321,7 @@ async function TestGetBalance() {
   await sleep(5000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderPrivateKeyStr = "112t8rqFtYxrQ18ae52tQrCj7kr5HUhL1RXoq2JvTeaJNEcXgQys8B48KFFDFdHsK3CRuiwmmjuPMstkfowfHYHWZG46Pofmo8wKuKH7domP";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -340,3 +340,68 @@ async function TestGetBalance() {
 }
 
 // TestGetBalance();
+
+
+
+/************************* DEX **************************/
+
+async function TestCreateAndSendPRVContributionTx() {
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+  // staker
+  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  let fee = 1500000;
+  let pdeContributionPairID = "123";
+  // let contributorAddressStr = senderPaymentAddressStr;
+  let contributedAmount = 100;
+
+  // create and send staking tx
+  try {
+    await accountSender.createAndSendTxWithNativeTokenContribution(
+      fee, pdeContributionPairID, contributedAmount
+    );
+  } catch (e) {
+    console.log("Error when staking: ", e);
+  }
+}
+
+// TestCreateAndSendPRVContributionTx();
+
+async function TestCreateAndSendPRVContributionTx() {
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+  // staker
+  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  let feeNativeToken = 1500000;
+  let pdeContributionPairID = "123";
+  let contributedAmount = 100;
+
+  let tokenParam = {
+    TokenID: "51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436",
+    TokenName: "Rose",
+    TokenSymbol: "Rose"
+  }
+
+  // create and send staking tx
+  try {
+    await accountSender.createAndSendPTokenContributionTx(
+      tokenParam, feeNativeToken, pdeContributionPairID, contributedAmount
+    );
+  } catch (e) {
+    console.log("Error when staking: ", e);
+  }
+}
