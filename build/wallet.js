@@ -8763,6 +8763,7 @@ function () {
             status,
             spendingSNs,
             _i10,
+            _i11,
             identicon,
             isIn,
             _args8 = arguments;
@@ -9057,7 +9058,7 @@ function () {
                 status = _constants__WEBPACK_IMPORTED_MODULE_4__["FailedTx"];
 
                 if (!response.txId) {
-                  _context8.next = 143;
+                  _context8.next = 144;
                   break;
                 }
 
@@ -9078,7 +9079,10 @@ function () {
                 for (_i10 = 0; _i10 < inputForTx.inputCoinStrs.length; _i10++) {
                   spendingSNs.push(inputForTx.inputCoinStrs[_i10].SerialNumber);
                   listUTXOForPRV.push(inputForTx.inputCoinStrs[_i10].SNDerivator);
-                  listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[_i10].SNDerivator);
+                }
+
+                for (_i11 = 0; _i11 < inputForPrivacyTokenTx.inputCoinStrs.length; _i11++) {
+                  listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[_i11].SNDerivator);
                 }
 
                 this.addSpendingCoins({
@@ -9088,14 +9092,14 @@ function () {
                 console.log("createAndSendPrivacyToken Spending coin list after saving: ", this.spendingCoins); // add to following token list if tx is init token
 
                 if (!(submitParam.TokenTxType === _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenInit"])) {
-                  _context8.next = 143;
+                  _context8.next = 144;
                   break;
                 }
 
-                _context8.next = 140;
+                _context8.next = 141;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.hashToIdenticon([tokenID]);
 
-              case 140:
+              case 141:
                 identicon = _context8.sent;
                 this.addFollowingToken({
                   ID: tokenID,
@@ -9109,7 +9113,7 @@ function () {
                 });
                 console.log("createAndSendPrivacyToken List following token after adding: ", this.followingTokens);
 
-              case 143:
+              case 144:
                 if (submitParam.TokenTxType === _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenInit"]) {
                   isIn = true;
                 } else {
@@ -9117,13 +9121,13 @@ function () {
                 }
 
                 this.savePrivacyTokenTxHistory(response, [submitParam.TokenReceivers.PaymentAddress], isIn, hasPrivacyForNativeToken, hasPrivacyForPToken, listUTXOForPRV, listUTXOForPToken, "");
-                _context8.next = 147;
+                _context8.next = 148;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 147:
+              case 148:
                 return _context8.abrupt("return", response);
 
-              case 148:
+              case 149:
               case "end":
                 return _context8.stop();
             }
@@ -9468,13 +9472,13 @@ function () {
             sndOutputStrsForNativeToken,
             sndOutputsForNativeToken,
             sndDecodes,
-            _i11,
+            _i12,
             sndBytes,
             nOutputForPToken,
             sndOutputStrsForPToken,
             sndOutputsForPToken,
             _sndDecodes2,
-            _i12,
+            _i13,
             _sndBytes2,
             burningReqMetadata,
             paramInitTx,
@@ -9491,7 +9495,8 @@ function () {
             listUTXOForPToken,
             status,
             spendingSNs,
-            _i13,
+            _i14,
+            _i15,
             isIn,
             _args9 = arguments;
 
@@ -9644,9 +9649,9 @@ function () {
               case 62:
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForNativeToken);
 
-                for (_i11 = 0; _i11 < nOutputForNativeToken; _i11++) {
-                  sndBytes = sndDecodes.slice(_i11 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i11 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForNativeToken[_i11] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i12 = 0; _i12 < nOutputForNativeToken; _i12++) {
+                  sndBytes = sndDecodes.slice(_i12 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i12 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForNativeToken[_i12] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 64:
@@ -9681,9 +9686,9 @@ function () {
               case 74:
                 _sndDecodes2 = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i12 = 0; _i12 < nOutputForPToken; _i12++) {
-                  _sndBytes2 = _sndDecodes2.slice(_i12 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i12 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i12] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes2, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i13 = 0; _i13 < nOutputForPToken; _i13++) {
+                  _sndBytes2 = _sndDecodes2.slice(_i13 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i13 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i13] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes2, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 76:
@@ -9776,10 +9781,13 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i13 = 0; _i13 < inputForTx.inputCoinStrs.length; _i13++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i13].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i13].SNDerivator);
-                    listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[_i13].SNDerivator);
+                  for (_i14 = 0; _i14 < inputForTx.inputCoinStrs.length; _i14++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i14].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i14].SNDerivator);
+                  }
+
+                  for (_i15 = 0; _i15 < inputForPrivacyTokenTx.inputCoinStrs.length; _i15++) {
+                    listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[_i15].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -10289,7 +10297,7 @@ function () {
       var _createAndSendPTokenContributionTx = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee13(tokenParam, feeNativeToken, pdeContributionPairID, contributedAmount) {
-        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, contributorAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes3, _i14, _sndBytes3, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, tokenIDBytes, tokenID, response, status;
+        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, contributorAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes3, _i16, _sndBytes3, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, tokenIDBytes, tokenID, response, status;
 
         return regeneratorRuntime.wrap(function _callee13$(_context13) {
           while (1) {
@@ -10461,9 +10469,9 @@ function () {
               case 67:
                 _sndDecodes3 = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i14 = 0; _i14 < nOutputForPToken; _i14++) {
-                  _sndBytes3 = _sndDecodes3.slice(_i14 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i14 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i14] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes3, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i16 = 0; _i16 < nOutputForPToken; _i16++) {
+                  _sndBytes3 = _sndDecodes3.slice(_i16 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i16 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i16] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes3, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 69:
@@ -10837,7 +10845,7 @@ function () {
       var _createAndSendPTokenTradeRequestTx = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee15(tokenParam, feeNativeToken, tokenIDToBuyStr, sellAmount) {
-        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, traderAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes4, _i15, _sndBytes4, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, tokenIDBytes, tokenID, response, status;
+        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, traderAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes4, _i17, _sndBytes4, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, tokenIDBytes, tokenID, response, status;
 
         return regeneratorRuntime.wrap(function _callee15$(_context15) {
           while (1) {
@@ -11009,9 +11017,9 @@ function () {
               case 67:
                 _sndDecodes4 = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i15 = 0; _i15 < nOutputForPToken; _i15++) {
-                  _sndBytes4 = _sndDecodes4.slice(_i15 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i15 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i15] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes4, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i17 = 0; _i17 < nOutputForPToken; _i17++) {
+                  _sndBytes4 = _sndDecodes4.slice(_i17 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i17 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i17] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes4, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 69:
