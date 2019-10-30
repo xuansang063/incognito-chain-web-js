@@ -6121,7 +6121,7 @@ function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.log("AAAAAAAAA after: ", totalAmountTransfer, fee);
+            console.log("AAAAAAAAA after: ", amountTransfer, fee);
             paymentAddrSerialize = account.key.base58CheckSerialize(_wallet_constants__WEBPACK_IMPORTED_MODULE_7__["PaymentAddressType"]); // get unspent output coin with tokenID
 
             _context.next = 4;
