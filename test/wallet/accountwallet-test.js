@@ -8,9 +8,9 @@ import {ENCODE_VERSION} from "../../lib/constants";
 import {checkEncode} from "../../lib/base58";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-const rpcClient = new RpcClient("https://test-node.incognito.org");
+// const rpcClient = new RpcClient("https://test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:20032");
-// const rpcClient = new RpcClient("http://localhost:9334");
+const rpcClient = new RpcClient("http://localhost:9998");
 
 async function sleep(sleepTime) {
   return new Promise(resolve => setTimeout(resolve, sleepTime));
@@ -409,3 +409,31 @@ async function TestCreateAndSendPRVContributionTx() {
 //     console.log("Error when staking: ", e);
 //   }
 // }
+
+async function TestCreateAndSendNativeTokenTradeRequestTx() {
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+  // staker
+  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  let fee = 1500000;
+  let sellAmount = 1;
+  let tokenIDToBuyStr = "5b10f8579937a34ff5d01cf23bbf6b90bcba793c67193d6edb99f6eb7679dcac";
+
+  // create and send staking tx
+  try {
+    await accountSender.createAndSendNativeTokenTradeRequestTx(
+      fee, tokenIDToBuyStr, sellAmount
+    );
+  } catch (e) {
+    console.log("Error when staking: ", e);
+  }
+}
+
+TestCreateAndSendNativeTokenTradeRequestTx();
