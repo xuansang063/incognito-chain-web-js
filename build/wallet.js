@@ -10485,7 +10485,7 @@ function () {
 
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(resInitTx); // get b58 check encode tx json
 
-                b58CheckEncodeTx = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(resInitTxBytes.slice(0, resInitTxBytes.length - 40), _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]); // get lock time tx
+                b58CheckEncodeTx = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(resInitTxBytes.slice(0, resInitTxBytes.length - 8), _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]); // get lock time tx
 
                 lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
