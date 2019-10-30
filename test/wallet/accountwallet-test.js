@@ -4,6 +4,8 @@ import { AccountWallet, Wallet } from "../../lib/wallet/wallet";
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { CustomTokenInit, CustomTokenTransfer } from "../../lib/tx/constants";
 import { PaymentAddressType } from "../../lib/wallet/constants";
+import {ENCODE_VERSION} from "../../lib/constants";
+import {checkEncode} from "../../lib/base58";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 const rpcClient = new RpcClient("https://test-node.incognito.org");
@@ -165,7 +167,7 @@ async function TestCreateAndSendNativeToken() {
   // console.log("Send tx 2 done");
 }
 
-TestCreateAndSendNativeToken();
+// TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;
@@ -267,7 +269,7 @@ async function TestCreateAndSendStakingTx() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
   // staker
-  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderSpendingKeyStr = "112t8rnh9vKeWh8n7JoSoVfhP42zzqyhcrETuHo5V5r9J7GtjwT2hXGjSTGHBc2KF7fxh93iyea3fe3xR1QVEB41qS7eXj7LYsiW2jSqjbPd";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
@@ -276,11 +278,13 @@ async function TestCreateAndSendStakingTx() {
   accountSender.key = senderKeyWallet;
 
   let param = { type: 0 };
-  let fee = 1500000;
+  let fee = 30;
   let candidatePaymentAddress = senderPaymentAddressStr;
-  let candidateMiningSeedKey = "12VH5z8JCn9B8SyHvB3aYP4ZGr1Wf9Rywx2ZSBe3eQneADzJ3bL";
+  // let candidateMiningSeedKey = "12VH5z8JCn9B8SyHvB3aYP4ZGr1Wf9Rywx2ZSBe3eQneADzJ3bL";
   let rewardReceiverPaymentAddress = senderPaymentAddressStr;
   let autoReStaking = true;
+
+  let candidateMiningSeedKey = checkEncode(accountSender.key.getMiningSeedKey(), ENCODE_VERSION);
 
   // create and send staking tx
   try {
@@ -290,7 +294,7 @@ async function TestCreateAndSendStakingTx() {
   }
 }
 
-// TestCreateAndSendStakingTx();
+TestCreateAndSendStakingTx();
 
 async function TestDefragment() {
   Wallet.RpcClient = rpcClient;
@@ -374,34 +378,34 @@ async function TestCreateAndSendPRVContributionTx() {
 
 // TestCreateAndSendPRVContributionTx();
 
-async function TestCreateAndSendPRVContributionTx() {
-  Wallet.RpcClient = rpcClient;
-  await sleep(5000);
-  // staker
-  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
-  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
-  // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
+// async function TestCreateAndSendPRVContributionTx() {
+//   Wallet.RpcClient = rpcClient;
+//   await sleep(5000);
+//   // staker
+//   let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+//   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+//   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+//   // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
-  let accountSender = new AccountWallet();
-  accountSender.key = senderKeyWallet;
+//   let accountSender = new AccountWallet();
+//   accountSender.key = senderKeyWallet;
 
-  let feeNativeToken = 1500000;
-  let pdeContributionPairID = "123";
-  let contributedAmount = 100;
+//   let feeNativeToken = 1500000;
+//   let pdeContributionPairID = "123";
+//   let contributedAmount = 100;
 
-  let tokenParam = {
-    TokenID: "51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436",
-    TokenName: "Rose",
-    TokenSymbol: "Rose"
-  }
+//   let tokenParam = {
+//     TokenID: "51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436",
+//     TokenName: "Rose",
+//     TokenSymbol: "Rose"
+//   }
 
-  // create and send staking tx
-  try {
-    await accountSender.createAndSendPTokenContributionTx(
-      tokenParam, feeNativeToken, pdeContributionPairID, contributedAmount
-    );
-  } catch (e) {
-    console.log("Error when staking: ", e);
-  }
-}
+//   // create and send staking tx
+//   try {
+//     await accountSender.createAndSendPTokenContributionTx(
+//       tokenParam, feeNativeToken, pdeContributionPairID, contributedAmount
+//     );
+//   } catch (e) {
+//     console.log("Error when staking: ", e);
+//   }
+// }
