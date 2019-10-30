@@ -10271,7 +10271,7 @@ function () {
       var _createAndSendPTokenContributionTx = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee13(tokenParam, feeNativeToken, feePToken, pdeContributionPairID, contributedAmount) {
-        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, contributorAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes3, _i15, _sndBytes3, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, tokenIDBytes, tokenID, response, status;
+        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, contributorAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes3, _i15, _sndBytes3, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, status;
 
         return regeneratorRuntime.wrap(function _callee13$(_context13) {
           while (1) {
@@ -10487,34 +10487,31 @@ function () {
 
                 b58CheckEncodeTx = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(resInitTxBytes.slice(0, resInitTxBytes.length - 40), _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]); // get lock time tx
 
-                lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 40, resInitTxBytes.length - 32);
+                lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
-                tokenIDBytes = resInitTxBytes.slice(resInitTxBytes.length - 32);
-                tokenID = Object(_common__WEBPACK_IMPORTED_MODULE_12__["convertHashToStr"])(tokenIDBytes).toLowerCase();
-                console.log("createAndSendPTokenContributionTx tokenID: ", tokenID);
-                _context13.next = 90;
+                _context13.next = 87;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(80);
 
-              case 90:
-                _context13.prev = 90;
-                _context13.next = 93;
+              case 87:
+                _context13.prev = 87;
+                _context13.next = 90;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTxCustomTokenPrivacy(b58CheckEncodeTx);
 
-              case 93:
+              case 90:
                 response = _context13.sent;
-                _context13.next = 99;
+                _context13.next = 96;
                 break;
 
-              case 96:
-                _context13.prev = 96;
-                _context13.t2 = _context13["catch"](90);
+              case 93:
+                _context13.prev = 93;
+                _context13.t2 = _context13["catch"](87);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx");
 
-              case 99:
-                _context13.next = 101;
+              case 96:
+                _context13.next = 98;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
 
-              case 101:
+              case 98:
                 // saving history tx
                 // check status of tx
                 // let listUTXOForPRV = [];
@@ -10530,10 +10527,10 @@ function () {
                   response.lockTime = lockTime;
                   response.amountNativeToken = amountTransferPRV.toNumber();
                   response.amountPToken = amountTransferPToken.toNumber();
-                  response.txStatus = status;
-                  response.tokenName = tokenParamJson.propertyName;
-                  response.tokenID = tokenID;
-                  response.tokenSymbol = tokenParamJson.propertySymbol; // add spending list
+                  response.txStatus = status; // response.tokenName = tokenParamJson.propertyName;
+                  // response.tokenID = tokenID;
+                  // response.tokenSymbol = tokenParamJson.propertySymbol;
+                  // add spending list
                   // let spendingSNs = [];
                   // for (let i = 0; i < inputForTx.inputCoinStrs.length; i++) {
                   //   spendingSNs.push(inputForTx.inputCoinStrs[i].SerialNumber);
@@ -10546,18 +10543,18 @@ function () {
                 // this.savePrivacyTokenTxHistory(response, [BurnAddress], isIn, false, false, listUTXOForPRV, listUTXOForPToken, "");
 
 
-                _context13.next = 105;
+                _context13.next = 102;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 105:
+              case 102:
                 return _context13.abrupt("return", response);
 
-              case 106:
+              case 103:
               case "end":
                 return _context13.stop();
             }
           }
-        }, _callee13, this, [[9, 17], [22, 28], [90, 96]]);
+        }, _callee13, this, [[9, 17], [22, 28], [87, 93]]);
       }));
 
       function createAndSendPTokenContributionTx(_x18, _x19, _x20, _x21, _x22) {
@@ -11077,10 +11074,10 @@ function () {
                   response.lockTime = lockTime;
                   response.amountNativeToken = amountTransferPRV.toNumber();
                   response.amountPToken = amountTransferPToken.toNumber();
-                  response.txStatus = status;
-                  response.tokenName = tokenParamJson.propertyName;
-                  response.tokenID = tokenID;
-                  response.tokenSymbol = tokenParamJson.propertySymbol; // add spending list
+                  response.txStatus = status; // response.tokenName = tokenParamJson.propertyName;
+                  // response.tokenID = tokenID;
+                  // response.tokenSymbol = tokenParamJson.propertySymbol;
+                  // add spending list
                   // let spendingSNs = [];
                   // for (let i = 0; i < inputForTx.inputCoinStrs.length; i++) {
                   //   spendingSNs.push(inputForTx.inputCoinStrs[i].SerialNumber);
