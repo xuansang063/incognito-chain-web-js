@@ -6121,12 +6121,13 @@ function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            console.log("AAAAAAAAA after: ", totalAmountTransfer, fee);
             paymentAddrSerialize = account.key.base58CheckSerialize(_wallet_constants__WEBPACK_IMPORTED_MODULE_7__["PaymentAddressType"]); // get unspent output coin with tokenID
 
-            _context.next = 3;
+            _context.next = 4;
             return account.getUnspentToken(tokenID, rpcClient);
 
-          case 3:
+          case 4:
             unspentCoinStrs = _context.sent;
             console.log("prepareInputForTx unspentCoinStrs: ", unspentCoinStrs); // remove spending coins from list of unspent coins
 
@@ -6135,29 +6136,29 @@ function () {
 
             amountTransfer = amountTransfer.add(fee);
             console.log("prepareInputForTx amountTransfer add fee: ", amountTransfer);
-            _context.prev = 9;
+            _context.prev = 10;
             respChooseBestCoin = chooseBestCoinToSpent(unspentCoinExceptSpendingCoin, amountTransfer);
-            _context.next = 17;
+            _context.next = 18;
             break;
 
-          case 13:
-            _context.prev = 13;
-            _context.t0 = _context["catch"](9);
+          case 14:
+            _context.prev = 14;
+            _context.t0 = _context["catch"](10);
             console.log("Error when chooseBestCoinToSpent", _context.t0);
             throw _context.t0;
 
-          case 17:
+          case 18:
             inputCoinsToSpent = respChooseBestCoin.resultInputCoins;
             console.log("prepareInputForTx inputCoinsToSpent: ", inputCoinsToSpent);
 
             if (!(inputCoinsToSpent.length == 0 && amountTransfer.cmp(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0)) != 0)) {
-              _context.next = 21;
+              _context.next = 22;
               break;
             }
 
             throw new _errorhandler__WEBPACK_IMPORTED_MODULE_9__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_9__["ErrorObject"].NotEnoughCoinError, "Not enough coin to spend");
 
-          case 21:
+          case 22:
             // prepare random comitment list
             commitmentIndices = []; // array index random of commitments in db
 
@@ -6167,25 +6168,25 @@ function () {
             // call api to random commitments list
 
             if (!hasPrivacy) {
-              _context.next = 44;
+              _context.next = 45;
               break;
             }
 
-            _context.prev = 25;
-            _context.next = 28;
+            _context.prev = 26;
+            _context.next = 29;
             return rpcClient.randomCommitmentsProcess(paymentAddrSerialize, inputCoinsToSpent, tokenID);
 
-          case 28:
+          case 29:
             response = _context.sent;
-            _context.next = 34;
+            _context.next = 35;
             break;
 
-          case 31:
-            _context.prev = 31;
-            _context.t1 = _context["catch"](25);
+          case 32:
+            _context.prev = 32;
+            _context.t1 = _context["catch"](26);
             throw _context.t1;
 
-          case 34:
+          case 35:
             commitmentIndices = response.commitmentIndices; // array index random of commitments in db
 
             myCommitmentIndices = response.myCommitmentIndices; // index in array index random of commitment in db
@@ -6196,21 +6197,21 @@ function () {
             console.log("prepareInputForTx myCommitmentIndices: ", myCommitmentIndices); // Check number of list of random commitments, list of random commitment indices
 
             if (!(commitmentIndices.length !== inputCoinsToSpent.length * _privacy_constants__WEBPACK_IMPORTED_MODULE_10__["CM_RING_SIZE"])) {
-              _context.next = 42;
+              _context.next = 43;
               break;
             }
 
             throw new Error("Invalid random commitments");
 
-          case 42:
+          case 43:
             if (!(myCommitmentIndices.length !== inputCoinsToSpent.length)) {
-              _context.next = 44;
+              _context.next = 45;
               break;
             }
 
             throw new Error("Number of list my commitment indices must be equal to number of input coins");
 
-          case 44:
+          case 45:
             totalValueInput = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
 
             for (i = 0; i < inputCoinsToSpent.length; i++) {
@@ -6226,12 +6227,12 @@ function () {
               commitmentStrs: commitmentStrs
             });
 
-          case 47:
+          case 48:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[9, 13], [25, 31]]);
+    }, _callee, null, [[10, 14], [26, 32]]);
   }));
 
   return function prepareInputForTx(_x, _x2, _x3, _x4, _x5, _x6) {
@@ -10628,33 +10629,34 @@ function () {
                 senderSkStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PriKeyType"]); // let paymentAddressStr = this.key.base58CheckSerialize(PaymentAddressType);
                 // let viewingKeyStr = this.key.base58CheckSerialize(ReadonlyKeyType);
 
+                console.log("AAAAAAAAA before: ", totalAmountTransfer, fee);
                 console.time("Time for create and send tx");
-                _context14.prev = 10;
+                _context14.prev = 11;
                 // prepare input 
                 console.time("Time for preparing input for privacy tx"); // console.log("Wallet: ", Wallet.RpcClient);
 
-                _context14.prev = 12;
-                _context14.next = 15;
+                _context14.prev = 13;
+                _context14.next = 16;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["prepareInputForTx"])(totalAmountTransfer, feeBN, isPrivacy, null, this, _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
-              case 15:
+              case 16:
                 inputForTx = _context14.sent;
                 console.log("input after prepare: ", inputForTx);
-                _context14.next = 22;
+                _context14.next = 23;
                 break;
 
-              case 19:
-                _context14.prev = 19;
-                _context14.t0 = _context14["catch"](12);
+              case 20:
+                _context14.prev = 20;
+                _context14.t0 = _context14["catch"](13);
                 throw _context14.t0;
 
-              case 22:
+              case 23:
                 console.log("createAndSendTxWithNativeTokenContribution inputForTx: ", inputForTx);
                 console.timeEnd("Time for preparing input for privacy tx");
-                _context14.next = 26;
+                _context14.next = 27;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(30);
 
-              case 26:
+              case 27:
                 nOutput = paramPaymentInfos.length;
 
                 if (inputForTx.totalValueInput.cmp(totalAmountTransfer) === 1) {
@@ -10664,24 +10666,24 @@ function () {
                 sndOutputs = new Array(nOutput);
 
                 if (!(typeof randomScalars === "function")) {
-                  _context14.next = 37;
+                  _context14.next = 38;
                   break;
                 }
 
-                _context14.next = 32;
+                _context14.next = 33;
                 return randomScalars(nOutput.toString());
 
-              case 32:
+              case 33:
                 sndOutputStrs = _context14.sent;
 
                 if (!(sndOutputStrs === null || sndOutputStrs === "")) {
-                  _context14.next = 35;
+                  _context14.next = 36;
                   break;
                 }
 
                 throw new Error("Can not random scalars for output coins");
 
-              case 35:
+              case 36:
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrs);
 
                 for (i = 0; i < nOutput; i++) {
@@ -10689,7 +10691,7 @@ function () {
                   sndOutputs[i] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
-              case 37:
+              case 38:
                 console.log("createAndSendTxWithNativeTokenContribution sndOutputs: ", sndOutputs);
                 traderAddressStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PaymentAddressType"]);
                 _tokenIDStr2 = Object(_common__WEBPACK_IMPORTED_MODULE_12__["convertHashToStr"])(_constants__WEBPACK_IMPORTED_MODULE_4__["PRVID"]); // prepare meta data for tx
@@ -10705,26 +10707,26 @@ function () {
                 console.log("createAndSendTxWithNativeTokenContribution paramInitTx: ", paramInitTx);
 
                 if (!(typeof initPRVTradeTx === "function")) {
-                  _context14.next = 51;
+                  _context14.next = 52;
                   break;
                 }
 
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_11___default.a.stringify(paramInitTx);
                 console.log("paramInitTxJson: ", paramInitTxJson);
-                _context14.next = 48;
+                _context14.next = 49;
                 return initPRVTradeTx(paramInitTxJson);
 
-              case 48:
+              case 49:
                 resInitTx = _context14.sent;
 
                 if (!(resInitTx === null || resInitTx === "")) {
-                  _context14.next = 51;
+                  _context14.next = 52;
                   break;
                 }
 
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-              case 51:
+              case 52:
                 console.log("createAndSendTxWithNativeTokenContribution resInitTx: ", resInitTx); //base64 decode txjson
 
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(resInitTx); // get b58 check encode tx json
@@ -10733,31 +10735,31 @@ function () {
 
                 lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
-                _context14.next = 58;
+                _context14.next = 59;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(60);
 
-              case 58:
+              case 59:
                 console.time("Time for sending tx");
-                _context14.prev = 59;
-                _context14.next = 62;
+                _context14.prev = 60;
+                _context14.next = 63;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 62:
+              case 63:
                 response = _context14.sent;
-                _context14.next = 69;
+                _context14.next = 70;
                 break;
 
-              case 65:
-                _context14.prev = 65;
-                _context14.t1 = _context14["catch"](59);
+              case 66:
+                _context14.prev = 66;
+                _context14.t1 = _context14["catch"](60);
                 console.log("createAndSendTxWithNativeTokenContribution Error when sending tx: ", _context14.t1);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
 
-              case 69:
-                _context14.next = 71;
+              case 70:
+                _context14.next = 72;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
 
-              case 71:
+              case 72:
                 console.timeEnd("Time for sending tx");
                 console.timeEnd("Time for create and send tx"); // saving history tx
                 // check status of tx and add coins to spending coins
@@ -10774,28 +10776,28 @@ function () {
                   response.txStatus = status;
                 }
 
-                _context14.next = 77;
+                _context14.next = 78;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 77:
+              case 78:
                 return _context14.abrupt("return", response);
 
-              case 80:
-                _context14.prev = 80;
-                _context14.t2 = _context14["catch"](10);
-                _context14.next = 84;
+              case 81:
+                _context14.prev = 81;
+                _context14.t2 = _context14["catch"](11);
+                _context14.next = 85;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(0);
 
-              case 84:
+              case 85:
                 console.log(_context14.t2);
                 throw _context14.t2;
 
-              case 86:
+              case 87:
               case "end":
                 return _context14.stop();
             }
           }
-        }, _callee14, this, [[10, 80], [12, 19], [59, 65]]);
+        }, _callee14, this, [[11, 81], [13, 20], [60, 66]]);
       }));
 
       function createAndSendNativeTokenTradeRequestTx(_x23, _x24, _x25) {
