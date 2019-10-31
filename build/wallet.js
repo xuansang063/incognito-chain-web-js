@@ -9174,8 +9174,8 @@ function () {
                   listUTXOForPRV.push(inputForTx.inputCoinStrs[_i10].SNDerivator);
                 }
 
-                for (_i11 = 0; _i11 < inputForPrivacyTokenTx.inputCoinStrs.length; _i11++) {
-                  listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[_i11].SNDerivator);
+                for (_i11 = 0; _i11 < inputForPrivacyTokenTx.tokenInputs.length; _i11++) {
+                  listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i11].SNDerivator);
                 }
 
                 this.addSpendingCoins({
@@ -9887,8 +9887,8 @@ function () {
                     listUTXOForPRV.push(inputForTx.inputCoinStrs[_i14].SNDerivator);
                   }
 
-                  for (_i15 = 0; _i15 < inputForPrivacyTokenTx.inputCoinStrs.length; _i15++) {
-                    listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[_i15].SNDerivator);
+                  for (_i15 = 0; _i15 < inputForPrivacyTokenTx.tokenInputs.length; _i15++) {
+                    listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i15].SNDerivator);
                   }
 
                   this.addSpendingCoins({
