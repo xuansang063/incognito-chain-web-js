@@ -6228,9 +6228,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _errorhandler__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../errorhandler */ "./lib/errorhandler.js");
 /* harmony import */ var _privacy_constants__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../privacy/constants */ "./lib/privacy/constants.js");
 /* harmony import */ var _coin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../coin */ "./lib/coin.js");
+/* harmony import */ var _wallet_wallet__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../wallet/wallet */ "./lib/wallet/wallet.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -7058,7 +7060,7 @@ function _getMaxWithdrawAmount() {
   _getMaxWithdrawAmount = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee7(from, to, tokenObject, account, rpcClient, isPrivacyForPrivateToken) {
-    var id, name, symbol, tokenParamJson, totalpTokenAmount, unspentToken, i, fee, maxWithdrawAmount;
+    var id, name, symbol, tokenParamJson, totalpTokenAmount, unspentToken, i, isRatePToken, isGetTokenFee, fee, maxWithdrawAmount;
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
@@ -7119,32 +7121,60 @@ function _getMaxWithdrawAmount() {
           case 20:
             _context7.prev = 20;
             _context7.next = 23;
-            return getEstimateFee(from, to, 0, account, false, isPrivacyForPrivateToken, rpcClient, null, tokenParamJson, true);
+            return _wallet_wallet__WEBPACK_IMPORTED_MODULE_12__["Wallet"].RpcClient.isExchangeRatePToken(tokenParamJson.propertyID);
 
           case 23:
-            fee = _context7.sent;
-            _context7.next = 29;
+            isRatePToken = _context7.sent;
+            _context7.next = 30;
             break;
 
           case 26:
             _context7.prev = 26;
             _context7.t1 = _context7["catch"](20);
-            throw _context7.t1;
+            console.log("Error when get exchange rate token");
+            isRatePToken = false;
 
-          case 29:
-            maxWithdrawAmount = totalpTokenAmount.sub(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(fee));
+          case 30:
+            isGetTokenFee = false;
+
+            if (isRatePToken) {
+              isGetTokenFee = true;
+            }
+
+            _context7.prev = 32;
+            _context7.next = 35;
+            return getEstimateFee(from, to, 0, account, false, isPrivacyForPrivateToken, rpcClient, null, tokenParamJson, isGetTokenFee);
+
+          case 35:
+            fee = _context7.sent;
+            _context7.next = 41;
+            break;
+
+          case 38:
+            _context7.prev = 38;
+            _context7.t2 = _context7["catch"](32);
+            throw _context7.t2;
+
+          case 41:
+            maxWithdrawAmount = totalpTokenAmount;
+
+            if (isGetTokenFee) {
+              maxWithdrawAmount = maxWithdrawAmount.sub(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(fee));
+            }
+
             return _context7.abrupt("return", {
               maxWithdrawAmount: maxWithdrawAmount.toNumber(),
               feeCreateTx: fee,
-              feeForBurn: fee
+              feeForBurn: fee,
+              isGetTokenFee: isGetTokenFee
             });
 
-          case 31:
+          case 44:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[9, 17], [20, 26]]);
+    }, _callee7, null, [[9, 17], [20, 26], [32, 38]]);
   }));
   return _getMaxWithdrawAmount.apply(this, arguments);
 }
