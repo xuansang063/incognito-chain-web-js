@@ -33,4 +33,21 @@ async function TestInitWallet() {
 
   wallet2.save("1");
 }
-TestInitWallet()
+// TestInitWallet()
+
+async function TestImportAccount(){
+  Wallet.RpcClient = rpcClient;
+
+  await sleep(5000);
+
+  let passphrase = "1";
+  let wallet = new Wallet();
+  wallet.init(passphrase, 1, "Wallet", new DefaultStorage())
+
+  wallet.importAccount("12Ryp47jXJfkz5Cketp4D9U7uTH4hFgFUVUEzq6k5ikvAZ94JucsYbi235siCMud5GdtRi1DoSecsTD2nkiic9TH7YNkLEoEhrvxvwt", "Hien", passphrase);
+
+  console.log("Wallet: ", wallet.MasterAccount.child[1].key);
+
+}
+
+TestImportAccount()

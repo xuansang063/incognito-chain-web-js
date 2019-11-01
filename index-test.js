@@ -3,7 +3,7 @@ require("@babel/polyfill");
 require("./loadwasm");
 
 // wallet test
-// require("./test/wallet/wallet-test");
+require("./test/wallet/wallet-test");
 // require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
 // require("./test/wallet/utils-test");
@@ -36,5 +36,5 @@ require("./loadwasm");
 
 /************* RPC TEST **************/
 
-require('./test/rpc/rpc-test');
+// require('./test/rpc/rpc-test');
 

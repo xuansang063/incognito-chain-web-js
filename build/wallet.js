@@ -794,6 +794,10 @@ var ErrorObject = (_ErrorObject = {
     code: -2004,
     description: "New entropy error"
   },
+  PrivateKeyInvalidErr: {
+    code: -2005,
+    description: "Private key is invalid when importing account"
+  },
   // -3000 -> -3999: transaction error
   PrepareInputNormalTxErr: {
     code: -3000,
@@ -4248,7 +4252,8 @@ function randBytes() {
 
     var wordLength = (n >> 2) + 1;
     var words = sjcl.random.randomWords(wordLength, paranoiaLvl);
-    res = sjcl.codec.bytes.fromBits(words);
+    var res = sjcl.codec.bytes.fromBits(words);
+    console.log("Random with sjcl: ", res);
     return res.slice(0, n);
   } catch (e) {
     console.log("Rand bytes sjcl error: ", e);
@@ -12812,6 +12817,10 @@ function () {
       } catch (e) {
         throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].B58CheckDeserializedErr, "Can not base58 check deserialized private key of importing account");
         ;
+      }
+
+      if (keyWallet.KeySet.PrivateKey.length != _constants__WEBPACK_IMPORTED_MODULE_19__["ED25519_KEY_SIZE"]) {
+        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].PrivateKeyInvalidErr, "Private key is empty");
       }
 
       keyWallet.KeySet.importFromPrivateKey(keyWallet.KeySet.PrivateKey);
