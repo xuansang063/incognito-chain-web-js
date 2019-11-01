@@ -30,7 +30,7 @@ async function TestKeyWallet() {
   console.log("key deserialize :", keyDeserialize);
 }
 
-// TestKeyWallet();
+TestKeyWallet();
 
 
 function TestGetKeySetFromPrivateKeyStr(){
@@ -42,4 +42,4 @@ function TestGetKeySetFromPrivateKeyStr(){
 
 }
 
-TestGetKeySetFromPrivateKeyStr()
+// TestGetKeySetFromPrivateKeyStr()

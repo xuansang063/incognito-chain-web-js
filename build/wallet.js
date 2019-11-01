@@ -11696,7 +11696,7 @@ function () {
 /*!*********************************!*\
   !*** ./lib/wallet/constants.js ***!
   \*********************************/
-/*! exports provided: PriKeyType, PaymentAddressType, ReadonlyKeyType, PublicKeyType, PriKeySerializeSize, PaymentAddrSerializeSize, ReadonlyKeySerializeSize, PublicKeySerializeSize, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, ShardStakingType, BeaconStakingType, MaxTxSize, ChildNumberSize, ChainCodeSize, PercentFeeToCancelTx, PrivacyUnit, NanoUnit, BurnAddress, BurningRequestMeta, WithDrawRewardRequestMeta, PRVID, NoStakeStatus, CandidatorStatus, ValidatorStatus, PDEContributionMeta, PDETradeRequestMeta, PDETradeResponseMeta, PDEWithdrawalRequestMeta, PDEWithdrawalResponseMeta, PRVIDSTR, PDEPOOLKEY */
+/*! exports provided: PriKeyType, PaymentAddressType, ReadonlyKeyType, PublicKeyType, PriKeySerializeSize, PaymentAddrSerializeSize, ReadonlyKeySerializeSize, PublicKeySerializeSize, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, ShardStakingType, BeaconStakingType, MaxTxSize, ChildNumberSize, ChainCodeSize, PercentFeeToCancelTx, PrivacyUnit, NanoUnit, BurnAddress, BurningRequestMeta, WithDrawRewardRequestMeta, PRVID, NoStakeStatus, CandidatorStatus, ValidatorStatus, PDEContributionMeta, PDETradeRequestMeta, PDETradeResponseMeta, PDEWithdrawalRequestMeta, PDEWithdrawalResponseMeta, PRVIDSTR, PDEPOOLKEY, PriKeySerializeAddCheckSumSize, PaymentAddrSerializeAddCheckSumSize, ReadonlyKeySerializeAddCheckSumSize */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11738,6 +11738,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PDEWithdrawalResponseMeta", function() { return PDEWithdrawalResponseMeta; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PRVIDSTR", function() { return PRVIDSTR; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PDEPOOLKEY", function() { return PDEPOOLKEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PriKeySerializeAddCheckSumSize", function() { return PriKeySerializeAddCheckSumSize; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PaymentAddrSerializeAddCheckSumSize", function() { return PaymentAddrSerializeAddCheckSumSize; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ReadonlyKeySerializeAddCheckSumSize", function() { return ReadonlyKeySerializeAddCheckSumSize; });
 var PriKeyType = 0x0; // Serialize wallet account key into string with only PRIVATE KEY of account KeySet
 
 var PaymentAddressType = 0x1; // Serialize wallet account key into string with only PAYMENT ADDRESS of account KeySet
@@ -11750,6 +11753,9 @@ var PriKeySerializeSize = 71;
 var PaymentAddrSerializeSize = 67;
 var ReadonlyKeySerializeSize = 67;
 var PublicKeySerializeSize = 34;
+var PriKeySerializeAddCheckSumSize = 75;
+var PaymentAddrSerializeAddCheckSumSize = 71;
+var ReadonlyKeySerializeAddCheckSumSize = 71;
 var FailedTx = 0;
 var SuccessTx = 1;
 var ConfirmedTx = 2; // for staking tx
@@ -12012,17 +12018,31 @@ function () {
       var keyType = bytes[0];
 
       if (keyType === _constants__WEBPACK_IMPORTED_MODULE_1__["PriKeyType"]) {
+        // if (bytes.length != PriKeySerializeAddCheckSumSize) {
+        //   throw new error("invalid private key");
+        // }
         key.Depth = bytes[1];
         key.ChildNumber = bytes.slice(2, 6);
         key.ChainCode = bytes.slice(6, 38);
         var keyLength = bytes[38];
         key.KeySet.PrivateKey = bytes.slice(39, 39 + keyLength);
       } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"]) {
+        // let bytesBurnAddress = checkDecode(BurnAddress).bytesDecoded;
+        // console.log("bytesBurnAddress: ", bytesBurnAddress);
+        // console.log("bytes: ", bytes);
+        // if (!bytes.equals(bytesBurnAddress)) { 
+        //   if (bytes.length != PaymentAddrSerializeAddCheckSumSize) {
+        //     throw new error("invalid payment address");
+        //   }
+        // }
         var PublicKeyLength = bytes[1];
         key.KeySet.PaymentAddress.Pk = bytes.slice(2, 2 + PublicKeyLength);
         var TransmisionKeyLength = bytes[PublicKeyLength + 2];
         key.KeySet.PaymentAddress.Tk = bytes.slice(PublicKeyLength + 3, PublicKeyLength + 3 + TransmisionKeyLength);
       } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_1__["ReadonlyKeyType"]) {
+        // if (bytes.length != ReadonlyKeySerializeAddCheckSumSize) {
+        //   throw new error("invalid read-only key");
+        // }
         var _PublicKeyLength = bytes[1];
         key.KeySet.ReadonlyKey.Pk = bytes.slice(2, 2 + _PublicKeyLength);
         var ReceivingKeyLength = bytes[_PublicKeyLength + 2];
