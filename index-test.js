@@ -3,7 +3,7 @@ require("@babel/polyfill");
 require("./loadwasm");
 
 // wallet test
-require("./test/wallet/wallet-test");
+// require("./test/wallet/wallet-test");
 // require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
 // require("./test/wallet/utils-test");
@@ -29,10 +29,12 @@ require("./test/wallet/wallet-test");
 // require('./test/utils-test');
 // require('./test/committeekey-test');
 
+/************* SCRIPTS FOR DEV **************/
+
 // require('./test/txfordev/sendPRVMultiUsers');
 // require('./test/txfordev/getBalanceMultiUsers');
 // require('./test/txfordev/multiStakingTxs.js');
-
+require('./test/txfordev/withdrawReward');
 
 /************* RPC TEST **************/
 

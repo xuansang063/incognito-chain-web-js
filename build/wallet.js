@@ -10050,6 +10050,12 @@ function () {
             paramInitTx,
             resInitTx,
             paramInitTxJson,
+            resInitTxBytes,
+            b58CheckEncodeTx,
+            lockTimeBytes,
+            lockTime,
+            response,
+            status,
             _args10 = arguments;
         return regeneratorRuntime.wrap(function _callee10$(_context10) {
           while (1) {
@@ -10119,59 +10125,77 @@ function () {
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
               case 33:
-                console.log("createAndSendWithdrawRewardTx resInitTx: ", resInitTx); // //base64 decode txjson
-                // let resInitTxBytes = base64Decode(resInitTx);
-                // // get b58 check encode tx json
-                // let b58CheckEncodeTx = checkEncode(resInitTxBytes.slice(0, resInitTxBytes.length - 8), ENCODE_VERSION);
-                // // get lock time tx
-                // let lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
-                // let lockTime = new bn(lockTimeBytes).toNumber();
-                // await Wallet.updateProgressTx(60)
-                // console.time("Time for sending tx");
-                // let response;
-                // try {
-                //   response = await Wallet.RpcClient.sendRawTx(b58CheckEncodeTx);
-                // } catch (e) {
-                //   console.log("createAndSendWithdrawRewardTx Error when sending tx: ", e);
-                //   throw new CustomError(ErrorObject.SendTxErr, "Can not send PRV transaction");
-                // }
-                // await Wallet.updateProgressTx(90)
-                // console.timeEnd("Time for sending tx");
-                // console.timeEnd("Time for create and send tx");
-                // // saving history tx
-                // // check status of tx 
-                // let status = FailedTx;
-                // if (response.txId) {
-                //   // tx.txId = response.txId
-                //   status = SuccessTx;
-                //   response.typeTx = TxNormalType;
-                //   response.feeNativeToken = 0;
-                //   response.lockTime = lockTime;
-                //   response.amountNativeToken = 0;
-                //   response.txStatus = status;
-                // }
-                // await Wallet.updateProgressTx(100);
-                // return response;
+                console.log("createAndSendWithdrawRewardTx resInitTx: ", resInitTx); //base64 decode txjson
 
-                _context10.next = 42;
-                break;
+                resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(resInitTx); // get b58 check encode tx json
 
-              case 36:
-                _context10.prev = 36;
-                _context10.t1 = _context10["catch"](8);
+                b58CheckEncodeTx = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(resInitTxBytes.slice(0, resInitTxBytes.length - 8), _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]); // get lock time tx
+
+                lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
+                lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
                 _context10.next = 40;
-                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(0);
+                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(60);
 
               case 40:
-                console.log(_context10.t1);
-                throw _context10.t1;
+                console.time("Time for sending tx");
+                _context10.prev = 41;
+                _context10.next = 44;
+                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 42:
+              case 44:
+                response = _context10.sent;
+                _context10.next = 51;
+                break;
+
+              case 47:
+                _context10.prev = 47;
+                _context10.t1 = _context10["catch"](41);
+                console.log("createAndSendWithdrawRewardTx Error when sending tx: ", _context10.t1);
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
+
+              case 51:
+                _context10.next = 53;
+                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
+
+              case 53:
+                console.timeEnd("Time for sending tx");
+                console.timeEnd("Time for create and send tx"); // saving history tx
+                // check status of tx 
+
+                status = _constants__WEBPACK_IMPORTED_MODULE_4__["FailedTx"];
+
+                if (response.txId) {
+                  // tx.txId = response.txId
+                  status = _constants__WEBPACK_IMPORTED_MODULE_4__["SuccessTx"];
+                  response.typeTx = _tx_constants__WEBPACK_IMPORTED_MODULE_1__["TxNormalType"];
+                  response.feeNativeToken = 0;
+                  response.lockTime = lockTime;
+                  response.amountNativeToken = 0;
+                  response.txStatus = status;
+                }
+
+                _context10.next = 59;
+                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
+
+              case 59:
+                return _context10.abrupt("return", response);
+
+              case 62:
+                _context10.prev = 62;
+                _context10.t2 = _context10["catch"](8);
+                _context10.next = 66;
+                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(0);
+
+              case 66:
+                console.log(_context10.t2);
+                throw _context10.t2;
+
+              case 68:
               case "end":
                 return _context10.stop();
             }
           }
-        }, _callee10, this, [[8, 36], [10, 16]]);
+        }, _callee10, this, [[8, 62], [10, 16], [41, 47]]);
       }));
 
       function createAndSendWithdrawRewardTx() {
