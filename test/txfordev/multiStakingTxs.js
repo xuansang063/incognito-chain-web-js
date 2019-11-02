@@ -7,9 +7,12 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { PaymentAddressType } from '../../lib/wallet/constants';
 import { ENCODE_VERSION } from '../../lib/constants';
 import {checkEncode} from "../../lib/base58";
+import { SSL_OP_EPHEMERAL_RSA } from 'constants';
 const fs = require('fs');
 
+// Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+// Wallet.RpcClient = new RpcClient("http://54.39.158.106:20032");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
 
 async function sleep(sleepTime) {
@@ -18,12 +21,13 @@ async function sleep(sleepTime) {
 
 async function MultiStaking() {
   // load file paymentAddr.json to set payment infos
-  let jsonString = fs.readFileSync('./test/txfordev/privateKeyStaking.json');
+  let jsonString = fs.readFileSync('./test/txfordev/privateKeyList.json');
 
   let data = JSON.parse(jsonString);
-  console.log("Data AAA: ", data);
+  console.log("Data multi staking: ", data);
 
   await sleep(5000);
+  let wrongCount = 0;
 
   for (let i = 0; i < data.privateKeys.length; i++) {
     // set private for funder
@@ -35,7 +39,7 @@ async function MultiStaking() {
     let accountFunder = new AccountWallet();
     accountFunder.key = funderKeyWallet;
 
-    let fee = 500000000; // nano PRV
+    let fee = 0.5 * 1e9; // nano PRV
     let param = {
       type: 0
     };
@@ -50,11 +54,13 @@ async function MultiStaking() {
       console.log("congratulations to you! Stake successfully! ^.^")
       console.log("Response: ", response);
     } catch (e) {
+      wrongCount++;
       console.log(e);
       console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
     }
-    await sleep(2000);
+    await sleep(1000);
   }
+  console.log("Running staking test with wrong count: ", wrongCount);
 }
 
 MultiStaking();
