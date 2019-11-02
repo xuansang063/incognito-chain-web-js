@@ -10,8 +10,8 @@ import {checkEncode} from "../../lib/base58";
 import { SSL_OP_EPHEMERAL_RSA } from 'constants';
 const fs = require('fs');
 
-// Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
+// Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
 // Wallet.RpcClient = new RpcClient("http://54.39.158.106:20032");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
 
