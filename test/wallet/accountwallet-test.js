@@ -8,14 +8,13 @@ import {ENCODE_VERSION} from "../../lib/constants";
 import {checkEncode} from "../../lib/base58";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-// const rpcClient = new RpcClient("https://test-node.incognito.org");
+const rpcClient = new RpcClient("https://test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:20032");
-const rpcClient = new RpcClient("http://172.105.115.134:20004");
+// const rpcClient = new RpcClient("http://172.105.115.134:20004");
 
 async function sleep(sleepTime) {
   return new Promise(resolve => setTimeout(resolve, sleepTime));
 }
-
 
 async function TestGetRewardAmount() {
   Wallet.RpcClient = rpcClient;
@@ -343,7 +342,30 @@ async function TestGetBalance() {
   }
 }
 
-// TestGetBalance();
+// TestGetAllPrivacyTokenBalance();
+
+async function TestGetAllPrivacyTokenBalance() {
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+
+  // sender key (private key)
+  let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  // create and send PRV
+  try {
+    let result = await accountSender.getAllPrivacyTokenBalance();
+    console.log("result: ", result);
+  } catch (e) {
+    console.log("Error when get balance: ", e);
+  }
+}
+
+TestGetAllPrivacyTokenBalance();
 
 
 
@@ -437,39 +459,3 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
 }
 
 // TestCreateAndSendNativeTokenTradeRequestTx();
-
-
-async function TestSendRawTx() {
-  Wallet.RpcClient = rpcClient;
-  await sleep(5000);
-
-  let txInJson = `{
-    "Fee": 18446744073709552000,
-    "Info": "",
-    "LockTime": 1572503084,
-    "Metadata": {
-        "SellAmount": 20000000000,
-        "TokenIDToBuyStr": "e111605a8d2d300de9a323fc314c50fa3412047c2cef85be0ddfb7deb8c3885d",
-        "TokenIDToSellStr": "0000000000000000000000000000000000000000000000000000000000000004",
-        "TraderAddressStr": "12RxDkxyDdPFUAiE9Fhq8BnqrFvRe9YcTGEd8JwYrWkwK4cD2JX2QPG7MKuhUbp13vgB7Tpsvmf85BLr4AvGPaXVF3FuHGt2bdM7spG",
-        "Type": 91
-    },
-    "Proof": "AAABwMn1BI01HGNRoFK9SKf3nFg10kVi4N9gaBHGyin/W6q3ecHoiCOVm/VGO8lkNEdopa0FuG+F5b/RziN35jFzc9DSLlYQK0bnZddo3IFY1IUrxtYiEinCg5H/TOecRI3VAYHwCCQAm9yzZKnlve6d+pN9OuFgV50qi1JozBmn8PDUcmWVfiRC05K+oQNuhnLWYIklR5qZ4sg4pJAHAGiwANwy3rMjXrqHagvHCZIPxZLQGAW9037gzcu0xVNb7QK7CQAAAawgecHoiCOVm/VGO8lkNEdopa0FuG+F5b/RziN35jFzc9AgfJi42/Y17XgO015gAryjTDc3gROL2AAiJikVGaZmbmog0i5WECtG52XXaNyBWNSFK8bWIhIpwoOR/0znnESN1QEgyfUEjTUcY1GgUr1Ip/ecWDXSRWLg32BoEcbKKf9bqrcgiLxNpA3k1kTTzXhL/xi27YfjQTid2FnRk+mpkLL9Tw8FF0h259gAAo4AjCBjt/ahRKzk3pkJrCfQ9adPCwJyQfFFVSjBaMdPRgQ1ACAlHfyXiHMXOaHtMJg9PRL7ZcJu81e0JZ+ok+C7uP23byD69QlsF3mSLa92CvstBZGBZUBPsOqYmFmIcGum7u2bDAAg9beWBaFpf6SLzSrxapQjaC5Vm1LSg/eie33Oln0q2AcFBKgXyAAAjgCMIHnB6IgjlZv1RjvJZDRHaKWtBbhvheW/0c4jd+Yxc3PQIP92RVLQNJFiGj0FAIvJpp5xCSJNCe3ivJ0Ex9PaAfyuIBM1MnLtB7yxNXu5eFFQ/P2obE51qq21rp1SNW4pDXsHACAi39A+xXNp5YfXvH4mgj4jZf2iHn2hwf7+sH1t+y1mCgUSoF8f2QAAAAAAAAAA",
-    "PubKeyLastByteSender": 208,
-    "Sig": "MS1D+OQuJPTrmIzrSI89fvvcwIVO+k2fx1q1r4ykRADBRoQL1Bw/1DCTQMC3Bb1PsVDsfKCxthHiLHyPZn+uCQ==",
-    "SigPubKey": "ecHoiCOVm/VGO8lkNEdopa0FuG+F5b/RziN35jFzc9A=",
-    "Type": "n",
-    "Version": 1
-}`;
-
-let res;
-try {
-  res = await Wallet.RpcClient.sendRawTx2(txInJson);
-} catch(e){
-  console.log("Error: ", e);
-}
-  
-  console.log("res: ", res);
-}
-
-TestSendRawTx();
