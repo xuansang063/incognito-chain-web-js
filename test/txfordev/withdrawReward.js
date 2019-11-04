@@ -1,13 +1,8 @@
-import { Wallet, DefaultStorage } from '../../lib/wallet/wallet'
+import { Wallet } from '../../lib/wallet/wallet'
 import { KeyWallet as keyWallet } from "../../lib/wallet/hdwallet";
 import { AccountWallet } from "../../lib/wallet/accountWallet";
-import * as key from "../../lib/key";
-import bn from 'bn.js';
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { PaymentAddressType } from '../../lib/wallet/constants';
-import { ENCODE_VERSION } from '../../lib/constants';
-import {checkEncode} from "../../lib/base58";
-import { SSL_OP_EPHEMERAL_RSA } from 'constants';
 const fs = require('fs');
 
 // Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
@@ -37,22 +32,34 @@ async function MultiWithdrawReward() {
     let senderPrivateKeyStr = data.privateKeys[i];
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
     senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
-    // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
+    let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
     let accountFunder = new AccountWallet();
     accountFunder.key = senderKeyWallet;
 
+    // get reward amount 
+    let amountReward = 0;
     try {
-      let response = await accountFunder.createAndSendWithdrawRewardTx(tokenIDStr);
-      console.log("congratulations to you! Withdraw successfully! ^.^")
-      console.log("Response: ", response);
+      amountReward = await AccountWallet.getRewardAmount(senderPaymentAddressStr, false, tokenIDStr);
+      console.log("amountReward: ", amountReward);
     } catch (e) {
-      wrongCount++;
-      console.log(e);
-      console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
+      console.log("Error get reward amount: ", e);
     }
+
+    if (amountReward > 0) {
+      try {
+        let response = await accountFunder.createAndSendWithdrawRewardTx(tokenIDStr);
+        console.log("congratulations to you! Withdraw successfully! ^.^")
+        console.log("Response: ", response);
+      } catch (e) {
+        wrongCount++;
+        console.log(e);
+        console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
+      }
+    }
+    
     await sleep(1000);
   }
-  console.log("Running staking test with wrong count: ", wrongCount);
+  console.log("Running withdraw amount test with wrong count: ", wrongCount);
 }
 
 MultiWithdrawReward();
