@@ -35,6 +35,47 @@ async function TestInitWallet() {
 }
 // TestInitWallet()
 
+async function TestImportWallet() {
+  Wallet.RpcClient = rpcClient;
+
+  await sleep(5000);
+
+  let wallet = new Wallet();
+
+  let words = [
+    "ability",
+    "able",
+    "about",
+    "above",
+    "absent",
+    "absorb",
+    "abstract",
+    "absurd",
+    "abuse",
+    "access",
+    "accident",
+    "account"
+  ];
+  console.log("typeof words: ", typeof words);
+
+  words = words.join(" ");
+
+  wallet.import(words, "1", 1, "Wallet", new DefaultStorage())
+
+  // wallet2.createNewAccount("Test 2")
+  // // let privKey = wallet2.exportAccountPrivateKey(0)
+
+  // let accounts = wallet2.listAccount();
+  // console.log("accounts: ", accounts);
+  
+  // let account2 = await wallet2.listAccountWithBLSPubKey();
+  // console.log("accounts: ", account2);
+  wallet.save("1");
+
+  console.log("Wallet: ", wallet);
+}
+TestImportWallet()
+
 async function TestImportAccount(){
   Wallet.RpcClient = rpcClient;
 
@@ -50,4 +91,4 @@ async function TestImportAccount(){
 
 }
 
-TestImportAccount()
+// TestImportAccount()
