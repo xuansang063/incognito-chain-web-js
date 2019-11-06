@@ -8050,6 +8050,7 @@ function () {
     key: "saveNormalTxHistory",
     value: function saveNormalTxHistory(tx, receivers, isIn, isPrivacyNativeToken, listUTXOForPRV) {
       var hashOriginalTx = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : "";
+      var metaData = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
       var txHistory = new _history__WEBPACK_IMPORTED_MODULE_9__["TxHistoryInfo"]();
       var historyObj = {
         txID: tx.txId,
@@ -8073,7 +8074,8 @@ function () {
         isPrivacyForPToken: false,
         listUTXOForPRV: listUTXOForPRV,
         listUTXOForPToken: [],
-        hashOriginalTx: hashOriginalTx
+        hashOriginalTx: hashOriginalTx,
+        metaData: metaData
       };
       txHistory.setHistoryInfo(historyObj);
       this.txHistory.NormalTx.unshift(txHistory);
@@ -8094,6 +8096,7 @@ function () {
      */
     value: function savePrivacyTokenTxHistory(tx, receivers, isIn, isPrivacyNativeToken, isPrivacyForPToken, listUTXOForPRV, listUTXOForPToken) {
       var hashOriginalTx = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : "";
+      var metaData = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : null;
       var txHistory = new _history__WEBPACK_IMPORTED_MODULE_9__["TxHistoryInfo"]();
       var historyObj = {
         txID: tx.txId,
@@ -8117,7 +8120,8 @@ function () {
         isPrivacyForPToken: isPrivacyForPToken,
         listUTXOForPRV: listUTXOForPRV,
         listUTXOForPToken: listUTXOForPToken,
-        hashOriginalTx: hashOriginalTx
+        hashOriginalTx: hashOriginalTx,
+        metaData: metaData
       };
       txHistory.setHistoryInfo(historyObj);
       this.txHistory.PrivacyTokenTx.unshift(txHistory);
@@ -8951,7 +8955,7 @@ function () {
                 } // saving history tx
 
 
-                this.saveNormalTxHistory(_response, _constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"], false, false, listUTXOForPRV, "");
+                this.saveNormalTxHistory(_response, _constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"], false, false, listUTXOForPRV, "", meta);
                 console.log("createAndSendStakingTx History account after saving: ", this.txHistory.NormalTx);
                 _context8.next = 102;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
@@ -10092,7 +10096,7 @@ function () {
                 }
 
                 isIn = false;
-                this.savePrivacyTokenTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], isIn, false, false, listUTXOForPRV, listUTXOForPToken, "");
+                this.savePrivacyTokenTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], isIn, false, false, listUTXOForPRV, listUTXOForPToken, "", burningReqMetadata);
                 _context10.next = 118;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
@@ -10147,7 +10151,6 @@ function () {
             switch (_context11.prev = _context11.next) {
               case 0:
                 tokenID = _args11.length > 0 && _args11[0] !== undefined ? _args11[0] : "";
-                console.log("AAA tokenID 1: ", tokenID);
 
                 if (tokenID === "") {
                   tokenID = Object(_common__WEBPACK_IMPORTED_MODULE_12__["convertHashToStr"])(_constants__WEBPACK_IMPORTED_MODULE_4__["PRVID"]);
@@ -10162,54 +10165,54 @@ function () {
                 };
                 isPrivacy = false;
                 console.time("Time for create and send tx");
-                _context11.prev = 8;
+                _context11.prev = 7;
                 // prepare input for tx
                 console.time("Time for preparing input for tx");
-                _context11.prev = 10;
-                _context11.next = 13;
+                _context11.prev = 9;
+                _context11.next = 12;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["prepareInputForTx"])(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0), new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0), isPrivacy, null, this, _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
-              case 13:
+              case 12:
                 inputForTx = _context11.sent;
-                _context11.next = 19;
+                _context11.next = 18;
                 break;
 
-              case 16:
-                _context11.prev = 16;
-                _context11.t0 = _context11["catch"](10);
+              case 15:
+                _context11.prev = 15;
+                _context11.t0 = _context11["catch"](9);
                 throw _context11.t0;
 
-              case 19:
+              case 18:
                 console.log("createAndSendWithdrawRewardTx inputForTx: ", inputForTx);
                 console.timeEnd("Time for preparing input for tx");
-                _context11.next = 23;
+                _context11.next = 22;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(30);
 
-              case 23:
+              case 22:
                 sndOutputs = [];
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitTx"])(senderSkStr, [], inputForTx.inputCoinStrs, 0, isPrivacy, null, metaData, "", inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
                 console.log("createAndSendWithdrawRewardTx paramInitTx: ", paramInitTx);
 
                 if (!(typeof initWithdrawRewardTx === "function")) {
-                  _context11.next = 33;
+                  _context11.next = 32;
                   break;
                 }
 
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_11___default.a.stringify(paramInitTx);
-                _context11.next = 30;
+                _context11.next = 29;
                 return initWithdrawRewardTx(paramInitTxJson);
 
-              case 30:
+              case 29:
                 resInitTx = _context11.sent;
 
                 if (!(resInitTx === null || resInitTx === "")) {
-                  _context11.next = 33;
+                  _context11.next = 32;
                   break;
                 }
 
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-              case 33:
+              case 32:
                 console.log("createAndSendWithdrawRewardTx resInitTx: ", resInitTx); //base64 decode txjson
 
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(resInitTx); // get b58 check encode tx json
@@ -10218,31 +10221,31 @@ function () {
 
                 lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
-                _context11.next = 40;
+                _context11.next = 39;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(60);
 
-              case 40:
+              case 39:
                 console.time("Time for sending tx");
-                _context11.prev = 41;
-                _context11.next = 44;
+                _context11.prev = 40;
+                _context11.next = 43;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 44:
+              case 43:
                 response = _context11.sent;
-                _context11.next = 51;
+                _context11.next = 50;
                 break;
 
-              case 47:
-                _context11.prev = 47;
-                _context11.t1 = _context11["catch"](41);
+              case 46:
+                _context11.prev = 46;
+                _context11.t1 = _context11["catch"](40);
                 console.log("createAndSendWithdrawRewardTx Error when sending tx: ", _context11.t1);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
 
-              case 51:
-                _context11.next = 53;
+              case 50:
+                _context11.next = 52;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
 
-              case 53:
+              case 52:
                 console.timeEnd("Time for sending tx");
                 console.timeEnd("Time for create and send tx"); // saving history tx
                 // check status of tx 
@@ -10257,30 +10260,33 @@ function () {
                   response.lockTime = lockTime;
                   response.amountNativeToken = 0;
                   response.txStatus = status;
-                }
+                } // saving history tx
 
-                _context11.next = 59;
+
+                this.saveNormalTxHistory(response, [], false, isPrivacy, [], "", metaData);
+                console.log("createAndSendWithdrawRewardTx History account after saving: ", this.txHistory.NormalTx);
+                _context11.next = 60;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 59:
+              case 60:
                 return _context11.abrupt("return", response);
 
-              case 62:
-                _context11.prev = 62;
-                _context11.t2 = _context11["catch"](8);
-                _context11.next = 66;
+              case 63:
+                _context11.prev = 63;
+                _context11.t2 = _context11["catch"](7);
+                _context11.next = 67;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(0);
 
-              case 66:
+              case 67:
                 console.log(_context11.t2);
                 throw _context11.t2;
 
-              case 68:
+              case 69:
               case "end":
                 return _context11.stop();
             }
           }
-        }, _callee11, this, [[8, 62], [10, 16], [41, 47]]);
+        }, _callee11, this, [[7, 63], [9, 15], [40, 46]]);
       }));
 
       function createAndSendWithdrawRewardTx() {
@@ -10390,7 +10396,7 @@ function () {
             i,
             sndBytes,
             contributorAddressStr,
-            _tokenIDStr,
+            tokenIDStr,
             metadata,
             paramInitTx,
             resInitTx,
@@ -10400,7 +10406,10 @@ function () {
             lockTimeBytes,
             lockTime,
             response,
+            listUTXOForPRV,
             status,
+            spendingSNs,
+            _i16,
             _args13 = arguments;
 
         return regeneratorRuntime.wrap(function _callee13$(_context13) {
@@ -10493,13 +10502,13 @@ function () {
               case 38:
                 console.log("createAndSendTxWithNativeTokenContribution sndOutputs: ", sndOutputs);
                 contributorAddressStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PaymentAddressType"]);
-                _tokenIDStr = Object(_common__WEBPACK_IMPORTED_MODULE_12__["convertHashToStr"])(_constants__WEBPACK_IMPORTED_MODULE_4__["PRVID"]); // prepare meta data for tx
+                tokenIDStr = Object(_common__WEBPACK_IMPORTED_MODULE_12__["convertHashToStr"])(_constants__WEBPACK_IMPORTED_MODULE_4__["PRVID"]); // prepare meta data for tx
 
                 metadata = {
                   PDEContributionPairID: pdeContributionPairID,
                   ContributorAddressStr: contributorAddressStr,
                   ContributedAmount: contributedAmount,
-                  TokenIDStr: _tokenIDStr,
+                  TokenIDStr: tokenIDStr,
                   Type: _constants__WEBPACK_IMPORTED_MODULE_4__["PDEContributionMeta"]
                 };
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, fee, isPrivacy, null, metadata, info, inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
@@ -10539,26 +10548,27 @@ function () {
 
               case 59:
                 console.time("Time for sending tx");
-                _context13.prev = 60;
-                _context13.next = 63;
+                listUTXOForPRV = [];
+                _context13.prev = 61;
+                _context13.next = 64;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 63:
+              case 64:
                 response = _context13.sent;
-                _context13.next = 70;
+                _context13.next = 71;
                 break;
 
-              case 66:
-                _context13.prev = 66;
-                _context13.t1 = _context13["catch"](60);
+              case 67:
+                _context13.prev = 67;
+                _context13.t1 = _context13["catch"](61);
                 console.log("createAndSendTxWithNativeTokenContribution Error when sending tx: ", _context13.t1);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
 
-              case 70:
-                _context13.next = 72;
+              case 71:
+                _context13.next = 73;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
 
-              case 72:
+              case 73:
                 console.timeEnd("Time for sending tx");
                 console.timeEnd("Time for create and send tx"); // saving history tx
                 // check status of tx and add coins to spending coins
@@ -10572,31 +10582,47 @@ function () {
                   response.feeNativeToken = feeBN.toNumber();
                   response.lockTime = lockTime;
                   response.amountNativeToken = totalAmountTransfer.toNumber();
-                  response.txStatus = status;
-                }
+                  response.txStatus = status; // add spending list
 
-                _context13.next = 78;
+                  spendingSNs = [];
+
+                  for (_i16 = 0; _i16 < inputForTx.inputCoinStrs.length; _i16++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i16].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i16].SNDerivator);
+                  }
+
+                  this.addSpendingCoins({
+                    txID: response.txId,
+                    spendingSNs: spendingSNs
+                  });
+                  console.log("createAndSendNativeToken Spending coin list after saving : ", this.spendingCoins);
+                } // saving history tx
+
+
+                this.saveNormalTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], false, isPrivacy, listUTXOForPRV, "", metadata);
+                console.log("createAndSendWithdrawRewardTx History account after saving: ", this.txHistory.NormalTx);
+                _context13.next = 81;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 78:
+              case 81:
                 return _context13.abrupt("return", response);
 
-              case 81:
-                _context13.prev = 81;
+              case 84:
+                _context13.prev = 84;
                 _context13.t2 = _context13["catch"](11);
-                _context13.next = 85;
+                _context13.next = 88;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(0);
 
-              case 85:
+              case 88:
                 console.log(_context13.t2);
                 throw _context13.t2;
 
-              case 87:
+              case 90:
               case "end":
                 return _context13.stop();
             }
           }
-        }, _callee13, this, [[11, 81], [13, 20], [60, 66]]);
+        }, _callee13, this, [[11, 84], [13, 20], [61, 67]]);
       }));
 
       function createAndSendTxWithNativeTokenContribution(_x15, _x16, _x17) {
@@ -10621,7 +10647,7 @@ function () {
       var _createAndSendPTokenContributionTx = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee14(tokenParam, feeNativeToken, feePToken, pdeContributionPairID, contributedAmount) {
-        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, contributorAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes3, _i16, _sndBytes3, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, status;
+        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, contributorAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes3, _i17, _sndBytes3, metadata, isPrivacyNativeToken, isPrivacyForPToken, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, listUTXOForPRV, listUTXOForPToken, status, spendingSNs, _i18, _i19, isIn;
 
         return regeneratorRuntime.wrap(function _callee14$(_context14) {
           while (1) {
@@ -10801,9 +10827,9 @@ function () {
               case 69:
                 _sndDecodes3 = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i16 = 0; _i16 < nOutputForPToken; _i16++) {
-                  _sndBytes3 = _sndDecodes3.slice(_i16 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i16 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i16] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes3, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i17 = 0; _i17 < nOutputForPToken; _i17++) {
+                  _sndBytes3 = _sndDecodes3.slice(_i17 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i17 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i17] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes3, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 71:
@@ -10813,32 +10839,34 @@ function () {
                   PDEContributionPairID: pdeContributionPairID,
                   ContributorAddressStr: contributorAddressStr,
                   ContributedAmount: contributedAmount,
-                  TokenIDStr: tokenIDStr,
+                  TokenIDStr: tokenParamJson.propertyID,
                   Type: _constants__WEBPACK_IMPORTED_MODULE_4__["PDEContributionMeta"]
                 };
-                paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitPrivacyTokenTx"])(senderSkStr, paramPaymentInfosForNativeToken, inputForTx.inputCoinStrs, feeNativeToken, false, false, tokenParamJson, metadata, "", inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputsForNativeToken, inputForPrivacyTokenTx.commitmentIndices, inputForPrivacyTokenTx.myCommitmentIndices, inputForPrivacyTokenTx.commitmentStrs, sndOutputsForPToken);
+                isPrivacyNativeToken = false;
+                isPrivacyForPToken = false;
+                paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitPrivacyTokenTx"])(senderSkStr, paramPaymentInfosForNativeToken, inputForTx.inputCoinStrs, feeNativeToken, isPrivacyNativeToken, isPrivacyForPToken, tokenParamJson, metadata, "", inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputsForNativeToken, inputForPrivacyTokenTx.commitmentIndices, inputForPrivacyTokenTx.myCommitmentIndices, inputForPrivacyTokenTx.commitmentStrs, sndOutputsForPToken);
                 console.log("createAndSendPTokenContributionTx paramInitTx: ", paramInitTx);
 
                 if (!(typeof initPTokenContributionTx === "function")) {
-                  _context14.next = 82;
+                  _context14.next = 84;
                   break;
                 }
 
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_11___default.a.stringify(paramInitTx);
-                _context14.next = 79;
+                _context14.next = 81;
                 return initPTokenContributionTx(paramInitTxJson);
 
-              case 79:
+              case 81:
                 resInitTx = _context14.sent;
 
                 if (!(resInitTx === null || resInitTx === "")) {
-                  _context14.next = 82;
+                  _context14.next = 84;
                   break;
                 }
 
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-              case 82:
+              case 84:
                 console.log("createAndSendPTokenContributionTx resInitTx: ", resInitTx); //base64 decode txjson
 
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(resInitTx); // get b58 check encode tx json
@@ -10847,34 +10875,34 @@ function () {
 
                 lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
-                _context14.next = 89;
+                _context14.next = 91;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(80);
 
-              case 89:
-                _context14.prev = 89;
-                _context14.next = 92;
+              case 91:
+                _context14.prev = 91;
+                _context14.next = 94;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTxCustomTokenPrivacy(b58CheckEncodeTx);
 
-              case 92:
+              case 94:
                 response = _context14.sent;
-                _context14.next = 98;
+                _context14.next = 100;
                 break;
 
-              case 95:
-                _context14.prev = 95;
-                _context14.t2 = _context14["catch"](89);
+              case 97:
+                _context14.prev = 97;
+                _context14.t2 = _context14["catch"](91);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx");
 
-              case 98:
-                _context14.next = 100;
+              case 100:
+                _context14.next = 102;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
 
-              case 100:
+              case 102:
                 // saving history tx
                 // check status of tx
-                // let listUTXOForPRV = [];
-                // let listUTXOForPToken = [];
-                // check status of tx and add coins to spending coins
+                listUTXOForPRV = [];
+                listUTXOForPToken = []; // check status of tx and add coins to spending coins
+
                 status = _constants__WEBPACK_IMPORTED_MODULE_4__["FailedTx"];
 
                 if (response.txId) {
@@ -10885,34 +10913,43 @@ function () {
                   response.lockTime = lockTime;
                   response.amountNativeToken = amountTransferPRV.toNumber();
                   response.amountPToken = amountTransferPToken.toNumber();
-                  response.txStatus = status; // response.tokenName = tokenParamJson.propertyName;
-                  // response.tokenID = tokenID;
-                  // response.tokenSymbol = tokenParamJson.propertySymbol;
-                  // add spending list
-                  // let spendingSNs = [];
-                  // for (let i = 0; i < inputForTx.inputCoinStrs.length; i++) {
-                  //   spendingSNs.push(inputForTx.inputCoinStrs[i].SerialNumber);
-                  //   listUTXOForPRV.push(inputForTx.inputCoinStrs[i].SNDerivator);
-                  //   listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[i].SNDerivator)
-                  // }
-                  // this.addSpendingCoins({ txID: response.txId, spendingSNs: spendingSNs });
-                  // console.log("createAndSendPTokenContributionTx Spending coin list after saving: ", this.spendingCoins);
-                } // let isIn = false;
-                // this.savePrivacyTokenTxHistory(response, [BurnAddress], isIn, false, false, listUTXOForPRV, listUTXOForPToken, "");
+                  response.txStatus = status;
+                  response.tokenName = tokenParamJson.propertyName;
+                  response.tokenID = tokenParamJson.propertyID;
+                  response.tokenSymbol = tokenParamJson.propertySymbol; // add spending list
 
+                  spendingSNs = [];
 
-                _context14.next = 104;
+                  for (_i18 = 0; _i18 < inputForTx.inputCoinStrs.length; _i18++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i18].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i18].SNDerivator);
+                  }
+
+                  for (_i19 = 0; _i19 < inputForPrivacyTokenTx.tokenInputs.length; _i19++) {
+                    listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i19].SNDerivator);
+                  }
+
+                  this.addSpendingCoins({
+                    txID: response.txId,
+                    spendingSNs: spendingSNs
+                  });
+                  console.log("createAndSendPTokenContributionTx Spending coin list after saving: ", this.spendingCoins);
+                }
+
+                isIn = false;
+                this.savePrivacyTokenTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], isIn, isPrivacyNativeToken, isPrivacyForPToken, listUTXOForPRV, listUTXOForPToken, "", metadata);
+                _context14.next = 110;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 104:
+              case 110:
                 return _context14.abrupt("return", response);
 
-              case 105:
+              case 111:
               case "end":
                 return _context14.stop();
             }
           }
-        }, _callee14, this, [[11, 19], [24, 30], [89, 95]]);
+        }, _callee14, this, [[11, 19], [24, 30], [91, 97]]);
       }));
 
       function createAndSendPTokenContributionTx(_x18, _x19, _x20, _x21, _x22) {
@@ -10949,7 +10986,7 @@ function () {
             i,
             sndBytes,
             traderAddressStr,
-            _tokenIDStr2,
+            tokenIDStr,
             metadata,
             paramInitTx,
             resInitTx,
@@ -10959,7 +10996,10 @@ function () {
             lockTimeBytes,
             lockTime,
             response,
+            listUTXOForPRV,
             status,
+            spendingSNs,
+            _i20,
             _args15 = arguments;
 
         return regeneratorRuntime.wrap(function _callee15$(_context15) {
@@ -11053,11 +11093,11 @@ function () {
               case 39:
                 console.log("createAndSendTxWithNativeTokenContribution sndOutputs: ", sndOutputs);
                 traderAddressStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PaymentAddressType"]);
-                _tokenIDStr2 = Object(_common__WEBPACK_IMPORTED_MODULE_12__["convertHashToStr"])(_constants__WEBPACK_IMPORTED_MODULE_4__["PRVID"]); // prepare meta data for tx
+                tokenIDStr = Object(_common__WEBPACK_IMPORTED_MODULE_12__["convertHashToStr"])(_constants__WEBPACK_IMPORTED_MODULE_4__["PRVID"]); // prepare meta data for tx
 
                 metadata = {
                   TokenIDToBuyStr: tokenIDToBuyStr,
-                  TokenIDToSellStr: _tokenIDStr2,
+                  TokenIDToSellStr: tokenIDStr,
                   SellAmount: sellAmount,
                   TraderAddressStr: traderAddressStr,
                   Type: _constants__WEBPACK_IMPORTED_MODULE_4__["PDETradeRequestMeta"]
@@ -11099,26 +11139,27 @@ function () {
 
               case 60:
                 console.time("Time for sending tx");
-                _context15.prev = 61;
-                _context15.next = 64;
+                listUTXOForPRV = [];
+                _context15.prev = 62;
+                _context15.next = 65;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 64:
+              case 65:
                 response = _context15.sent;
-                _context15.next = 71;
+                _context15.next = 72;
                 break;
 
-              case 67:
-                _context15.prev = 67;
-                _context15.t1 = _context15["catch"](61);
+              case 68:
+                _context15.prev = 68;
+                _context15.t1 = _context15["catch"](62);
                 console.log("createAndSendTxWithNativeTokenContribution Error when sending tx: ", _context15.t1);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
 
-              case 71:
-                _context15.next = 73;
+              case 72:
+                _context15.next = 74;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
 
-              case 73:
+              case 74:
                 console.timeEnd("Time for sending tx");
                 console.timeEnd("Time for create and send tx"); // saving history tx
                 // check status of tx and add coins to spending coins
@@ -11132,31 +11173,47 @@ function () {
                   response.feeNativeToken = feeBN.toNumber();
                   response.lockTime = lockTime;
                   response.amountNativeToken = totalAmountTransfer.toNumber();
-                  response.txStatus = status;
-                }
+                  response.txStatus = status; // add spending list
 
-                _context15.next = 79;
+                  spendingSNs = [];
+
+                  for (_i20 = 0; _i20 < inputForTx.inputCoinStrs.length; _i20++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i20].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i20].SNDerivator);
+                  }
+
+                  this.addSpendingCoins({
+                    txID: response.txId,
+                    spendingSNs: spendingSNs
+                  });
+                  console.log("createAndSendNativeToken Spending coin list after saving : ", this.spendingCoins);
+                } // saving history tx
+
+
+                this.saveNormalTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], false, isPrivacy, listUTXOForPRV, "", metadata);
+                console.log("createAndSendWithdrawRewardTx History account after saving: ", this.txHistory.NormalTx);
+                _context15.next = 82;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 79:
+              case 82:
                 return _context15.abrupt("return", response);
 
-              case 82:
-                _context15.prev = 82;
+              case 85:
+                _context15.prev = 85;
                 _context15.t2 = _context15["catch"](12);
-                _context15.next = 86;
+                _context15.next = 89;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(0);
 
-              case 86:
+              case 89:
                 console.log(_context15.t2);
                 throw _context15.t2;
 
-              case 88:
+              case 91:
               case "end":
                 return _context15.stop();
             }
           }
-        }, _callee15, this, [[12, 82], [14, 21], [61, 67]]);
+        }, _callee15, this, [[12, 85], [14, 21], [62, 68]]);
       }));
 
       function createAndSendNativeTokenTradeRequestTx(_x23, _x24, _x25) {
@@ -11180,7 +11237,7 @@ function () {
       var _createAndSendPTokenTradeRequestTx = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee16(tokenParam, feeNativeToken, feePToken, tokenIDToBuyStr, sellAmount) {
-        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, traderAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes4, _i17, _sndBytes4, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, status;
+        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, traderAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes4, _i21, _sndBytes4, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, listUTXOForPRV, listUTXOForPToken, status, spendingSNs, _i22, _i23, isIn;
 
         return regeneratorRuntime.wrap(function _callee16$(_context16) {
           while (1) {
@@ -11360,9 +11417,9 @@ function () {
               case 69:
                 _sndDecodes4 = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i17 = 0; _i17 < nOutputForPToken; _i17++) {
-                  _sndBytes4 = _sndDecodes4.slice(_i17 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i17 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i17] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes4, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i21 = 0; _i21 < nOutputForPToken; _i21++) {
+                  _sndBytes4 = _sndDecodes4.slice(_i21 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i21 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i21] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes4, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 71:
@@ -11431,9 +11488,9 @@ function () {
               case 100:
                 // saving history tx
                 // check status of tx
-                // let listUTXOForPRV = [];
-                // let listUTXOForPToken = [];
-                // check status of tx and add coins to spending coins
+                listUTXOForPRV = [];
+                listUTXOForPToken = []; // check status of tx and add coins to spending coins
+
                 status = _constants__WEBPACK_IMPORTED_MODULE_4__["FailedTx"];
 
                 if (response.txId) {
@@ -11444,29 +11501,38 @@ function () {
                   response.lockTime = lockTime;
                   response.amountNativeToken = amountTransferPRV.toNumber();
                   response.amountPToken = amountTransferPToken.toNumber();
-                  response.txStatus = status; // response.tokenName = tokenParamJson.propertyName;
-                  // response.tokenID = tokenID;
-                  // response.tokenSymbol = tokenParamJson.propertySymbol;
-                  // add spending list
-                  // let spendingSNs = [];
-                  // for (let i = 0; i < inputForTx.inputCoinStrs.length; i++) {
-                  //   spendingSNs.push(inputForTx.inputCoinStrs[i].SerialNumber);
-                  //   listUTXOForPRV.push(inputForTx.inputCoinStrs[i].SNDerivator);
-                  //   listUTXOForPToken.push(inputForPrivacyTokenTx.inputCoinStrs[i].SNDerivator)
-                  // }
-                  // this.addSpendingCoins({ txID: response.txId, spendingSNs: spendingSNs });
-                  // console.log("createAndSendPTokenContributionTx Spending coin list after saving: ", this.spendingCoins);
-                } // let isIn = false;
-                // this.savePrivacyTokenTxHistory(response, [BurnAddress], isIn, false, false, listUTXOForPRV, listUTXOForPToken, "");
+                  response.txStatus = status;
+                  response.tokenName = tokenParamJson.propertyName;
+                  response.tokenID = tokenParamJson.propertyID;
+                  response.tokenSymbol = tokenParamJson.propertySymbol; // add spending list
 
+                  spendingSNs = [];
 
-                _context16.next = 104;
+                  for (_i22 = 0; _i22 < inputForTx.inputCoinStrs.length; _i22++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i22].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i22].SNDerivator);
+                  }
+
+                  for (_i23 = 0; _i23 < inputForPrivacyTokenTx.tokenInputs.length; _i23++) {
+                    listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i23].SNDerivator);
+                  }
+
+                  this.addSpendingCoins({
+                    txID: response.txId,
+                    spendingSNs: spendingSNs
+                  });
+                  console.log("createAndSendPTokenContributionTx Spending coin list after saving: ", this.spendingCoins);
+                }
+
+                isIn = false;
+                this.savePrivacyTokenTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], isIn, false, false, listUTXOForPRV, listUTXOForPToken, "", metadata);
+                _context16.next = 108;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 104:
+              case 108:
                 return _context16.abrupt("return", response);
 
-              case 105:
+              case 109:
               case "end":
                 return _context16.stop();
             }
@@ -11508,7 +11574,6 @@ function () {
             i,
             sndBytes,
             withdrawerAddressStr,
-            _tokenIDStr3,
             metadata,
             paramInitTx,
             resInitTx,
@@ -11518,7 +11583,10 @@ function () {
             lockTimeBytes,
             lockTime,
             response,
+            listUTXOForPRV,
             status,
+            spendingSNs,
+            _i24,
             _args17 = arguments;
 
         return regeneratorRuntime.wrap(function _callee17$(_context17) {
@@ -11607,8 +11675,7 @@ function () {
 
               case 38:
                 console.log("createAndSendTxWithNativeTokenContribution sndOutputs: ", sndOutputs);
-                withdrawerAddressStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PaymentAddressType"]);
-                _tokenIDStr3 = Object(_common__WEBPACK_IMPORTED_MODULE_12__["convertHashToStr"])(_constants__WEBPACK_IMPORTED_MODULE_4__["PRVID"]); // prepare meta data for tx
+                withdrawerAddressStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PaymentAddressType"]); // prepare meta data for tx
 
                 metadata = {
                   WithdrawerAddressStr: withdrawerAddressStr,
@@ -11622,26 +11689,26 @@ function () {
                 console.log("createAndSendTxWithNativeTokenContribution paramInitTx: ", paramInitTx);
 
                 if (!(typeof withdrawDexTx === "function")) {
-                  _context17.next = 52;
+                  _context17.next = 51;
                   break;
                 }
 
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_11___default.a.stringify(paramInitTx);
                 console.log("paramInitTxJson: ", paramInitTxJson);
-                _context17.next = 49;
+                _context17.next = 48;
                 return withdrawDexTx(paramInitTxJson);
 
-              case 49:
+              case 48:
                 resInitTx = _context17.sent;
 
                 if (!(resInitTx === null || resInitTx === "")) {
-                  _context17.next = 52;
+                  _context17.next = 51;
                   break;
                 }
 
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-              case 52:
+              case 51:
                 console.log("createAndSendTxWithNativeTokenContribution resInitTx: ", resInitTx); //base64 decode txjson
 
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(resInitTx); // get b58 check encode tx json
@@ -11650,11 +11717,12 @@ function () {
 
                 lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
-                _context17.next = 59;
+                _context17.next = 58;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(60);
 
-              case 59:
+              case 58:
                 console.time("Time for sending tx");
+                listUTXOForPRV = [];
                 _context17.prev = 60;
                 _context17.next = 63;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
@@ -11688,31 +11756,47 @@ function () {
                   response.feeNativeToken = feeBN.toNumber();
                   response.lockTime = lockTime;
                   response.amountNativeToken = totalAmountTransfer.toNumber();
-                  response.txStatus = status;
-                }
+                  response.txStatus = status; // add spending list
 
-                _context17.next = 78;
+                  spendingSNs = [];
+
+                  for (_i24 = 0; _i24 < inputForTx.inputCoinStrs.length; _i24++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i24].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i24].SNDerivator);
+                  }
+
+                  this.addSpendingCoins({
+                    txID: response.txId,
+                    spendingSNs: spendingSNs
+                  });
+                  console.log("createAndSendNativeToken Spending coin list after saving : ", this.spendingCoins);
+                } // saving history tx
+
+
+                this.saveNormalTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], false, isPrivacy, listUTXOForPRV, "", metadata);
+                console.log("createAndSendWithdrawRewardTx History account after saving: ", this.txHistory.NormalTx);
+                _context17.next = 80;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 78:
+              case 80:
                 return _context17.abrupt("return", response);
 
-              case 81:
-                _context17.prev = 81;
+              case 83:
+                _context17.prev = 83;
                 _context17.t2 = _context17["catch"](11);
-                _context17.next = 85;
+                _context17.next = 87;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(0);
 
-              case 85:
+              case 87:
                 console.log(_context17.t2);
                 throw _context17.t2;
 
-              case 87:
+              case 89:
               case "end":
                 return _context17.stop();
             }
           }
-        }, _callee17, this, [[11, 81], [13, 20], [60, 66]]);
+        }, _callee17, this, [[11, 83], [13, 20], [60, 66]]);
       }));
 
       function createAndSendWithdrawDexTx(_x31, _x32, _x33, _x34, _x35) {
@@ -12291,7 +12375,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-
+ // TxHistoryInfo defines structure of history info for all transaction types
+// The metaData field is different between transaction types: {Type : number, ...}
+// 1. Staking tx:                     metaData.Type:  MetaStakingBeacon || MetaStakingShard
+// 2. Burning tx:                     metaData.Type:  BurningRequestMeta  (withdraw pToken decentralized)
+// 3. Withdraw reward amount tx:      metaData.Type:  WithDrawRewardRequestMeta 
+// 4. Contribution PRV or pToken tx:  metaData.Type:  PDEContributionMeta 
+// 5. Trade PRV or pToken tx:         metaData.Type:  PDETradeRequestMeta 
+// 6. Withdraw DEX tx:                metaData.Type:  PDEWithdrawalRequestMeta 
+// withdraw ptoken centralized tx is ptoken tx without metadata
 
 var TxHistoryInfo =
 /*#__PURE__*/
@@ -12317,6 +12409,7 @@ function () {
     this.listUTXOForPRV = [];
     this.listUTXOForPToken = [];
     this.hashOriginalTx = "";
+    this.metaData = null;
   }
 
   _createClass(TxHistoryInfo, [{
@@ -12340,6 +12433,7 @@ function () {
       this.listUTXOForPRV = historyObject.listUTXOForPRV;
       this.listUTXOForPToken = historyObject.listUTXOForPToken;
       this.hashOriginalTx = historyObject.hashOriginalTx;
+      this.metaData = historyObject.metaData ? historyObject.metaData : null;
     }
   }, {
     key: "updateStatus",
@@ -12606,7 +12700,7 @@ var toNanoPRV = function toNanoPRV(amountPRV) {
 /*!******************************!*\
   !*** ./lib/wallet/wallet.js ***!
   \******************************/
-/*! exports provided: Wallet, AccountWallet, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, BurnAddress, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, RPCHttpService */
+/*! exports provided: Wallet, AccountWallet, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, BurnAddress, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, RPCHttpService, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDETradeRequestMeta, PDEWithdrawalRequestMeta */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12650,6 +12744,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MetaStakingShard", function() { return _constants__WEBPACK_IMPORTED_MODULE_10__["MetaStakingShard"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BurnAddress", function() { return _constants__WEBPACK_IMPORTED_MODULE_10__["BurnAddress"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BurningRequestMeta", function() { return _constants__WEBPACK_IMPORTED_MODULE_10__["BurningRequestMeta"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "WithDrawRewardRequestMeta", function() { return _constants__WEBPACK_IMPORTED_MODULE_10__["WithDrawRewardRequestMeta"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDEContributionMeta", function() { return _constants__WEBPACK_IMPORTED_MODULE_10__["PDEContributionMeta"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDETradeRequestMeta", function() { return _constants__WEBPACK_IMPORTED_MODULE_10__["PDETradeRequestMeta"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDEWithdrawalRequestMeta", function() { return _constants__WEBPACK_IMPORTED_MODULE_10__["PDEWithdrawalRequestMeta"]; });
 
 /* harmony import */ var _base58__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../base58 */ "./lib/base58.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "checkEncode", function() { return _base58__WEBPACK_IMPORTED_MODULE_11__["checkEncode"]; });
