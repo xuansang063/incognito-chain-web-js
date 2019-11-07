@@ -1342,6 +1342,128 @@ function generateECDSAKeyPair(seed) {
 
 /***/ }),
 
+/***/ "./lib/privacy/hybridEncyption.js":
+/*!****************************************!*\
+  !*** ./lib/privacy/hybridEncyption.js ***!
+  \****************************************/
+/*! exports provided: hybridEncryption, hybridDecryption */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hybridEncryption", function() { return hybridEncryption; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hybridDecryption", function() { return hybridDecryption; });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "./lib/privacy/constants.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./lib/privacy/utils.js");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+var _require = __webpack_require__(/*! ./utils */ "./lib/privacy/utils.js"),
+    base64Decode = _require.base64Decode,
+    base64Encode = _require.base64Encode; // publicKeyBytes is public key encryption, it is a 32-byte array
+// msg is a bytes array 
+// returns ciphertext in bytes array 
+
+
+function hybridEncryption(_x, _x2) {
+  return _hybridEncryption.apply(this, arguments);
+} // publicKeyBytes is public key encryption, it is a 32-byte array
+// msg is a bytes array  
+// returns plaintext in bytes array
+
+
+function _hybridEncryption() {
+  _hybridEncryption = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee(publicKeyBytes, msg) {
+    var dataBytes, dataEncoded, ciphertextEncoded, ciphertextBytes;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            dataBytes = new Uint8Array(publicKeyBytes.length + msg.length);
+            dataBytes.set(publicKeyBytes, 0);
+            dataBytes.set(msg, _constants__WEBPACK_IMPORTED_MODULE_0__["ED25519_KEY_SIZE"]);
+            dataEncoded = base64Encode(Object(_utils__WEBPACK_IMPORTED_MODULE_1__["convertUint8ArrayToArray"])(dataBytes));
+
+            if (!(typeof hybridEncryptionASM === "function")) {
+              _context.next = 12;
+              break;
+            }
+
+            _context.next = 7;
+            return hybridEncryptionASM(dataEncoded);
+
+          case 7:
+            ciphertextEncoded = _context.sent;
+            ciphertextBytes = base64Decode(ciphertextEncoded);
+            return _context.abrupt("return", ciphertextBytes);
+
+          case 12:
+            throw new Error("Can not encrypt message with public key");
+
+          case 13:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _hybridEncryption.apply(this, arguments);
+}
+
+function hybridDecryption(_x3, _x4) {
+  return _hybridDecryption.apply(this, arguments);
+}
+
+function _hybridDecryption() {
+  _hybridDecryption = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee2(privateKeyBytes, ciphertextBytes) {
+    var dataBytes, dataEncoded, plainTextEncoded, plainTextBytes;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            dataBytes = new Uint8Array(privateKeyBytes.length + ciphertextBytes.length);
+            dataBytes.set(privateKeyBytes, 0);
+            dataBytes.set(ciphertextBytes, _constants__WEBPACK_IMPORTED_MODULE_0__["ED25519_KEY_SIZE"]);
+            dataEncoded = base64Encode(Object(_utils__WEBPACK_IMPORTED_MODULE_1__["convertUint8ArrayToArray"])(dataBytes));
+
+            if (!(typeof hybridDecryptionASM === "function")) {
+              _context2.next = 12;
+              break;
+            }
+
+            _context2.next = 7;
+            return hybridDecryptionASM(dataEncoded);
+
+          case 7:
+            plainTextEncoded = _context2.sent;
+            plainTextBytes = base64Decode(plainTextEncoded);
+            return _context2.abrupt("return", plainTextBytes);
+
+          case 12:
+            throw new Error("Can not encrypt message with public key");
+
+          case 13:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _hybridDecryption.apply(this, arguments);
+}
+
+
+
+/***/ }),
+
 /***/ "./lib/privacy/sjcl/sjcl.js":
 /*!**********************************!*\
   !*** ./lib/privacy/sjcl/sjcl.js ***!
@@ -12961,7 +13083,7 @@ var toNanoPRV = function toNanoPRV(amountPRV) {
 /*!******************************!*\
   !*** ./lib/wallet/wallet.js ***!
   \******************************/
-/*! exports provided: Wallet, AccountWallet, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, BurnAddress, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, RPCHttpService, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDETradeRequestMeta, PDEWithdrawalRequestMeta */
+/*! exports provided: Wallet, AccountWallet, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, BurnAddress, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, RPCHttpService, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDETradeRequestMeta, PDEWithdrawalRequestMeta, hybridEncryption, hybridDecryption */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13049,6 +13171,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../constants */ "./lib/constants.js");
 /* harmony import */ var _errorhandler__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../errorhandler */ "./lib/errorhandler.js");
 /* harmony import */ var _committeekey__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../committeekey */ "./lib/committeekey.js");
+/* harmony import */ var _privacy_hybridEncyption__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../privacy/hybridEncyption */ "./lib/privacy/hybridEncyption.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridEncryption", function() { return _privacy_hybridEncyption__WEBPACK_IMPORTED_MODULE_22__["hybridEncryption"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridDecryption", function() { return _privacy_hybridEncyption__WEBPACK_IMPORTED_MODULE_22__["hybridDecryption"]; });
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -13060,6 +13187,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
