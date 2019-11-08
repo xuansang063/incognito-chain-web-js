@@ -475,7 +475,7 @@ async function GetListReceivedTx() {
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
 
-  let receivedTxs = await accountSender.getReceivedTransaction(Wallet.RpcClient);
+  let receivedTxs = await accountSender.getReceivedTransaction();
   console.log(JSON.stringify(receivedTxs, null, 2));
 }
 
