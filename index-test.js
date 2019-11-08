@@ -37,7 +37,6 @@ require("./loadwasm");
 // require('./test/txfordev/withdrawReward');
 
 /************* RPC TEST **************/
-
 // require('./test/rpc/rpc-test');
 
 /************* PRIVACY TEST **************/
