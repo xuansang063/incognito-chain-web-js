@@ -144,7 +144,8 @@ async function TestCreateAndSendNativeToken() {
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
     "paymentAddressStr": receiverPaymentAddrStr,
-    "amount": amountTransfer
+    "amount": amountTransfer,
+    "message": "rose's so cute"
   };
 
   // create and send PRV
