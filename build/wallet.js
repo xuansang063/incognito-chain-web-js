@@ -6086,6 +6086,75 @@ var RpcClient = function RpcClient(url, user, password) {
     };
   }());
 
+  _defineProperty(this, "getTransactionByReceiver",
+  /*#__PURE__*/
+  function () {
+    var _ref23 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee23(paymentAdrr, viewingKey) {
+      var data, response, result;
+      return regeneratorRuntime.wrap(function _callee23$(_context23) {
+        while (1) {
+          switch (_context23.prev = _context23.next) {
+            case 0:
+              data = {
+                "jsonrpc": "1.0",
+                "method": "gettransactionbyreceiver",
+                "params": [{
+                  "PaymentAddress": paymentAdrr,
+                  "ReadonlyKey": viewingKey
+                }],
+                "id": 1
+              };
+              _context23.prev = 1;
+              _context23.next = 4;
+              return _this.rpcHttpService.postRequest(data);
+
+            case 4:
+              response = _context23.sent;
+              _context23.next = 10;
+              break;
+
+            case 7:
+              _context23.prev = 7;
+              _context23.t0 = _context23["catch"](1);
+              throw _context23.t0;
+
+            case 10:
+              if (!(response.status !== 200)) {
+                _context23.next = 14;
+                break;
+              }
+
+              throw new Error("Can't request API get all output coins");
+
+            case 14:
+              if (!response.data.Error) {
+                _context23.next = 16;
+                break;
+              }
+
+              throw response.data.Error;
+
+            case 16:
+              result = response.data.Result;
+              return _context23.abrupt("return", {
+                receivedTransactions: result.ReceivedTransactions
+              });
+
+            case 18:
+            case "end":
+              return _context23.stop();
+          }
+        }
+      }, _callee23, null, [[1, 7]]);
+    }));
+
+    return function (_x22, _x23) {
+      return _ref23.apply(this, arguments);
+    };
+  }());
+
   this.rpcHttpService = new _rpchttpservice__WEBPACK_IMPORTED_MODULE_0__["RPCHttpService"](url, user, password);
 };
 
@@ -7731,6 +7800,11 @@ function () {
       NormalTx: [],
       CustomTokenTx: [],
       PrivacyTokenTx: []
+    };
+    this.txReceivedHistory = {
+      NormalTx: [],
+      CustomTokenTx: [],
+      PrivacyTokenTx: []
     }; // derivatorPointCached is used for saving derivator (encoded) with corresponding encoded serial number in bytes array that was calculated before
 
     this.derivatorToSerialNumberCache = {}; // spentCoinCached is used for cache spent coin
@@ -7745,7 +7819,7 @@ function () {
     // addSpendingCoins adds spending coin object to spending coins list
 
     /**
-     * @param {txID: string, spendingSNs: array} spendingCoinObj 
+     * @param {txID: string, spendingSNs: array} spendingCoinObj
      */
     value: function addSpendingCoins(spendingCoinObj) {
       if (!this.spendingCoins) {
@@ -7756,8 +7830,8 @@ function () {
     } // removeObjectFromSpendingCoins removes spending coins in txId from list of spending coins
 
     /**
-     * 
-     * @param {string} txId 
+     *
+     * @param {string} txId
      */
 
   }, {
@@ -7779,9 +7853,9 @@ function () {
     } // saveAccountCached saves derivatorToSerialNumberCache and spentCoinCached for account
 
     /**
-     * 
-     * @param {string} password 
-     * @param {object} storage 
+     *
+     * @param {string} password
+     * @param {object} storage
      */
 
   }, {
@@ -7805,9 +7879,9 @@ function () {
     } // loadAccountCached loads cache that includes derivatorToSerialNumberCache, inputCoinJsonCached and spentCoinCached for account
 
     /**
-     * 
-     * @param {string} password 
-     * @param {object} storage 
+     *
+     * @param {string} password
+     * @param {object} storage
      */
 
   }, {
@@ -7871,9 +7945,9 @@ function () {
     }() // analyzeOutputCoinFromCached devides allOutputCoinStrs into list of cached output coins and list of uncached output coins
 
     /**
-     * 
-     * @param {[Coin]} allOutputCoinStrs 
-     * @param {string} tokenID 
+     *
+     * @param {[Coin]} allOutputCoinStrs
+     * @param {string} tokenID
      */
 
   }, {
@@ -7907,10 +7981,10 @@ function () {
     } // mergeSpentCoinCached caches spent input coins to spentCoinCached
 
     /**
-     * 
-     * @param {[Coin]} unspentCoinStrs 
-     * @param {[Coin]} unspentCoinStrsFromCache 
-     * @param {string} tokenID 
+     *
+     * @param {[Coin]} unspentCoinStrs
+     * @param {[Coin]} unspentCoinStrsFromCache
+     * @param {string} tokenID
      */
 
   }, {
@@ -7973,9 +8047,9 @@ function () {
     }() // analyzeSpentCoinFromCached returns input coins which it not existed in list of cached spent input coins
 
     /**
-     * 
-     * @param {[Coin]} inCoinStrs 
-     * @param {string} tokenID 
+     *
+     * @param {[Coin]} inCoinStrs
+     * @param {string} tokenID
      */
 
   }, {
@@ -8004,10 +8078,10 @@ function () {
     } // deriveSerialNumbers returns list of serial numbers of input coins
 
     /**
-     * 
-     * @param {string} spendingKeyStr 
-     * @param {[Coin]} inCoinStrs 
-     * @param {string} tokenID 
+     *
+     * @param {string} spendingKeyStr
+     * @param {[Coin]} inCoinStrs
+     * @param {string} tokenID
      */
 
   }, {
@@ -8146,8 +8220,8 @@ function () {
     // removeFollowingToken removes token which has tokenId from list of following tokens
 
     /**
-     * 
-     * @param {string} tokenId 
+     *
+     * @param {string} tokenId
      */
     value: function removeFollowingToken(tokenId) {
       var removedIndex = this.followingTokens.findIndex(function (token) {
@@ -8270,8 +8344,8 @@ function () {
     // getTxHistoryByTxID returns tx history for specific tx id
 
     /**
-     * 
-     * @param {string} txID 
+     *
+     * @param {string} txID
      */
     value: function getTxHistoryByTxID(txID) {
       return this.txHistory.NormalTx.find(function (item) {
@@ -8284,8 +8358,8 @@ function () {
     } // getPrivacyTokenTxHistoryByTokenID returns privacy token tx history with specific tokenID
 
     /**
-     * 
-     * @param {string} id 
+     *
+     * @param {string} id
      */
 
   }, {
@@ -8313,9 +8387,9 @@ function () {
     // for native token: tokenId is null
 
     /**
-     * 
-     * @param {string} tokenID 
-     * @param {RpcClient} rpcClient 
+     *
+     * @param {string} tokenID
+     * @param {RpcClient} rpcClient
      */
 
   }, {
@@ -8425,8 +8499,8 @@ function () {
     // tokenID default is null: for PRV
 
     /**
-     * 
-     * @param {string} tokenID 
+     *
+     * @param {string} tokenID
      */
 
   }, {
@@ -8476,7 +8550,7 @@ function () {
     }() // getAllPrivacyTokenBalance returns list of privacy token's balance
 
     /**
-     * 
+     *
      * @returns [{TokenID: string, Balance: number}]
      */
 
@@ -8553,11 +8627,11 @@ function () {
       return getAllPrivacyTokenBalance;
     }()
     /**
-     * 
-     * @param {{paymentAddressStr: string (B58checkencode), amount: number}} paramPaymentInfos 
-     * @param {number} fee 
-     * @param {bool} isPrivacy 
-     * @param {string} info 
+     *
+     * @param {{paymentAddressStr: string (B58checkencode), amount: number}} paramPaymentInfos
+     * @param {number} fee
+     * @param {bool} isPrivacy
+     * @param {string} info
      */
 
   }, {
@@ -8817,13 +8891,13 @@ function () {
     // type: 1 for beacon
 
     /**
-     * 
-     * @param {{type: number}} param 
-     * @param {number} feeNativeToken 
-     * @param {string} candidatePaymentAddress 
-     * @param {string} candidateMiningSeedKey 
-     * @param {string} rewardReceiverPaymentAddress 
-     * @param {bool} autoReStaking 
+     *
+     * @param {{type: number}} param
+     * @param {number} feeNativeToken
+     * @param {string} candidatePaymentAddress
+     * @param {string} candidateMiningSeedKey
+     * @param {string} rewardReceiverPaymentAddress
+     * @param {bool} autoReStaking
      */
     value: function () {
       var _createAndSendStakingTx = _asyncToGenerator(
@@ -9116,14 +9190,14 @@ function () {
       return createAndSendStakingTx;
     }()
     /**
-     * 
-     * @param {{paymentAddressStr: string, amount: number}} paramPaymentInfosForNativeToken 
-     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : {PaymentAddress: string, Amount: number}}} submitParam 
-     * @param {number} feeNativeToken 
-     * @param {number} feePToken 
+     *
+     * @param {{paymentAddressStr: string, amount: number}} paramPaymentInfosForNativeToken
+     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : {PaymentAddress: string, Amount: number}}} submitParam
+     * @param {number} feeNativeToken
+     * @param {number} feePToken
      * @param {bool} hasPrivacyForNativeToken
-     * @param {bool} hasPrivacyForPToken 
-     * @param {string} info 
+     * @param {bool} hasPrivacyForPToken
+     * @param {string} info
      */
 
   }, {
@@ -10066,12 +10140,12 @@ function () {
     // remoteAddress (string) is an ETH/BTC address which users want to receive ETH/BTC (without 0x)
 
     /**
-     * 
-     * @param {...{paymentAddressStr: string, amount: number}} paramPaymentInfosForNativeToken 
-     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : {PaymentAddress: string, Amount: number}}} submitParam 
-     * @param {number} feeNativeToken 
-     * @param {number} feePToken 
-     * @param {string} remoteAddress 
+     *
+     * @param {...{paymentAddressStr: string, amount: number}} paramPaymentInfosForNativeToken
+     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : {PaymentAddress: string, Amount: number}}} submitParam
+     * @param {number} feeNativeToken
+     * @param {number} feePToken
+     * @param {string} remoteAddress
      */
 
   }, {
@@ -10470,8 +10544,8 @@ function () {
     // createAndSendWithdrawRewardTx create and send tx withdraw reward amount
 
     /**
-     * 
-     * @param {string} tokenID 
+     *
+     * @param {string} tokenID
      */
     value: function () {
       var _createAndSendWithdrawRewardTx = _asyncToGenerator(
@@ -10659,7 +10733,7 @@ function () {
       };
     }
     /**
-     * 
+     *
      */
     // stakerStatus return status of staker
     // return object {{Role: int, ShardID: int}}
@@ -10717,11 +10791,11 @@ function () {
     /********************** DEX **********************/
 
     /**
-     * 
-     * @param {number} fee 
+     *
+     * @param {number} fee
      * @param {string} pdeContributionPairID
      * @param {number} contributedAmount
-     * @param {string} info 
+     * @param {string} info
      */
 
   }, {
@@ -10989,12 +11063,12 @@ function () {
     // createAndSendPTokenContributionTx
 
     /**
-     * 
-     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string}}} tokenParam 
-     * @param {number} feeNativeToken 
+     *
+     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string}}} tokenParam
+     * @param {number} feeNativeToken
      * @param {number} feePToken
-     * @param {string} pdeContributionPairID 
-     * @param {number} contributedAmount 
+     * @param {string} pdeContributionPairID
+     * @param {number} contributedAmount
      */
     value: function () {
       var _createAndSendPTokenContributionTx = _asyncToGenerator(
@@ -11325,16 +11399,17 @@ function () {
     key: "createAndSendNativeTokenTradeRequestTx",
 
     /**
-     * 
-     * @param {number} fee 
+     *
+     * @param {number} fee
      * @param {string} pdeContributionPairID
      * @param {number} sellAmount
-     * @param {string} info 
+     * @param {number} minimumAcceptableAmount
+     * @param {string} info
      */
     value: function () {
       var _createAndSendNativeTokenTradeRequestTx = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee18(fee, tokenIDToBuyStr, sellAmount) {
+      regeneratorRuntime.mark(function _callee18(fee, tokenIDToBuyStr, sellAmount, minimumAcceptableAmount) {
         var info,
             feeBN,
             isPrivacy,
@@ -11369,7 +11444,7 @@ function () {
           while (1) {
             switch (_context18.prev = _context18.next) {
               case 0:
-                info = _args18.length > 3 && _args18[3] !== undefined ? _args18[3] : "";
+                info = _args18.length > 4 && _args18[4] !== undefined ? _args18[4] : "";
                 _context18.next = 3;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(10);
 
@@ -11468,7 +11543,8 @@ function () {
                   TokenIDToSellStr: tokenIDStr,
                   SellAmount: sellAmount,
                   TraderAddressStr: traderAddressStr,
-                  Type: _constants__WEBPACK_IMPORTED_MODULE_4__["PDETradeRequestMeta"]
+                  Type: _constants__WEBPACK_IMPORTED_MODULE_4__["PDETradeRequestMeta"],
+                  MinimumAcceptableAmount: minimumAcceptableAmount
                 };
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, fee, isPrivacy, null, metadata, info, inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
                 console.log("createAndSendTxWithNativeTokenContribution paramInitTx: ", paramInitTx);
@@ -11584,7 +11660,7 @@ function () {
         }, _callee18, this, [[12, 86], [14, 21], [63, 69]]);
       }));
 
-      function createAndSendNativeTokenTradeRequestTx(_x31, _x32, _x33) {
+      function createAndSendNativeTokenTradeRequestTx(_x31, _x32, _x33, _x34) {
         return _createAndSendNativeTokenTradeRequestTx.apply(this, arguments);
       }
 
@@ -11595,16 +11671,17 @@ function () {
     // createAndSendPTokenContributionTx
 
     /**
-     * 
-     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string}}} tokenParam 
-     * @param {number} feeNativeToken 
-     * @param {string} pdeContributionPairID 
-     * @param {number} sellAmount 
+     *
+     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string}}} tokenParam
+     * @param {number} feeNativeToken
+     * @param {string} pdeContributionPairID
+     * @param {number} sellAmount
+     * @param {number} minimumAcceptableAmount
      */
     value: function () {
       var _createAndSendPTokenTradeRequestTx = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee19(tokenParam, feeNativeToken, feePToken, tokenIDToBuyStr, sellAmount) {
+      regeneratorRuntime.mark(function _callee19(tokenParam, feeNativeToken, feePToken, tokenIDToBuyStr, sellAmount, minimumAcceptableAmount) {
         var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, traderAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes4, _i24, _sndBytes4, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, listUTXOForPRV, listUTXOForPToken, status, spendingSNs, _i25, _i26, isIn;
 
         return regeneratorRuntime.wrap(function _callee19$(_context19) {
@@ -11808,7 +11885,8 @@ function () {
                   TokenIDToSellStr: tokenParam.TokenID,
                   SellAmount: sellAmount,
                   TraderAddressStr: traderAddressStr,
-                  Type: _constants__WEBPACK_IMPORTED_MODULE_4__["PDETradeRequestMeta"]
+                  Type: _constants__WEBPACK_IMPORTED_MODULE_4__["PDETradeRequestMeta"],
+                  MinimumAcceptableAmount: minimumAcceptableAmount
                 };
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitPrivacyTokenTx"])(senderSkStr, paramPaymentInfosForNativeToken, inputForTx.inputCoinStrs, feeNativeToken, false, false, tokenParamJson, metadata, "", inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputsForNativeToken, inputForPrivacyTokenTx.commitmentIndices, inputForPrivacyTokenTx.myCommitmentIndices, inputForPrivacyTokenTx.commitmentStrs, sndOutputsForPToken);
                 console.log("createAndSendPTokenContributionTx paramInitTx: ", paramInitTx);
@@ -11918,7 +11996,7 @@ function () {
         }, _callee19, this, [[11, 19], [24, 30], [91, 97]]);
       }));
 
-      function createAndSendPTokenTradeRequestTx(_x34, _x35, _x36, _x37, _x38) {
+      function createAndSendPTokenTradeRequestTx(_x35, _x36, _x37, _x38, _x39, _x40) {
         return _createAndSendPTokenTradeRequestTx.apply(this, arguments);
       }
 
@@ -11928,11 +12006,11 @@ function () {
     key: "createAndSendWithdrawDexTx",
 
     /**
-     * 
-     * @param {number} fee 
+     *
+     * @param {number} fee
      * @param {string} pdeContributionPairID
      * @param {number} sellAmount
-     * @param {string} info 
+     * @param {string} info
      */
     value: function () {
       var _createAndSendWithdrawDexTx = _asyncToGenerator(
@@ -12182,11 +12260,106 @@ function () {
         }, _callee20, this, [[11, 84], [13, 20], [61, 67]]);
       }));
 
-      function createAndSendWithdrawDexTx(_x39, _x40, _x41, _x42, _x43) {
+      function createAndSendWithdrawDexTx(_x41, _x42, _x43, _x44, _x45) {
         return _createAndSendWithdrawDexTx.apply(this, arguments);
       }
 
       return createAndSendWithdrawDexTx;
+    }()
+  }, {
+    key: "getReceivedTransaction",
+    value: function () {
+      var _getReceivedTransaction = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee21() {
+        var rpcClient, paymentAddress, viewingKey, txs, i, tx, historyObj, txHistoryInfo;
+        return regeneratorRuntime.wrap(function _callee21$(_context21) {
+          while (1) {
+            switch (_context21.prev = _context21.next) {
+              case 0:
+                rpcClient = _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient; // call api to get info from node
+
+                paymentAddress = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PaymentAddressType"]);
+                viewingKey = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["ReadonlyKeyType"]);
+                console.log("paymentAddress", paymentAddress);
+                console.log("viewingKey", viewingKey); // cal rpc to get data
+
+                _context21.next = 7;
+                return rpcClient.getTransactionByReceiver(paymentAddress, viewingKey);
+
+              case 7:
+                txs = _context21.sent;
+                txs = txs.receivedTransactions;
+
+                if (txs.length > 0) {
+                  this.txReceivedHistory.NormalTx = [];
+                  this.txReceivedHistory.PrivacyTokenTx = [];
+                  this.txReceivedHistory.CustomTokenTx = [];
+                }
+
+                for (i = 0; i < txs.length; i++) {
+                  // loop and parse into history tx object
+                  tx = txs[i];
+                  console.log("tx", i, circular_json__WEBPACK_IMPORTED_MODULE_11___default.a.stringify(tx, null, 2));
+
+                  try {
+                    historyObj = {
+                      txID: tx.Hash,
+                      amountNativeToken: tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]] ? tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]].CoinDetails.Value : 0,
+                      // in nano PRV
+                      amountPToken: tx.ReceivedAmounts[tx.PrivacyCustomTokenID] ? tx.ReceivedAmounts[tx.PrivacyCustomTokenID].CoinDetails.Value : 0,
+                      feeNativeToken: tx.Fee,
+                      // in nano PRV
+                      feePToken: tx.PrivacyCustomTokenFee,
+                      typeTx: tx.Type,
+                      receivers: null,
+                      tokenName: tx.PrivacyCustomTokenName,
+                      tokenID: tx.PrivacyCustomTokenID,
+                      tokenSymbol: tx.PrivacyCustomTokenIDSymbol,
+                      isIn: true,
+                      time: new Date(tx.LockTime).getTime(),
+                      // in mili-second
+                      status: null,
+                      isPrivacyNativeToken: null,
+                      isPrivacyForPToken: null,
+                      listUTXOForPRV: [],
+                      listUTXOForPToken: [],
+                      hashOriginalTx: ""
+                    };
+                    txHistoryInfo = new _history__WEBPACK_IMPORTED_MODULE_9__["TxHistoryInfo"]();
+                    txHistoryInfo.setHistoryInfo(historyObj);
+
+                    switch (tx.Type) {
+                      case _tx_constants__WEBPACK_IMPORTED_MODULE_1__["TxNormalType"]:
+                        {
+                          this.txReceivedHistory.NormalTx.push(txHistoryInfo);
+                        }
+
+                      case _tx_constants__WEBPACK_IMPORTED_MODULE_1__["TxCustomTokenPrivacyType"]:
+                        {
+                          this.txReceivedHistory.PrivacyTokenTx.push(txHistoryInfo);
+                        }
+                    }
+                  } catch (e) {
+                    console.log(e);
+                  }
+                }
+
+                return _context21.abrupt("return", this.txReceivedHistory);
+
+              case 12:
+              case "end":
+                return _context21.stop();
+            }
+          }
+        }, _callee21, this);
+      }));
+
+      function getReceivedTransaction() {
+        return _getReceivedTransaction.apply(this, arguments);
+      }
+
+      return getReceivedTransaction;
     }()
   }], [{
     key: "getRewardAmount",
@@ -12194,66 +12367,66 @@ function () {
     // if isGetAll is true: return all of reward types (such as PRV, pToken,..)
 
     /**
-     * 
-     * @param {string} paymentAddrStr 
-     * @param {bool} isGetAll 
-     * @param {string} tokenID 
+     *
+     * @param {string} paymentAddrStr
+     * @param {bool} isGetAll
+     * @param {string} tokenID
      * @returns {number} (if isGetAll = false)
      * @returns {map[TokenID] : number} (if isGetAll = true)
      */
     value: function () {
       var _getRewardAmount = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee21(paymentAddrStr) {
+      regeneratorRuntime.mark(function _callee22(paymentAddrStr) {
         var isGetAll,
             tokenID,
             resp,
-            _args21 = arguments;
-        return regeneratorRuntime.wrap(function _callee21$(_context21) {
+            _args22 = arguments;
+        return regeneratorRuntime.wrap(function _callee22$(_context22) {
           while (1) {
-            switch (_context21.prev = _context21.next) {
+            switch (_context22.prev = _context22.next) {
               case 0:
-                isGetAll = _args21.length > 1 && _args21[1] !== undefined ? _args21[1] : true;
-                tokenID = _args21.length > 2 && _args21[2] !== undefined ? _args21[2] : "";
-                _context21.prev = 2;
-                _context21.next = 5;
+                isGetAll = _args22.length > 1 && _args22[1] !== undefined ? _args22[1] : true;
+                tokenID = _args22.length > 2 && _args22[2] !== undefined ? _args22[2] : "";
+                _context22.prev = 2;
+                _context22.next = 5;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.getRewardAmount(paymentAddrStr);
 
               case 5:
-                resp = _context21.sent;
-                _context21.next = 12;
+                resp = _context22.sent;
+                _context22.next = 12;
                 break;
 
               case 8:
-                _context21.prev = 8;
-                _context21.t0 = _context21["catch"](2);
-                console.log("getRewardAmount Error: ", _context21.t0);
+                _context22.prev = 8;
+                _context22.t0 = _context22["catch"](2);
+                console.log("getRewardAmount Error: ", _context22.t0);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].GetRewardAmountErr, "Can not get reward amount");
 
               case 12:
                 if (!isGetAll) {
-                  _context21.next = 16;
+                  _context22.next = 16;
                   break;
                 }
 
-                return _context21.abrupt("return", resp.rewards);
+                return _context22.abrupt("return", resp.rewards);
 
               case 16:
                 if (tokenID === "") {
                   tokenID = "PRV";
                 }
 
-                return _context21.abrupt("return", resp.rewards[tokenID]);
+                return _context22.abrupt("return", resp.rewards[tokenID]);
 
               case 18:
               case "end":
-                return _context21.stop();
+                return _context22.stop();
             }
           }
-        }, _callee21, null, [[2, 8]]);
+        }, _callee22, null, [[2, 8]]);
       }));
 
-      function getRewardAmount(_x44) {
+      function getRewardAmount(_x46) {
         return _getRewardAmount.apply(this, arguments);
       }
 
