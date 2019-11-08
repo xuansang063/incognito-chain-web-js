@@ -1342,10 +1342,10 @@ function generateECDSAKeyPair(seed) {
 
 /***/ }),
 
-/***/ "./lib/privacy/hybridEncyption.js":
-/*!****************************************!*\
-  !*** ./lib/privacy/hybridEncyption.js ***!
-  \****************************************/
+/***/ "./lib/privacy/hybridEncryption.js":
+/*!*****************************************!*\
+  !*** ./lib/privacy/hybridEncryption.js ***!
+  \*****************************************/
 /*! exports provided: hybridEncryption, hybridDecryption */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -13171,10 +13171,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../constants */ "./lib/constants.js");
 /* harmony import */ var _errorhandler__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../errorhandler */ "./lib/errorhandler.js");
 /* harmony import */ var _committeekey__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../committeekey */ "./lib/committeekey.js");
-/* harmony import */ var _privacy_hybridEncyption__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../privacy/hybridEncyption */ "./lib/privacy/hybridEncyption.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridEncryption", function() { return _privacy_hybridEncyption__WEBPACK_IMPORTED_MODULE_22__["hybridEncryption"]; });
+/* harmony import */ var _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../privacy/hybridEncryption */ "./lib/privacy/hybridEncryption.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridEncryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_22__["hybridEncryption"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridDecryption", function() { return _privacy_hybridEncyption__WEBPACK_IMPORTED_MODULE_22__["hybridDecryption"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridDecryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_22__["hybridDecryption"]; });
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
