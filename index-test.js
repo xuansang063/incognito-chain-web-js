@@ -38,5 +38,5 @@ require("./test/wallet/wallet-test");
 
 /************* RPC TEST **************/
 
-// require('./test/rpc/rpc-test');
+require('./test/rpc/rpc-test');
 
