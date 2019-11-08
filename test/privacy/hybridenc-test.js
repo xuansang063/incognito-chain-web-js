@@ -37,10 +37,11 @@ async function TestHybridEncryption() {
   let plaintext = await hybridDecryption(privateKeyBytes, ciphertext);
   console.log("plaintext: ", plaintext);
 
-
   // test case 2: 
-  let ciphertextEncoded = "3ZFYQsVwPl6Bw648vdgbsnns73orkchJcC/lNEFOfiZRhneFRfE91dpFICLA7OM8rX1lEmsMaywhSAQ3W23IWfumCGFe5t0OEnA/hv7oDWbw7RV+JzwCojLdu+TiXQ==";
+  let ciphertextEncoded = "UMuzf2l+rCAIepv2EcjyCAjVnW1CcgpaBzbFqRbnBvZ6fYY3MI/L5Mshnmw3+BLb/wnaCqlU97JYGoDDPgbXGTaJy5jRj5hrc/9GR/Xl1qRtcKY=";
   let ciphertextBytes = base64Decode(ciphertextEncoded);
+  console.log("ciphertextBytes 2: ", ciphertextBytes);
+  console.log("ciphertextBytes 2 len: ", ciphertextBytes.length);
   let plaintext2 = await hybridDecryption(privateKeyBytes, ciphertextBytes);
   console.log("plaintext2: ", plaintext2);
 }

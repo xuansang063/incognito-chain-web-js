@@ -167,7 +167,7 @@ async function TestCreateAndSendNativeToken() {
   // console.log("Send tx 2 done");
 }
 
-TestCreateAndSendNativeToken();
+// TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;
@@ -232,25 +232,30 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddressStr);
 
   // payment info for PRV
-  let paymentInfos = [];
+  let paymentInfos = [{
+    paymentAddressStr: receiverPaymentAddressStr,
+    amount: 5,
+    message: "ABC"
+  }];
   let amountTransfer = 10;
 
   // prepare token param for tx custom token init
   let tokenParams = {
     Privacy: true,
-    TokenID: "51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436",
-    TokenName: "Rose",
-    TokenSymbol: "Rose",
+    TokenID: "44ec1055d31aeacc15da5dac162f941884d9b3fbffa16091b7185a3ce612aea8",
+    TokenName: "ABC",
+    TokenSymbol: "ABC",
     TokenTxType: CustomTokenTransfer,
     TokenAmount: amountTransfer,
     TokenReceivers: {
       PaymentAddress: receiverPaymentAddressStr,
-      Amount: amountTransfer
+      Amount: amountTransfer,
+      Message: "ABC"
     }
   }
 
-  let feePRV = 0;
-  let feePToken = 5;
+  let feePRV = 10;
+  let feePToken = 0;
   let hasPrivacyForToken = true;
   let hasPrivacyForPRV = false;
 
