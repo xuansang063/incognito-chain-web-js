@@ -442,7 +442,7 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
   // staker
-  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderSpendingKeyStr = "112t8rnbY15f1GnDxbcJUr84EH8pdFc9ayJ7HLMgccajtYSW9U9k7H2yJj9mUcC8CT1gAHZpubAE59At7soD4KeQaRLbREieSFMDC8AdQ44a";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
@@ -450,19 +450,23 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
 
-  let fee = 1500000;
+  let fee = 5;
   let sellAmount = 1;
-  let tokenIDToBuyStr = "5b10f8579937a34ff5d01cf23bbf6b90bcba793c67193d6edb99f6eb7679dcac";
+  let tokenIDToBuyStr = "4878bf0b99839f01baf909767ac79d7b6f724153bacb6f7b9022d7e896a312fd";
+  let minAcceptableAmount = 9000000000;
+  let tradingFee = 25000000;
 
   // create and send staking tx
   try {
     await accountSender.createAndSendNativeTokenTradeRequestTx(
-      fee, tokenIDToBuyStr, sellAmount
+      fee, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee
     );
   } catch (e) {
-    console.log("Error when staking: ", e);
+    console.log("Error when trading native token: ", e);
   }
 }
+
+TestCreateAndSendNativeTokenTradeRequestTx();
 
 async function GetListReceivedTx() {
   Wallet.RpcClient = rpcClient;
@@ -479,4 +483,4 @@ async function GetListReceivedTx() {
   console.log(JSON.stringify(receivedTxs, null, 2));
 }
 
-GetListReceivedTx();
+// GetListReceivedTx();
