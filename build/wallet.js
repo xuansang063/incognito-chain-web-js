@@ -11404,12 +11404,13 @@ function () {
      * @param {string} pdeContributionPairID
      * @param {number} sellAmount
      * @param {number} minimumAcceptableAmount
+     * @param {number} tradingFee
      * @param {string} info
      */
     value: function () {
       var _createAndSendNativeTokenTradeRequestTx = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee18(fee, tokenIDToBuyStr, sellAmount, minimumAcceptableAmount) {
+      regeneratorRuntime.mark(function _callee18(fee, tokenIDToBuyStr, sellAmount, minimumAcceptableAmount, tradingFee) {
         var info,
             feeBN,
             isPrivacy,
@@ -11444,7 +11445,7 @@ function () {
           while (1) {
             switch (_context18.prev = _context18.next) {
               case 0:
-                info = _args18.length > 4 && _args18[4] !== undefined ? _args18[4] : "";
+                info = _args18.length > 5 && _args18[5] !== undefined ? _args18[5] : "";
                 _context18.next = 3;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(10);
 
@@ -11544,7 +11545,8 @@ function () {
                   SellAmount: sellAmount,
                   TraderAddressStr: traderAddressStr,
                   Type: _constants__WEBPACK_IMPORTED_MODULE_4__["PDETradeRequestMeta"],
-                  MinimumAcceptableAmount: minimumAcceptableAmount
+                  MinimumAcceptableAmount: minimumAcceptableAmount,
+                  TradingFee: tradingFee
                 };
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, fee, isPrivacy, null, metadata, info, inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
                 console.log("createAndSendTxWithNativeTokenContribution paramInitTx: ", paramInitTx);
@@ -11660,7 +11662,7 @@ function () {
         }, _callee18, this, [[12, 86], [14, 21], [63, 69]]);
       }));
 
-      function createAndSendNativeTokenTradeRequestTx(_x31, _x32, _x33, _x34) {
+      function createAndSendNativeTokenTradeRequestTx(_x31, _x32, _x33, _x34, _x35) {
         return _createAndSendNativeTokenTradeRequestTx.apply(this, arguments);
       }
 
@@ -11677,11 +11679,12 @@ function () {
      * @param {string} pdeContributionPairID
      * @param {number} sellAmount
      * @param {number} minimumAcceptableAmount
+     * @param {number} tradingFee
      */
     value: function () {
       var _createAndSendPTokenTradeRequestTx = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee19(tokenParam, feeNativeToken, feePToken, tokenIDToBuyStr, sellAmount, minimumAcceptableAmount) {
+      regeneratorRuntime.mark(function _callee19(tokenParam, feeNativeToken, feePToken, tokenIDToBuyStr, sellAmount, minimumAcceptableAmount, tradingFee) {
         var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, amountTransferPToken, senderSkStr, traderAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes4, _i24, _sndBytes4, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, listUTXOForPRV, listUTXOForPToken, status, spendingSNs, _i25, _i26, isIn;
 
         return regeneratorRuntime.wrap(function _callee19$(_context19) {
@@ -11886,7 +11889,8 @@ function () {
                   SellAmount: sellAmount,
                   TraderAddressStr: traderAddressStr,
                   Type: _constants__WEBPACK_IMPORTED_MODULE_4__["PDETradeRequestMeta"],
-                  MinimumAcceptableAmount: minimumAcceptableAmount
+                  MinimumAcceptableAmount: minimumAcceptableAmount,
+                  TradingFee: tradingFee
                 };
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitPrivacyTokenTx"])(senderSkStr, paramPaymentInfosForNativeToken, inputForTx.inputCoinStrs, feeNativeToken, false, false, tokenParamJson, metadata, "", inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputsForNativeToken, inputForPrivacyTokenTx.commitmentIndices, inputForPrivacyTokenTx.myCommitmentIndices, inputForPrivacyTokenTx.commitmentStrs, sndOutputsForPToken);
                 console.log("createAndSendPTokenContributionTx paramInitTx: ", paramInitTx);
@@ -11996,7 +12000,7 @@ function () {
         }, _callee19, this, [[11, 19], [24, 30], [91, 97]]);
       }));
 
-      function createAndSendPTokenTradeRequestTx(_x35, _x36, _x37, _x38, _x39, _x40) {
+      function createAndSendPTokenTradeRequestTx(_x36, _x37, _x38, _x39, _x40, _x41, _x42) {
         return _createAndSendPTokenTradeRequestTx.apply(this, arguments);
       }
 
@@ -12015,7 +12019,7 @@ function () {
     value: function () {
       var _createAndSendWithdrawDexTx = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee20(fee, withdrawalToken1IDStr, withdrawalShare1Amt, withdrawalToken2IDStr, withdrawalShare2Amt) {
+      regeneratorRuntime.mark(function _callee20(fee, withdrawalToken1IDStr, withdrawalToken2IDStr, withdrawalShareAmt) {
         var info,
             feeBN,
             isPrivacy,
@@ -12049,7 +12053,7 @@ function () {
           while (1) {
             switch (_context20.prev = _context20.next) {
               case 0:
-                info = _args20.length > 5 && _args20[5] !== undefined ? _args20[5] : "";
+                info = _args20.length > 4 && _args20[4] !== undefined ? _args20[4] : "";
                 _context20.next = 3;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(10);
 
@@ -12141,9 +12145,8 @@ function () {
                 metadata = {
                   WithdrawerAddressStr: withdrawerAddressStr,
                   WithdrawalToken1IDStr: withdrawalToken1IDStr,
-                  WithdrawalShare1Amt: withdrawalShare1Amt,
                   WithdrawalToken2IDStr: withdrawalToken2IDStr,
-                  WithdrawalShare2Amt: withdrawalShare2Amt,
+                  WithdrawalShareAmt: withdrawalShareAmt,
                   Type: _constants__WEBPACK_IMPORTED_MODULE_4__["PDEWithdrawalRequestMeta"]
                 };
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, fee, isPrivacy, null, metadata, info, inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
@@ -12260,7 +12263,7 @@ function () {
         }, _callee20, this, [[11, 84], [13, 20], [61, 67]]);
       }));
 
-      function createAndSendWithdrawDexTx(_x41, _x42, _x43, _x44, _x45) {
+      function createAndSendWithdrawDexTx(_x43, _x44, _x45, _x46) {
         return _createAndSendWithdrawDexTx.apply(this, arguments);
       }
 
@@ -12426,7 +12429,7 @@ function () {
         }, _callee22, null, [[2, 8]]);
       }));
 
-      function getRewardAmount(_x46) {
+      function getRewardAmount(_x47) {
         return _getRewardAmount.apply(this, arguments);
       }
 
