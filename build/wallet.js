@@ -13519,7 +13519,7 @@ function () {
       this.MasterAccount = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
       this.MasterAccount.key = masterKey;
       this.MasterAccount.child = [];
-      this.MasterAccount.name = this.Name + " - master";
+      this.MasterAccount.name = "master";
 
       if (numOfAccount == 0) {
         numOfAccount = 1;
@@ -13555,7 +13555,7 @@ function () {
           }
 
           var account = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
-          account.name = this.Name + " - Account " + i;
+          account.name = "Account " + i;
           account.child = [];
           account.key = childKey;
           this.MasterAccount.child.push(account);
@@ -13567,7 +13567,7 @@ function () {
 
           var _account = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
 
-          _account.name = this.Name + " - Account " + _i;
+          _account.name = "Account " + _i;
           _account.child = [];
           _account.key = _childKey;
           this.MasterAccount.child.push(_account);
@@ -13618,7 +13618,7 @@ function () {
       this.MasterAccount = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
       this.MasterAccount.key = masterKey;
       this.MasterAccount.child = [];
-      this.MasterAccount.name = this.Name + " - master";
+      this.MasterAccount.name = "master";
 
       if (numOfAccount == 0) {
         numOfAccount = 1;
@@ -13654,7 +13654,7 @@ function () {
           }
 
           var account = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
-          account.name = this.Name + " - Account " + i;
+          account.name = "Account " + i;
           account.child = [];
           account.key = childKey;
           this.MasterAccount.child.push(account);
@@ -13666,7 +13666,7 @@ function () {
 
           var _account2 = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
 
-          _account2.name = this.Name + " - Account " + _i2;
+          _account2.name = "Account " + _i2;
           _account2.child = [];
           _account2.key = _childKey2;
           this.MasterAccount.child.push(_account2);
