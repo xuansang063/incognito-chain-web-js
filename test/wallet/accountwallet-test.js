@@ -8,9 +8,8 @@ import {ENCODE_VERSION} from "../../lib/constants";
 import {checkEncode} from "../../lib/base58";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-const rpcClient = new RpcClient("https://test-node.incognito.org");
-// const rpcClient = new RpcClient("http://54.39.158.106:20032");
-// const rpcClient = new RpcClient("http://172.105.115.134:20004");
+// const rpcClient = new RpcClient("https://test-node.incognito.org");
+const rpcClient = new RpcClient("http://localhost:9998");
 
 async function sleep(sleepTime) {
   return new Promise(resolve => setTimeout(resolve, sleepTime));
@@ -121,10 +120,11 @@ async function TestStakerStatus() {
 
 async function TestCreateAndSendNativeToken() {
   Wallet.RpcClient = rpcClient;
+  Wallet.ShardNumber = 1;
   await sleep(5000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderPrivateKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -167,7 +167,7 @@ async function TestCreateAndSendNativeToken() {
   // console.log("Send tx 2 done");
 }
 
-// TestCreateAndSendNativeToken();
+TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;
