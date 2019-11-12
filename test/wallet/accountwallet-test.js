@@ -484,3 +484,58 @@ async function GetListReceivedTx() {
 }
 
 // GetListReceivedTx();
+
+
+
+/******************************** REPLACE TRANSACTION *********************************/
+async function TestReplaceNormalTx() {
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+
+  // sender key (private key)
+  let senderPrivateKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  // receiver key (payment address)
+  let receiverPaymentAddrStr = "12S4NL3DZ1KoprFRy1k5DdYSXUq81NtxFKdvUTP3PLqQypWzceL5fBBwXooAsX5s23j7cpb1Za37ddmfSaMpEJDPsnJGZuyWTXJSZZ5";
+  // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddrStr);
+  // let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
+
+  let fee = 0.5 * 1e9;
+  let isPrivacy = true;
+  let info = "";
+  let amountTransfer = 100 * 1e9; // in nano PRV
+
+  let paymentInfosParam = [];
+  paymentInfosParam[0] = {
+    "paymentAddressStr": receiverPaymentAddrStr,
+    "amount": amountTransfer
+  };
+
+  // create and send PRV
+  let response;
+  try {
+    response = await accountSender.createAndSendNativeToken(paymentInfosParam, fee, isPrivacy, info);
+  } catch (e) {
+    console.log("Error when send PRV: ", e);
+  }
+  console.log("Send tx 1 done");
+
+  // await sleep(40000);
+
+  let newFee = fee*2;
+  // replace tx
+  let respone2;
+  try {
+    respone2 = await accountSender.replaceTx(response.txId, newFee, 0);
+  } catch (e) {
+    console.log("Error when replace tx: ", e);
+  }
+  console.log("Send tx 2 done, ", respone2);
+}
+
+TestReplaceNormalTx();
