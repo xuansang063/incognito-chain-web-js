@@ -120,7 +120,7 @@ async function TestStakerStatus() {
 
 async function TestCreateAndSendNativeToken() {
   Wallet.RpcClient = rpcClient;
-  Wallet.ShardNumber = 1;
+  // Wallet.ShardNumber = 1;
   await sleep(5000);
 
   // sender key (private key)
@@ -145,7 +145,7 @@ async function TestCreateAndSendNativeToken() {
   paymentInfosParam[0] = {
     "paymentAddressStr": receiverPaymentAddrStr,
     "amount": amountTransfer,
-    "message": "rose's so cute"
+    // "message": "rose's so cute"
   };
 
   // create and send PRV
@@ -167,7 +167,7 @@ async function TestCreateAndSendNativeToken() {
   // console.log("Send tx 2 done");
 }
 
-TestCreateAndSendNativeToken();
+// TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;
@@ -199,7 +199,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
     }
   }
 
-  let feePRV = 0;
+  let feePRV = 10;
   let feePToken = 0;
   let hasPrivacyForToken = false;
   let hasPrivacyForNativeToken = false;
@@ -214,7 +214,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
 // tokenID: 51753277b5066ecbacb9bbb822812b88a3c8272c3d6b563a6a52a7d9e192f436 Rose
 // txID: f0f0b918eb159928635ec12540afee68a21f4a4ca8b1954486c9858a2a68d8f5
 
-// TestCreateAndSendPrivacyTokenInit();
+TestCreateAndSendPrivacyTokenInit();
 
 async function TestCreateAndSendPrivacyTokenTransfer() {
   Wallet.RpcClient = rpcClient;
