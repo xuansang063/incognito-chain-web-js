@@ -4,7 +4,7 @@ require("./loadwasm");
 
 // wallet test
 // require("./test/wallet/wallet-test");
-// require("./test/wallet/accountwallet-test");
+require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
 // require("./test/wallet/utils-test");
 
@@ -38,7 +38,6 @@ require("./loadwasm");
 require('./test/txfordev/multiPRVTx');
 
 /************* RPC TEST **************/
-
 // require('./test/rpc/rpc-test');
 
 /************* PRIVACY TEST **************/
