@@ -1,5 +1,7 @@
 //load WASM
 let isWASMRunned = false;
+// let fileName = "./privacy_without_info.wasm";
+let fileName = "./privacy.wasm";
 try{
   if (!isWASMRunned){
     require('isomorphic-fetch');
@@ -10,7 +12,7 @@ try{
     if (fs.readFileSync) {
       let data;
       try{
-        data = fs.readFileSync("./privacy.wasm")
+        data = fs.readFileSync(fileName)
         console.log("Reading wasm file");
       } catch(e){
         console.log("Error when reading wasm file: ", e);
@@ -30,7 +32,7 @@ try{
           return await WebAssembly.instantiate(source, importObject);
         };
       }
-      WebAssembly.instantiateStreaming(fetch("./privacy.wasm"), go.importObject).then(async (result) => {
+      WebAssembly.instantiateStreaming(fetch(fileName), go.importObject).then(async (result) => {
         inst = result.instance;
         go.run(inst);
         isWASMRunned = true;

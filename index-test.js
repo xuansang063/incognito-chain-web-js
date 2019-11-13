@@ -4,7 +4,7 @@ require("./loadwasm");
 
 // wallet test
 // require("./test/wallet/wallet-test");
-require("./test/wallet/accountwallet-test");
+// require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
 // require("./test/wallet/utils-test");
 
@@ -35,11 +35,11 @@ require("./test/wallet/accountwallet-test");
 // require('./test/txfordev/getBalanceMultiUsers');
 // require('./test/txfordev/multiStakingTxs.js');
 // require('./test/txfordev/withdrawReward');
+// require('./test/txfordev/multiPRVTx');
 
 /************* RPC TEST **************/
 // require('./test/rpc/rpc-test');
 
 /************* PRIVACY TEST **************/
-// require('./test/privacy/hybridenc-test');
-
-
+require('./test/privacy/hybridenc-test');
+// require('./test/privacy/utils-test');

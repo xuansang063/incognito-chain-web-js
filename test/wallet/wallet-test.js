@@ -1,4 +1,4 @@
-import { Wallet, DefaultStorage } from '../../lib/wallet/wallet'
+import { Wallet, DefaultStorage, getShardIDFromLastByte } from '../../lib/wallet/wallet'
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
 
 const rpcClient = new RpcClient("https://test-node.incognito.org");
@@ -60,7 +60,7 @@ async function TestImportWallet() {
 
   words = words.join(" ");
 
-  wallet.import(words, "1", 1, "Wallet", new DefaultStorage())
+  wallet.import(words, "1", 3, "Wallet", new DefaultStorage(), 3);
 
   // wallet2.createNewAccount("Test 2")
   // // let privKey = wallet2.exportAccountPrivateKey(0)
@@ -73,6 +73,11 @@ async function TestImportWallet() {
   wallet.save("1");
 
   console.log("Wallet: ", wallet);
+  let childs = wallet.MasterAccount.child;
+  for (let i=0; i<childs.length; i++){
+    let pk = childs[i].key.KeySet.PaymentAddress.Pk;
+    console.log("Last byte: ", getShardIDFromLastByte(pk[pk.length -1]));
+  }
 }
 TestImportWallet()
 
