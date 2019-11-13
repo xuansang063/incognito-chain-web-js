@@ -523,7 +523,7 @@ async function TestReplaceNormalTx() {
   } catch (e) {
     console.log("Error when send PRV: ", e);
   }
-  console.log("Send tx 1 done");
+  console.log("Send tx 1 done: ", response);
 
   // await sleep(40000);
 
