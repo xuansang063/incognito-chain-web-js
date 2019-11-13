@@ -276,7 +276,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // }
 }
 
-TestCreateAndSendPrivacyTokenTransfer();
+// TestCreateAndSendPrivacyTokenTransfer();
 
 
 async function TestCreateAndSendStakingTx() {
@@ -474,13 +474,13 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
   }
 }
 
-TestCreateAndSendNativeTokenTradeRequestTx();
+// TestCreateAndSendNativeTokenTradeRequestTx();
 
 async function GetListReceivedTx() {
   Wallet.RpcClient = rpcClient;
-  await sleep(3000);
+  await sleep(5000);
 
-  let senderSpendingKeyStr = "112t8rnY6dAzNFUFi1hGZ4FNaZxrgKqdL93byS8heSjoZdCRDRSdXhNBzctLv2NHy1ffUYzb6RyE1HsBbQkVxXxRx3dpZtAmmXf5Lyrpbu6u";
+  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -491,4 +491,5 @@ async function GetListReceivedTx() {
   console.log(JSON.stringify(receivedTxs, null, 2));
 }
 
-// GetListReceivedTx();
+GetListReceivedTx();
+

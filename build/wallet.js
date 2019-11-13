@@ -12500,7 +12500,7 @@ function () {
 /*!*********************************!*\
   !*** ./lib/wallet/constants.js ***!
   \*********************************/
-/*! exports provided: PriKeyType, PaymentAddressType, ReadonlyKeyType, PublicKeyType, PriKeySerializeSize, PaymentAddrSerializeSize, ReadonlyKeySerializeSize, PublicKeySerializeSize, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, ShardStakingType, BeaconStakingType, MaxTxSize, ChildNumberSize, ChainCodeSize, PercentFeeToCancelTx, PrivacyUnit, NanoUnit, BurnAddress, BurningRequestMeta, WithDrawRewardRequestMeta, PRVID, NoStakeStatus, CandidatorStatus, ValidatorStatus, PDEContributionMeta, PDETradeRequestMeta, PDETradeResponseMeta, PDEWithdrawalRequestMeta, PDEWithdrawalResponseMeta, PRVIDSTR, PDEPOOLKEY, PriKeySerializeAddCheckSumSize, PaymentAddrSerializeAddCheckSumSize, ReadonlyKeySerializeAddCheckSumSize, MenmonicWordLen */
+/*! exports provided: PriKeyType, PaymentAddressType, ReadonlyKeyType, PublicKeyType, PriKeySerializeSize, PaymentAddrSerializeSize, ReadonlyKeySerializeSize, PublicKeySerializeSize, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, ShardStakingType, BeaconStakingType, MaxTxSize, ChildNumberSize, ChainCodeSize, PercentFeeToCancelTx, PrivacyUnit, NanoUnit, BurnAddress, BurningRequestMeta, WithDrawRewardRequestMeta, PRVID, NoStakeStatus, CandidatorStatus, ValidatorStatus, PDEContributionMeta, PDETradeRequestMeta, PDETradeResponseMeta, PDEWithdrawalRequestMeta, PDEWithdrawalResponseMeta, PRVIDSTR, PDEPOOLKEY, PriKeySerializeAddCheckSumSize, PaymentAddrSerializeAddCheckSumSize, ReadonlyKeySerializeAddCheckSumSize, MenmonicWordLen, MaxSizeInfoCoin */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12546,6 +12546,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PaymentAddrSerializeAddCheckSumSize", function() { return PaymentAddrSerializeAddCheckSumSize; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ReadonlyKeySerializeAddCheckSumSize", function() { return ReadonlyKeySerializeAddCheckSumSize; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenmonicWordLen", function() { return MenmonicWordLen; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MaxSizeInfoCoin", function() { return MaxSizeInfoCoin; });
 var PriKeyType = 0x0; // Serialize wallet account key into string with only PRIVATE KEY of account KeySet
 
 var PaymentAddressType = 0x1; // Serialize wallet account key into string with only PAYMENT ADDRESS of account KeySet
@@ -12594,6 +12595,7 @@ var NoStakeStatus = -1;
 var CandidatorStatus = 0;
 var ValidatorStatus = 1;
 var MenmonicWordLen = 12;
+var MaxSizeInfoCoin = 255;
 
 
 /***/ }),
@@ -13264,7 +13266,7 @@ function () {
 /*!*****************************!*\
   !*** ./lib/wallet/utils.js ***!
   \*****************************/
-/*! exports provided: addChecksumToBytes, toPRV, toNanoPRV, encryptMessageOutCoin */
+/*! exports provided: addChecksumToBytes, toPRV, toNanoPRV, encryptMessageOutCoin, decryptMessageOutCoin */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13273,6 +13275,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toPRV", function() { return toPRV; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toNanoPRV", function() { return toNanoPRV; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "encryptMessageOutCoin", function() { return encryptMessageOutCoin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "decryptMessageOutCoin", function() { return decryptMessageOutCoin; });
 /* harmony import */ var _base58__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../base58 */ "./lib/base58.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./lib/wallet/constants.js");
 /* harmony import */ var _wallet__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./wallet */ "./lib/wallet/wallet.js");
@@ -13308,8 +13311,10 @@ function encryptMessageOutCoin(_x) {
   return _encryptMessageOutCoin.apply(this, arguments);
 }
 /**
+ * @param {AccountWallet} accountWallet
+ * @param {string} ciphertextInfoB58CheckEncode
+ * @return string
  * 
- * @param {nanoAmountPRV : number} nanoAmountPRV 
  */
 
 
@@ -13326,14 +13331,14 @@ function _encryptMessageOutCoin() {
 
           case 1:
             if (!(i < paramPaymentInfos.length)) {
-              _context.next = 22;
+              _context.next = 24;
               break;
             }
 
             p = paramPaymentInfos[i];
 
             if (!(p.message != "" && p.message != null)) {
-              _context.next = 19;
+              _context.next = 21;
               break;
             }
 
@@ -13358,19 +13363,27 @@ function _encryptMessageOutCoin() {
             throw new _errorhandler__WEBPACK_IMPORTED_MODULE_4__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_4__["ErrorObject"].EncryptMsgOutCoinErr, "PaymentAddress: ".concat(p.paymentAddressStr, "$"));
 
           case 17:
+            if (!(ciphertextBytes > _constants__WEBPACK_IMPORTED_MODULE_1__["MaxSizeInfoCoin"])) {
+              _context.next = 19;
+              break;
+            }
+
+            throw new _errorhandler__WEBPACK_IMPORTED_MODULE_4__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_4__["ErrorObject"].EncryptMsgOutCoinErr, "Message is too large");
+
+          case 19:
             // base64 encode ciphertext
             ciphertextEncode = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_3__["base64Encode"])(ciphertextBytes);
             paramPaymentInfos[i].message = ciphertextEncode;
 
-          case 19:
+          case 21:
             i++;
             _context.next = 1;
             break;
 
-          case 22:
+          case 24:
             return _context.abrupt("return", paramPaymentInfos);
 
-          case 23:
+          case 25:
           case "end":
             return _context.stop();
         }
@@ -13378,6 +13391,44 @@ function _encryptMessageOutCoin() {
     }, _callee, null, [[8, 14]]);
   }));
   return _encryptMessageOutCoin.apply(this, arguments);
+}
+
+function decryptMessageOutCoin(_x2, _x3) {
+  return _decryptMessageOutCoin.apply(this, arguments);
+}
+/**
+ * 
+ * @param {nanoAmountPRV : number} nanoAmountPRV 
+ */
+
+
+function _decryptMessageOutCoin() {
+  _decryptMessageOutCoin = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee2(accountWallet, ciphertextInfoB58CheckEncode) {
+    var privateKeyBytes, ciphertextBytes, plaintextBytes, plaintextStr;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            privateKeyBytes = accountWallet.key.KeySet.ReadonlyKey.Rk;
+            ciphertextBytes = checkDecode(ciphertextInfoB58CheckEncode).bytesDecoded;
+            _context2.next = 4;
+            return hybridDecryption(privateKeyBytes, ciphertextBytes);
+
+          case 4:
+            plaintextBytes = _context2.sent;
+            plaintextStr = bytesToString(plaintextBytes);
+            return _context2.abrupt("return", plaintextStr);
+
+          case 7:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _decryptMessageOutCoin.apply(this, arguments);
 }
 
 var toPRV = function toPRV(nanoAmountPRV) {
@@ -13401,7 +13452,7 @@ var toNanoPRV = function toNanoPRV(amountPRV) {
 /*!******************************!*\
   !*** ./lib/wallet/wallet.js ***!
   \******************************/
-/*! exports provided: Wallet, AccountWallet, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, BurnAddress, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, RPCHttpService, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDETradeRequestMeta, PDEWithdrawalRequestMeta, hybridEncryption, hybridDecryption */
+/*! exports provided: Wallet, AccountWallet, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, FailedTx, SuccessTx, ConfirmedTx, AmountStakingBeacon, MetaStakingBeacon, AmountStakingShard, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, BurnAddress, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, RPCHttpService, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDETradeRequestMeta, PDEWithdrawalRequestMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13494,6 +13545,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridDecryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_22__["hybridDecryption"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "encryptMessageOutCoin", function() { return _utils__WEBPACK_IMPORTED_MODULE_16__["encryptMessageOutCoin"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "decryptMessageOutCoin", function() { return _utils__WEBPACK_IMPORTED_MODULE_16__["decryptMessageOutCoin"]; });
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -13505,6 +13560,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
