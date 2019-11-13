@@ -1439,7 +1439,7 @@ function _hybridDecryption() {
             dataEncoded = base64Encode(Object(_utils__WEBPACK_IMPORTED_MODULE_1__["convertUint8ArrayToArray"])(dataBytes));
 
             if (!(typeof hybridDecryptionASM === "function")) {
-              _context2.next = 12;
+              _context2.next = 14;
               break;
             }
 
@@ -1448,13 +1448,22 @@ function _hybridDecryption() {
 
           case 7:
             plainTextEncoded = _context2.sent;
+
+            if (!(plainTextEncoded === null)) {
+              _context2.next = 10;
+              break;
+            }
+
+            throw new Error("Can not decrypt message with private key");
+
+          case 10:
             plainTextBytes = base64Decode(plainTextEncoded);
             return _context2.abrupt("return", plainTextBytes);
 
-          case 12:
-            throw new Error("Can not encrypt message with public key");
+          case 14:
+            throw new Error("Can not find hybridDecryptionASM function");
 
-          case 13:
+          case 15:
           case "end":
             return _context2.stop();
         }
@@ -12896,7 +12905,7 @@ function () {
       var _getReceivedTransaction = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee21() {
-        var rpcClient, paymentAddress, viewingKey, txs, i, tx, historyObj, txHistoryInfo;
+        var rpcClient, paymentAddress, viewingKey, txs, i, tx, messageForNativeToken, messageForPToken, historyObj, txHistoryInfo;
         return regeneratorRuntime.wrap(function _callee21$(_context21) {
           while (1) {
             switch (_context21.prev = _context21.next) {
@@ -12921,57 +12930,101 @@ function () {
                   this.txReceivedHistory.CustomTokenTx = [];
                 }
 
-                for (i = 0; i < txs.length; i++) {
-                  // loop and parse into history tx object
-                  tx = txs[i];
-                  console.log("tx", i, circular_json__WEBPACK_IMPORTED_MODULE_11___default.a.stringify(tx, null, 2));
+                i = 0;
 
-                  try {
-                    historyObj = {
-                      txID: tx.Hash,
-                      amountNativeToken: tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]] ? tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]].CoinDetails.Value : 0,
-                      // in nano PRV
-                      amountPToken: tx.ReceivedAmounts[tx.PrivacyCustomTokenID] ? tx.ReceivedAmounts[tx.PrivacyCustomTokenID].CoinDetails.Value : 0,
-                      feeNativeToken: tx.Fee,
-                      // in nano PRV
-                      feePToken: tx.PrivacyCustomTokenFee,
-                      typeTx: tx.Type,
-                      receivers: null,
-                      tokenName: tx.PrivacyCustomTokenName,
-                      tokenID: tx.PrivacyCustomTokenID,
-                      tokenSymbol: tx.PrivacyCustomTokenIDSymbol,
-                      isIn: true,
-                      time: new Date(tx.LockTime).getTime(),
-                      // in mili-second
-                      status: null,
-                      isPrivacyNativeToken: null,
-                      isPrivacyForPToken: null,
-                      listUTXOForPRV: [],
-                      listUTXOForPToken: [],
-                      hashOriginalTx: ""
-                    };
-                    txHistoryInfo = new _history__WEBPACK_IMPORTED_MODULE_9__["TxHistoryInfo"]();
-                    txHistoryInfo.setHistoryInfo(historyObj);
-
-                    switch (tx.Type) {
-                      case _tx_constants__WEBPACK_IMPORTED_MODULE_1__["TxNormalType"]:
-                        {
-                          this.txReceivedHistory.NormalTx.push(txHistoryInfo);
-                        }
-
-                      case _tx_constants__WEBPACK_IMPORTED_MODULE_1__["TxCustomTokenPrivacyType"]:
-                        {
-                          this.txReceivedHistory.PrivacyTokenTx.push(txHistoryInfo);
-                        }
-                    }
-                  } catch (e) {
-                    console.log(e);
-                  }
+              case 11:
+                if (!(i < txs.length)) {
+                  _context21.next = 30;
+                  break;
                 }
 
+                // loop and parse into history tx object
+                tx = txs[i];
+                console.log("tx", i, circular_json__WEBPACK_IMPORTED_MODULE_11___default.a.stringify(tx, null, 2));
+                messageForNativeToken = "";
+                messageForPToken = "";
+
+                if (!tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]]) {
+                  _context21.next = 21;
+                  break;
+                }
+
+                console.log("tx.ReceivedAmounts[PRVIDSTR].CoinDetails.Info:", tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]].CoinDetails.Info);
+                _context21.next = 20;
+                return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["decryptMessageOutCoin"])(this, tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]].CoinDetails.Info);
+
+              case 20:
+                messageForNativeToken = _context21.sent;
+
+              case 21:
+                if (!tx.ReceivedAmounts[tx.PrivacyCustomTokenID]) {
+                  _context21.next = 26;
+                  break;
+                }
+
+                console.log("tx.ReceivedAmounts[tx.PrivacyCustomTokenID].CoinDetails.Info: ", tx.ReceivedAmounts[tx.PrivacyCustomTokenID].CoinDetails.Info);
+                _context21.next = 25;
+                return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["decryptMessageOutCoin"])(this, tx.ReceivedAmounts[tx.PrivacyCustomTokenID].CoinDetails.Info);
+
+              case 25:
+                messageForPToken = _context21.sent;
+
+              case 26:
+                try {
+                  historyObj = {
+                    txID: tx.Hash,
+                    amountNativeToken: tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]] ? tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]].CoinDetails.Value : 0,
+                    // in nano PRV
+                    amountPToken: tx.ReceivedAmounts[tx.PrivacyCustomTokenID] ? tx.ReceivedAmounts[tx.PrivacyCustomTokenID].CoinDetails.Value : 0,
+                    feeNativeToken: tx.Fee,
+                    // in nano PRV
+                    feePToken: tx.PrivacyCustomTokenFee,
+                    typeTx: tx.Type,
+                    receivers: null,
+                    tokenName: tx.PrivacyCustomTokenName,
+                    tokenID: tx.PrivacyCustomTokenID,
+                    tokenSymbol: tx.PrivacyCustomTokenIDSymbol,
+                    isIn: true,
+                    time: new Date(tx.LockTime).getTime(),
+                    // in mili-second
+                    status: null,
+                    isPrivacyNativeToken: null,
+                    isPrivacyForPToken: null,
+                    listUTXOForPRV: [],
+                    listUTXOForPToken: [],
+                    hashOriginalTx: "",
+                    metaData: tx.Metadata,
+                    info: tx.Info,
+                    messageForNativeToken: messageForNativeToken,
+                    messageForPToken: messageForPToken
+                  };
+                  txHistoryInfo = new _history__WEBPACK_IMPORTED_MODULE_9__["TxHistoryInfo"]();
+                  txHistoryInfo.setHistoryInfo(historyObj);
+
+                  switch (tx.Type) {
+                    case _tx_constants__WEBPACK_IMPORTED_MODULE_1__["TxNormalType"]:
+                      {
+                        this.txReceivedHistory.NormalTx.push(txHistoryInfo);
+                      }
+
+                    case _tx_constants__WEBPACK_IMPORTED_MODULE_1__["TxCustomTokenPrivacyType"]:
+                      {
+                        this.txReceivedHistory.PrivacyTokenTx.push(txHistoryInfo);
+                      }
+                  }
+                } catch (e) {
+                  console.log(e);
+                }
+
+              case 27:
+                i++;
+                _context21.next = 11;
+                break;
+
+              case 30:
                 return _context21.abrupt("return", this.txReceivedHistory);
 
-              case 12:
+              case 31:
               case "end":
                 return _context21.stop();
             }
@@ -13987,17 +14040,28 @@ function _decryptMessageOutCoin() {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            privateKeyBytes = accountWallet.key.KeySet.ReadonlyKey.Rk;
-            ciphertextBytes = checkDecode(ciphertextInfoB58CheckEncode).bytesDecoded;
-            _context2.next = 4;
-            return hybridDecryption(privateKeyBytes, ciphertextBytes);
+            privateKeyBytes = accountWallet.key.KeySet.ReadonlyKey.Rk; // console.log("privateKeyBytes:", privateKeyBytes);
 
-          case 4:
+            ciphertextBytes = Object(_base58__WEBPACK_IMPORTED_MODULE_0__["checkDecode"])(ciphertextInfoB58CheckEncode).bytesDecoded;
+
+            if (!(ciphertextBytes != "")) {
+              _context2.next = 11;
+              break;
+            }
+
+            _context2.next = 5;
+            return Object(_privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_5__["hybridDecryption"])(privateKeyBytes, ciphertextBytes);
+
+          case 5:
             plaintextBytes = _context2.sent;
-            plaintextStr = bytesToString(plaintextBytes);
+            plaintextStr = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_3__["bytesToString"])(plaintextBytes);
+            console.log("plaintextStr: ", plaintextStr);
             return _context2.abrupt("return", plaintextStr);
 
-          case 7:
+          case 11:
+            return _context2.abrupt("return", "");
+
+          case 12:
           case "end":
             return _context2.stop();
         }
