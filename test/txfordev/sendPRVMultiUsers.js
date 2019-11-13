@@ -27,7 +27,7 @@ async function SendPRVForMultiUsers() {
     }
 
     // set private for sender
-    let senderSpendingKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
+    let senderSpendingKeyStr = "";
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
     senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 

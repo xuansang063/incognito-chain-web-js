@@ -1,6 +1,7 @@
 //load WASM
 let isWASMRunned = false;
-let fileName = "./privacy_without_info.wasm";
+// let fileName = "./privacy_without_info.wasm";
+let fileName = "./privacy.wasm";
 try{
   if (!isWASMRunned){
     require('isomorphic-fetch');
