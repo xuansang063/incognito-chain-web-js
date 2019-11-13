@@ -7,10 +7,10 @@ import {ENCODE_VERSION} from "../../lib/constants";
 import {checkEncode} from "../../lib/base58";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-// const rpcClient = new RpcClient("https://test-node.incognito.org");
+const rpcClient = new RpcClient("https://test-node.incognito.org");
 // const rpcClient = new RpcClient("http://localhost:9998");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
-const rpcClient = new RpcClient("http://54.39.158.106:9334");
+// const rpcClient = new RpcClient("http://54.39.158.106:9334");
 
 async function sleep(sleepTime) {
   return new Promise(resolve => setTimeout(resolve, sleepTime));
@@ -129,11 +129,10 @@ async function TestStakerStatus() {
 
 async function TestCreateAndSendNativeToken() {
   Wallet.RpcClient = rpcClient;
-  // Wallet.ShardNumber = 1;
   await sleep(5000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "";
+  let senderPrivateKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -154,7 +153,7 @@ async function TestCreateAndSendNativeToken() {
   paymentInfosParam[0] = {
     "paymentAddressStr": receiverPaymentAddrStr,
     "amount": amountTransfer,
-    // "message": "rose's so cute"
+    "message": "rose's so cute"
   };
 
   // create and send PRV
@@ -182,7 +181,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
   // sender key (private key)
-  let senderSpendingKeyStr = "";
+  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
@@ -194,7 +193,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
   let paymentInfos = [];
 
   // prepare token param for tx privacy token init
-  let amountInit = 1000;
+  let amountInit = 100000;
   let tokenParams = {
     Privacy: true,
     TokenID: "",
@@ -229,7 +228,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
   // sender key (private key)
-  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderSpendingKeyStr = "112t8rnaWQbUWmdGZW2LtF2dzBFVfWBBzH3xviG7TWvwCVNZ3tPygcTKK8kv4jzYQwHo3BDZvERWJHL9Kp9AhAMtG4my9GoARtXDxTUyWSRD";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -237,7 +236,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   accountSender.key = senderKeyWallet;
 
   // receivers (payment address)
-  let receiverPaymentAddressStr = "12Ryp47jXJfkz5Cketp4D9U7uTH4hFgFUVUEzq6k5ikvAZ94JucsYbi235siCMud5GdtRi1DoSecsTD2nkiic9TH7YNkLEoEhrvxvwt";
+  let receiverPaymentAddressStr = "12S4NL3DZ1KoprFRy1k5DdYSXUq81NtxFKdvUTP3PLqQypWzceL5fBBwXooAsX5s23j7cpb1Za37ddmfSaMpEJDPsnJGZuyWTXJSZZ5";
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddressStr);
 
   // payment info for PRV
@@ -246,12 +245,12 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     amount: 5,
     message: "ABC"
   }];
-  let amountTransfer = 10;
+  let amountTransfer = 5;
 
   // prepare token param for tx custom token init
   let tokenParams = {
     Privacy: true,
-    TokenID: "b6a98784e47c2b2f8e8572d49d23d3031142bb76e4b420244a3b1176120a5cbb",
+    TokenID: "ddacfb991d4744c271e8c3eb5004cef4617cfe415bbe1e68355bf262ceb5e6cc",
     TokenName: "Rose",
     TokenSymbol: "Rose",
     TokenTxType: CustomTokenTransfer,
@@ -276,7 +275,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // }
 }
 
-// TestCreateAndSendPrivacyTokenTransfer();
+TestCreateAndSendPrivacyTokenTransfer();
 
 
 async function TestCreateAndSendStakingTx() {
@@ -546,4 +545,4 @@ async function TestReplaceNormalTx() {
   console.log("Send tx 2 done, ", respone2);
 }
 
-TestReplaceNormalTx();
+// TestReplaceNormalTx();
