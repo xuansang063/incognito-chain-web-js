@@ -153,12 +153,12 @@ async function TestCreateAndSendNativeToken() {
   paymentInfosParam[0] = {
     "paymentAddressStr": receiverPaymentAddrStr,
     "amount": amountTransfer,
-    "message": "rose's so cute"
+    "message": "A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute"
   };
 
   // create and send PRV
   try {
-    await accountSender.createAndSendNativeToken(paymentInfosParam, fee, isPrivacy, info);
+    await accountSender.createAndSendNativeToken(paymentInfosParam, fee, isPrivacy, info, false);
   } catch (e) {
     console.log("Error when send PRV: ", e);
   }
@@ -175,7 +175,7 @@ async function TestCreateAndSendNativeToken() {
   // console.log("Send tx 2 done");
 }
 
-// TestCreateAndSendNativeToken();
+TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;
@@ -490,7 +490,7 @@ async function GetListReceivedTx() {
   console.log(JSON.stringify(receivedTxs, null, 2));
 }
 
-GetListReceivedTx();
+// GetListReceivedTx();
 
 
 

@@ -8957,13 +8957,14 @@ function () {
             receiverPaymentAddrStr,
             totalAmountTransfer,
             i,
+            _i3,
             senderSkStr,
             inputForTx,
             nOutput,
             sndOutputStrs,
             sndOutputs,
             sndDecodes,
-            _i3,
+            _i4,
             sndBytes,
             paramInitTx,
             resInitTx,
@@ -8976,7 +8977,7 @@ function () {
             listUTXOForPRV,
             status,
             spendingSNs,
-            _i4,
+            _i5,
             _args7 = arguments;
 
         return regeneratorRuntime.wrap(function _callee7$(_context7) {
@@ -9009,7 +9010,7 @@ function () {
                 console.log("isEncryptMessageOutCoin: ", isEncryptMessageOutCoin); // encrypt message for output coins
 
                 if (!isEncryptMessageOutCoin) {
-                  _context7.next = 23;
+                  _context7.next = 25;
                   break;
                 }
 
@@ -9029,36 +9030,46 @@ function () {
                 console.log("Error when encryption message of output coins");
 
               case 23:
+                _context7.next = 26;
+                break;
+
+              case 25:
+                for (_i3 = 0; _i3 < paramPaymentInfos.length; _i3++) {
+                  paramPaymentInfos[_i3].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(paramPaymentInfos[_i3].message));
+                  console.log("paramPaymentInfos[i].message: ", paramPaymentInfos[_i3].message);
+                }
+
+              case 26:
                 senderSkStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PriKeyType"]); // let paymentAddressStr = this.key.base58CheckSerialize(PaymentAddressType);
                 // let viewingKeyStr = this.key.base58CheckSerialize(ReadonlyKeyType);
 
                 console.time("Time for create and send tx");
-                _context7.prev = 25;
+                _context7.prev = 28;
                 // prepare input for tx
                 console.time("Time for preparing input for privacy tx"); // console.log("Wallet: ", Wallet.RpcClient);
 
-                _context7.prev = 27;
-                _context7.next = 30;
+                _context7.prev = 30;
+                _context7.next = 33;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["prepareInputForTx"])(totalAmountTransfer, feeBN, isPrivacy, null, this, _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
-              case 30:
+              case 33:
                 inputForTx = _context7.sent;
                 console.log("input after prepare: ", inputForTx);
-                _context7.next = 37;
+                _context7.next = 40;
                 break;
 
-              case 34:
-                _context7.prev = 34;
-                _context7.t1 = _context7["catch"](27);
+              case 37:
+                _context7.prev = 37;
+                _context7.t1 = _context7["catch"](30);
                 throw _context7.t1;
 
-              case 37:
+              case 40:
                 console.log("createAndSendNativeToken inputForTx: ", inputForTx);
                 console.timeEnd("Time for preparing input for privacy tx");
-                _context7.next = 41;
+                _context7.next = 44;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(30);
 
-              case 41:
+              case 44:
                 nOutput = paramPaymentInfos.length;
 
                 if (inputForTx.totalValueInput.cmp(totalAmountTransfer) === 1) {
@@ -9068,63 +9079,63 @@ function () {
                 sndOutputs = new Array(nOutput);
 
                 if (!(nOutput > 0)) {
-                  _context7.next = 54;
+                  _context7.next = 57;
                   break;
                 }
 
                 if (!(typeof randomScalars === "function")) {
-                  _context7.next = 54;
+                  _context7.next = 57;
                   break;
                 }
 
-                _context7.next = 48;
+                _context7.next = 51;
                 return randomScalars(nOutput.toString());
 
-              case 48:
+              case 51:
                 sndOutputStrs = _context7.sent;
 
                 if (!(sndOutputStrs === null || sndOutputStrs === "")) {
-                  _context7.next = 51;
+                  _context7.next = 54;
                   break;
                 }
 
                 throw new Error("Can not random scalars for output coins");
 
-              case 51:
+              case 54:
                 console.log("sndOutputStrs: ", sndOutputStrs);
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrs);
 
-                for (_i3 = 0; _i3 < nOutput; _i3++) {
-                  sndBytes = sndDecodes.slice(_i3 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i3 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputs[_i3] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i4 = 0; _i4 < nOutput; _i4++) {
+                  sndBytes = sndDecodes.slice(_i4 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i4 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputs[_i4] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
-              case 54:
+              case 57:
                 console.log("createAndSendNativeToken sndOutputs: ", sndOutputs);
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, fee, isPrivacy, null, null, info, inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
                 console.log("createAndSendNativeToken paramInitTx: ", paramInitTx);
 
                 if (!(typeof initPrivacyTx === "function")) {
-                  _context7.next = 65;
+                  _context7.next = 68;
                   break;
                 }
 
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_11___default.a.stringify(paramInitTx);
                 console.log("paramInitTxJson: ", paramInitTxJson);
-                _context7.next = 62;
+                _context7.next = 65;
                 return initPrivacyTx(paramInitTxJson);
 
-              case 62:
+              case 65:
                 resInitTx = _context7.sent;
 
                 if (!(resInitTx === null || resInitTx === "")) {
-                  _context7.next = 65;
+                  _context7.next = 68;
                   break;
                 }
 
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-              case 65:
+              case 68:
                 console.log("createAndSendNativeToken resInitTx: ", resInitTx); //base64 decode txjson
 
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(resInitTx); // get b58 check encode tx json
@@ -9133,32 +9144,32 @@ function () {
 
                 lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
-                _context7.next = 72;
+                _context7.next = 75;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(60);
 
-              case 72:
+              case 75:
                 console.time("Time for sending tx");
                 listUTXOForPRV = [];
-                _context7.prev = 74;
-                _context7.next = 77;
+                _context7.prev = 77;
+                _context7.next = 80;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 77:
+              case 80:
                 response = _context7.sent;
-                _context7.next = 84;
+                _context7.next = 87;
                 break;
 
-              case 80:
-                _context7.prev = 80;
-                _context7.t2 = _context7["catch"](74);
+              case 83:
+                _context7.prev = 83;
+                _context7.t2 = _context7["catch"](77);
                 console.log("createAndSendNativeToken Error when sending tx: ", _context7.t2);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
 
-              case 84:
-                _context7.next = 86;
+              case 87:
+                _context7.next = 89;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
 
-              case 86:
+              case 89:
                 console.timeEnd("Time for sending tx");
                 console.timeEnd("Time for create and send tx"); // saving history tx
                 // check status of tx and add coins to spending coins
@@ -9176,9 +9187,9 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i4 = 0; _i4 < inputForTx.inputCoinStrs.length; _i4++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i4].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i4].SNDerivator);
+                  for (_i5 = 0; _i5 < inputForTx.inputCoinStrs.length; _i5++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i5].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i5].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -9191,28 +9202,28 @@ function () {
 
                 this.saveNormalTxHistory(response, receiverPaymentAddrStr, false, isPrivacy, listUTXOForPRV, "", null, info, messageForNativeToken);
                 console.log("createAndSendNativeToken History account after saving: ", this.txHistory.NormalTx);
-                _context7.next = 94;
+                _context7.next = 97;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 94:
+              case 97:
                 return _context7.abrupt("return", response);
 
-              case 97:
-                _context7.prev = 97;
-                _context7.t3 = _context7["catch"](25);
-                _context7.next = 101;
+              case 100:
+                _context7.prev = 100;
+                _context7.t3 = _context7["catch"](28);
+                _context7.next = 104;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(0);
 
-              case 101:
+              case 104:
                 console.log(_context7.t3);
                 throw _context7.t3;
 
-              case 103:
+              case 106:
               case "end":
                 return _context7.stop();
             }
           }
-        }, _callee7, this, [[13, 20], [25, 97], [27, 34], [74, 80]]);
+        }, _callee7, this, [[13, 20], [28, 100], [30, 37], [77, 83]]);
       }));
 
       function createAndSendNativeToken(_x7, _x8, _x9) {
@@ -9273,7 +9284,7 @@ function () {
             listUTXOForPRV,
             status,
             spendingSNs,
-            _i5,
+            _i6,
             _args8 = arguments;
 
         return regeneratorRuntime.wrap(function _callee8$(_context8) {
@@ -9488,9 +9499,9 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i5 = 0; _i5 < inputForTx.inputCoinStrs.length; _i5++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i5].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i5].SNDerivator);
+                  for (_i6 = 0; _i6 < inputForTx.inputCoinStrs.length; _i6++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i6].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i6].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -9565,18 +9576,18 @@ function () {
             inputForTx,
             inputForPrivacyTokenTx,
             listCustomTokens,
-            _i6,
+            _i7,
             nOutputForNativeToken,
             sndOutputStrsForNativeToken,
             sndOutputsForNativeToken,
             sndDecodes,
-            _i7,
+            _i8,
             sndBytes,
             nOutputForPToken,
             sndOutputStrsForPToken,
             sndOutputsForPToken,
             _sndDecodes,
-            _i8,
+            _i9,
             _sndBytes,
             paramInitTx,
             resInitTx,
@@ -9587,14 +9598,14 @@ function () {
             lockTime,
             tokenIDBytes,
             tokenID,
-            _i9,
+            _i10,
             response,
             listUTXOForPRV,
             listUTXOForPToken,
             status,
             spendingSNs,
-            _i10,
             _i11,
+            _i12,
             identicon,
             isIn,
             _args9 = arguments;
@@ -9753,16 +9764,16 @@ function () {
                   break;
                 }
 
-                _i6 = 0;
-                _i6 = 0;
+                _i7 = 0;
+                _i7 = 0;
 
               case 76:
-                if (!(_i6 < listCustomTokens.length)) {
+                if (!(_i7 < listCustomTokens.length)) {
                   _context9.next = 82;
                   break;
                 }
 
-                if (!(listCustomTokens[_i6].ID.toLowerCase() === tokenParamJson.propertyID)) {
+                if (!(listCustomTokens[_i7].ID.toLowerCase() === tokenParamJson.propertyID)) {
                   _context9.next = 79;
                   break;
                 }
@@ -9770,12 +9781,12 @@ function () {
                 return _context9.abrupt("break", 82);
 
               case 79:
-                _i6++;
+                _i7++;
                 _context9.next = 76;
                 break;
 
               case 82:
-                if (!(_i6 === listCustomTokens.length)) {
+                if (!(_i7 === listCustomTokens.length)) {
                   _context9.next = 84;
                   break;
                 }
@@ -9818,9 +9829,9 @@ function () {
               case 94:
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForNativeToken);
 
-                for (_i7 = 0; _i7 < nOutputForNativeToken; _i7++) {
-                  sndBytes = sndDecodes.slice(_i7 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i7 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForNativeToken[_i7] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i8 = 0; _i8 < nOutputForNativeToken; _i8++) {
+                  sndBytes = sndDecodes.slice(_i8 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i8 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForNativeToken[_i8] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 96:
@@ -9860,9 +9871,9 @@ function () {
               case 107:
                 _sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i8 = 0; _i8 < nOutputForPToken; _i8++) {
-                  _sndBytes = _sndDecodes.slice(_i8 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i8 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i8] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i9 = 0; _i9 < nOutputForPToken; _i9++) {
+                  _sndBytes = _sndDecodes.slice(_i9 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i9 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i9] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 109:
@@ -9907,15 +9918,15 @@ function () {
                   break;
                 }
 
-                _i9 = 0;
+                _i10 = 0;
 
               case 129:
-                if (!(_i9 < listCustomTokens.length)) {
+                if (!(_i10 < listCustomTokens.length)) {
                   _context9.next = 135;
                   break;
                 }
 
-                if (!(tokenID === listCustomTokens[_i9].ID.toLowerCase())) {
+                if (!(tokenID === listCustomTokens[_i10].ID.toLowerCase())) {
                   _context9.next = 132;
                   break;
                 }
@@ -9923,7 +9934,7 @@ function () {
                 throw new Error("privacy token privacy is existed");
 
               case 132:
-                _i9++;
+                _i10++;
                 _context9.next = 129;
                 break;
 
@@ -9977,13 +9988,13 @@ function () {
 
                 spendingSNs = [];
 
-                for (_i10 = 0; _i10 < inputForTx.inputCoinStrs.length; _i10++) {
-                  spendingSNs.push(inputForTx.inputCoinStrs[_i10].SerialNumber);
-                  listUTXOForPRV.push(inputForTx.inputCoinStrs[_i10].SNDerivator);
+                for (_i11 = 0; _i11 < inputForTx.inputCoinStrs.length; _i11++) {
+                  spendingSNs.push(inputForTx.inputCoinStrs[_i11].SerialNumber);
+                  listUTXOForPRV.push(inputForTx.inputCoinStrs[_i11].SNDerivator);
                 }
 
-                for (_i11 = 0; _i11 < inputForPrivacyTokenTx.tokenInputs.length; _i11++) {
-                  listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i11].SNDerivator);
+                for (_i12 = 0; _i12 < inputForPrivacyTokenTx.tokenInputs.length; _i12++) {
+                  listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i12].SNDerivator);
                 }
 
                 this.addSpendingCoins({
@@ -10223,7 +10234,7 @@ function () {
             sndOutputStrs,
             sndOutputs,
             sndDecodes,
-            _i12,
+            _i13,
             sndBytes,
             paramInitTx,
             resInitTx,
@@ -10236,7 +10247,7 @@ function () {
             listUTXOForPRV,
             status,
             spendingSNs,
-            _i13,
+            _i14,
             _args11 = arguments;
 
         return regeneratorRuntime.wrap(function _callee11$(_context11) {
@@ -10344,9 +10355,9 @@ function () {
                 console.log("sndOutputStrs: ", sndOutputStrs);
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrs);
 
-                for (_i12 = 0; _i12 < nOutput; _i12++) {
-                  sndBytes = sndDecodes.slice(_i12 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i12 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputs[_i12] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i13 = 0; _i13 < nOutput; _i13++) {
+                  sndBytes = sndDecodes.slice(_i13 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i13 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputs[_i13] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 46:
@@ -10426,9 +10437,9 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i13 = 0; _i13 < inputForTx.inputCoinStrs.length; _i13++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i13].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i13].SNDerivator);
+                  for (_i14 = 0; _i14 < inputForTx.inputCoinStrs.length; _i14++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i14].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i14].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -10487,7 +10498,7 @@ function () {
             sndStr,
             listInputCoinsForPToken,
             listInputCoinStrsForPToken,
-            _i14,
+            _i15,
             _sndStr3,
             paymentAddressStr,
             paymentInfos,
@@ -10500,7 +10511,7 @@ function () {
             identicon,
             txTokenPrivacyData,
             spendingSNs,
-            _i15,
+            _i16,
             object,
             _args12 = arguments;
 
@@ -10536,8 +10547,8 @@ function () {
                 listInputCoinsForPToken = [];
                 listInputCoinStrsForPToken = [];
 
-                for (_i14 = 0; _i14 < listUTXOForPToken.length; _i14++) {
-                  _sndStr3 = "".concat(txHistory.tokenID, "_").concat(listUTXOForPToken[_i14]);
+                for (_i15 = 0; _i15 < listUTXOForPToken.length; _i15++) {
+                  _sndStr3 = "".concat(txHistory.tokenID, "_").concat(listUTXOForPToken[_i15]);
                   listInputCoinsForPToken.push(this.inputCoinCached[_sndStr3]);
                   listInputCoinStrsForPToken.push(this.inputCoinJsonCached[_sndStr3]);
                 }
@@ -10673,8 +10684,8 @@ function () {
               case 84:
                 spendingSNs = [];
 
-                for (_i15 = 0; _i15 < listInputCoins.length; _i15++) {
-                  spendingSNs.push(listInputCoins[_i15].coinDetails.serialNumber.compress());
+                for (_i16 = 0; _i16 < listInputCoins.length; _i16++) {
+                  spendingSNs.push(listInputCoins[_i16].coinDetails.serialNumber.compress());
                 }
 
                 object = {};
@@ -10746,13 +10757,13 @@ function () {
             sndOutputStrsForNativeToken,
             sndOutputsForNativeToken,
             sndDecodes,
-            _i16,
+            _i17,
             sndBytes,
             nOutputForPToken,
             sndOutputStrsForPToken,
             sndOutputsForPToken,
             _sndDecodes2,
-            _i17,
+            _i18,
             _sndBytes2,
             burningReqMetadata,
             paramInitTx,
@@ -10769,8 +10780,8 @@ function () {
             listUTXOForPToken,
             status,
             spendingSNs,
-            _i18,
             _i19,
+            _i20,
             isIn,
             _args13 = arguments;
 
@@ -10983,9 +10994,9 @@ function () {
               case 90:
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForNativeToken);
 
-                for (_i16 = 0; _i16 < nOutputForNativeToken; _i16++) {
-                  sndBytes = sndDecodes.slice(_i16 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i16 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForNativeToken[_i16] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i17 = 0; _i17 < nOutputForNativeToken; _i17++) {
+                  sndBytes = sndDecodes.slice(_i17 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i17 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForNativeToken[_i17] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 92:
@@ -11025,9 +11036,9 @@ function () {
               case 103:
                 _sndDecodes2 = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i17 = 0; _i17 < nOutputForPToken; _i17++) {
-                  _sndBytes2 = _sndDecodes2.slice(_i17 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i17 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i17] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes2, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i18 = 0; _i18 < nOutputForPToken; _i18++) {
+                  _sndBytes2 = _sndDecodes2.slice(_i18 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i18 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i18] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes2, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 105:
@@ -11120,13 +11131,13 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i18 = 0; _i18 < inputForTx.inputCoinStrs.length; _i18++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i18].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i18].SNDerivator);
+                  for (_i19 = 0; _i19 < inputForTx.inputCoinStrs.length; _i19++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i19].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i19].SNDerivator);
                   }
 
-                  for (_i19 = 0; _i19 < inputForPrivacyTokenTx.tokenInputs.length; _i19++) {
-                    listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i19].SNDerivator);
+                  for (_i20 = 0; _i20 < inputForPrivacyTokenTx.tokenInputs.length; _i20++) {
+                    listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i20].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -11451,7 +11462,7 @@ function () {
             listUTXOForPRV,
             status,
             spendingSNs,
-            _i20,
+            _i21,
             _args16 = arguments;
 
         return regeneratorRuntime.wrap(function _callee16$(_context16) {
@@ -11635,9 +11646,9 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i20 = 0; _i20 < inputForTx.inputCoinStrs.length; _i20++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i20].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i20].SNDerivator);
+                  for (_i21 = 0; _i21 < inputForTx.inputCoinStrs.length; _i21++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i21].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i21].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -11696,7 +11707,7 @@ function () {
       var _createAndSendPTokenContributionTx = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee17(tokenParam, feeNativeToken, feePToken, pdeContributionPairID, contributedAmount) {
-        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, messageForPToken, amountTransferPToken, senderSkStr, contributorAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes3, _i21, _sndBytes3, metadata, isPrivacyNativeToken, isPrivacyForPToken, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, listUTXOForPRV, listUTXOForPToken, status, spendingSNs, _i22, _i23, isIn;
+        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, messageForPToken, amountTransferPToken, senderSkStr, contributorAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes3, _i22, _sndBytes3, metadata, isPrivacyNativeToken, isPrivacyForPToken, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, listUTXOForPRV, listUTXOForPToken, status, spendingSNs, _i23, _i24, isIn;
 
         return regeneratorRuntime.wrap(function _callee17$(_context17) {
           while (1) {
@@ -11888,9 +11899,9 @@ function () {
               case 72:
                 _sndDecodes3 = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i21 = 0; _i21 < nOutputForPToken; _i21++) {
-                  _sndBytes3 = _sndDecodes3.slice(_i21 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i21 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i21] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes3, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i22 = 0; _i22 < nOutputForPToken; _i22++) {
+                  _sndBytes3 = _sndDecodes3.slice(_i22 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i22 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i22] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes3, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 74:
@@ -11981,13 +11992,13 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i22 = 0; _i22 < inputForTx.inputCoinStrs.length; _i22++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i22].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i22].SNDerivator);
+                  for (_i23 = 0; _i23 < inputForTx.inputCoinStrs.length; _i23++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i23].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i23].SNDerivator);
                   }
 
-                  for (_i23 = 0; _i23 < inputForPrivacyTokenTx.tokenInputs.length; _i23++) {
-                    listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i23].SNDerivator);
+                  for (_i24 = 0; _i24 < inputForPrivacyTokenTx.tokenInputs.length; _i24++) {
+                    listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i24].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -12064,7 +12075,7 @@ function () {
             listUTXOForPRV,
             status,
             spendingSNs,
-            _i24,
+            _i25,
             _args18 = arguments;
 
         return regeneratorRuntime.wrap(function _callee18$(_context18) {
@@ -12251,9 +12262,9 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i24 = 0; _i24 < inputForTx.inputCoinStrs.length; _i24++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i24].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i24].SNDerivator);
+                  for (_i25 = 0; _i25 < inputForTx.inputCoinStrs.length; _i25++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i25].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i25].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -12313,7 +12324,7 @@ function () {
       var _createAndSendPTokenTradeRequestTx = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee19(tokenParam, feeNativeToken, feePToken, tokenIDToBuyStr, sellAmount, minimumAcceptableAmount, tradingFee) {
-        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, messageForPToken, amountTransferPToken, senderSkStr, traderAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes4, _i25, _sndBytes4, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, listUTXOForPRV, listUTXOForPToken, status, spendingSNs, _i26, _i27, isIn;
+        var paramPaymentInfosForNativeToken, amountTransferPRV, tokenParamJson, messageForPToken, amountTransferPToken, senderSkStr, traderAddressStr, inputForTx, inputForPrivacyTokenTx, listCustomTokens, k, nOutputForNativeToken, sndOutputStrsForNativeToken, sndOutputsForNativeToken, sndDecodes, i, sndBytes, nOutputForPToken, sndOutputStrsForPToken, sndOutputsForPToken, _sndDecodes4, _i26, _sndBytes4, metadata, paramInitTx, resInitTx, paramInitTxJson, resInitTxBytes, b58CheckEncodeTx, lockTimeBytes, lockTime, response, listUTXOForPRV, listUTXOForPToken, status, spendingSNs, _i27, _i28, isIn;
 
         return regeneratorRuntime.wrap(function _callee19$(_context19) {
           while (1) {
@@ -12505,9 +12516,9 @@ function () {
               case 72:
                 _sndDecodes4 = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(sndOutputStrsForPToken);
 
-                for (_i25 = 0; _i25 < nOutputForPToken; _i25++) {
-                  _sndBytes4 = _sndDecodes4.slice(_i25 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i25 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
-                  sndOutputsForPToken[_i25] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes4, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
+                for (_i26 = 0; _i26 < nOutputForPToken; _i26++) {
+                  _sndBytes4 = _sndDecodes4.slice(_i26 * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"], (_i26 + 1) * _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
+                  sndOutputsForPToken[_i26] = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(_sndBytes4, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 }
 
               case 74:
@@ -12598,13 +12609,13 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i26 = 0; _i26 < inputForTx.inputCoinStrs.length; _i26++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i26].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i26].SNDerivator);
+                  for (_i27 = 0; _i27 < inputForTx.inputCoinStrs.length; _i27++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i27].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i27].SNDerivator);
                   }
 
-                  for (_i27 = 0; _i27 < inputForPrivacyTokenTx.tokenInputs.length; _i27++) {
-                    listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i27].SNDerivator);
+                  for (_i28 = 0; _i28 < inputForPrivacyTokenTx.tokenInputs.length; _i28++) {
+                    listUTXOForPToken.push(inputForPrivacyTokenTx.tokenInputs[_i28].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -12676,7 +12687,7 @@ function () {
             listUTXOForPRV,
             status,
             spendingSNs,
-            _i28,
+            _i29,
             _args20 = arguments;
 
         return regeneratorRuntime.wrap(function _callee20$(_context20) {
@@ -12854,9 +12865,9 @@ function () {
 
                   spendingSNs = [];
 
-                  for (_i28 = 0; _i28 < inputForTx.inputCoinStrs.length; _i28++) {
-                    spendingSNs.push(inputForTx.inputCoinStrs[_i28].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i28].SNDerivator);
+                  for (_i29 = 0; _i29 < inputForTx.inputCoinStrs.length; _i29++) {
+                    spendingSNs.push(inputForTx.inputCoinStrs[_i29].SerialNumber);
+                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i29].SNDerivator);
                   }
 
                   this.addSpendingCoins({
