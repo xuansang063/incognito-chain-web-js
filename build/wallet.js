@@ -9512,7 +9512,7 @@ function () {
                 } // saving history tx
 
 
-                this.saveNormalTxHistory(_response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], false, false, listUTXOForPRV, "", meta, info, messageForNativeToken);
+                this.saveNormalTxHistory(_response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], false, false, listUTXOForPRV, "", meta, "", messageForNativeToken);
                 console.log("createAndSendStakingTx History account after saving: ", this.txHistory.NormalTx);
                 _context8.next = 104;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
@@ -9602,8 +9602,12 @@ function () {
                   Type: _constants__WEBPACK_IMPORTED_MODULE_4__["StopAutoStakingMeta"],
                   CommitteePublicKey: committeeKey
                 };
-                paramPaymentInfos = [];
-                messageForNativeToken = "";
+                paramPaymentInfos = [{
+                  paymentAddressStr: _constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"],
+                  amount: 0,
+                  message: ""
+                }];
+                messageForNativeToken = paramPaymentInfos[0].message;
                 console.time("Time for create and send tx");
                 _context9.prev = 23;
                 // prepare input for tx
@@ -9757,7 +9761,7 @@ function () {
                 } // saving history tx
 
 
-                this.saveNormalTxHistory(response, [], false, false, listUTXOForPRV, "", meta, info, messageForNativeToken);
+                this.saveNormalTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], false, false, listUTXOForPRV, "", meta, "", messageForNativeToken);
                 console.log("createAndSendStopAutoStakingTx History account after saving: ", this.txHistory.NormalTx);
                 _context9.next = 90;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);

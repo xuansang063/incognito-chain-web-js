@@ -175,7 +175,7 @@ async function TestCreateAndSendNativeToken() {
   // console.log("Send tx 2 done");
 }
 
-TestCreateAndSendNativeToken();
+// TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;
@@ -308,6 +308,33 @@ async function TestCreateAndSendStakingTx() {
 }
 
 // TestCreateAndSendStakingTx();
+
+
+async function TestCreateAndSendStopAutoStakingTx() {
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+  // staker
+  let senderSpendingKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  let fee = 5;
+  let candidatePaymentAddress = senderPaymentAddressStr;
+  let candidateMiningSeedKey = checkEncode(accountSender.key.getMiningSeedKey(), ENCODE_VERSION);
+
+  // create and send staking tx
+  try {
+    await accountSender.createAndSendStopAutoStakingTx(fee, candidatePaymentAddress, candidateMiningSeedKey);
+  } catch (e) {
+    console.log("Error when staking: ", e);
+  }
+}
+
+TestCreateAndSendStopAutoStakingTx();
 
 async function TestDefragment() {
   Wallet.RpcClient = rpcClient;
