@@ -496,17 +496,69 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
     );
 
     // replace
-    let newFee = fee *2;
-    let newFeePToken = 0 * 2;
+    // let newFee = fee *2;
+    // let newFeePToken = 0 * 2;
 
-    let response2 =  await accountSender.replaceTx(res.txId, newFee, newFeePToken);
+    // let response2 =  await accountSender.replaceTx(res.txId, newFee, newFeePToken);
+    // console.log("Send tx 2 done : ", response2);
+  } catch (e) {
+    console.log("Error when trading native token: ", e);
+  }
+}
+
+// TestCreateAndSendNativeTokenTradeRequestTx();
+
+async function TestCreateAndSendPTokenTradeRequestTx() {
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+  // staker
+  let senderSpendingKeyStr = "112t8rnbY15f1GnDxbcJUr84EH8pdFc9ayJ7HLMgccajtYSW9U9k7H2yJj9mUcC8CT1gAHZpubAE59At7soD4KeQaRLbREieSFMDC8AdQ44a";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  let feePRV = 5;
+  let feePToken = 0;
+  let sellAmount = 100;
+  let tokenIDToBuyStr = "4878bf0b99839f01baf909767ac79d7b6f724153bacb6f7b9022d7e896a312fd";
+  let minAcceptableAmount = 9000000000;
+  let tradingFee = 10;
+
+  let tokenParams = {
+    Privacy: true,
+    TokenID: "b5612ceb9d91b1440e5ec596e48e5733f557aeb3f33b43515e12d8049dd1dde6",
+    TokenName: "DEX C",
+    TokenSymbol: "DEXC"
+  }
+
+  // create and send staking tx
+  try {
+    let res = await accountSender.createAndSendPTokenTradeRequestTx(
+      tokenParams, feePRV, feePToken, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee
+    );
+
+    // replace tx
+    let newFee = feePRV *2;
+  let newFeePToken = feePToken * 2;
+  let newInfo = "abc";
+  let newMessageForNativeToken = "Incognito-chain";
+  let newMessageForPToken = "Incognito-chain";
+  let isEncryptMessageForPToken = false;
+  let isEncryptMessageForNativeToken = false;
+
+    let response2 =  await accountSender.replaceTx(res.txId, newFee, newFeePToken, 
+      newInfo, newMessageForNativeToken, isEncryptMessageForNativeToken, newMessageForPToken, isEncryptMessageForPToken);
     console.log("Send tx 2 done : ", response2);
   } catch (e) {
     console.log("Error when trading native token: ", e);
   }
 }
 
-TestCreateAndSendNativeTokenTradeRequestTx();
+TestCreateAndSendPTokenTradeRequestTx();
+
 
 async function GetListReceivedTx() {
   Wallet.RpcClient = rpcClient;
@@ -533,7 +585,7 @@ async function TestReplaceNormalTx() {
   await sleep(5000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "";
+  let senderPrivateKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -545,9 +597,9 @@ async function TestReplaceNormalTx() {
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddrStr);
   // let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
 
-  let fee = 0.5 * 1e9;
+  let fee = 5;
   let isPrivacy = true;
-  let info = "";
+  let info = "abc";
   let amountTransfer = 100 * 1e9; // in nano PRV
 
   let paymentInfosParam = [];
@@ -567,15 +619,18 @@ async function TestReplaceNormalTx() {
 
   // await sleep(40000);
 
-  let newFee = fee*2;
-  // replace tx
-  let respone2;
-  try {
-    respone2 = await accountSender.replaceTx(response.txId, newFee, 0);
-  } catch (e) {
-    console.log("Error when replace tx: ", e);
-  }
-  console.log("Send tx 2 done, ", respone2);
+  // let newFee = fee*2;
+  // let newInfo = "test replace tx";
+  // let newMessage = "Rose";
+
+  // // replace tx
+  // let respone2;
+  // try {
+  //   respone2 = await accountSender.replaceTx(response.txId, newFee, 0, newInfo, newMessage);
+  // } catch (e) {
+  //   console.log("Error when replace tx: ", e);
+  // }
+  // console.log("Send tx 2 done, ", respone2);
 }
 
 // TestReplaceNormalTx();
@@ -587,6 +642,8 @@ async function TestCreateAndSendReplacePrivacyTokenTransfer() {
   let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
+
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -596,20 +653,20 @@ async function TestCreateAndSendReplacePrivacyTokenTransfer() {
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddressStr);
 
   // payment info for PRV
-  // let paymentInfos = [{
-  //   paymentAddressStr: receiverPaymentAddressStr,
-  //   amount: 5,
-  //   message: "ABC"
-  // }];
-  let paymentInfos = [];
-  let amountTransfer = 100000;
+  let paymentInfos = [{
+    paymentAddressStr: receiverPaymentAddressStr,
+    amount: 5,
+    message: "ABC"
+  }];
+  // let paymentInfos = [];
+  let amountTransfer = 5;
   // prepare token param for tx custom token init
   let tokenParams = {
     Privacy: true,
-    TokenID: "",
-    TokenName: "A",
-    TokenSymbol: "A",
-    TokenTxType: CustomTokenInit,
+    TokenID: "6856a8f22c3660d87ee7c5da914e4452ab245c07ecc4c3bae08ab3e0c67f81bd",
+    TokenName: "D",
+    TokenSymbol: "D",
+    TokenTxType: CustomTokenTransfer,
     TokenAmount: amountTransfer,
     TokenReceivers: {
       PaymentAddress: receiverPaymentAddressStr,
@@ -633,8 +690,15 @@ async function TestCreateAndSendReplacePrivacyTokenTransfer() {
 
   let newFee = feePRV *2;
   let newFeePToken = feePToken * 2;
+  let newInfo = "abc";
+  let newMessageForNativeToken = "Incognito-chain";
+  let newMessageForPToken = "Incognito-chain";
+  let isEncryptMessageForPToken = false;
+  let isEncryptMessageForNativeToken = false;
 
-  let response2 =  await accountSender.replaceTx(response1.txId, newFee, newFeePToken);
+  let response2 =  await accountSender.replaceTx(response1.txId, newFee, newFeePToken, 
+    newInfo, newMessageForNativeToken, isEncryptMessageForNativeToken, 
+    newMessageForPToken, isEncryptMessageForPToken);
   console.log("Send tx 2 done : ", response2);
 }
 
