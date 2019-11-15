@@ -8840,6 +8840,7 @@ function () {
         tokenName: tx.tokenName,
         tokenID: tx.tokenID,
         tokenSymbol: tx.tokenSymbol,
+        tokenTxType: tx.tokenTxType,
         isIn: isIn,
         time: tx.lockTime * 1000,
         // in mili-second
@@ -10474,7 +10475,7 @@ function () {
                 status = _constants__WEBPACK_IMPORTED_MODULE_4__["FailedTx"];
 
                 if (!response.txId) {
-                  _context10.next = 181;
+                  _context10.next = 182;
                   break;
                 }
 
@@ -10488,7 +10489,8 @@ function () {
                 response.txStatus = status;
                 response.tokenName = tokenParamJson.propertyName;
                 response.tokenID = tokenID;
-                response.tokenSymbol = tokenParamJson.propertySymbol; // add spending list
+                response.tokenSymbol = tokenParamJson.propertySymbol;
+                response.tokenTxType = tokenParamJson.tokenTxType; // add spending list
 
                 spendingSNs = [];
 
@@ -10508,14 +10510,14 @@ function () {
                 console.log("createAndSendPrivacyToken Spending coin list after saving: ", this.spendingCoins); // add to following token list if tx is init token
 
                 if (!(submitParam.TokenTxType === _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenInit"])) {
-                  _context10.next = 181;
+                  _context10.next = 182;
                   break;
                 }
 
-                _context10.next = 178;
+                _context10.next = 179;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.hashToIdenticon([tokenID]);
 
-              case 178:
+              case 179:
                 identicon = _context10.sent;
                 this.addFollowingToken({
                   ID: tokenID,
@@ -10529,7 +10531,7 @@ function () {
                 });
                 console.log("createAndSendPrivacyToken List following token after adding: ", this.followingTokens);
 
-              case 181:
+              case 182:
                 if (submitParam.TokenTxType === _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenInit"]) {
                   isIn = true;
                 } else {
@@ -10539,13 +10541,13 @@ function () {
                 this.savePrivacyTokenTxHistory(response, [submitParam.TokenReceivers.PaymentAddress], isIn, hasPrivacyForNativeToken, hasPrivacyForPToken, listUTXOForPRV, listUTXOForPToken, "", null, info, messageForNativeToken, messageForPToken);
                 console.log("info tx after: ", info);
                 console.log("history account after saving history: ", this.txHistory.PrivacyTokenTx);
-                _context10.next = 187;
+                _context10.next = 188;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 187:
+              case 188:
                 return _context10.abrupt("return", response);
 
-              case 188:
+              case 189:
               case "end":
                 return _context10.stop();
             }
@@ -11202,7 +11204,7 @@ function () {
                   propertyName: txHistory.tokenName,
                   propertySymbol: txHistory.tokenSymbol,
                   amount: txHistory.amountPToken,
-                  tokenTxType: txHistory.TokenTxType || _tx_constants__WEBPACK_IMPORTED_MODULE_1__["CustomTokenTransfer"],
+                  tokenTxType: txHistory.tokenTxType,
                   fee: feePToken,
                   paymentInfoForPToken: [{
                     paymentAddressStr: txHistory.receivers[0],
@@ -11474,7 +11476,8 @@ function () {
                   response.txStatus = status;
                   response.tokenName = tokenParamJson.propertyName;
                   response.tokenID = tokenID;
-                  response.tokenSymbol = tokenParamJson.propertySymbol; // add spending list
+                  response.tokenSymbol = tokenParamJson.propertySymbol;
+                  response.tokenTxType = tokenParamJson.tokenTxType; // add spending list
 
                   spendingSNs = [];
 
@@ -11968,7 +11971,8 @@ function () {
                   response.txStatus = status;
                   response.tokenName = tokenParamJson.propertyName;
                   response.tokenID = tokenID;
-                  response.tokenSymbol = tokenParamJson.propertySymbol; // add spending list
+                  response.tokenSymbol = tokenParamJson.propertySymbol;
+                  response.tokenTxType = tokenParamJson.tokenTxType; // add spending list
 
                   spendingSNs = [];
 
@@ -12829,7 +12833,8 @@ function () {
                   response.txStatus = status;
                   response.tokenName = tokenParamJson.propertyName;
                   response.tokenID = tokenParamJson.propertyID;
-                  response.tokenSymbol = tokenParamJson.propertySymbol; // add spending list
+                  response.tokenSymbol = tokenParamJson.propertySymbol;
+                  response.tokenTxType = tokenParamJson.tokenTxType; // add spending list
 
                   spendingSNs = [];
 
@@ -13445,7 +13450,8 @@ function () {
                   response.txStatus = status;
                   response.tokenName = tokenParamJson.propertyName;
                   response.tokenID = tokenParamJson.propertyID;
-                  response.tokenSymbol = tokenParamJson.propertySymbol; // add spending list
+                  response.tokenSymbol = tokenParamJson.propertySymbol;
+                  response.tokenTxType = tokenParamJson.tokenTxType; // add spending list
 
                   spendingSNs = [];
 
@@ -14485,6 +14491,7 @@ function () {
     this.tokenName = "";
     this.tokenID = "";
     this.tokenSymbol = "";
+    this.tokenTxType = null;
     this.isIn = null;
     this.time = "";
     this.status = _constants__WEBPACK_IMPORTED_MODULE_0__["FailedTx"];
@@ -14517,6 +14524,7 @@ function () {
       this.tokenName = historyObject.tokenName;
       this.tokenID = historyObject.tokenID;
       this.tokenSymbol = historyObject.tokenSymbol;
+      this.tokenTxType = historyObject.tokenTxType ? historyObject.tokenTxType : null;
       this.listUTXOForPRV = historyObject.listUTXOForPRV;
       this.listUTXOForPToken = historyObject.listUTXOForPToken;
       this.hashOriginalTx = historyObject.hashOriginalTx;
