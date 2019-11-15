@@ -484,22 +484,29 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
   accountSender.key = senderKeyWallet;
 
   let fee = 5;
-  let sellAmount = 1;
+  let sellAmount = 100;
   let tokenIDToBuyStr = "4878bf0b99839f01baf909767ac79d7b6f724153bacb6f7b9022d7e896a312fd";
   let minAcceptableAmount = 9000000000;
-  let tradingFee = 25000000;
+  let tradingFee = 10;
 
   // create and send staking tx
   try {
-    await accountSender.createAndSendNativeTokenTradeRequestTx(
-      fee, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee
+    let res = await accountSender.createAndSendNativeTokenTradeRequestTx(
+      fee, tokenIDToBuyStr, sellAmount + tradingFee, minAcceptableAmount, tradingFee
     );
+
+    // replace
+    let newFee = fee *2;
+    let newFeePToken = 0 * 2;
+
+    let response2 =  await accountSender.replaceTx(res.txId, newFee, newFeePToken);
+    console.log("Send tx 2 done : ", response2);
   } catch (e) {
     console.log("Error when trading native token: ", e);
   }
 }
 
-// TestCreateAndSendNativeTokenTradeRequestTx();
+TestCreateAndSendNativeTokenTradeRequestTx();
 
 async function GetListReceivedTx() {
   Wallet.RpcClient = rpcClient;
@@ -595,15 +602,14 @@ async function TestCreateAndSendReplacePrivacyTokenTransfer() {
   //   message: "ABC"
   // }];
   let paymentInfos = [];
-  let amountTransfer = 5;
-
+  let amountTransfer = 100000;
   // prepare token param for tx custom token init
   let tokenParams = {
     Privacy: true,
-    TokenID: "ddacfb991d4744c271e8c3eb5004cef4617cfe415bbe1e68355bf262ceb5e6cc",
-    TokenName: "Rose",
-    TokenSymbol: "Rose",
-    TokenTxType: CustomTokenTransfer,
+    TokenID: "",
+    TokenName: "A",
+    TokenSymbol: "A",
+    TokenTxType: CustomTokenInit,
     TokenAmount: amountTransfer,
     TokenReceivers: {
       PaymentAddress: receiverPaymentAddressStr,
@@ -612,7 +618,7 @@ async function TestCreateAndSendReplacePrivacyTokenTransfer() {
     }
   }
 
-  let feePRV = 10;
+  let feePRV = 5;
   let feePToken = 0;
   let hasPrivacyForToken = true;
   let hasPrivacyForPRV = true;
@@ -632,4 +638,4 @@ async function TestCreateAndSendReplacePrivacyTokenTransfer() {
   console.log("Send tx 2 done : ", response2);
 }
 
-TestCreateAndSendReplacePrivacyTokenTransfer();
+// TestCreateAndSendReplacePrivacyTokenTransfer();
