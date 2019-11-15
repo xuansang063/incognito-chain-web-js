@@ -492,7 +492,7 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
   // create and send staking tx
   try {
     let res = await accountSender.createAndSendNativeTokenTradeRequestTx(
-      fee, tokenIDToBuyStr, sellAmount + tradingFee, minAcceptableAmount, tradingFee
+      fee, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee
     );
 
     // replace
