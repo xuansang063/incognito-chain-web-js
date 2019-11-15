@@ -7,8 +7,8 @@ import {ENCODE_VERSION} from "../../lib/constants";
 import {checkEncode} from "../../lib/base58";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-// const rpcClient = new RpcClient("https://test-node.incognito.org");
-const rpcClient = new RpcClient("http://localhost:9334");
+const rpcClient = new RpcClient("https://test-node.incognito.org");
+// const rpcClient = new RpcClient("http://localhost:9334");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 
@@ -572,3 +572,64 @@ async function TestReplaceNormalTx() {
 }
 
 // TestReplaceNormalTx();
+
+async function TestCreateAndSendReplacePrivacyTokenTransfer() {
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+  // sender key (private key)
+  let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  // receivers (payment address)
+  let receiverPaymentAddressStr = "12Ryp47jXJfkz5Cketp4D9U7uTH4hFgFUVUEzq6k5ikvAZ94JucsYbi235siCMud5GdtRi1DoSecsTD2nkiic9TH7YNkLEoEhrvxvwt";
+  // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddressStr);
+
+  // payment info for PRV
+  // let paymentInfos = [{
+  //   paymentAddressStr: receiverPaymentAddressStr,
+  //   amount: 5,
+  //   message: "ABC"
+  // }];
+  let paymentInfos = [];
+  let amountTransfer = 5;
+
+  // prepare token param for tx custom token init
+  let tokenParams = {
+    Privacy: true,
+    TokenID: "ddacfb991d4744c271e8c3eb5004cef4617cfe415bbe1e68355bf262ceb5e6cc",
+    TokenName: "Rose",
+    TokenSymbol: "Rose",
+    TokenTxType: CustomTokenTransfer,
+    TokenAmount: amountTransfer,
+    TokenReceivers: {
+      PaymentAddress: receiverPaymentAddressStr,
+      Amount: amountTransfer,
+      Message: "ABC"
+    }
+  }
+
+  let feePRV = 10;
+  let feePToken = 0;
+  let hasPrivacyForToken = true;
+  let hasPrivacyForPRV = true;
+
+  // try {
+  let response1 =  await accountSender.createAndSendPrivacyToken(paymentInfos, tokenParams, feePRV, feePToken, hasPrivacyForPRV, hasPrivacyForToken, "", true, true);
+  console.log("Send tx 1 done : ", response1);
+  // } catch (e) {
+  //   console.log("Error when transfering ptoken: ", e);
+  //   throw e;
+  // }
+
+  let newFee = feePRV *2;
+  let newFeePToken = feePToken * 2;
+
+  let response2 =  await accountSender.replaceTx(response1.txId, newFee, newFeePToken);
+  console.log("Send tx 2 done : ", response2);
+}
+
+TestCreateAndSendReplacePrivacyTokenTransfer();
