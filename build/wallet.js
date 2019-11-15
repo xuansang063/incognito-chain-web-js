@@ -12932,7 +12932,7 @@ function () {
 
                 paramPaymentInfos = [{
                   paymentAddressStr: _constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"],
-                  amount: sellAmount,
+                  amount: sellAmount + tradingFee,
                   message: ""
                 }];
                 messageForNativeToken = paramPaymentInfos[0].message; // let receiverPaymentAddrStr = [BurnAddress];
@@ -13191,7 +13191,7 @@ function () {
                   fee: feePToken,
                   paymentInfoForPToken: [{
                     paymentAddressStr: _constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"],
-                    amount: sellAmount,
+                    amount: sellAmount + tradingFee,
                     message: ""
                   }],
                   tokenInputs: []
