@@ -5987,15 +5987,82 @@ var RpcClient = function RpcClient(url, user, password) {
     };
   }());
 
+  _defineProperty(this, "getPDETradeStatus",
+  /*#__PURE__*/
+  function () {
+    var _ref21 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee21(txId) {
+      var data, response;
+      return regeneratorRuntime.wrap(function _callee21$(_context21) {
+        while (1) {
+          switch (_context21.prev = _context21.next) {
+            case 0:
+              data = {
+                "id": 1,
+                "jsonrpc": "1.0",
+                "method": "getpdetradestatus",
+                "params": [{
+                  "TxRequestIDStr": txId
+                }]
+              };
+              _context21.prev = 1;
+              _context21.next = 4;
+              return _this.rpcHttpService.postRequest(data);
+
+            case 4:
+              response = _context21.sent;
+              _context21.next = 10;
+              break;
+
+            case 7:
+              _context21.prev = 7;
+              _context21.t0 = _context21["catch"](1);
+              throw _context21.t0;
+
+            case 10:
+              if (!(response.status !== 200)) {
+                _context21.next = 14;
+                break;
+              }
+
+              throw new Error("Can't request API get PDE state");
+
+            case 14:
+              if (!response.data.Error) {
+                _context21.next = 16;
+                break;
+              }
+
+              throw response.data.Error;
+
+            case 16:
+              return _context21.abrupt("return", {
+                state: response.data.Result
+              });
+
+            case 17:
+            case "end":
+              return _context21.stop();
+          }
+        }
+      }, _callee21, null, [[1, 7]]);
+    }));
+
+    return function (_x21) {
+      return _ref21.apply(this, arguments);
+    };
+  }());
+
   _defineProperty(this, "getBeaconHeight",
   /*#__PURE__*/
   _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee21() {
+  regeneratorRuntime.mark(function _callee22() {
     var data, response;
-    return regeneratorRuntime.wrap(function _callee21$(_context21) {
+    return regeneratorRuntime.wrap(function _callee22$(_context22) {
       while (1) {
-        switch (_context21.prev = _context21.next) {
+        switch (_context22.prev = _context22.next) {
           case 0:
             data = {
               "jsonrpc": "1.0",
@@ -6003,23 +6070,23 @@ var RpcClient = function RpcClient(url, user, password) {
               "params": [],
               "id": 1
             };
-            _context21.prev = 1;
-            _context21.next = 4;
+            _context22.prev = 1;
+            _context22.next = 4;
             return _this.rpcHttpService.postRequest(data);
 
           case 4:
-            response = _context21.sent;
-            _context21.next = 10;
+            response = _context22.sent;
+            _context22.next = 10;
             break;
 
           case 7:
-            _context21.prev = 7;
-            _context21.t0 = _context21["catch"](1);
-            throw _context21.t0;
+            _context22.prev = 7;
+            _context22.t0 = _context22["catch"](1);
+            throw _context22.t0;
 
           case 10:
             if (!(response.status !== 200)) {
-              _context21.next = 14;
+              _context22.next = 14;
               break;
             }
 
@@ -6027,78 +6094,78 @@ var RpcClient = function RpcClient(url, user, password) {
 
           case 14:
             if (!response.data.Error) {
-              _context21.next = 16;
+              _context22.next = 16;
               break;
             }
 
             throw response.data.Error;
 
           case 16:
-            return _context21.abrupt("return", {
+            return _context22.abrupt("return", {
               beaconHeight: response.data.Result.BeaconHeight
             });
 
           case 17:
           case "end":
-            return _context21.stop();
+            return _context22.stop();
         }
       }
-    }, _callee21, null, [[1, 7]]);
+    }, _callee22, null, [[1, 7]]);
   })));
 
   _defineProperty(this, "isExchangeRatePToken",
   /*#__PURE__*/
   function () {
-    var _ref22 = _asyncToGenerator(
+    var _ref23 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee22(tokenIDStr1) {
+    regeneratorRuntime.mark(function _callee23(tokenIDStr1) {
       var tokenIDStr2,
           beaconHeight,
           res,
           pdeStateRes,
           tokenIDArray,
           keyValue,
-          _args22 = arguments;
-      return regeneratorRuntime.wrap(function _callee22$(_context22) {
+          _args23 = arguments;
+      return regeneratorRuntime.wrap(function _callee23$(_context23) {
         while (1) {
-          switch (_context22.prev = _context22.next) {
+          switch (_context23.prev = _context23.next) {
             case 0:
-              tokenIDStr2 = _args22.length > 1 && _args22[1] !== undefined ? _args22[1] : "";
+              tokenIDStr2 = _args23.length > 1 && _args23[1] !== undefined ? _args23[1] : "";
 
               if (tokenIDStr2 === "") {
                 tokenIDStr2 = _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"];
               } // get latest beacon height
 
 
-              _context22.prev = 2;
-              _context22.next = 5;
+              _context23.prev = 2;
+              _context23.next = 5;
               return _this.getBeaconHeight();
 
             case 5:
-              res = _context22.sent;
+              res = _context23.sent;
               beaconHeight = res.beaconHeight;
-              _context22.next = 12;
+              _context23.next = 12;
               break;
 
             case 9:
-              _context22.prev = 9;
-              _context22.t0 = _context22["catch"](2);
-              throw _context22.t0;
+              _context23.prev = 9;
+              _context23.t0 = _context23["catch"](2);
+              throw _context23.t0;
 
             case 12:
-              _context22.prev = 12;
-              _context22.next = 15;
+              _context23.prev = 12;
+              _context23.next = 15;
               return _this.getPDEState(beaconHeight);
 
             case 15:
-              pdeStateRes = _context22.sent;
-              _context22.next = 21;
+              pdeStateRes = _context23.sent;
+              _context23.next = 21;
               break;
 
             case 18:
-              _context22.prev = 18;
-              _context22.t1 = _context22["catch"](12);
-              throw _context22.t1;
+              _context23.prev = 18;
+              _context23.t1 = _context23["catch"](12);
+              throw _context23.t1;
 
             case 21:
               console.log("pdeStateRes: ", pdeStateRes);
@@ -6108,38 +6175,38 @@ var RpcClient = function RpcClient(url, user, password) {
               console.log("pdeStateRes.state.PDEPoolPairs[keyValue]: ", pdeStateRes.state.PDEPoolPairs[keyValue]);
 
               if (!(pdeStateRes.state.PDEPoolPairs[keyValue] !== null && pdeStateRes.state.PDEPoolPairs[keyValue] !== undefined)) {
-                _context22.next = 28;
+                _context23.next = 28;
                 break;
               }
 
-              return _context22.abrupt("return", true);
+              return _context23.abrupt("return", true);
 
             case 28:
-              return _context22.abrupt("return", false);
+              return _context23.abrupt("return", false);
 
             case 29:
             case "end":
-              return _context22.stop();
+              return _context23.stop();
           }
         }
-      }, _callee22, null, [[2, 9], [12, 18]]);
+      }, _callee23, null, [[2, 9], [12, 18]]);
     }));
 
-    return function (_x21) {
-      return _ref22.apply(this, arguments);
+    return function (_x22) {
+      return _ref23.apply(this, arguments);
     };
   }());
 
   _defineProperty(this, "getTransactionByReceiver",
   /*#__PURE__*/
   function () {
-    var _ref23 = _asyncToGenerator(
+    var _ref24 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee23(paymentAdrr, viewingKey) {
+    regeneratorRuntime.mark(function _callee24(paymentAdrr, viewingKey) {
       var data, response, result;
-      return regeneratorRuntime.wrap(function _callee23$(_context23) {
+      return regeneratorRuntime.wrap(function _callee24$(_context24) {
         while (1) {
-          switch (_context23.prev = _context23.next) {
+          switch (_context24.prev = _context24.next) {
             case 0:
               data = {
                 "jsonrpc": "1.0",
@@ -6148,72 +6215,6 @@ var RpcClient = function RpcClient(url, user, password) {
                   "PaymentAddress": paymentAdrr,
                   "ReadonlyKey": viewingKey
                 }],
-                "id": 1
-              };
-              _context23.prev = 1;
-              _context23.next = 4;
-              return _this.rpcHttpService.postRequest(data);
-
-            case 4:
-              response = _context23.sent;
-              _context23.next = 10;
-              break;
-
-            case 7:
-              _context23.prev = 7;
-              _context23.t0 = _context23["catch"](1);
-              throw _context23.t0;
-
-            case 10:
-              if (!(response.status !== 200)) {
-                _context23.next = 14;
-                break;
-              }
-
-              throw new Error("Can't request API get all output coins");
-
-            case 14:
-              if (!response.data.Error) {
-                _context23.next = 16;
-                break;
-              }
-
-              throw response.data.Error;
-
-            case 16:
-              result = response.data.Result;
-              return _context23.abrupt("return", {
-                receivedTransactions: result.ReceivedTransactions
-              });
-
-            case 18:
-            case "end":
-              return _context23.stop();
-          }
-        }
-      }, _callee23, null, [[1, 7]]);
-    }));
-
-    return function (_x22, _x23) {
-      return _ref23.apply(this, arguments);
-    };
-  }());
-
-  _defineProperty(this, "getListPrivacyCustomTokenBalance",
-  /*#__PURE__*/
-  function () {
-    var _ref24 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee24(privateKey) {
-      var data, response;
-      return regeneratorRuntime.wrap(function _callee24$(_context24) {
-        while (1) {
-          switch (_context24.prev = _context24.next) {
-            case 0:
-              data = {
-                "jsonrpc": "1.0",
-                "method": "getlistprivacycustomtokenbalance",
-                "params": [privateKey],
                 "id": 1
               };
               _context24.prev = 1;
@@ -6236,7 +6237,7 @@ var RpcClient = function RpcClient(url, user, password) {
                 break;
               }
 
-              throw new Error("Can't request API get list privacy custom token balance");
+              throw new Error("Can't request API get all output coins");
 
             case 14:
               if (!response.data.Error) {
@@ -6247,9 +6248,12 @@ var RpcClient = function RpcClient(url, user, password) {
               throw response.data.Error;
 
             case 16:
-              return _context24.abrupt("return", response.data.Result && response.data.Result.ListCustomTokenBalance || []);
+              result = response.data.Result;
+              return _context24.abrupt("return", {
+                receivedTransactions: result.ReceivedTransactions
+              });
 
-            case 17:
+            case 18:
             case "end":
               return _context24.stop();
           }
@@ -6257,8 +6261,71 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee24, null, [[1, 7]]);
     }));
 
-    return function (_x24) {
+    return function (_x23, _x24) {
       return _ref24.apply(this, arguments);
+    };
+  }());
+
+  _defineProperty(this, "getListPrivacyCustomTokenBalance",
+  /*#__PURE__*/
+  function () {
+    var _ref25 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee25(privateKey) {
+      var data, response;
+      return regeneratorRuntime.wrap(function _callee25$(_context25) {
+        while (1) {
+          switch (_context25.prev = _context25.next) {
+            case 0:
+              data = {
+                "jsonrpc": "1.0",
+                "method": "getlistprivacycustomtokenbalance",
+                "params": [privateKey],
+                "id": 1
+              };
+              _context25.prev = 1;
+              _context25.next = 4;
+              return _this.rpcHttpService.postRequest(data);
+
+            case 4:
+              response = _context25.sent;
+              _context25.next = 10;
+              break;
+
+            case 7:
+              _context25.prev = 7;
+              _context25.t0 = _context25["catch"](1);
+              throw _context25.t0;
+
+            case 10:
+              if (!(response.status !== 200)) {
+                _context25.next = 14;
+                break;
+              }
+
+              throw new Error("Can't request API get list privacy custom token balance");
+
+            case 14:
+              if (!response.data.Error) {
+                _context25.next = 16;
+                break;
+              }
+
+              throw response.data.Error;
+
+            case 16:
+              return _context25.abrupt("return", response.data.Result && response.data.Result.ListCustomTokenBalance || []);
+
+            case 17:
+            case "end":
+              return _context25.stop();
+          }
+        }
+      }, _callee25, null, [[1, 7]]);
+    }));
+
+    return function (_x25) {
+      return _ref25.apply(this, arguments);
     };
   }());
 
@@ -9028,7 +9095,10 @@ function () {
       var _getAllPrivacyTokenBalance = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee6() {
-        var privacyTokens, pTokenList, result, i, tokenID, balance, tokenBalanceItem;
+        var _this = this;
+
+        var privacyTokens, pTokenList, tasks, _loop, i, allResult, hasBalanceResult;
+
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
@@ -9041,51 +9111,50 @@ function () {
                 privacyTokens = _context6.sent;
                 pTokenList = privacyTokens.listPrivacyToken; // get balance for each privacy token
 
-                result = [];
-                i = 0;
+                tasks = [];
 
-              case 7:
-                if (!(i < pTokenList.length)) {
-                  _context6.next = 17;
-                  break;
+                _loop = function _loop(i) {
+                  var tokenID = pTokenList[i].ID;
+                  var tokenBalanceItemPromise = new Promise(function (resolve) {
+                    _this.getBalance(tokenID).then(function (balance) {
+                      console.log("Balance ".concat(tokenID, ": "), balance);
+                      resolve({
+                        TokenID: tokenID,
+                        Balance: balance
+                      });
+                    })["catch"](function () {
+                      return null;
+                    });
+                  });
+                  tasks.push(tokenBalanceItemPromise);
+                };
+
+                for (i = 0; i < pTokenList.length; i++) {
+                  _loop(i);
                 }
 
-                tokenID = pTokenList[i].ID;
-                _context6.next = 11;
-                return this.getBalance(tokenID);
+                _context6.next = 10;
+                return Promise.all(tasks);
 
-              case 11:
-                balance = _context6.sent;
-                console.log("Balance: ", balance);
+              case 10:
+                allResult = _context6.sent;
+                hasBalanceResult = allResult && allResult.filter(function (r) {
+                  return r && r.Balance > 0;
+                });
+                return _context6.abrupt("return", hasBalanceResult);
 
-                if (balance > 0) {
-                  tokenBalanceItem = {
-                    TokenID: tokenID,
-                    Balance: balance
-                  };
-                  result.push(tokenBalanceItem);
-                }
-
-              case 14:
-                i++;
-                _context6.next = 7;
-                break;
-
-              case 17:
-                return _context6.abrupt("return", result);
-
-              case 20:
-                _context6.prev = 20;
+              case 15:
+                _context6.prev = 15;
                 _context6.t0 = _context6["catch"](0);
                 console.log("Error when get all balance of privacy token: ", _context6.t0);
                 throw _context6.t0;
 
-              case 24:
+              case 19:
               case "end":
                 return _context6.stop();
             }
           }
-        }, _callee6, this, [[0, 20]]);
+        }, _callee6, null, [[0, 15]]);
       }));
 
       function getAllPrivacyTokenBalance() {
@@ -10702,7 +10771,6 @@ function () {
             lockTimeBytes,
             lockTime,
             response,
-            listUTXOForPRV,
             status,
             spendingSNs,
             _i18,
@@ -10731,7 +10799,7 @@ function () {
 
               case 8:
                 feeBN = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(newFee);
-                messageForNativeToken = txHistory.messageForNativeToken;
+                messageForNativeToken = txHistory.messageForNativeToken || "";
 
                 if (newMessage != null) {
                   messageForNativeToken = newMessage;
@@ -10898,27 +10966,26 @@ function () {
 
               case 82:
                 console.time("Time for sending tx");
-                listUTXOForPRV = [];
-                _context12.prev = 84;
-                _context12.next = 87;
+                _context12.prev = 83;
+                _context12.next = 86;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 87:
+              case 86:
                 response = _context12.sent;
-                _context12.next = 94;
+                _context12.next = 93;
                 break;
 
-              case 90:
-                _context12.prev = 90;
-                _context12.t2 = _context12["catch"](84);
+              case 89:
+                _context12.prev = 89;
+                _context12.t2 = _context12["catch"](83);
                 console.log("createAndSendNativeToken Error when sending tx: ", _context12.t2);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
 
-              case 94:
-                _context12.next = 96;
+              case 93:
+                _context12.next = 95;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
 
-              case 96:
+              case 95:
                 console.timeEnd("Time for sending tx");
                 console.timeEnd("Time for create and send tx"); // saving history tx
                 // check status of tx and add coins to spending coins
@@ -10938,7 +11005,6 @@ function () {
 
                   for (_i18 = 0; _i18 < inputForTx.inputCoinStrs.length; _i18++) {
                     spendingSNs.push(inputForTx.inputCoinStrs[_i18].SerialNumber);
-                    listUTXOForPRV.push(inputForTx.inputCoinStrs[_i18].SNDerivator);
                   }
 
                   this.addSpendingCoins({
@@ -10949,30 +11015,30 @@ function () {
                 } // saving history tx
 
 
-                this.saveNormalTxHistory(response, receiverPaymentAddrStr, false, isPrivacy, listUTXOForPRV, "", null, info, messageForNativeToken);
+                this.saveNormalTxHistory(response, receiverPaymentAddrStr, false, isPrivacy, listUTXO, "", null, info, messageForNativeToken);
                 console.log("createAndSendNativeToken History account after saving: ", this.txHistory.NormalTx);
-                _context12.next = 104;
+                _context12.next = 103;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 104:
+              case 103:
                 return _context12.abrupt("return", response);
 
-              case 107:
-                _context12.prev = 107;
+              case 106:
+                _context12.prev = 106;
                 _context12.t3 = _context12["catch"](35);
-                _context12.next = 111;
+                _context12.next = 110;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(0);
 
-              case 111:
+              case 110:
                 console.log(_context12.t3);
                 throw _context12.t3;
 
-              case 113:
+              case 112:
               case "end":
                 return _context12.stop();
             }
           }
-        }, _callee12, this, [[14, 21], [35, 107], [37, 44], [84, 90]]);
+        }, _callee12, this, [[14, 21], [35, 106], [37, 44], [83, 89]]);
       }));
 
       function replaceTxNormal(_x21, _x22) {
@@ -15721,7 +15787,7 @@ function () {
       var _updateStatusHistory = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee6() {
-        var i, j, response, _j, _response, _j2, _response2;
+        var i, j, txID, response, _j, _response, _j2, _response2;
 
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
@@ -15731,17 +15797,17 @@ function () {
 
               case 1:
                 if (!(i < this.MasterAccount.child.length)) {
-                  _context6.next = 60;
+                  _context6.next = 62;
                   break;
                 }
 
                 if (!this.MasterAccount.child[i].txHistory) {
-                  _context6.next = 57;
+                  _context6.next = 59;
                   break;
                 }
 
                 if (!this.MasterAccount.child[i].txHistory.NormalTx) {
-                  _context6.next = 21;
+                  _context6.next = 23;
                   break;
                 }
 
@@ -15749,79 +15815,86 @@ function () {
 
               case 5:
                 if (!(j < this.MasterAccount.child[i].txHistory.NormalTx.length)) {
-                  _context6.next = 21;
+                  _context6.next = 23;
                   break;
                 }
 
                 if (!(this.MasterAccount.child[i].txHistory.NormalTx[j].status == _constants__WEBPACK_IMPORTED_MODULE_10__["SuccessTx"])) {
-                  _context6.next = 18;
+                  _context6.next = 20;
                   break;
                 }
 
+                txID = this.MasterAccount.child[i].txHistory.NormalTx[j].txID;
                 response = void 0;
-                _context6.prev = 8;
-                _context6.next = 11;
+                _context6.prev = 9;
+                _context6.next = 12;
                 return Wallet.RpcClient.getTransactionByHash(this.MasterAccount.child[i].txHistory.NormalTx[j].txID);
 
-              case 11:
+              case 12:
                 response = _context6.sent;
-                _context6.next = 17;
+                _context6.next = 18;
                 break;
 
-              case 14:
-                _context6.prev = 14;
-                _context6.t0 = _context6["catch"](8);
+              case 15:
+                _context6.prev = 15;
+                _context6.t0 = _context6["catch"](9);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].GetTxByHashErr, _context6.t0.message || "Can not get normal transaction by hash");
 
-              case 17:
+              case 18:
                 if (response.isInBlock) {
                   // transaction was confirmed
                   this.MasterAccount.child[i].txHistory.NormalTx[j].status = _constants__WEBPACK_IMPORTED_MODULE_10__["ConfirmedTx"];
                 } else if (!response.isInBlock && !response.isInMempool && response.err !== null) {
                   // transaction is not existed in mempool and block
                   this.MasterAccount.child[i].txHistory.NormalTx[j].status = _constants__WEBPACK_IMPORTED_MODULE_10__["FailedTx"];
+                } // update spending coins list
+
+
+                if (this.MasterAccount.child[i].txHistory.NormalTx[j].status === _constants__WEBPACK_IMPORTED_MODULE_10__["ConfirmedTx"] || this.MasterAccount.child[i].txHistory.NormalTx[j].status === _constants__WEBPACK_IMPORTED_MODULE_10__["FailedTx"]) {
+                  this.MasterAccount.child[i].removeObjectFromSpendingCoins(txID);
+                  this.save(this.PassPhrase);
                 }
 
-              case 18:
+              case 20:
                 j++;
                 _context6.next = 5;
                 break;
 
-              case 21:
+              case 23:
                 if (!this.MasterAccount.child[i].txHistory.CustomTokenTx) {
-                  _context6.next = 39;
+                  _context6.next = 41;
                   break;
                 }
 
                 _j = 0;
 
-              case 23:
+              case 25:
                 if (!(_j < this.MasterAccount.child[i].txHistory.CustomTokenTx.length)) {
-                  _context6.next = 39;
+                  _context6.next = 41;
                   break;
                 }
 
                 if (!(this.MasterAccount.child[i].txHistory.CustomTokenTx[_j].status == _constants__WEBPACK_IMPORTED_MODULE_10__["SuccessTx"])) {
-                  _context6.next = 36;
+                  _context6.next = 38;
                   break;
                 }
 
                 _response = void 0;
-                _context6.prev = 26;
-                _context6.next = 29;
+                _context6.prev = 28;
+                _context6.next = 31;
                 return Wallet.RpcClient.getTransactionByHash(this.MasterAccount.child[i].txHistory.CustomTokenTx[_j].txID);
 
-              case 29:
+              case 31:
                 _response = _context6.sent;
-                _context6.next = 35;
+                _context6.next = 37;
                 break;
 
-              case 32:
-                _context6.prev = 32;
-                _context6.t1 = _context6["catch"](26);
+              case 34:
+                _context6.prev = 34;
+                _context6.t1 = _context6["catch"](28);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].GetTxByHashErr, _context6.t1.message || "Can not get custom token transaction by hash");
 
-              case 35:
+              case 37:
                 if (_response.isInBlock) {
                   // transaction was confirmed
                   this.MasterAccount.child[i].txHistory.CustomTokenTx[_j].status = _constants__WEBPACK_IMPORTED_MODULE_10__["ConfirmedTx"];
@@ -15830,46 +15903,46 @@ function () {
                   this.MasterAccount.child[i].txHistory.CustomTokenTx[_j].status = _constants__WEBPACK_IMPORTED_MODULE_10__["FailedTx"];
                 }
 
-              case 36:
+              case 38:
                 _j++;
-                _context6.next = 23;
+                _context6.next = 25;
                 break;
 
-              case 39:
+              case 41:
                 if (!this.MasterAccount.child[i].txHistory.PrivacyTokenTx) {
-                  _context6.next = 57;
+                  _context6.next = 59;
                   break;
                 }
 
                 _j2 = 0;
 
-              case 41:
+              case 43:
                 if (!(_j2 < this.MasterAccount.child[i].txHistory.PrivacyTokenTx.length)) {
-                  _context6.next = 57;
+                  _context6.next = 59;
                   break;
                 }
 
                 if (!(this.MasterAccount.child[i].txHistory.PrivacyTokenTx[_j2].status == _constants__WEBPACK_IMPORTED_MODULE_10__["SuccessTx"])) {
-                  _context6.next = 54;
+                  _context6.next = 56;
                   break;
                 }
 
                 _response2 = void 0;
-                _context6.prev = 44;
-                _context6.next = 47;
+                _context6.prev = 46;
+                _context6.next = 49;
                 return Wallet.RpcClient.getTransactionByHash(this.MasterAccount.child[i].txHistory.PrivacyTokenTx[_j2].txID);
 
-              case 47:
+              case 49:
                 _response2 = _context6.sent;
-                _context6.next = 53;
+                _context6.next = 55;
                 break;
 
-              case 50:
-                _context6.prev = 50;
-                _context6.t2 = _context6["catch"](44);
+              case 52:
+                _context6.prev = 52;
+                _context6.t2 = _context6["catch"](46);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].GetTxByHashErr, _context6.t2.message || "Can not get privacy token transaction by hash");
 
-              case 53:
+              case 55:
                 if (_response2.isInBlock) {
                   // transaction was confirmed
                   this.MasterAccount.child[i].txHistory.PrivacyTokenTx[_j2].status = _constants__WEBPACK_IMPORTED_MODULE_10__["ConfirmedTx"];
@@ -15878,22 +15951,22 @@ function () {
                   this.MasterAccount.child[i].txHistory.PrivacyTokenTx[_j2].status = _constants__WEBPACK_IMPORTED_MODULE_10__["FailedTx"];
                 }
 
-              case 54:
+              case 56:
                 _j2++;
-                _context6.next = 41;
+                _context6.next = 43;
                 break;
 
-              case 57:
+              case 59:
                 i++;
                 _context6.next = 1;
                 break;
 
-              case 60:
+              case 62:
               case "end":
                 return _context6.stop();
             }
           }
-        }, _callee6, this, [[8, 14], [26, 32], [44, 50]]);
+        }, _callee6, this, [[9, 15], [28, 34], [46, 52]]);
       }));
 
       function updateStatusHistory() {
@@ -15902,88 +15975,6 @@ function () {
 
       return updateStatusHistory;
     }()
-  }, {
-    key: "updateSpendingList",
-    value: function updateSpendingList() {
-      var _this = this;
-
-      var interval = setInterval(
-      /*#__PURE__*/
-      _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee7() {
-        var update, i, j, response;
-        return regeneratorRuntime.wrap(function _callee7$(_context7) {
-          while (1) {
-            switch (_context7.prev = _context7.next) {
-              case 0:
-                update = false;
-                i = 0;
-
-              case 2:
-                if (!(i < _this.MasterAccount.child.length)) {
-                  _context7.next = 23;
-                  break;
-                }
-
-                if (!_this.MasterAccount.child[i].spendingCoins) {
-                  _context7.next = 20;
-                  break;
-                }
-
-                j = 0;
-
-              case 5:
-                if (!(j < _this.MasterAccount.child[i].spendingCoins.length)) {
-                  _context7.next = 20;
-                  break;
-                }
-
-                response = void 0;
-                _context7.prev = 7;
-                _context7.next = 10;
-                return Wallet.RpcClient.getTransactionByHash(_this.MasterAccount.child[i].spendingCoins[j].txID);
-
-              case 10:
-                response = _context7.sent;
-                _context7.next = 16;
-                break;
-
-              case 13:
-                _context7.prev = 13;
-                _context7.t0 = _context7["catch"](7);
-                throw _context7.t0;
-
-              case 16:
-                if (response.isInBlock || response.err !== null && response.isInBlock === false && response.isInMempool === false) {
-                  _this.MasterAccount.child[i].removeObjectFromSpendingCoins(_this.MasterAccount.child[i].spendingCoins[j].txID);
-
-                  update = true;
-                }
-
-              case 17:
-                j++;
-                _context7.next = 5;
-                break;
-
-              case 20:
-                i++;
-                _context7.next = 2;
-                break;
-
-              case 23:
-                if (update) {
-                  _this.save(_this.PassPhrase);
-                }
-
-              case 24:
-              case "end":
-                return _context7.stop();
-            }
-          }
-        }, _callee7, null, [[7, 13]]);
-      })), 3000);
-    }
   }, {
     key: "deleteWallet",
     value: function deleteWallet() {
@@ -16012,21 +16003,21 @@ function () {
     value: function () {
       var _updateProgressTx = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee8(progress) {
-        return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      regeneratorRuntime.mark(function _callee7(progress) {
+        return regeneratorRuntime.wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
                 Wallet.ProgressTx = progress;
-                _context8.next = 3;
+                _context7.next = 3;
                 return Wallet.sleep(100);
 
               case 3:
               case "end":
-                return _context8.stop();
+                return _context7.stop();
             }
           }
-        }, _callee8);
+        }, _callee7);
       }));
 
       function updateProgressTx(_x3) {
@@ -16040,20 +16031,20 @@ function () {
     value: function () {
       var _resetProgressTx = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee9() {
-        return regeneratorRuntime.wrap(function _callee9$(_context9) {
+      regeneratorRuntime.mark(function _callee8() {
+        return regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                _context9.next = 2;
+                _context8.next = 2;
                 return Wallet.updateProgressTx(0);
 
               case 2:
               case "end":
-                return _context9.stop();
+                return _context8.stop();
             }
           }
-        }, _callee9);
+        }, _callee8);
       }));
 
       function resetProgressTx() {
@@ -16089,20 +16080,20 @@ function () {
     value: function () {
       var _setItem = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee10(key, value) {
-        return regeneratorRuntime.wrap(function _callee10$(_context10) {
+      regeneratorRuntime.mark(function _callee9(key, value) {
+        return regeneratorRuntime.wrap(function _callee9$(_context9) {
           while (1) {
-            switch (_context10.prev = _context10.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
                 this.Data[key] = value;
-                return _context10.abrupt("return", Promise.resolve());
+                return _context9.abrupt("return", Promise.resolve());
 
               case 2:
               case "end":
-                return _context10.stop();
+                return _context9.stop();
             }
           }
-        }, _callee10, this);
+        }, _callee9, this);
       }));
 
       function setItem(_x4, _x5) {
@@ -16116,19 +16107,19 @@ function () {
     value: function () {
       var _getItem = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee11(key) {
-        return regeneratorRuntime.wrap(function _callee11$(_context11) {
+      regeneratorRuntime.mark(function _callee10(key) {
+        return regeneratorRuntime.wrap(function _callee10$(_context10) {
           while (1) {
-            switch (_context11.prev = _context11.next) {
+            switch (_context10.prev = _context10.next) {
               case 0:
-                return _context11.abrupt("return", this.Data[key]);
+                return _context10.abrupt("return", this.Data[key]);
 
               case 1:
               case "end":
-                return _context11.stop();
+                return _context10.stop();
             }
           }
-        }, _callee11, this);
+        }, _callee10, this);
       }));
 
       function getItem(_x6) {
