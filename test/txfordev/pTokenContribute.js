@@ -36,13 +36,13 @@ async function PTokenContribute() {
     TokenSymbol: ""
   }
 
-  // create and send staking tx
+  // create and send contribution tx
   try {
     await accountSender.createAndSendPTokenContributionTx(
       tokenParam, feeNativeToken, feePToken, pdeContributionPairID, contributedAmount
     );
   } catch (e) {
-    console.log("Error when staking: ", e);
+    console.log("Error when sending tx: ", e);
   }
 }
 
