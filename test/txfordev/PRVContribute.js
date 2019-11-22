@@ -4,8 +4,8 @@ import { AccountWallet } from "../../lib/wallet/accountWallet";
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
 const fs = require('fs');
 
-// Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
+// Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
 
 async function sleep(sleepTime) {
   return new Promise(resolve => setTimeout(resolve, sleepTime));
