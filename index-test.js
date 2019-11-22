@@ -36,7 +36,8 @@ require("./loadwasm");
 // require('./test/txfordev/multiStakingTxs.js');
 // require('./test/txfordev/multiPRVTx');
 // require('./test/txfordev/withdrawReward');
-require('./test/txfordev/pTokenContribute');
+// require('./test/txfordev/pTokenContribute');
+require('./test/txfordev/PRVContribute');
 
 /************* RPC TEST **************/
 // require('./test/rpc/rpc-test');
