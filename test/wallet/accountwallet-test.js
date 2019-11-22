@@ -7,7 +7,7 @@ import {ENCODE_VERSION} from "../../lib/constants";
 import {checkEncode} from "../../lib/base58";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-const rpcClient = new RpcClient("https://test-node.incognito.org");
+const rpcClient = new RpcClient("https://test-mobile.incognito.org");
 // const rpcClient = new RpcClient("http://localhost:9334");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
@@ -227,7 +227,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
   // sender key (private key)
-  let senderSpendingKeyStr = "112t8rnaWQbUWmdGZW2LtF2dzBFVfWBBzH3xviG7TWvwCVNZ3tPygcTKK8kv4jzYQwHo3BDZvERWJHL9Kp9AhAMtG4my9GoARtXDxTUyWSRD";
+  let senderSpendingKeyStr = "112t8rnii1xirWv5SMyE5wxYRnur3frseXPEXA13NUd89PmSEfMaW9rkUuSsJ9Qz9iu59GCQXhbcc37W6DnxsMQq1UxfAm92nkShs4ocZR4i";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -235,23 +235,24 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   accountSender.key = senderKeyWallet;
 
   // receivers (payment address)
-  let receiverPaymentAddressStr = "12S4NL3DZ1KoprFRy1k5DdYSXUq81NtxFKdvUTP3PLqQypWzceL5fBBwXooAsX5s23j7cpb1Za37ddmfSaMpEJDPsnJGZuyWTXJSZZ5";
+  let receiverPaymentAddressStr = "12S5npG2jDSpAkGd1wMKEeRJtmXxfR9f4UXSk87NFHUBf6Dfff7mmHPJ5WPBWW4uzAmp5vfSvkTAFeoiKuc9WEfec1ifU5uDhTKPRQe";
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddressStr);
 
   // payment info for PRV
-  let paymentInfos = [{
-    paymentAddressStr: receiverPaymentAddressStr,
-    amount: 5,
-    message: "ABC"
-  }];
-  let amountTransfer = 5;
+  // let paymentInfos = [{
+  //   paymentAddressStr: receiverPaymentAddressStr,
+  //   amount: 5,
+  //   message: "ABC"
+  // }];
+  let paymentInfos = [];
+  let amountTransfer = 110002850;
 
   // prepare token param for tx custom token init
   let tokenParams = {
     Privacy: true,
-    TokenID: "ddacfb991d4744c271e8c3eb5004cef4617cfe415bbe1e68355bf262ceb5e6cc",
-    TokenName: "Rose",
-    TokenSymbol: "Rose",
+    TokenID: "b2655152784e8639fa19521a7035f331eea1f1e911b2f3200a507ebb4554387b",
+    TokenName: "pBNB",
+    TokenSymbol: "pBNB",
     TokenTxType: CustomTokenTransfer,
     TokenAmount: amountTransfer,
     TokenReceivers: {
@@ -261,20 +262,21 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     }
   }
 
-  let feePRV = 10;
+  let feePRV = 100;
   let feePToken = 0;
   let hasPrivacyForToken = true;
-  let hasPrivacyForPRV = false;
+  let hasPrivacyForPRV = true;
 
   // try {
-    await accountSender.createAndSendPrivacyToken(paymentInfos, tokenParams, feePRV, feePToken, hasPrivacyForPRV, hasPrivacyForToken, "", true, true);
+    let res =  await accountSender.createAndSendPrivacyToken(paymentInfos, tokenParams, feePRV, feePToken, hasPrivacyForPRV, hasPrivacyForToken, "", true, true);
+    console.log("Res: ", res);
   // } catch (e) {
   //   console.log("Error when transfering ptoken: ", e);
   //   throw e;
   // }
 }
 
-// TestCreateAndSendPrivacyTokenTransfer();
+TestCreateAndSendPrivacyTokenTransfer();
 
 
 async function TestCreateAndSendStakingTx() {
@@ -475,7 +477,7 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
   // staker
-  let senderSpendingKeyStr = "112t8rnbY15f1GnDxbcJUr84EH8pdFc9ayJ7HLMgccajtYSW9U9k7H2yJj9mUcC8CT1gAHZpubAE59At7soD4KeQaRLbREieSFMDC8AdQ44a";
+  let senderSpendingKeyStr = "112t8rnewVmmbP8poZSRmUvmohTYo2GG5qfmfHhWHZja3tvCLYLWXFwb1LZgFRMN6BA4hXioDqvBUMpajJBiNi7PAmryfAz2eNXiQ1xxvTV7";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
@@ -484,16 +486,18 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
   accountSender.key = senderKeyWallet;
 
   let fee = 5;
-  let sellAmount = 100;
-  let tokenIDToBuyStr = "4878bf0b99839f01baf909767ac79d7b6f724153bacb6f7b9022d7e896a312fd";
-  let minAcceptableAmount = 9000000000;
-  let tradingFee = 10;
+  let sellAmount = 1000000000;
+  let tokenIDToBuyStr = "b2655152784e8639fa19521a7035f331eea1f1e911b2f3200a507ebb4554387b";
+  let minAcceptableAmount = 4943987;
+  let tradingFee = 2500000;
 
   // create and send staking tx
   try {
     let res = await accountSender.createAndSendNativeTokenTradeRequestTx(
       fee, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee
     );
+
+    console.log("RES: ", res);
 
     // replace
     // let newFee = fee *2;
@@ -557,7 +561,7 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
   }
 }
 
-TestCreateAndSendPTokenTradeRequestTx();
+// TestCreateAndSendPTokenTradeRequestTx();
 
 
 async function GetListReceivedTx() {
