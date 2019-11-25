@@ -12,7 +12,7 @@ require("./loadwasm");
 // require('./test/tx/txprivacytoken-test');
 
 // require('./test/coin-test');
-// require('./test/key-test');
+require('./test/key-test');
 
 // bigint test
 // require("./test/bigint-test");
@@ -40,7 +40,7 @@ require("./loadwasm");
 // require('./test/txfordev/PRVContribute');
 
 /************* RPC TEST **************/
-require('./test/rpc/rpc-test');
+// require('./test/rpc/rpc-test');
 
 /************* PRIVACY TEST **************/
 // require('./test/privacy/hybridenc-test');
