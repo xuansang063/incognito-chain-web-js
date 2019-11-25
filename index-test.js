@@ -37,10 +37,10 @@ require("./loadwasm");
 // require('./test/txfordev/multiPRVTx');
 // require('./test/txfordev/withdrawReward');
 // require('./test/txfordev/pTokenContribute');
-require('./test/txfordev/PRVContribute');
+// require('./test/txfordev/PRVContribute');
 
 /************* RPC TEST **************/
-// require('./test/rpc/rpc-test');
+require('./test/rpc/rpc-test');
 
 /************* PRIVACY TEST **************/
 // require('./test/privacy/hybridenc-test');

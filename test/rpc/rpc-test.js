@@ -22,4 +22,11 @@ async function GetTransactionByReceiver() {
   console.log(JSON.stringify(txs));
 }
 
-GetTransactionByReceiver();
+// GetTransactionByReceiver();
+
+async function GetListPrivacyToken(){
+  var ptokens = await rpcClient.listPrivacyCustomTokens();
+  console.log("ptokens: ", ptokens);
+}
+
+GetListPrivacyToken()

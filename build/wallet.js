@@ -5236,7 +5236,7 @@ var RpcClient = function RpcClient(url, user, password) {
   _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee9() {
-    var data, response;
+    var data, response, pTokens, i, infoDecode, infoDecodeStr;
     return regeneratorRuntime.wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
@@ -5278,11 +5278,19 @@ var RpcClient = function RpcClient(url, user, password) {
             throw new _errorhandler__WEBPACK_IMPORTED_MODULE_4__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_4__["ErrorObject"].GetListPrivacyTokenErr, response.data.Error.Message);
 
           case 16:
+            pTokens = response.data.Result.ListCustomToken; // decode txinfo for each ptoken
+
+            for (i = 0; i < pTokens.length; i++) {
+              infoDecode = Object(_base58__WEBPACK_IMPORTED_MODULE_1__["checkDecode"])(pTokens[i].TxInfo);
+              infoDecodeStr = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["bytesToString"])(infoDecode);
+              pTokens[i].TxInfo = infoDecodeStr;
+            }
+
             return _context9.abrupt("return", {
-              listPrivacyToken: response.data.Result.ListCustomToken
+              listPrivacyToken: pTokens
             });
 
-          case 17:
+          case 19:
           case "end":
             return _context9.stop();
         }
