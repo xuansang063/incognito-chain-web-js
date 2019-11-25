@@ -5281,9 +5281,11 @@ var RpcClient = function RpcClient(url, user, password) {
             pTokens = response.data.Result.ListCustomToken; // decode txinfo for each ptoken
 
             for (i = 0; i < pTokens.length; i++) {
-              infoDecode = Object(_base58__WEBPACK_IMPORTED_MODULE_1__["checkDecode"])(pTokens[i].TxInfo);
-              infoDecodeStr = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["bytesToString"])(infoDecode);
-              pTokens[i].TxInfo = infoDecodeStr;
+              if (pTokens[i].TxInfo !== undefined) {
+                infoDecode = Object(_base58__WEBPACK_IMPORTED_MODULE_1__["checkDecode"])(pTokens[i].TxInfo);
+                infoDecodeStr = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["bytesToString"])(infoDecode);
+                pTokens[i].TxInfo = infoDecodeStr;
+              }
             }
 
             return _context9.abrupt("return", {
@@ -8967,24 +8969,26 @@ function () {
                 rpcClient = _args4.length > 1 ? _args4[1] : undefined;
                 spendingKeyStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PriKeyType"]);
                 paymentAddrSerialize = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PaymentAddressType"]);
-                readOnlyKeySerialize = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["ReadonlyKeyType"]); // get all output coins of spendingKey
+                readOnlyKeySerialize = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["ReadonlyKeyType"]);
+                console.log("getUnspentToken paymentAddrSerialize : ", paymentAddrSerialize);
+                console.log("getUnspentToken readOnlyKeySerialize : ", readOnlyKeySerialize); // get all output coins of spendingKey
 
-                _context4.prev = 5;
-                _context4.next = 8;
+                _context4.prev = 7;
+                _context4.next = 10;
                 return rpcClient.getOutputCoin(paymentAddrSerialize, readOnlyKeySerialize, tokenID);
 
-              case 8:
+              case 10:
                 response = _context4.sent;
-                _context4.next = 15;
+                _context4.next = 17;
                 break;
 
-              case 11:
-                _context4.prev = 11;
-                _context4.t0 = _context4["catch"](5);
+              case 13:
+                _context4.prev = 13;
+                _context4.t0 = _context4["catch"](7);
                 console.log("getUnspentToken Error when get output coins: ", _context4.t0);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].GetOutputCoinsErr, _context4.t0.message || "Can not get output coins when get unspent token");
 
-              case 15:
+              case 17:
                 allOutputCoinStrs = response.outCoins;
                 console.log("getUnspentToken list of output coins: ", allOutputCoinStrs); // devide all of output coins into uncached and cached out put coins list
 
@@ -8995,29 +8999,29 @@ function () {
                 console.log("getUnspentToken uncachedOutputCoinStrs: ", uncachedOutputCoinStrs); // calculate serial number uncachedOutputCoinStrs and cache
 
                 if (!(uncachedOutputCoinStrs.length > 0)) {
-                  _context4.next = 29;
+                  _context4.next = 31;
                   break;
                 }
 
-                _context4.next = 25;
+                _context4.next = 27;
                 return this.deriveSerialNumbers(spendingKeyStr, uncachedOutputCoinStrs, tokenID);
 
-              case 25:
+              case 27:
                 res = _context4.sent;
                 uncachedOutputCoinStrs = res.inCoinStrs;
                 console.log("getUnspentToken this.derivatorToSerialNumberCache after calculate serial number: ", this.derivatorToSerialNumberCache);
                 allOutputCoinStrs = cachedOutputCoinStrs.concat(uncachedOutputCoinStrs);
 
-              case 29:
+              case 31:
                 console.log("getUnspentToken allOutputCoinStrs after: ", allOutputCoinStrs); // get unspent output coin from cache
 
                 _this$analyzeSpentCoi = this.analyzeSpentCoinFromCached(allOutputCoinStrs), unspentInputCoinsFromCachedStrs = _this$analyzeSpentCoi.unspentInputCoinsFromCachedStrs;
                 console.log("getUnspentToken unspentInputCoinsFromCachedStrs: ", unspentInputCoinsFromCachedStrs); // check whether unspent coin from cache is spent or not
 
-                _context4.next = 34;
+                _context4.next = 36;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["getUnspentCoin"])(spendingKeyStr, paymentAddrSerialize, unspentInputCoinsFromCachedStrs, tokenID, rpcClient);
 
-              case 34:
+              case 36:
                 _ref = _context4.sent;
                 unspentCoinStrs = _ref.unspentCoinStrs;
                 console.log("getUnspentToken unspentCoinStrs: ", unspentCoinStrs); // cache spent output coins
@@ -9026,12 +9030,12 @@ function () {
                 console.log("getUnspentToken spentCoinCached after caching:", this.spentCoinCached);
                 return _context4.abrupt("return", unspentCoinStrs);
 
-              case 40:
+              case 42:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this, [[5, 11]]);
+        }, _callee4, this, [[7, 13]]);
       }));
 
       function getUnspentToken() {
