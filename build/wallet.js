@@ -5282,7 +5282,7 @@ var RpcClient = function RpcClient(url, user, password) {
 
             for (i = 0; i < pTokens.length; i++) {
               if (pTokens[i].TxInfo !== undefined) {
-                infoDecode = Object(_base58__WEBPACK_IMPORTED_MODULE_1__["checkDecode"])(pTokens[i].TxInfo);
+                infoDecode = Object(_base58__WEBPACK_IMPORTED_MODULE_1__["checkDecode"])(pTokens[i].TxInfo).bytesDecoded;
                 infoDecodeStr = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["bytesToString"])(infoDecode);
                 pTokens[i].TxInfo = infoDecodeStr;
               }
