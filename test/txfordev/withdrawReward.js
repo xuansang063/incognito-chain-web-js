@@ -15,8 +15,8 @@ async function sleep(sleepTime) {
 }
 
 async function MultiWithdrawReward() {
-  // load file privateKeyListForWithdraw.json to get private key
-  let jsonString = fs.readFileSync('./test/txfordev/privateKeyListForWithdraw.json');
+  // load file withdrawReward.json to get private key
+  let jsonString = fs.readFileSync('./test/txfordev/withdrawReward.json');
 
   let data = JSON.parse(jsonString);
   console.log("Data multi withdraw reward: ", data);

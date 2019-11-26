@@ -15,7 +15,7 @@ async function sleep(sleepTime) {
 
 async function GetBalanceMultiUsers() {
   // load file paymentAddr.json to set payment infos
-  let jsonString = fs.readFileSync('./test/txfordev/privateKeyList.json');
+  let jsonString = fs.readFileSync('./test/txfordev/getBalanceMultiUsers.json');
 
   let data = JSON.parse(jsonString);
   console.log("Data multi staking: ", data);
@@ -31,7 +31,7 @@ async function GetBalanceMultiUsers() {
     let accountFunder = new AccountWallet();
     accountFunder.key = funderKeyWallet;
 
-    let expectedBalance = 1755 * 1e9;
+    let expectedBalance = 1 * 1e9;
     let wrongCount = 0;
 
     try {

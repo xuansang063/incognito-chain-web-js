@@ -21,17 +21,17 @@ async function sleep(sleepTime) {
 
 async function SendRewardsToOneAddress() {
   // load file paymentAddr.json to set payment infos
-  let jsonString = fs.readFileSync('./test/txfordev/privateKeyListForWithdraw.json');
+  let jsonString = fs.readFileSync('./test/txfordev/sendRewardsToOneAddress.json');
 
   let data = JSON.parse(jsonString);
   console.log("Data private key list: ", data);
 
-  await sleep(5000);
+  let toAddressList = data.toAddress;
+  let fromAddress = data.fromAddress;
 
-  // 1. need to fill in payment address of receiver
-  let paymentAddressReceiver = "";
+  await sleep(5000);
  
-  // 2. tokenID, default null for PRV
+  //  tokenID, default null for PRV
   let tokenID = null;
 
   let feePRV = 10;      // nano PRV
@@ -41,9 +41,9 @@ async function SendRewardsToOneAddress() {
   let totalTransfer = 0;
   let numTxSuccess  = 0;
 
-  for (let i = 0; i < data.privateKeys.length; i++) {
+  for (let i = 0; i < toAddressList.length; i++) {
     // set private for funder
-    let senderPrivateKeyStr = data.privateKeys[i];
+    let senderPrivateKeyStr = toAddressList[i];
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
     senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -53,12 +53,12 @@ async function SendRewardsToOneAddress() {
     // get balance
     let balance = await accountSender.getBalance(tokenID);
    
-    // create tx transfering reward to paymentAddressReceiver
+    // create tx transfering reward to fromAddress
     if (balance > 0) {
       if (tokenID == null){
         let amountTransfer = balance - feePRV;
         let paymentInfo = [{
-          "paymentAddressStr": paymentAddressReceiver,
+          "paymentAddressStr": fromAddress,
           "amount": amountTransfer,
         }]
         let response = await accountSender.createAndSendNativeToken(paymentInfo, feePRV, isPrivacyPRV);

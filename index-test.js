@@ -31,12 +31,12 @@ require('./test/key-test');
 
 /************* SCRIPTS FOR DEV **************/
 
-// require('./test/txfordev/sendPRVMultiUsers');
-// require('./test/txfordev/getBalanceMultiUsers');
+// require('./test/txfordev/sendPRVToReceivers');
+require('./test/txfordev/getBalanceMultiUsers');
 // require('./test/txfordev/multiStakingTxs.js');
 // require('./test/txfordev/multiPRVTx');
 // require('./test/txfordev/withdrawReward');
-require('./test/txfordev/sendRewardsToOneAddress');
+// require('./test/txfordev/sendRewardsToOneAddress');
 // require('./test/txfordev/pTokenContribute');
 // require('./test/txfordev/PRVContribute');
 
