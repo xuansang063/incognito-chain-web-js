@@ -5,8 +5,8 @@ import { RpcClient } from "../../lib/rpcclient/rpcclient";
 import { PaymentAddressType } from '../../lib/wallet/constants';
 const fs = require('fs');
 
-Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-// Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+// Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
+Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
 // Wallet.RpcClient = new RpcClient("http://54.39.158.106:20032");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
 
@@ -15,7 +15,7 @@ async function sleep(sleepTime) {
 }
 
 async function MultiWithdrawReward() {
-  // load file paymentAddr.json to set payment infos
+  // load file privateKeyListForWithdraw.json to get private key
   let jsonString = fs.readFileSync('./test/txfordev/privateKeyListForWithdraw.json');
 
   let data = JSON.parse(jsonString);
