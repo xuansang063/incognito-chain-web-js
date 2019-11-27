@@ -16,17 +16,12 @@ async function sleep(sleepTime) {
 }
 
 function csvJSON(filename) {
-
     let csv = fs.readFileSync(filename).toString();
-
     var lines = csv.split("\n");
 
     var result = [];
-
     var headers = lines[0].split(",");
-
     for (var i = 1; i < lines.length; i++) {
-
         var obj = {};
         var currentline = lines[i].split(",");
 
@@ -35,16 +30,15 @@ function csvJSON(filename) {
         }
 
         result.push(obj);
-
     }
     return JSON.stringify(result).toString(); //JSON
-
 }
 
 async function SendPrivacyTokenToReceivers() {
-
     let data = csvJSON('./test/txfordev/sendPrivateTokenPayload.csv');
     await sleep(5000);
+
+    console.log("data: ", data);
 
     let paymentInfos = JSON.parse(data);
 
@@ -53,7 +47,10 @@ async function SendPrivacyTokenToReceivers() {
     }
 
     // 1. need to fill Private Key
-    let senderSpendingKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
+    let senderSpendingKeyStr = "";
+    // 2. need to fill token ID, default pUSDT
+    let tokenID = "716fd1009e2a1669caacc36891e707bfdf02590f96ebd897548e8963c95ebac0";
+
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
     senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
     let accountSender = new AccountWallet();
@@ -65,9 +62,9 @@ async function SendPrivacyTokenToReceivers() {
     let hasPrivacyForPRV = true;
 
     let offset = 0;
-    let maxReceivers = 25;  // except change UTXO for sender
+    let maxReceivers = 25; 
     let isDone = false;
-    let count = 0
+    let count = 0;
     while (!isDone) {
         let paymentInfoTmp;
         if (paymentInfos.length >= offset + maxReceivers) {
@@ -81,7 +78,7 @@ async function SendPrivacyTokenToReceivers() {
         try {
             let tokenParams = {
                 Privacy: true,
-                TokenID: "26eb350ef3a9d1afefa4721ff2655f7e7756b67462c8b2e43cac0ecc39f90b94",
+                TokenID: tokenID,
                 TokenName: "",
                 TokenSymbol: "",
                 TokenTxType: CustomTokenTransfer,
@@ -101,9 +98,13 @@ async function SendPrivacyTokenToReceivers() {
             console.log("Response: ", response);
             console.log("Congrats!!! Create transaction successfully! ^.^")
 
-            count += paymentInfoTmp.length
-            console.log("WAITING FOR CREATING NEXT TRANSACTION..................", count);
-            await sleep(2 * 60 * 1000);
+            count += paymentInfoTmp.length;
+           
+            console.log("Total Number payment transfer: ", count);
+            if (!isDone) {
+                console.log("WAITING FOR CREATING NEXT TRANSACTION..................");
+                await sleep(2 * 60 * 1000);
+            }
         } catch (e) {
             console.log("Sorry!!! You cannot send this transaction. Please try again. Fighting ^.^");
         }

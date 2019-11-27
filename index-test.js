@@ -12,7 +12,7 @@ require("./loadwasm");
 // require('./test/tx/txprivacytoken-test');
 
 // require('./test/coin-test');
-require('./test/key-test');
+// require('./test/key-test');
 
 // bigint test
 // require("./test/bigint-test");
