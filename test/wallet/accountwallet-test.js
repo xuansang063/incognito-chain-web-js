@@ -255,11 +255,11 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     TokenSymbol: "pBNB",
     TokenTxType: CustomTokenTransfer,
     TokenAmount: amountTransfer,
-    TokenReceivers: {
+    TokenReceivers: [{
       PaymentAddress: receiverPaymentAddressStr,
       Amount: amountTransfer,
       Message: "ABC"
-    }
+    }]
   }
 
   let feePRV = 100;
