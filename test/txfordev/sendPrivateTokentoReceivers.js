@@ -3,36 +3,13 @@ import {KeyWallet as keyWallet} from "../../lib/wallet/hdwallet";
 import {AccountWallet} from "../../lib/wallet/accountWallet";
 import {RpcClient} from "../../lib/rpcclient/rpcclient";
 import {CustomTokenTransfer} from "../../lib/tx/constants";
-
+import {sleep, csvJSON} from "./utils";
 const fs = require('fs');
 
-// Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
+// Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
 // const rpcClient = new RpcClient("http://54.39.158.106:20032");
-
-async function sleep(sleepTime) {
-    return new Promise(resolve => setTimeout(resolve, sleepTime));
-}
-
-function csvJSON(filename) {
-    let csv = fs.readFileSync(filename).toString();
-    var lines = csv.split("\n");
-
-    var result = [];
-    var headers = lines[0].split(",");
-    for (var i = 1; i < lines.length; i++) {
-        var obj = {};
-        var currentline = lines[i].split(",");
-
-        for (var j = 0; j < headers.length; j++) {
-            obj[headers[j]] = currentline[j];
-        }
-
-        result.push(obj);
-    }
-    return JSON.stringify(result).toString(); //JSON
-}
 
 async function SendPrivacyTokenToReceivers() {
     let data = csvJSON('./test/txfordev/sendPrivateTokenPayload.csv');
@@ -75,6 +52,8 @@ async function SendPrivacyTokenToReceivers() {
             isDone = true;
         }
 
+        console.log("Payment info list: ", paymentInfoTmp);
+
         try {
             let tokenParams = {
                 Privacy: true,
@@ -106,7 +85,7 @@ async function SendPrivacyTokenToReceivers() {
                 await sleep(5 * 60 * 1000);
             }
         } catch (e) {
-            console.log("Sorry!!! You cannot send this transaction. Please try again. Fighting ^.^");
+            console.log("Sorry!!! You cannot send this transaction. Please try again. ^.^", e);
         }
     }
 }

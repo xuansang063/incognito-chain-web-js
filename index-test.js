@@ -31,7 +31,7 @@ require("./loadwasm");
 
 /************* SCRIPTS FOR DEV **************/
 
-// require('./test/txfordev/sendPRVToReceivers');
+
 // require('./test/txfordev/getBalanceMultiUsers');
 // require('./test/txfordev/multiStakingTxs.js');
 // require('./test/txfordev/multiPRVTx');
@@ -40,8 +40,8 @@ require("./loadwasm");
 // require('./test/txfordev/pTokenContribute');
 // require('./test/txfordev/PRVContribute');
 
-require('./test/txfordev/sendPrivateTokentoReceivers');
-
+// require('./test/txfordev/sendPrivateTokentoReceivers');
+require('./test/txfordev/sendPRVToReceivers');
 
 /************* RPC TEST **************/
 // require('./test/rpc/rpc-test');
