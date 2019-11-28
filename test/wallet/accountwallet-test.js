@@ -200,10 +200,10 @@ async function TestCreateAndSendPrivacyTokenInit() {
     TokenSymbol: "Rose",
     TokenTxType: CustomTokenInit,
     TokenAmount: amountInit,
-    TokenReceivers: {
+    TokenReceivers: [{
       PaymentAddress: senderPaymentAddressStr,
       Amount: amountInit
-    }
+    }]
   }
 
   let feePRV = 10;
@@ -672,11 +672,11 @@ async function TestCreateAndSendReplacePrivacyTokenTransfer() {
     TokenSymbol: "D",
     TokenTxType: CustomTokenTransfer,
     TokenAmount: amountTransfer,
-    TokenReceivers: {
+    TokenReceivers: [{
       PaymentAddress: receiverPaymentAddressStr,
       Amount: amountTransfer,
       Message: "ABC"
-    }
+    }]
   }
 
   let feePRV = 5;

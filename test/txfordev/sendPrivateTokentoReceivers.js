@@ -73,7 +73,7 @@ async function SendPrivacyTokenToReceivers() {
                 }
             }
 
-            let response = await accountSender.createAndSendPrivacyTokenS([], tokenParams, feePRV, feePToken, hasPrivacyForPRV, hasPrivacyForToken, "", true, true);
+            let response = await accountSender.createAndSendPrivacyToken([], tokenParams, feePRV, feePToken, hasPrivacyForPRV, hasPrivacyForToken, "", true, true);
             console.log("Response: ", response);
             console.log("Congrats!!! Create transaction successfully! ^.^")
 
