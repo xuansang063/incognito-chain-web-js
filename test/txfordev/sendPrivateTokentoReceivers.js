@@ -103,7 +103,7 @@ async function SendPrivacyTokenToReceivers() {
             console.log("Total Number payment transfer: ", count);
             if (!isDone) {
                 console.log("WAITING FOR CREATING NEXT TRANSACTION..................");
-                await sleep(2 * 60 * 1000);
+                await sleep(5 * 60 * 1000);
             }
         } catch (e) {
             console.log("Sorry!!! You cannot send this transaction. Please try again. Fighting ^.^");
