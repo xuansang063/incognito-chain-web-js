@@ -7,8 +7,8 @@ import {ENCODE_VERSION} from "../../lib/constants";
 import {checkEncode} from "../../lib/base58";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-const rpcClient = new RpcClient("https://test-mobile.incognito.org");
-// const rpcClient = new RpcClient("http://localhost:9334");
+// const rpcClient = new RpcClient("https://test-mobile.incognito.org");
+const rpcClient = new RpcClient("http://localhost:9998");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 
@@ -131,7 +131,7 @@ async function TestCreateAndSendNativeToken() {
   await sleep(10000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
+  let senderPrivateKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -139,21 +139,26 @@ async function TestCreateAndSendNativeToken() {
   accountSender.key = senderKeyWallet;
 
   // receiver key (payment address)
-  let receiverPaymentAddrStr = "12Ryp47jXJfkz5Cketp4D9U7uTH4hFgFUVUEzq6k5ikvAZ94JucsYbi235siCMud5GdtRi1DoSecsTD2nkiic9TH7YNkLEoEhrvxvwt";
+  let receiverPaymentAddrStr = "12Rupj1V6gQ5oqhvQGiKpNh6fjyi7NgkEhHCrsjCJzd79aSyVqsZ2RWdsqGtqy3jXkJij2XeqT5W7xZfymYzaNo5t8oGitbLM36tgkE";
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddrStr);
   // let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
 
-  let fee = 0.0 * 1e9;
-  let isPrivacy = false;
+  // get balance
+
+  let balance = await accountSender.getBalance();
+  console.log("AAA balance: ", balance);
+
+  let fee = 0.5 * 1e9;
+  let isPrivacy = true;
   let info = "";
-  let amountTransfer = 0 * 1e9; // in nano PRV
+  let amountTransfer = 1 * 1e9; // in nano PRV
 
   let paymentInfosParam = [];
-  // paymentInfosParam[0] = {
-  //   "paymentAddressStr": receiverPaymentAddrStr,
-  //   "amount": amountTransfer,
-  //   // "message": "A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute"
-  // };
+  paymentInfosParam[0] = {
+    "paymentAddressStr": receiverPaymentAddrStr,
+    "amount": amountTransfer,
+    // "message": "A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute"
+  };
 
   // create and send PRV
   try {
@@ -174,7 +179,7 @@ async function TestCreateAndSendNativeToken() {
   // console.log("Send tx 2 done");
 }
 
-// TestCreateAndSendNativeToken();
+TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;
@@ -276,7 +281,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // }
 }
 
-TestCreateAndSendPrivacyTokenTransfer();
+// TestCreateAndSendPrivacyTokenTransfer();
 
 
 async function TestCreateAndSendStakingTx() {
@@ -589,7 +594,7 @@ async function TestReplaceNormalTx() {
   await sleep(5000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
+  let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 

@@ -9280,8 +9280,10 @@ function () {
 
               case 26:
                 for (_i3 = 0; _i3 < paramPaymentInfos.length; _i3++) {
-                  paramPaymentInfos[_i3].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(paramPaymentInfos[_i3].message));
-                  console.log("paramPaymentInfos[i].message: ", paramPaymentInfos[_i3].message);
+                  if (paramPaymentInfos[_i3].message != null) {
+                    paramPaymentInfos[_i3].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(paramPaymentInfos[_i3].message));
+                    console.log("paramPaymentInfos[i].message: ", paramPaymentInfos[_i3].message);
+                  }
                 }
 
               case 27:
@@ -10428,7 +10430,9 @@ function () {
 
               case 28:
                 for (_i8 = 0; _i8 < paramPaymentInfosForNativeToken.length; _i8++) {
-                  paramPaymentInfosForNativeToken[_i8].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(paramPaymentInfosForNativeToken[_i8].message)); // console.log("paramPaymentInfosForNativeToken[i].message: ", paramPaymentInfosForNativeToken[i].message);
+                  if (paramPaymentInfosForNativeToken[_i8].message != null) {
+                    paramPaymentInfosForNativeToken[_i8].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(paramPaymentInfosForNativeToken[_i8].message)); // console.log("paramPaymentInfosForNativeToken[i].message: ", paramPaymentInfosForNativeToken[i].message);
+                  }
                 }
 
               case 29:
@@ -10483,7 +10487,9 @@ function () {
 
               case 46:
                 for (_i10 = 0; _i10 < tokenParamJson.paymentInfoForPToken.length; _i10++) {
-                  tokenParamJson.paymentInfoForPToken[_i10].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(tokenParamJson.paymentInfoForPToken[_i10].message)); // console.log("tokenParamJson.paymentInfoForPToken[i].message: ", tokenParamJson.paymentInfoForPToken[i].message);
+                  if (tokenParamJson.paymentInfoForPToken[_i10].message != null) {
+                    tokenParamJson.paymentInfoForPToken[_i10].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(tokenParamJson.paymentInfoForPToken[_i10].message)); // console.log("tokenParamJson.paymentInfoForPToken[i].message: ", tokenParamJson.paymentInfoForPToken[i].message);
+                  }
                 }
 
               case 47:
@@ -11116,8 +11122,10 @@ function () {
 
               case 26:
                 for (_i17 = 0; _i17 < paramPaymentInfos.length; _i17++) {
-                  paramPaymentInfos[_i17].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(paramPaymentInfos[_i17].message));
-                  console.log("paramPaymentInfos[i].message: ", paramPaymentInfos[_i17].message);
+                  if (paramPaymentInfos[_i17].message != null) {
+                    paramPaymentInfos[_i17].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(paramPaymentInfos[_i17].message));
+                    console.log("paramPaymentInfos[i].message: ", paramPaymentInfos[_i17].message);
+                  }
                 }
 
               case 27:
@@ -11464,8 +11472,10 @@ function () {
 
               case 35:
                 for (_i20 = 0; _i20 < paramPaymentInfosForNativeToken.length; _i20++) {
-                  paramPaymentInfosForNativeToken[_i20].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(paramPaymentInfosForNativeToken[_i20].message));
-                  console.log("paramPaymentInfosForNativeToken[i].message: ", paramPaymentInfosForNativeToken[_i20].message);
+                  if (paramPaymentInfosForNativeToken[_i20].message != null) {
+                    paramPaymentInfosForNativeToken[_i20].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(paramPaymentInfosForNativeToken[_i20].message));
+                    console.log("paramPaymentInfosForNativeToken[i].message: ", paramPaymentInfosForNativeToken[_i20].message);
+                  }
                 }
 
               case 36:
@@ -11513,8 +11523,10 @@ function () {
 
               case 51:
                 for (_i21 = 0; _i21 < tokenParamJson.paymentInfoForPToken.length; _i21++) {
-                  tokenParamJson.paymentInfoForPToken[_i21].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(tokenParamJson.paymentInfoForPToken[_i21].message));
-                  console.log(" tokenParamJson.paymentInfoForPToken[i].message: ", tokenParamJson.paymentInfoForPToken[_i21].message);
+                  if (tokenParamJson.paymentInfoForPToken[_i21].message != null) {
+                    tokenParamJson.paymentInfoForPToken[_i21].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["stringToBytes"])(tokenParamJson.paymentInfoForPToken[_i21].message));
+                    console.log(" tokenParamJson.paymentInfoForPToken[i].message: ", tokenParamJson.paymentInfoForPToken[_i21].message);
+                  }
                 }
 
               case 52:
