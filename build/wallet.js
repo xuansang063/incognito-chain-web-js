@@ -6064,15 +6064,82 @@ var RpcClient = function RpcClient(url, user, password) {
     };
   }());
 
+  _defineProperty(this, "getPDEContributionStatus",
+  /*#__PURE__*/
+  function () {
+    var _ref22 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee22(pairId) {
+      var data, response;
+      return regeneratorRuntime.wrap(function _callee22$(_context22) {
+        while (1) {
+          switch (_context22.prev = _context22.next) {
+            case 0:
+              data = {
+                "id": 1,
+                "jsonrpc": "1.0",
+                "method": "getpdecontributionstatus",
+                "params": [{
+                  "ContributionPairID": pairId
+                }]
+              };
+              _context22.prev = 1;
+              _context22.next = 4;
+              return _this.rpcHttpService.postRequest(data);
+
+            case 4:
+              response = _context22.sent;
+              _context22.next = 10;
+              break;
+
+            case 7:
+              _context22.prev = 7;
+              _context22.t0 = _context22["catch"](1);
+              throw _context22.t0;
+
+            case 10:
+              if (!(response.status !== 200)) {
+                _context22.next = 14;
+                break;
+              }
+
+              throw new Error("Can't request API get PDE state");
+
+            case 14:
+              if (!response.data.Error) {
+                _context22.next = 16;
+                break;
+              }
+
+              throw response.data.Error;
+
+            case 16:
+              return _context22.abrupt("return", {
+                state: response.data.Result
+              });
+
+            case 17:
+            case "end":
+              return _context22.stop();
+          }
+        }
+      }, _callee22, null, [[1, 7]]);
+    }));
+
+    return function (_x22) {
+      return _ref22.apply(this, arguments);
+    };
+  }());
+
   _defineProperty(this, "getBeaconHeight",
   /*#__PURE__*/
   _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee22() {
+  regeneratorRuntime.mark(function _callee23() {
     var data, response;
-    return regeneratorRuntime.wrap(function _callee22$(_context22) {
+    return regeneratorRuntime.wrap(function _callee23$(_context23) {
       while (1) {
-        switch (_context22.prev = _context22.next) {
+        switch (_context23.prev = _context23.next) {
           case 0:
             data = {
               "jsonrpc": "1.0",
@@ -6080,23 +6147,23 @@ var RpcClient = function RpcClient(url, user, password) {
               "params": [],
               "id": 1
             };
-            _context22.prev = 1;
-            _context22.next = 4;
+            _context23.prev = 1;
+            _context23.next = 4;
             return _this.rpcHttpService.postRequest(data);
 
           case 4:
-            response = _context22.sent;
-            _context22.next = 10;
+            response = _context23.sent;
+            _context23.next = 10;
             break;
 
           case 7:
-            _context22.prev = 7;
-            _context22.t0 = _context22["catch"](1);
-            throw _context22.t0;
+            _context23.prev = 7;
+            _context23.t0 = _context23["catch"](1);
+            throw _context23.t0;
 
           case 10:
             if (!(response.status !== 200)) {
-              _context22.next = 14;
+              _context23.next = 14;
               break;
             }
 
@@ -6104,78 +6171,78 @@ var RpcClient = function RpcClient(url, user, password) {
 
           case 14:
             if (!response.data.Error) {
-              _context22.next = 16;
+              _context23.next = 16;
               break;
             }
 
             throw response.data.Error;
 
           case 16:
-            return _context22.abrupt("return", {
+            return _context23.abrupt("return", {
               beaconHeight: response.data.Result.BeaconHeight
             });
 
           case 17:
           case "end":
-            return _context22.stop();
+            return _context23.stop();
         }
       }
-    }, _callee22, null, [[1, 7]]);
+    }, _callee23, null, [[1, 7]]);
   })));
 
   _defineProperty(this, "isExchangeRatePToken",
   /*#__PURE__*/
   function () {
-    var _ref23 = _asyncToGenerator(
+    var _ref24 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee23(tokenIDStr1) {
+    regeneratorRuntime.mark(function _callee24(tokenIDStr1) {
       var tokenIDStr2,
           beaconHeight,
           res,
           pdeStateRes,
           tokenIDArray,
           keyValue,
-          _args23 = arguments;
-      return regeneratorRuntime.wrap(function _callee23$(_context23) {
+          _args24 = arguments;
+      return regeneratorRuntime.wrap(function _callee24$(_context24) {
         while (1) {
-          switch (_context23.prev = _context23.next) {
+          switch (_context24.prev = _context24.next) {
             case 0:
-              tokenIDStr2 = _args23.length > 1 && _args23[1] !== undefined ? _args23[1] : "";
+              tokenIDStr2 = _args24.length > 1 && _args24[1] !== undefined ? _args24[1] : "";
 
               if (tokenIDStr2 === "") {
                 tokenIDStr2 = _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"];
               } // get latest beacon height
 
 
-              _context23.prev = 2;
-              _context23.next = 5;
+              _context24.prev = 2;
+              _context24.next = 5;
               return _this.getBeaconHeight();
 
             case 5:
-              res = _context23.sent;
+              res = _context24.sent;
               beaconHeight = res.beaconHeight;
-              _context23.next = 12;
+              _context24.next = 12;
               break;
 
             case 9:
-              _context23.prev = 9;
-              _context23.t0 = _context23["catch"](2);
-              throw _context23.t0;
+              _context24.prev = 9;
+              _context24.t0 = _context24["catch"](2);
+              throw _context24.t0;
 
             case 12:
-              _context23.prev = 12;
-              _context23.next = 15;
+              _context24.prev = 12;
+              _context24.next = 15;
               return _this.getPDEState(beaconHeight);
 
             case 15:
-              pdeStateRes = _context23.sent;
-              _context23.next = 21;
+              pdeStateRes = _context24.sent;
+              _context24.next = 21;
               break;
 
             case 18:
-              _context23.prev = 18;
-              _context23.t1 = _context23["catch"](12);
-              throw _context23.t1;
+              _context24.prev = 18;
+              _context24.t1 = _context24["catch"](12);
+              throw _context24.t1;
 
             case 21:
               console.log("pdeStateRes: ", pdeStateRes);
@@ -6185,54 +6252,54 @@ var RpcClient = function RpcClient(url, user, password) {
               console.log("pdeStateRes.state.PDEPoolPairs[keyValue]: ", pdeStateRes.state.PDEPoolPairs[keyValue]);
 
               if (!(pdeStateRes.state.PDEPoolPairs[keyValue] !== null && pdeStateRes.state.PDEPoolPairs[keyValue] !== undefined)) {
-                _context23.next = 32;
+                _context24.next = 32;
                 break;
               }
 
               if (!(tokenIDStr1 == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token1PoolValue < 10000 * 1e9)) {
-                _context23.next = 29;
+                _context24.next = 29;
                 break;
               }
 
-              return _context23.abrupt("return", false);
+              return _context24.abrupt("return", false);
 
             case 29:
               if (!(tokenIDStr2 == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token2PoolValue < 10000 * 1e9)) {
-                _context23.next = 31;
+                _context24.next = 31;
                 break;
               }
 
-              return _context23.abrupt("return", false);
+              return _context24.abrupt("return", false);
 
             case 31:
-              return _context23.abrupt("return", true);
+              return _context24.abrupt("return", true);
 
             case 32:
-              return _context23.abrupt("return", false);
+              return _context24.abrupt("return", false);
 
             case 33:
             case "end":
-              return _context23.stop();
+              return _context24.stop();
           }
         }
-      }, _callee23, null, [[2, 9], [12, 18]]);
+      }, _callee24, null, [[2, 9], [12, 18]]);
     }));
 
-    return function (_x22) {
-      return _ref23.apply(this, arguments);
+    return function (_x23) {
+      return _ref24.apply(this, arguments);
     };
   }());
 
   _defineProperty(this, "getTransactionByReceiver",
   /*#__PURE__*/
   function () {
-    var _ref24 = _asyncToGenerator(
+    var _ref25 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee24(paymentAdrr, viewingKey) {
+    regeneratorRuntime.mark(function _callee25(paymentAdrr, viewingKey) {
       var data, response, result;
-      return regeneratorRuntime.wrap(function _callee24$(_context24) {
+      return regeneratorRuntime.wrap(function _callee25$(_context25) {
         while (1) {
-          switch (_context24.prev = _context24.next) {
+          switch (_context25.prev = _context25.next) {
             case 0:
               data = {
                 "jsonrpc": "1.0",
@@ -6241,72 +6308,6 @@ var RpcClient = function RpcClient(url, user, password) {
                   "PaymentAddress": paymentAdrr,
                   "ReadonlyKey": viewingKey
                 }],
-                "id": 1
-              };
-              _context24.prev = 1;
-              _context24.next = 4;
-              return _this.rpcHttpService.postRequest(data);
-
-            case 4:
-              response = _context24.sent;
-              _context24.next = 10;
-              break;
-
-            case 7:
-              _context24.prev = 7;
-              _context24.t0 = _context24["catch"](1);
-              throw _context24.t0;
-
-            case 10:
-              if (!(response.status !== 200)) {
-                _context24.next = 14;
-                break;
-              }
-
-              throw new Error("Can't request API get all output coins");
-
-            case 14:
-              if (!response.data.Error) {
-                _context24.next = 16;
-                break;
-              }
-
-              throw response.data.Error;
-
-            case 16:
-              result = response.data.Result;
-              return _context24.abrupt("return", {
-                receivedTransactions: result.ReceivedTransactions
-              });
-
-            case 18:
-            case "end":
-              return _context24.stop();
-          }
-        }
-      }, _callee24, null, [[1, 7]]);
-    }));
-
-    return function (_x23, _x24) {
-      return _ref24.apply(this, arguments);
-    };
-  }());
-
-  _defineProperty(this, "getListPrivacyCustomTokenBalance",
-  /*#__PURE__*/
-  function () {
-    var _ref25 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee25(privateKey) {
-      var data, response;
-      return regeneratorRuntime.wrap(function _callee25$(_context25) {
-        while (1) {
-          switch (_context25.prev = _context25.next) {
-            case 0:
-              data = {
-                "jsonrpc": "1.0",
-                "method": "getlistprivacycustomtokenbalance",
-                "params": [privateKey],
                 "id": 1
               };
               _context25.prev = 1;
@@ -6329,7 +6330,7 @@ var RpcClient = function RpcClient(url, user, password) {
                 break;
               }
 
-              throw new Error("Can't request API get list privacy custom token balance");
+              throw new Error("Can't request API get all output coins");
 
             case 14:
               if (!response.data.Error) {
@@ -6340,9 +6341,12 @@ var RpcClient = function RpcClient(url, user, password) {
               throw response.data.Error;
 
             case 16:
-              return _context25.abrupt("return", response.data.Result && response.data.Result.ListCustomTokenBalance || []);
+              result = response.data.Result;
+              return _context25.abrupt("return", {
+                receivedTransactions: result.ReceivedTransactions
+              });
 
-            case 17:
+            case 18:
             case "end":
               return _context25.stop();
           }
@@ -6350,8 +6354,71 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee25, null, [[1, 7]]);
     }));
 
-    return function (_x25) {
+    return function (_x24, _x25) {
       return _ref25.apply(this, arguments);
+    };
+  }());
+
+  _defineProperty(this, "getListPrivacyCustomTokenBalance",
+  /*#__PURE__*/
+  function () {
+    var _ref26 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee26(privateKey) {
+      var data, response;
+      return regeneratorRuntime.wrap(function _callee26$(_context26) {
+        while (1) {
+          switch (_context26.prev = _context26.next) {
+            case 0:
+              data = {
+                "jsonrpc": "1.0",
+                "method": "getlistprivacycustomtokenbalance",
+                "params": [privateKey],
+                "id": 1
+              };
+              _context26.prev = 1;
+              _context26.next = 4;
+              return _this.rpcHttpService.postRequest(data);
+
+            case 4:
+              response = _context26.sent;
+              _context26.next = 10;
+              break;
+
+            case 7:
+              _context26.prev = 7;
+              _context26.t0 = _context26["catch"](1);
+              throw _context26.t0;
+
+            case 10:
+              if (!(response.status !== 200)) {
+                _context26.next = 14;
+                break;
+              }
+
+              throw new Error("Can't request API get list privacy custom token balance");
+
+            case 14:
+              if (!response.data.Error) {
+                _context26.next = 16;
+                break;
+              }
+
+              throw response.data.Error;
+
+            case 16:
+              return _context26.abrupt("return", response.data.Result && response.data.Result.ListCustomTokenBalance || []);
+
+            case 17:
+            case "end":
+              return _context26.stop();
+          }
+        }
+      }, _callee26, null, [[1, 7]]);
+    }));
+
+    return function (_x26) {
+      return _ref26.apply(this, arguments);
     };
   }());
 
@@ -15248,13 +15315,14 @@ var toNanoPRV = function toNanoPRV(amountPRV) {
 /*!******************************!*\
   !*** ./lib/wallet/wallet.js ***!
   \******************************/
-/*! exports provided: Wallet, AccountWallet, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, BurnAddress, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, RPCHttpService, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDETradeRequestMeta, PDEWithdrawalRequestMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin */
+/*! exports provided: Wallet, AccountWallet, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, BurnAddress, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, RPCHttpService, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDETradeRequestMeta, PDEWithdrawalRequestMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin, constants */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Wallet", function() { return Wallet; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultStorage", function() { return DefaultStorage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "constants", function() { return constants; });
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _hdwallet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./hdwallet */ "./lib/wallet/hdwallet.js");
@@ -15299,47 +15367,48 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDEWithdrawalRequestMeta", function() { return _constants__WEBPACK_IMPORTED_MODULE_10__["PDEWithdrawalRequestMeta"]; });
 
-/* harmony import */ var _base58__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../base58 */ "./lib/base58.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "checkEncode", function() { return _base58__WEBPACK_IMPORTED_MODULE_11__["checkEncode"]; });
+/* harmony import */ var _tx_constants__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../tx/constants */ "./lib/tx/constants.js");
+/* harmony import */ var _base58__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../base58 */ "./lib/base58.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "checkEncode", function() { return _base58__WEBPACK_IMPORTED_MODULE_12__["checkEncode"]; });
 
-/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../common */ "./lib/common.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getShardIDFromLastByte", function() { return _common__WEBPACK_IMPORTED_MODULE_12__["getShardIDFromLastByte"]; });
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../common */ "./lib/common.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getShardIDFromLastByte", function() { return _common__WEBPACK_IMPORTED_MODULE_13__["getShardIDFromLastByte"]; });
 
-/* harmony import */ var _accountWallet__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./accountWallet */ "./lib/wallet/accountWallet.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AccountWallet", function() { return _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]; });
+/* harmony import */ var _accountWallet__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./accountWallet */ "./lib/wallet/accountWallet.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AccountWallet", function() { return _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]; });
 
-/* harmony import */ var _history__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./history */ "./lib/wallet/history.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TxHistoryInfo", function() { return _history__WEBPACK_IMPORTED_MODULE_14__["TxHistoryInfo"]; });
+/* harmony import */ var _history__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./history */ "./lib/wallet/history.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TxHistoryInfo", function() { return _history__WEBPACK_IMPORTED_MODULE_15__["TxHistoryInfo"]; });
 
-/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../tx/utils */ "./lib/tx/utils.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEstimateFee", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_15__["getEstimateFee"]; });
+/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../tx/utils */ "./lib/tx/utils.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEstimateFee", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_16__["getEstimateFee"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEstimateFeeForPToken", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_15__["getEstimateFeeForPToken"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEstimateFeeForPToken", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_16__["getEstimateFeeForPToken"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getMaxWithdrawAmount", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_15__["getMaxWithdrawAmount"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getMaxWithdrawAmount", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_16__["getMaxWithdrawAmount"]; });
 
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./utils */ "./lib/wallet/utils.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "toNanoPRV", function() { return _utils__WEBPACK_IMPORTED_MODULE_16__["toNanoPRV"]; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./utils */ "./lib/wallet/utils.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "toNanoPRV", function() { return _utils__WEBPACK_IMPORTED_MODULE_17__["toNanoPRV"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "toPRV", function() { return _utils__WEBPACK_IMPORTED_MODULE_16__["toPRV"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "toPRV", function() { return _utils__WEBPACK_IMPORTED_MODULE_17__["toPRV"]; });
 
-/* harmony import */ var _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../privacy/ecdsa */ "./lib/privacy/ecdsa.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateECDSAKeyPair", function() { return _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_17__["generateECDSAKeyPair"]; });
+/* harmony import */ var _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../privacy/ecdsa */ "./lib/privacy/ecdsa.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateECDSAKeyPair", function() { return _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_18__["generateECDSAKeyPair"]; });
 
-/* harmony import */ var _privacy_bls__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../privacy/bls */ "./lib/privacy/bls.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateBLSKeyPair", function() { return _privacy_bls__WEBPACK_IMPORTED_MODULE_18__["generateBLSKeyPair"]; });
+/* harmony import */ var _privacy_bls__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../privacy/bls */ "./lib/privacy/bls.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateBLSKeyPair", function() { return _privacy_bls__WEBPACK_IMPORTED_MODULE_19__["generateBLSKeyPair"]; });
 
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../constants */ "./lib/constants.js");
-/* harmony import */ var _errorhandler__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../errorhandler */ "./lib/errorhandler.js");
-/* harmony import */ var _committeekey__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../committeekey */ "./lib/committeekey.js");
-/* harmony import */ var _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../privacy/hybridEncryption */ "./lib/privacy/hybridEncryption.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridEncryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_22__["hybridEncryption"]; });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../constants */ "./lib/constants.js");
+/* harmony import */ var _errorhandler__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../errorhandler */ "./lib/errorhandler.js");
+/* harmony import */ var _committeekey__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../committeekey */ "./lib/committeekey.js");
+/* harmony import */ var _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../privacy/hybridEncryption */ "./lib/privacy/hybridEncryption.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridEncryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_23__["hybridEncryption"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridDecryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_22__["hybridDecryption"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridDecryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_23__["hybridDecryption"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "encryptMessageOutCoin", function() { return _utils__WEBPACK_IMPORTED_MODULE_16__["encryptMessageOutCoin"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "encryptMessageOutCoin", function() { return _utils__WEBPACK_IMPORTED_MODULE_17__["encryptMessageOutCoin"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "decryptMessageOutCoin", function() { return _utils__WEBPACK_IMPORTED_MODULE_16__["decryptMessageOutCoin"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "decryptMessageOutCoin", function() { return _utils__WEBPACK_IMPORTED_MODULE_17__["decryptMessageOutCoin"]; });
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -15379,6 +15448,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+var constants = {
+  CustomTokenTransfer: _tx_constants__WEBPACK_IMPORTED_MODULE_11__["CustomTokenTransfer"]
+};
+
 var Wallet =
 /*#__PURE__*/
 function () {
@@ -15389,7 +15462,7 @@ function () {
     this.Entropy = [];
     this.PassPhrase = "";
     this.Mnemonic = "";
-    this.MasterAccount = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
+    this.MasterAccount = new _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]();
     this.Name = "";
     this.Storage = null;
   }
@@ -15405,7 +15478,7 @@ function () {
       try {
         this.Entropy = mnemonicGen.newEntropy(128);
       } catch (e) {
-        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].NewEntropyErr, e.message || "Can not create new entropy when initing wallet");
+        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].NewEntropyErr, e.message || "Can not create new entropy when initing wallet");
       } // mnemonic
 
 
@@ -15417,7 +15490,7 @@ function () {
 
       var masterKey = Object(_hdwallet__WEBPACK_IMPORTED_MODULE_1__["NewMasterKey"])(this.Seed); // master account with master key
 
-      this.MasterAccount = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
+      this.MasterAccount = new _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]();
       this.MasterAccount.key = masterKey;
       this.MasterAccount.child = [];
       this.MasterAccount.name = "master";
@@ -15448,14 +15521,14 @@ function () {
             childKey = this.MasterAccount.key.newChildKey(newIndex);
             var lastByte = childKey.KeySet.PaymentAddress.Pk[childKey.KeySet.PaymentAddress.Pk.length - 1];
 
-            if (Object(_common__WEBPACK_IMPORTED_MODULE_12__["getShardIDFromLastByte"])(lastByte) == shardID) {
+            if (Object(_common__WEBPACK_IMPORTED_MODULE_13__["getShardIDFromLastByte"])(lastByte) == shardID) {
               break;
             }
 
             newIndex += 1;
           }
 
-          var account = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
+          var account = new _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]();
           account.name = "Account " + i;
           account.child = [];
           account.key = childKey;
@@ -15466,7 +15539,7 @@ function () {
         for (var _i = 0; _i < numOfAccount; _i++) {
           var _childKey = this.MasterAccount.key.newChildKey(_i);
 
-          var _account = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
+          var _account = new _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]();
 
           _account.name = "Account " + _i;
           _account.child = [];
@@ -15516,7 +15589,7 @@ function () {
 
       var masterKey = Object(_hdwallet__WEBPACK_IMPORTED_MODULE_1__["NewMasterKey"])(this.Seed); // master account with master key
 
-      this.MasterAccount = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
+      this.MasterAccount = new _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]();
       this.MasterAccount.key = masterKey;
       this.MasterAccount.child = [];
       this.MasterAccount.name = "master";
@@ -15547,14 +15620,14 @@ function () {
             childKey = this.MasterAccount.key.newChildKey(newIndex);
             var lastByte = childKey.KeySet.PaymentAddress.Pk[childKey.KeySet.PaymentAddress.Pk.length - 1];
 
-            if (Object(_common__WEBPACK_IMPORTED_MODULE_12__["getShardIDFromLastByte"])(lastByte) == shardID) {
+            if (Object(_common__WEBPACK_IMPORTED_MODULE_13__["getShardIDFromLastByte"])(lastByte) == shardID) {
               break;
             }
 
             newIndex += 1;
           }
 
-          var account = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
+          var account = new _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]();
           account.name = "Account " + i;
           account.child = [];
           account.key = childKey;
@@ -15565,7 +15638,7 @@ function () {
         for (var _i2 = 0; _i2 < numOfAccount; _i2++) {
           var _childKey2 = this.MasterAccount.key.newChildKey(_i2);
 
-          var _account2 = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
+          var _account2 = new _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]();
 
           _account2.name = "Account " + _i2;
           _account2.child = [];
@@ -15615,7 +15688,7 @@ function () {
           childKey = this.MasterAccount.key.newChildKey(newIndex);
           var lastByte = childKey.KeySet.PaymentAddress.Pk[childKey.KeySet.PaymentAddress.Pk.length - 1];
 
-          if (Object(_common__WEBPACK_IMPORTED_MODULE_12__["getShardIDFromLastByte"])(lastByte) == shardID) {
+          if (Object(_common__WEBPACK_IMPORTED_MODULE_13__["getShardIDFromLastByte"])(lastByte) == shardID) {
             break;
           }
 
@@ -15626,7 +15699,7 @@ function () {
           accountName = "AccountWallet " + newIndex;
         }
 
-        var accountWallet = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
+        var accountWallet = new _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]();
         accountWallet.key = childKey;
         accountWallet.child = [];
         accountWallet.name = accountName;
@@ -15642,7 +15715,7 @@ function () {
           accountName = "AccountWallet " + _newIndex;
         }
 
-        var _accountWallet = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
+        var _accountWallet = new _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]();
 
         _accountWallet.key = _childKey3;
         _accountWallet.child = [];
@@ -15666,7 +15739,7 @@ function () {
     key: "removeAccount",
     value: function removeAccount(accPrivateKeyStr, passPhrase) {
       if (passPhrase !== this.PassPhrase) {
-        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].WrongPassPhraseErr, "Passphrase is not correct when removing account");
+        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].WrongPassPhraseErr, "Passphrase is not correct when removing account");
       }
 
       for (var i = 0; i < this.MasterAccount.child.length; i++) {
@@ -15679,24 +15752,24 @@ function () {
         }
       }
 
-      throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].UnexpectedErr, "Account need to be removed is not existed");
+      throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].UnexpectedErr, "Account need to be removed is not existed");
     }
   }, {
     key: "importAccount",
     value: function importAccount(privakeyStr, accountName, passPhrase) {
       if (passPhrase != this.PassPhrase) {
-        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].WrongPassPhraseErr, "Passphrase is not correct when importing account");
+        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].WrongPassPhraseErr, "Passphrase is not correct when importing account");
       }
 
       for (var i = 0; i < this.MasterAccount.child.length; i++) {
         var _account3 = this.MasterAccount.child[i];
 
         if (_account3.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_10__["PriKeyType"]) == privakeyStr) {
-          throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].ExistedAccountErr, "Private key of importing account was existed");
+          throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].ExistedAccountErr, "Private key of importing account was existed");
         }
 
         if (_account3.name == accountName) {
-          throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].ExistedAccountErr, "Name of importing account was existed");
+          throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].ExistedAccountErr, "Name of importing account was existed");
         }
       }
 
@@ -15705,16 +15778,16 @@ function () {
       try {
         keyWallet = _hdwallet__WEBPACK_IMPORTED_MODULE_1__["KeyWallet"].base58CheckDeserialize(privakeyStr);
       } catch (e) {
-        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].B58CheckDeserializedErr, "Can not base58 check deserialized private key of importing account");
+        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].B58CheckDeserializedErr, "Can not base58 check deserialized private key of importing account");
         ;
       }
 
-      if (keyWallet.KeySet.PrivateKey.length != _constants__WEBPACK_IMPORTED_MODULE_19__["ED25519_KEY_SIZE"]) {
-        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].PrivateKeyInvalidErr, "Private key is empty");
+      if (keyWallet.KeySet.PrivateKey.length != _constants__WEBPACK_IMPORTED_MODULE_20__["ED25519_KEY_SIZE"]) {
+        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].PrivateKeyInvalidErr, "Private key is empty");
       }
 
       keyWallet.KeySet.importFromPrivateKey(keyWallet.KeySet.PrivateKey);
-      var account = new _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"]();
+      var account = new _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"]();
       account.key = keyWallet;
       account.child = [];
       account.isImport = true;
@@ -15872,12 +15945,12 @@ function () {
                 _context2.prev = 8;
                 obj = circular_json__WEBPACK_IMPORTED_MODULE_4___default.a.parse(jsonStr);
                 Object.setPrototypeOf(obj, Wallet.prototype);
-                Object.setPrototypeOf(obj.MasterAccount, _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"].prototype);
+                Object.setPrototypeOf(obj.MasterAccount, _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"].prototype);
                 Object.setPrototypeOf(obj.MasterAccount.key, _hdwallet__WEBPACK_IMPORTED_MODULE_1__["KeyWallet"].prototype);
                 Object.assign(this, obj);
 
                 for (i = 0; i < obj.MasterAccount.child.length; i++) {
-                  Object.setPrototypeOf(obj.MasterAccount.child[i], _accountWallet__WEBPACK_IMPORTED_MODULE_13__["AccountWallet"].prototype);
+                  Object.setPrototypeOf(obj.MasterAccount.child[i], _accountWallet__WEBPACK_IMPORTED_MODULE_14__["AccountWallet"].prototype);
                   Object.setPrototypeOf(obj.MasterAccount.child[i].key, _hdwallet__WEBPACK_IMPORTED_MODULE_1__["KeyWallet"].prototype); // chaincode
 
                   Object.setPrototypeOf(obj.MasterAccount.child[i].key.ChainCode, Array.prototype);
@@ -15920,7 +15993,7 @@ function () {
                 _context2.prev = 18;
                 _context2.t0 = _context2["catch"](8);
                 console.log("loadWallet Error: ", _context2.t0);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].LoadWalletErr, _context2.t0.message || "Error when load wallet");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].LoadWalletErr, _context2.t0.message || "Error when load wallet");
 
               case 22:
               case "end":
@@ -16019,7 +16092,7 @@ function () {
                     "ReadonlyKey": child.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_10__["ReadonlyKeyType"]),
                     "PublicKey": child.key.getPublicKeyByHex(),
                     "PublicKeyCheckEncode": child.key.getPublicKeyCheckEncode(),
-                    "ValidatorKey": Object(_base58__WEBPACK_IMPORTED_MODULE_11__["checkEncode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_9__["hashSha3BytesToBytes"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_9__["hashSha3BytesToBytes"])(child.key.KeySet.PrivateKey)), _constants__WEBPACK_IMPORTED_MODULE_19__["ENCODE_VERSION"]),
+                    "ValidatorKey": Object(_base58__WEBPACK_IMPORTED_MODULE_12__["checkEncode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_9__["hashSha3BytesToBytes"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_9__["hashSha3BytesToBytes"])(child.key.KeySet.PrivateKey)), _constants__WEBPACK_IMPORTED_MODULE_20__["ENCODE_VERSION"]),
                     "PublicKeyBytes": child.key.KeySet.PaymentAddress.Pk.toString(),
                     "Index": index
                   };
@@ -16062,7 +16135,7 @@ function () {
                 child = this.MasterAccount.child[i];
                 miningSeedKey = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_9__["hashSha3BytesToBytes"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_9__["hashSha3BytesToBytes"])(child.key.KeySet.PrivateKey));
                 _context5.next = 7;
-                return Object(_committeekey__WEBPACK_IMPORTED_MODULE_21__["generateBLSPubKeyB58CheckEncodeFromSeed"])(miningSeedKey);
+                return Object(_committeekey__WEBPACK_IMPORTED_MODULE_22__["generateBLSPubKeyB58CheckEncodeFromSeed"])(miningSeedKey);
 
               case 7:
                 blsPublicKey = _context5.sent;
@@ -16151,7 +16224,7 @@ function () {
               case 15:
                 _context6.prev = 15;
                 _context6.t0 = _context6["catch"](9);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].GetTxByHashErr, _context6.t0.message || "Can not get normal transaction by hash");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].GetTxByHashErr, _context6.t0.message || "Can not get normal transaction by hash");
 
               case 18:
                 if (response.isInBlock) {
@@ -16205,7 +16278,7 @@ function () {
               case 34:
                 _context6.prev = 34;
                 _context6.t1 = _context6["catch"](28);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].GetTxByHashErr, _context6.t1.message || "Can not get custom token transaction by hash");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].GetTxByHashErr, _context6.t1.message || "Can not get custom token transaction by hash");
 
               case 37:
                 if (_response.isInBlock) {
@@ -16253,7 +16326,7 @@ function () {
               case 52:
                 _context6.prev = 52;
                 _context6.t2 = _context6["catch"](46);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].GetTxByHashErr, _context6.t2.message || "Can not get privacy token transaction by hash");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].GetTxByHashErr, _context6.t2.message || "Can not get privacy token transaction by hash");
 
               case 55:
                 if (_response2.isInBlock) {
@@ -16296,7 +16369,7 @@ function () {
           this.Storage.removeItem("Wallet");
         }
       } catch (e) {
-        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_20__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_20__["ErrorObject"].DeleteWalletErr, e.message || "Can not remove item in storage");
+        throw new _errorhandler__WEBPACK_IMPORTED_MODULE_21__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_21__["ErrorObject"].DeleteWalletErr, e.message || "Can not remove item in storage");
       }
     }
   }], [{
