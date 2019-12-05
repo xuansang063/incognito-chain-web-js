@@ -6103,7 +6103,7 @@ var RpcClient = function RpcClient(url, user, password) {
                 break;
               }
 
-              throw new Error("Can't request API get PDE state");
+              throw new Error("Can't request API getPDEContributionStatus");
 
             case 14:
               if (!response.data.Error) {
@@ -6131,15 +6131,82 @@ var RpcClient = function RpcClient(url, user, password) {
     };
   }());
 
+  _defineProperty(this, "getPDEWithdrawalStatus",
+  /*#__PURE__*/
+  function () {
+    var _ref23 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee23(txId) {
+      var data, response;
+      return regeneratorRuntime.wrap(function _callee23$(_context23) {
+        while (1) {
+          switch (_context23.prev = _context23.next) {
+            case 0:
+              data = {
+                "id": 1,
+                "jsonrpc": "1.0",
+                "method": "getpdewithdrawalstatus",
+                "params": [{
+                  "TxRequestIDStr": txId
+                }]
+              };
+              _context23.prev = 1;
+              _context23.next = 4;
+              return _this.rpcHttpService.postRequest(data);
+
+            case 4:
+              response = _context23.sent;
+              _context23.next = 10;
+              break;
+
+            case 7:
+              _context23.prev = 7;
+              _context23.t0 = _context23["catch"](1);
+              throw _context23.t0;
+
+            case 10:
+              if (!(response.status !== 200)) {
+                _context23.next = 14;
+                break;
+              }
+
+              throw new Error("Can't request API getPDEWithdrawalStatus");
+
+            case 14:
+              if (!response.data.Error) {
+                _context23.next = 16;
+                break;
+              }
+
+              throw response.data.Error;
+
+            case 16:
+              return _context23.abrupt("return", {
+                state: response.data.Result
+              });
+
+            case 17:
+            case "end":
+              return _context23.stop();
+          }
+        }
+      }, _callee23, null, [[1, 7]]);
+    }));
+
+    return function (_x23) {
+      return _ref23.apply(this, arguments);
+    };
+  }());
+
   _defineProperty(this, "getBeaconHeight",
   /*#__PURE__*/
   _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee23() {
+  regeneratorRuntime.mark(function _callee24() {
     var data, response;
-    return regeneratorRuntime.wrap(function _callee23$(_context23) {
+    return regeneratorRuntime.wrap(function _callee24$(_context24) {
       while (1) {
-        switch (_context23.prev = _context23.next) {
+        switch (_context24.prev = _context24.next) {
           case 0:
             data = {
               "jsonrpc": "1.0",
@@ -6147,23 +6214,23 @@ var RpcClient = function RpcClient(url, user, password) {
               "params": [],
               "id": 1
             };
-            _context23.prev = 1;
-            _context23.next = 4;
+            _context24.prev = 1;
+            _context24.next = 4;
             return _this.rpcHttpService.postRequest(data);
 
           case 4:
-            response = _context23.sent;
-            _context23.next = 10;
+            response = _context24.sent;
+            _context24.next = 10;
             break;
 
           case 7:
-            _context23.prev = 7;
-            _context23.t0 = _context23["catch"](1);
-            throw _context23.t0;
+            _context24.prev = 7;
+            _context24.t0 = _context24["catch"](1);
+            throw _context24.t0;
 
           case 10:
             if (!(response.status !== 200)) {
-              _context23.next = 14;
+              _context24.next = 14;
               break;
             }
 
@@ -6171,78 +6238,78 @@ var RpcClient = function RpcClient(url, user, password) {
 
           case 14:
             if (!response.data.Error) {
-              _context23.next = 16;
+              _context24.next = 16;
               break;
             }
 
             throw response.data.Error;
 
           case 16:
-            return _context23.abrupt("return", {
+            return _context24.abrupt("return", {
               beaconHeight: response.data.Result.BeaconHeight
             });
 
           case 17:
           case "end":
-            return _context23.stop();
+            return _context24.stop();
         }
       }
-    }, _callee23, null, [[1, 7]]);
+    }, _callee24, null, [[1, 7]]);
   })));
 
   _defineProperty(this, "isExchangeRatePToken",
   /*#__PURE__*/
   function () {
-    var _ref24 = _asyncToGenerator(
+    var _ref25 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee24(tokenIDStr1) {
+    regeneratorRuntime.mark(function _callee25(tokenIDStr1) {
       var tokenIDStr2,
           beaconHeight,
           res,
           pdeStateRes,
           tokenIDArray,
           keyValue,
-          _args24 = arguments;
-      return regeneratorRuntime.wrap(function _callee24$(_context24) {
+          _args25 = arguments;
+      return regeneratorRuntime.wrap(function _callee25$(_context25) {
         while (1) {
-          switch (_context24.prev = _context24.next) {
+          switch (_context25.prev = _context25.next) {
             case 0:
-              tokenIDStr2 = _args24.length > 1 && _args24[1] !== undefined ? _args24[1] : "";
+              tokenIDStr2 = _args25.length > 1 && _args25[1] !== undefined ? _args25[1] : "";
 
               if (tokenIDStr2 === "") {
                 tokenIDStr2 = _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"];
               } // get latest beacon height
 
 
-              _context24.prev = 2;
-              _context24.next = 5;
+              _context25.prev = 2;
+              _context25.next = 5;
               return _this.getBeaconHeight();
 
             case 5:
-              res = _context24.sent;
+              res = _context25.sent;
               beaconHeight = res.beaconHeight;
-              _context24.next = 12;
+              _context25.next = 12;
               break;
 
             case 9:
-              _context24.prev = 9;
-              _context24.t0 = _context24["catch"](2);
-              throw _context24.t0;
+              _context25.prev = 9;
+              _context25.t0 = _context25["catch"](2);
+              throw _context25.t0;
 
             case 12:
-              _context24.prev = 12;
-              _context24.next = 15;
+              _context25.prev = 12;
+              _context25.next = 15;
               return _this.getPDEState(beaconHeight);
 
             case 15:
-              pdeStateRes = _context24.sent;
-              _context24.next = 21;
+              pdeStateRes = _context25.sent;
+              _context25.next = 21;
               break;
 
             case 18:
-              _context24.prev = 18;
-              _context24.t1 = _context24["catch"](12);
-              throw _context24.t1;
+              _context25.prev = 18;
+              _context25.t1 = _context25["catch"](12);
+              throw _context25.t1;
 
             case 21:
               console.log("pdeStateRes: ", pdeStateRes);
@@ -6252,54 +6319,54 @@ var RpcClient = function RpcClient(url, user, password) {
               console.log("pdeStateRes.state.PDEPoolPairs[keyValue]: ", pdeStateRes.state.PDEPoolPairs[keyValue]);
 
               if (!(pdeStateRes.state.PDEPoolPairs[keyValue] !== null && pdeStateRes.state.PDEPoolPairs[keyValue] !== undefined)) {
-                _context24.next = 32;
+                _context25.next = 32;
                 break;
               }
 
               if (!(tokenIDStr1 == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token1PoolValue < 10000 * 1e9)) {
-                _context24.next = 29;
+                _context25.next = 29;
                 break;
               }
 
-              return _context24.abrupt("return", false);
+              return _context25.abrupt("return", false);
 
             case 29:
               if (!(tokenIDStr2 == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token2PoolValue < 10000 * 1e9)) {
-                _context24.next = 31;
+                _context25.next = 31;
                 break;
               }
 
-              return _context24.abrupt("return", false);
+              return _context25.abrupt("return", false);
 
             case 31:
-              return _context24.abrupt("return", true);
+              return _context25.abrupt("return", true);
 
             case 32:
-              return _context24.abrupt("return", false);
+              return _context25.abrupt("return", false);
 
             case 33:
             case "end":
-              return _context24.stop();
+              return _context25.stop();
           }
         }
-      }, _callee24, null, [[2, 9], [12, 18]]);
+      }, _callee25, null, [[2, 9], [12, 18]]);
     }));
 
-    return function (_x23) {
-      return _ref24.apply(this, arguments);
+    return function (_x24) {
+      return _ref25.apply(this, arguments);
     };
   }());
 
   _defineProperty(this, "getTransactionByReceiver",
   /*#__PURE__*/
   function () {
-    var _ref25 = _asyncToGenerator(
+    var _ref26 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee25(paymentAdrr, viewingKey) {
+    regeneratorRuntime.mark(function _callee26(paymentAdrr, viewingKey) {
       var data, response, result;
-      return regeneratorRuntime.wrap(function _callee25$(_context25) {
+      return regeneratorRuntime.wrap(function _callee26$(_context26) {
         while (1) {
-          switch (_context25.prev = _context25.next) {
+          switch (_context26.prev = _context26.next) {
             case 0:
               data = {
                 "jsonrpc": "1.0",
@@ -6308,72 +6375,6 @@ var RpcClient = function RpcClient(url, user, password) {
                   "PaymentAddress": paymentAdrr,
                   "ReadonlyKey": viewingKey
                 }],
-                "id": 1
-              };
-              _context25.prev = 1;
-              _context25.next = 4;
-              return _this.rpcHttpService.postRequest(data);
-
-            case 4:
-              response = _context25.sent;
-              _context25.next = 10;
-              break;
-
-            case 7:
-              _context25.prev = 7;
-              _context25.t0 = _context25["catch"](1);
-              throw _context25.t0;
-
-            case 10:
-              if (!(response.status !== 200)) {
-                _context25.next = 14;
-                break;
-              }
-
-              throw new Error("Can't request API get all output coins");
-
-            case 14:
-              if (!response.data.Error) {
-                _context25.next = 16;
-                break;
-              }
-
-              throw response.data.Error;
-
-            case 16:
-              result = response.data.Result;
-              return _context25.abrupt("return", {
-                receivedTransactions: result.ReceivedTransactions
-              });
-
-            case 18:
-            case "end":
-              return _context25.stop();
-          }
-        }
-      }, _callee25, null, [[1, 7]]);
-    }));
-
-    return function (_x24, _x25) {
-      return _ref25.apply(this, arguments);
-    };
-  }());
-
-  _defineProperty(this, "getListPrivacyCustomTokenBalance",
-  /*#__PURE__*/
-  function () {
-    var _ref26 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee26(privateKey) {
-      var data, response;
-      return regeneratorRuntime.wrap(function _callee26$(_context26) {
-        while (1) {
-          switch (_context26.prev = _context26.next) {
-            case 0:
-              data = {
-                "jsonrpc": "1.0",
-                "method": "getlistprivacycustomtokenbalance",
-                "params": [privateKey],
                 "id": 1
               };
               _context26.prev = 1;
@@ -6396,7 +6397,7 @@ var RpcClient = function RpcClient(url, user, password) {
                 break;
               }
 
-              throw new Error("Can't request API get list privacy custom token balance");
+              throw new Error("Can't request API get all output coins");
 
             case 14:
               if (!response.data.Error) {
@@ -6407,9 +6408,12 @@ var RpcClient = function RpcClient(url, user, password) {
               throw response.data.Error;
 
             case 16:
-              return _context26.abrupt("return", response.data.Result && response.data.Result.ListCustomTokenBalance || []);
+              result = response.data.Result;
+              return _context26.abrupt("return", {
+                receivedTransactions: result.ReceivedTransactions
+              });
 
-            case 17:
+            case 18:
             case "end":
               return _context26.stop();
           }
@@ -6417,8 +6421,71 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee26, null, [[1, 7]]);
     }));
 
-    return function (_x26) {
+    return function (_x25, _x26) {
       return _ref26.apply(this, arguments);
+    };
+  }());
+
+  _defineProperty(this, "getListPrivacyCustomTokenBalance",
+  /*#__PURE__*/
+  function () {
+    var _ref27 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee27(privateKey) {
+      var data, response;
+      return regeneratorRuntime.wrap(function _callee27$(_context27) {
+        while (1) {
+          switch (_context27.prev = _context27.next) {
+            case 0:
+              data = {
+                "jsonrpc": "1.0",
+                "method": "getlistprivacycustomtokenbalance",
+                "params": [privateKey],
+                "id": 1
+              };
+              _context27.prev = 1;
+              _context27.next = 4;
+              return _this.rpcHttpService.postRequest(data);
+
+            case 4:
+              response = _context27.sent;
+              _context27.next = 10;
+              break;
+
+            case 7:
+              _context27.prev = 7;
+              _context27.t0 = _context27["catch"](1);
+              throw _context27.t0;
+
+            case 10:
+              if (!(response.status !== 200)) {
+                _context27.next = 14;
+                break;
+              }
+
+              throw new Error("Can't request API get list privacy custom token balance");
+
+            case 14:
+              if (!response.data.Error) {
+                _context27.next = 16;
+                break;
+              }
+
+              throw response.data.Error;
+
+            case 16:
+              return _context27.abrupt("return", response.data.Result && response.data.Result.ListCustomTokenBalance || []);
+
+            case 17:
+            case "end":
+              return _context27.stop();
+          }
+        }
+      }, _callee27, null, [[1, 7]]);
+    }));
+
+    return function (_x27) {
+      return _ref27.apply(this, arguments);
     };
   }());
 
