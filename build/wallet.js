@@ -6185,16 +6185,32 @@ var RpcClient = function RpcClient(url, user, password) {
               console.log("pdeStateRes.state.PDEPoolPairs[keyValue]: ", pdeStateRes.state.PDEPoolPairs[keyValue]);
 
               if (!(pdeStateRes.state.PDEPoolPairs[keyValue] !== null && pdeStateRes.state.PDEPoolPairs[keyValue] !== undefined)) {
-                _context23.next = 28;
+                _context23.next = 32;
                 break;
               }
 
-              return _context23.abrupt("return", true);
+              if (!(tokenIDStr1 == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token1PoolValue < 10000 * 1e9)) {
+                _context23.next = 29;
+                break;
+              }
 
-            case 28:
               return _context23.abrupt("return", false);
 
             case 29:
+              if (!(tokenIDStr2 == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token2PoolValue < 10000 * 1e9)) {
+                _context23.next = 31;
+                break;
+              }
+
+              return _context23.abrupt("return", false);
+
+            case 31:
+              return _context23.abrupt("return", true);
+
+            case 32:
+              return _context23.abrupt("return", false);
+
+            case 33:
             case "end":
               return _context23.stop();
           }
