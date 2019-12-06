@@ -6323,7 +6323,7 @@ var RpcClient = function RpcClient(url, user, password) {
                 break;
               }
 
-              if (!(tokenIDStr1 == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token1PoolValue < 10000 * 1e9)) {
+              if (!(tokenIDArray[0] == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token1PoolValue < 10000 * 1e9)) {
                 _context25.next = 29;
                 break;
               }
@@ -6331,7 +6331,7 @@ var RpcClient = function RpcClient(url, user, password) {
               return _context25.abrupt("return", false);
 
             case 29:
-              if (!(tokenIDStr2 == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token2PoolValue < 10000 * 1e9)) {
+              if (!(tokenIDArray[1] == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token2PoolValue < 10000 * 1e9)) {
                 _context25.next = 31;
                 break;
               }
