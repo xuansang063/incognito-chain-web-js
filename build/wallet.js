@@ -727,7 +727,7 @@ var CustomError =
 function (_Error) {
   _inherits(CustomError, _Error);
 
-  function CustomError(errorObj, message) {
+  function CustomError(errorObj, message, detailError) {
     var _this;
 
     _classCallCheck(this, CustomError);
@@ -737,6 +737,12 @@ function (_Error) {
     _this.code = "".concat(_this.name, "(").concat(errorObj.code, ")");
     _this.description = errorObj.description;
     _this.date = new Date();
+
+    if (detailError && _typeof(detailError) === 'object') {
+      _this.stackTrace = detailError.StackTrace;
+      _this.stackTraceCode = detailError.StackTrace.match(/-[0-9]+: -[0-9]+/)[0];
+    }
+
     return _this;
   }
 
@@ -9327,11 +9333,11 @@ function () {
       return getAllPrivacyTokenBalance;
     }()
     /**
-     * 
-     * @param {{paymentAddressStr: string (B58checkencode), amount: number, message: "" }} paramPaymentInfos 
-     * @param {number} fee 
-     * @param {bool} isPrivacy 
-     * @param {string} info 
+     *
+     * @param {{paymentAddressStr: string (B58checkencode), amount: number, message: "" }} paramPaymentInfos
+     * @param {number} fee
+     * @param {bool} isPrivacy
+     * @param {string} info
      */
 
   }, {
@@ -9560,7 +9566,7 @@ function () {
                 _context7.prev = 84;
                 _context7.t2 = _context7["catch"](78);
                 console.log("createAndSendNativeToken Error when sending tx: ", _context7.t2);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context7.t2);
 
               case 88:
                 _context7.next = 90;
@@ -10186,11 +10192,11 @@ function () {
 
       return createAndSendStopAutoStakingTx;
     }() // /**
-    //  * 
-    //  * @param {{paymentAddressStr: string, amount: number, message: string}} paramPaymentInfosForNativeToken 
-    //  * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : {PaymentAddress: string, Amount: number, Message: string}}} submitParam 
-    //  * @param {number} feeNativeToken 
-    //  * @param {number} feePToken 
+    //  *
+    //  * @param {{paymentAddressStr: string, amount: number, message: string}} paramPaymentInfosForNativeToken
+    //  * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : {PaymentAddress: string, Amount: number, Message: string}}} submitParam
+    //  * @param {number} feeNativeToken
+    //  * @param {number} feePToken
     //  * @param {bool} hasPrivacyForNativeToken
     //  * @param {bool} hasPrivacyForPToken
     //  * @param {string} info
@@ -10444,11 +10450,11 @@ function () {
     // };
 
     /**
-     * 
-     * @param {{paymentAddressStr: string, amount: number, message: string}} paramPaymentInfosForNativeToken 
-     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : [{PaymentAddress: string, Amount: number, Message: string}]}} submitParam 
-     * @param {number} feeNativeToken 
-     * @param {number} feePToken 
+     *
+     * @param {{paymentAddressStr: string, amount: number, message: string}} paramPaymentInfosForNativeToken
+     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : [{PaymentAddress: string, Amount: number, Message: string}]}} submitParam
+     * @param {number} feeNativeToken
+     * @param {number} feePToken
      * @param {bool} hasPrivacyForNativeToken
      * @param {bool} hasPrivacyForPToken
      * @param {string} info
@@ -10889,7 +10895,7 @@ function () {
               case 142:
                 _context10.prev = 142;
                 _context10.t4 = _context10["catch"](136);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx", _context10.t4);
 
               case 145:
                 _context10.next = 147;
@@ -11161,9 +11167,9 @@ function () {
       return replaceTx;
     }()
     /**
-     * 
-     * @param {TxHistory} txHistory 
-     * @param {number} newFee 
+     *
+     * @param {TxHistory} txHistory
+     * @param {number} newFee
      */
 
   }, {
@@ -11411,7 +11417,7 @@ function () {
                 _context12.prev = 89;
                 _context12.t2 = _context12["catch"](83);
                 console.log("createAndSendNativeToken Error when sending tx: ", _context12.t2);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context12.t2);
 
               case 93:
                 _context12.next = 95;
@@ -11888,7 +11894,7 @@ function () {
               case 135:
                 _context13.prev = 135;
                 _context13.t4 = _context13["catch"](129);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx", _context13.t4);
 
               case 138:
                 _context13.next = 140;
@@ -11973,12 +11979,12 @@ function () {
     // remoteAddress (string) is an ETH/BTC address which users want to receive ETH/BTC (without 0x)
 
     /**
-     * 
-     * @param {...{paymentAddressStr: string, amount: number, message: string}} paramPaymentInfosForNativeToken 
-     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : {PaymentAddress: string, Amount: number, Message: string}}} submitParam 
-     * @param {number} feeNativeToken 
-     * @param {number} feePToken 
-     * @param {string} remoteAddress 
+     *
+     * @param {...{paymentAddressStr: string, amount: number, message: string}} paramPaymentInfosForNativeToken
+     * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : {PaymentAddress: string, Amount: number, Message: string}}} submitParam
+     * @param {number} feeNativeToken
+     * @param {number} feePToken
+     * @param {string} remoteAddress
      */
 
   }, {
@@ -12380,7 +12386,7 @@ function () {
               case 139:
                 _context14.prev = 139;
                 _context14.t4 = _context14["catch"](133);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx", _context14.t4);
 
               case 142:
                 _context14.next = 144;
@@ -12570,7 +12576,7 @@ function () {
                 _context15.prev = 46;
                 _context15.t1 = _context15["catch"](40);
                 console.log("createAndSendWithdrawRewardTx Error when sending tx: ", _context15.t1);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context15.t1);
 
               case 50:
                 _context15.next = 52;
@@ -12901,7 +12907,7 @@ function () {
                 _context17.prev = 69;
                 _context17.t1 = _context17["catch"](63);
                 console.log("createAndSendTxWithNativeTokenContribution Error when sending tx: ", _context17.t1);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context17.t1);
 
               case 73:
                 _context17.next = 75;
@@ -13242,7 +13248,7 @@ function () {
               case 100:
                 _context18.prev = 100;
                 _context18.t2 = _context18["catch"](94);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx", _context18.t2);
 
               case 103:
                 _context18.next = 105;
@@ -13517,7 +13523,7 @@ function () {
                 _context19.prev = 70;
                 _context19.t1 = _context19["catch"](64);
                 console.log("createAndSendTxWithNativeTokenContribution Error when sending tx: ", _context19.t1);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context19.t1);
 
               case 74:
                 _context19.next = 76;
@@ -13859,7 +13865,7 @@ function () {
               case 98:
                 _context20.prev = 98;
                 _context20.t2 = _context20["catch"](92);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send privacy token tx", _context20.t2);
 
               case 101:
                 _context20.next = 103;
@@ -14121,7 +14127,7 @@ function () {
                 _context21.prev = 67;
                 _context21.t1 = _context21["catch"](61);
                 console.log("createAndSendTxWithNativeTokenContribution Error when sending tx: ", _context21.t1);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context21.t1);
 
               case 71:
                 _context21.next = 73;
