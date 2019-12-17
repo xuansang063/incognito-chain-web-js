@@ -4717,7 +4717,7 @@ var RpcClient = function RpcClient(url, user, password) {
 
             case 18:
               return _context.abrupt("return", {
-                outCoins: response.data.Result.Outputs[viewingKey]
+                outCoins: response.data.Result.Outputs[paymentAdrr]
               });
 
             case 19:
@@ -9086,6 +9086,37 @@ function () {
 
       return queryResult;
     } // getUnspentToken returns unspent output coins with tokenID
+    // for native token: tokenId is null
+
+    /**
+     *
+     * @param {string} tokenID
+     * @param {RpcClient} rpcClient
+     */
+    // async getAllOutputCoins(tokenID = null, rpcClient) {
+    //   let paymentAddrSerialize = this.key.base58CheckSerialize(PaymentAddressType);
+    //   let readOnlyKeySerialize = "";
+    //   console.log("getUnspentToken paymentAddrSerialize : ", paymentAddrSerialize);
+    //   console.log("getUnspentToken readOnlyKeySerialize : ", readOnlyKeySerialize)
+    //   // get all output coins of spendingKey
+    //   let response;
+    //   try {
+    //     response = await rpcClient.getOutputCoin(paymentAddrSerialize, readOnlyKeySerialize, tokenID);
+    //   } catch (e) {
+    //     console.log("getUnspentToken Error when get output coins: ", e);
+    //     throw new CustomError(ErrorObject.GetOutputCoinsErr, e.message || "Can not get output coins when get unspent token");
+    //   }
+    //   let allOutputCoinStrs = response.outCoins;
+    //   // decrypt ciphertext in each outcoin to get randomness and value
+    //   for (coin in allOutputCoinStrs){
+    //     let ciphertext = coin.CoinDetailsEncrypted;
+    //     let ciphertextBytes = checkDecode(ciphertext).bytesDecoded;
+    //     hybridDecryption(this.key.KeySet.ReadonlyKey.Rk, ciphertextBytes);
+    //   }
+    //   console.log("getUnspentToken list of output coins: ", allOutputCoinStrs);
+    //   return allOutputCoinStrs;
+    // }
+    // getUnspentToken returns unspent output coins with tokenID
     // for native token: tokenId is null
 
     /**
