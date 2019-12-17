@@ -4661,8 +4661,9 @@ var RpcClient = function RpcClient(url, user, password) {
   function () {
     var _ref = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee(paymentAdrr, viewingKey) {
-      var tokenID,
+    regeneratorRuntime.mark(function _callee(paymentAdrr) {
+      var viewingKey,
+          tokenID,
           data,
           response,
           _args = arguments;
@@ -4670,6 +4671,7 @@ var RpcClient = function RpcClient(url, user, password) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              viewingKey = _args.length > 1 && _args[1] !== undefined ? _args[1] : "";
               tokenID = _args.length > 2 && _args[2] !== undefined ? _args[2] : null;
               data = {
                 "jsonrpc": "1.0",
@@ -4685,50 +4687,50 @@ var RpcClient = function RpcClient(url, user, password) {
                 data["params"][3] = tokenID;
               }
 
-              _context.prev = 3;
-              _context.next = 6;
+              _context.prev = 4;
+              _context.next = 7;
               return _this.rpcHttpService.postRequest(data);
 
-            case 6:
+            case 7:
               response = _context.sent;
-              _context.next = 12;
+              _context.next = 13;
               break;
 
-            case 9:
-              _context.prev = 9;
-              _context.t0 = _context["catch"](3);
+            case 10:
+              _context.prev = 10;
+              _context.t0 = _context["catch"](4);
               throw _context.t0;
 
-            case 12:
+            case 13:
               if (!(response.status !== 200)) {
-                _context.next = 16;
+                _context.next = 17;
                 break;
               }
 
               throw new Error("Can't request API get all output coins");
 
-            case 16:
+            case 17:
               if (!response.data.Error) {
-                _context.next = 18;
+                _context.next = 19;
                 break;
               }
 
               throw response.data.Error;
 
-            case 18:
+            case 19:
               return _context.abrupt("return", {
                 outCoins: response.data.Result.Outputs[paymentAdrr]
               });
 
-            case 19:
+            case 20:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[3, 9]]);
+      }, _callee, null, [[4, 10]]);
     }));
 
-    return function (_x, _x2) {
+    return function (_x) {
       return _ref.apply(this, arguments);
     };
   }());
@@ -4802,7 +4804,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee2, null, [[3, 9]]);
     }));
 
-    return function (_x3, _x4) {
+    return function (_x2, _x3) {
       return _ref2.apply(this, arguments);
     };
   }());
@@ -4876,7 +4878,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee3, null, [[3, 9]]);
     }));
 
-    return function (_x5, _x6) {
+    return function (_x4, _x5) {
       return _ref3.apply(this, arguments);
     };
   }());
@@ -4963,7 +4965,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee4, null, [[3, 9]]);
     }));
 
-    return function (_x7, _x8) {
+    return function (_x6, _x7) {
       return _ref4.apply(this, arguments);
     };
   }());
@@ -5029,7 +5031,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee5, null, [[1, 7]]);
     }));
 
-    return function (_x9) {
+    return function (_x8) {
       return _ref5.apply(this, arguments);
     };
   }());
@@ -5107,7 +5109,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee6, null, [[8, 15]]);
     }));
 
-    return function (_x10) {
+    return function (_x9) {
       return _ref6.apply(this, arguments);
     };
   }());
@@ -5173,7 +5175,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee7, null, [[1, 7]]);
     }));
 
-    return function (_x11) {
+    return function (_x10) {
       return _ref7.apply(this, arguments);
     };
   }());
@@ -5355,7 +5357,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee10, null, [[1, 7]]);
     }));
 
-    return function (_x12, _x13) {
+    return function (_x11, _x12) {
       return _ref10.apply(this, arguments);
     };
   }());
@@ -5424,7 +5426,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee11, null, [[2, 8]]);
     }));
 
-    return function (_x14) {
+    return function (_x13) {
       return _ref11.apply(this, arguments);
     };
   }());
@@ -5494,7 +5496,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee12, null, [[1, 7]]);
     }));
 
-    return function (_x15) {
+    return function (_x14) {
       return _ref12.apply(this, arguments);
     };
   }());
@@ -5559,7 +5561,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee13, null, [[1, 7]]);
     }));
 
-    return function (_x16) {
+    return function (_x15) {
       return _ref13.apply(this, arguments);
     };
   }());
@@ -5742,7 +5744,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee16, null, [[1, 7]]);
     }));
 
-    return function (_x17) {
+    return function (_x16) {
       return _ref16.apply(this, arguments);
     };
   }());
@@ -5807,7 +5809,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee17, null, [[1, 7]]);
     }));
 
-    return function (_x18) {
+    return function (_x17) {
       return _ref17.apply(this, arguments);
     };
   }());
@@ -5931,7 +5933,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee19, null, [[1, 7]]);
     }));
 
-    return function (_x19) {
+    return function (_x18) {
       return _ref19.apply(this, arguments);
     };
   }());
@@ -5998,7 +6000,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee20, null, [[1, 7]]);
     }));
 
-    return function (_x20) {
+    return function (_x19) {
       return _ref20.apply(this, arguments);
     };
   }());
@@ -6065,7 +6067,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee21, null, [[1, 7]]);
     }));
 
-    return function (_x21) {
+    return function (_x20) {
       return _ref21.apply(this, arguments);
     };
   }());
@@ -6132,7 +6134,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee22, null, [[1, 7]]);
     }));
 
-    return function (_x22) {
+    return function (_x21) {
       return _ref22.apply(this, arguments);
     };
   }());
@@ -6199,7 +6201,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee23, null, [[1, 7]]);
     }));
 
-    return function (_x23) {
+    return function (_x22) {
       return _ref23.apply(this, arguments);
     };
   }());
@@ -6358,7 +6360,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee25, null, [[2, 9], [12, 18]]);
     }));
 
-    return function (_x24) {
+    return function (_x23) {
       return _ref25.apply(this, arguments);
     };
   }());
@@ -6427,7 +6429,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee26, null, [[1, 7]]);
     }));
 
-    return function (_x25, _x26) {
+    return function (_x24, _x25) {
       return _ref26.apply(this, arguments);
     };
   }());
@@ -6490,7 +6492,7 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee27, null, [[1, 7]]);
     }));
 
-    return function (_x27) {
+    return function (_x26) {
       return _ref27.apply(this, arguments);
     };
   }());
@@ -8501,16 +8503,28 @@ function () {
 
     this.spentCoinCached = {}; // list of serial number of coins in tx in mempool
 
-    this.spendingCoins = [];
+    this.spendingCoins = []; // isRevealViewKeyToGetCoins is true: reveal private viewing key when request for getting all output coins
+
+    this.isRevealViewKeyToGetCoins = false;
   }
 
   _createClass(AccountWallet, [{
-    key: "addSpendingCoins",
-    // addSpendingCoins adds spending coin object to spending coins list
+    key: "setIsRevealViewKeyToGetCoins",
+
+    /**
+     * setIsRevealViewKeyToGetCoins updates isRevealViewKeyToGetCoins of AccountWallet
+     * @param {bool} isRevealViewKeyToGetCoins 
+     */
+    value: function setIsRevealViewKeyToGetCoins(isRevealViewKeyToGetCoins) {
+      this.isRevealViewKeyToGetCoins = isRevealViewKeyToGetCoins;
+    } // addSpendingCoins adds spending coin object to spending coins list
 
     /**
      * @param {txID: string, spendingSNs: array} spendingCoinObj
      */
+
+  }, {
+    key: "addSpendingCoins",
     value: function addSpendingCoins(spendingCoinObj) {
       if (!this.spendingCoins) {
         this.spendingCoins = [];
@@ -9107,6 +9121,7 @@ function () {
             response,
             allOutputCoinStrs,
             i,
+            value,
             ciphertext,
             ciphertextBytes,
             plaintextBytes,
@@ -9122,32 +9137,49 @@ function () {
                 rpcClient = _args4.length > 1 ? _args4[1] : undefined;
                 paymentAddrSerialize = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["PaymentAddressType"]);
                 readOnlyKeySerialize = "";
+
+                if (this.isRevealViewKeyToGetCoins) {
+                  readOnlyKeySerialize = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_4__["ReadonlyKeyType"]);
+                }
+
                 console.log("getUnspentToken paymentAddrSerialize : ", paymentAddrSerialize);
                 console.log("getUnspentToken readOnlyKeySerialize : ", readOnlyKeySerialize); // get all output coins of spendingKey
 
-                _context4.prev = 6;
-                _context4.next = 9;
+                _context4.prev = 7;
+                _context4.next = 10;
                 return rpcClient.getOutputCoin(paymentAddrSerialize, readOnlyKeySerialize, tokenID);
 
-              case 9:
+              case 10:
                 response = _context4.sent;
-                _context4.next = 16;
+                _context4.next = 17;
                 break;
 
-              case 12:
-                _context4.prev = 12;
-                _context4.t0 = _context4["catch"](6);
+              case 13:
+                _context4.prev = 13;
+                _context4.t0 = _context4["catch"](7);
                 console.log("getUnspentToken Error when get output coins: ", _context4.t0);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].GetOutputCoinsErr, _context4.t0.message || "Can not get output coins when get unspent token");
 
-              case 16:
+              case 17:
                 allOutputCoinStrs = response.outCoins; // decrypt ciphertext in each outcoin to get randomness and value
+
+                if (this.isRevealViewKeyToGetCoins) {
+                  _context4.next = 37;
+                  break;
+                }
 
                 i = 0;
 
-              case 18:
+              case 20:
                 if (!(i < allOutputCoinStrs.length)) {
-                  _context4.next = 33;
+                  _context4.next = 37;
+                  break;
+                }
+
+                value = parseInt(allOutputCoinStrs[i].Value);
+
+                if (!(value === 0)) {
+                  _context4.next = 34;
                   break;
                 }
 
@@ -9155,14 +9187,14 @@ function () {
                 ciphertextBytes = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkDecode"])(ciphertext).bytesDecoded;
 
                 if (!(ciphertextBytes.length > 0)) {
-                  _context4.next = 30;
+                  _context4.next = 34;
                   break;
                 }
 
-                _context4.next = 24;
+                _context4.next = 28;
                 return Object(_wallet__WEBPACK_IMPORTED_MODULE_8__["hybridDecryption"])(this.key.KeySet.ReadonlyKey.Rk, ciphertextBytes);
 
-              case 24:
+              case 28:
                 plaintextBytes = _context4.sent;
                 randomnessBytes = plaintextBytes.slice(0, _constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
                 valueBytes = plaintextBytes.slice(_constants__WEBPACK_IMPORTED_MODULE_7__["ED25519_KEY_SIZE"]);
@@ -9170,20 +9202,20 @@ function () {
                 allOutputCoinStrs[i].Randomness = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkEncode"])(randomnessBytes, _constants__WEBPACK_IMPORTED_MODULE_7__["ENCODE_VERSION"]);
                 allOutputCoinStrs[i].Value = valueBN.toString();
 
-              case 30:
+              case 34:
                 i++;
-                _context4.next = 18;
+                _context4.next = 20;
                 break;
 
-              case 33:
+              case 37:
                 return _context4.abrupt("return", allOutputCoinStrs);
 
-              case 34:
+              case 38:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this, [[6, 12]]);
+        }, _callee4, this, [[7, 13]]);
       }));
 
       function getAllOutputCoins() {
