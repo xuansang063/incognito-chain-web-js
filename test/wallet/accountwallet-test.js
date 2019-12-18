@@ -6,9 +6,9 @@ import {PaymentAddressType} from "../../lib/wallet/constants";
 import {ENCODE_VERSION} from "../../lib/constants";
 import {checkEncode} from "../../lib/base58";
 
-// const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
+const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 // const rpcClient = new RpcClient("https://test-mobile.incognito.org");
-const rpcClient = new RpcClient("http://localhost:9998");
+// const rpcClient = new RpcClient("http://localhost:9998");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 
@@ -358,7 +358,7 @@ async function TestGetBalance() {
   await sleep(5000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "112t8rqFtYxrQ18ae52tQrCj7kr5HUhL1RXoq2JvTeaJNEcXgQys8B48KFFDFdHsK3CRuiwmmjuPMstkfowfHYHWZG46Pofmo8wKuKH7domP";
+  let senderPrivateKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -376,7 +376,7 @@ async function TestGetBalance() {
   }
 }
 
-// TestGetAllPrivacyTokenBalance();
+// TestGetBalance();
 
 async function TestGetAllPrivacyTokenBalance() {
   Wallet.RpcClient = rpcClient;
