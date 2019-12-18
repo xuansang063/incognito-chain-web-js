@@ -4666,6 +4666,9 @@ var RpcClient = function RpcClient(url, user, password) {
           tokenID,
           data,
           response,
+          outCoinsMap,
+          outCoins,
+          key,
           _args = arguments;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -4718,11 +4721,35 @@ var RpcClient = function RpcClient(url, user, password) {
               throw response.data.Error;
 
             case 19:
+              outCoinsMap = response.data.Result.Outputs;
+              _context.t1 = regeneratorRuntime.keys(outCoinsMap);
+
+            case 21:
+              if ((_context.t2 = _context.t1()).done) {
+                _context.next = 28;
+                break;
+              }
+
+              key = _context.t2.value;
+
+              if (!(key == paymentAdrr || viewingKey !== "" && key == viewingKey)) {
+                _context.next = 26;
+                break;
+              }
+
+              outCoins = outCoinsMap[key];
+              return _context.abrupt("break", 28);
+
+            case 26:
+              _context.next = 21;
+              break;
+
+            case 28:
               return _context.abrupt("return", {
-                outCoins: response.data.Result.Outputs[paymentAdrr]
+                outCoins: outCoins
               });
 
-            case 20:
+            case 29:
             case "end":
               return _context.stop();
           }
