@@ -6183,7 +6183,7 @@ var RpcClient = function RpcClient(url, user, password) {
               data = {
                 "id": 1,
                 "jsonrpc": "1.0",
-                "method": "getpdecontributionstatus",
+                "method": "getpdecontributionstatusv2",
                 "params": [{
                   "ContributionPairID": pairId
                 }]
