@@ -738,7 +738,7 @@ function (_Error) {
     _this.description = errorObj.description;
     _this.date = new Date();
 
-    if (detailError && _typeof(detailError) === 'object') {
+    if (detailError && _typeof(detailError) === 'object' && detailError.StackTrace) {
       _this.stackTrace = detailError.StackTrace;
       _this.stackTraceCode = detailError.StackTrace.match(/-[0-9]+: -[0-9]+/)[0];
     }
