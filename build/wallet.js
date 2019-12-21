@@ -689,18 +689,17 @@ var ED25519_KEY_SIZE = 32;
 /*!*****************************!*\
   !*** ./lib/errorhandler.js ***!
   \*****************************/
-/*! exports provided: CustomError, ErrorObject */
+/*! exports provided: CustomError, ErrorObject, RPCError */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomError", function() { return CustomError; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ErrorObject", function() { return ErrorObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RPCError", function() { return RPCError; });
 var _ErrorObject;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -722,6 +721,35 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function parseStackTrace(detailError) {
+  var stackTrace;
+  var stackTraceCode;
+
+  if (detailError && _typeof(detailError) === 'object') {
+    if (detailError.StackTrace) {
+      stackTrace = detailError.StackTrace;
+
+      if (detailError.StackTrace.match(/-[0-9]+: -[0-9]+/)) {
+        stackTraceCode = detailError.StackTrace.match(/-[0-9]+: -[0-9]+/)[0];
+      } else if (detailError.StackTrace.match(/-[0-9]+/)) {
+        stackTraceCode = detailError.StackTrace.match(/-[0-9]+/)[0];
+      } else {
+        stackTraceCode = detailError.Code;
+      }
+    } else if (detailError.response) {
+      stackTrace = detailError.message;
+      stackTraceCode = detailError.response.status;
+    }
+  }
+
+  return {
+    stackTrace: stackTrace,
+    stackTraceCode: stackTraceCode
+  };
+}
+
 var CustomError =
 /*#__PURE__*/
 function (_Error) {
@@ -738,20 +766,43 @@ function (_Error) {
     _this.description = errorObj.description;
     _this.date = new Date();
 
-    if (detailError && _typeof(detailError) === 'object') {
-      if (detailError.StackTrace) {
-        _this.stackTrace = detailError.StackTrace;
-        _this.stackTraceCode = detailError.StackTrace.match(/-[0-9]+: -[0-9]+/)[0];
-      } else if (detailError.response) {
-        _this.stackTrace = detailError.message;
-        _this.stackTraceCode = detailError.response.status;
-      }
-    }
+    var _parseStackTrace = parseStackTrace(detailError),
+        stackTrace = _parseStackTrace.stackTrace,
+        stackTraceCode = _parseStackTrace.stackTraceCode;
 
+    _this.stackTrace = stackTrace;
+    _this.stackTraceCode = stackTraceCode;
     return _this;
   }
 
   return CustomError;
+}(_wrapNativeSuper(Error));
+
+var RPCError =
+/*#__PURE__*/
+function (_Error2) {
+  _inherits(RPCError, _Error2);
+
+  function RPCError(method, detailError) {
+    var _this2;
+
+    _classCallCheck(this, RPCError);
+
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(RPCError).call(this, method));
+    _this2.name = method;
+    _this2.code = "".concat(_this2.name, "(").concat(detailError.Code, ")");
+    _this2.description = detailError.Message;
+
+    var _parseStackTrace2 = parseStackTrace(detailError),
+        stackTrace = _parseStackTrace2.stackTrace,
+        stackTraceCode = _parseStackTrace2.stackTraceCode;
+
+    _this2.stackTrace = stackTrace;
+    _this2.stackTraceCode = stackTraceCode;
+    return _this2;
+  }
+
+  return RPCError;
 }(_wrapNativeSuper(Error));
 
 var ErrorObject = (_ErrorObject = {
@@ -4705,7 +4756,7 @@ function () {
               break;
             }
 
-            throw response.data.Error;
+            throw new _errorhandler__WEBPACK_IMPORTED_MODULE_4__["RPCError"](method, response.data.Error);
 
           case 17:
             return _context.abrupt("return", response.data.Result);
@@ -10001,7 +10052,7 @@ function () {
                 _context8.prev = 90;
                 _context8.t3 = _context8["catch"](83);
                 console.log("createAndSendStakingTx Error when sending tx: ", _context8.t3);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context8.t3);
 
               case 94:
                 _context8.next = 96;
@@ -10201,27 +10252,12 @@ function () {
                 console.log("createAndSendStopAutoStakingTx sndOutputs: ", sndOutputs);
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_6__["newParamInitTx"])(senderSkStr, paramPaymentInfos, inputForTx.inputCoinStrs, feeNativeToken, false, null, meta, "", inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputs);
                 console.log("createAndSendStopAutoStakingTx paramInitTx: ", paramInitTx);
-
-                if (!(typeof stopAutoStaking === "function")) {
-                  _context9.next = 60;
-                  break;
-                }
-
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_11___default.a.stringify(paramInitTx);
-                _context9.next = 57;
+                _context9.next = 56;
                 return stopAutoStaking(paramInitTxJson);
 
-              case 57:
+              case 56:
                 resInitTx = _context9.sent;
-
-                if (!(resInitTx === null || resInitTx === "")) {
-                  _context9.next = 60;
-                  break;
-                }
-
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
-
-              case 60:
                 console.log("createAndSendStopAutoStakingTx resInitTx: ", resInitTx); //base64 decode txjson
 
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["base64Decode"])(resInitTx); // get b58 check encode tx json
@@ -10230,33 +10266,33 @@ function () {
 
                 lockTimeBytes = resInitTxBytes.slice(resInitTxBytes.length - 8);
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
-                _context9.next = 67;
+                _context9.next = 64;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(60);
 
-              case 67:
+              case 64:
                 console.time("Time for sending tx");
                 listUTXOForPRV = [];
-                _context9.prev = 69;
+                _context9.prev = 66;
                 console.log("Sending stop auto staking tx ..... ");
-                _context9.next = 73;
+                _context9.next = 70;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.sendRawTx(b58CheckEncodeTx);
 
-              case 73:
+              case 70:
                 response = _context9.sent;
-                _context9.next = 80;
+                _context9.next = 77;
                 break;
 
-              case 76:
-                _context9.prev = 76;
-                _context9.t2 = _context9["catch"](69);
+              case 73:
+                _context9.prev = 73;
+                _context9.t2 = _context9["catch"](66);
                 console.log("createAndSendStopAutoStakingTx Error when sending tx: ", _context9.t2);
-                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction");
+                throw new _errorhandler__WEBPACK_IMPORTED_MODULE_15__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_15__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context9.t2);
 
-              case 80:
-                _context9.next = 82;
+              case 77:
+                _context9.next = 79;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(90);
 
-              case 82:
+              case 79:
                 console.timeEnd("Time for sending tx");
                 console.timeEnd("Time for create and send tx"); // saving history tx
                 // check status of tx and add coins to spending coins
@@ -10288,24 +10324,24 @@ function () {
 
                 this.saveNormalTxHistory(response, [_constants__WEBPACK_IMPORTED_MODULE_4__["BurnAddress"]], false, false, listUTXOForPRV, "", meta, "", messageForNativeToken);
                 console.log("createAndSendStopAutoStakingTx History account after saving: ", this.txHistory.NormalTx);
-                _context9.next = 90;
+                _context9.next = 87;
                 return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].updateProgressTx(100);
 
-              case 90:
+              case 87:
                 return _context9.abrupt("return", response);
 
-              case 93:
-                _context9.prev = 93;
+              case 90:
+                _context9.prev = 90;
                 _context9.t3 = _context9["catch"](23);
                 console.log("createAndSendStopAutoStakingTx Error when create staking tx: ", _context9.t3);
                 throw _context9.t3;
 
-              case 97:
+              case 94:
               case "end":
                 return _context9.stop();
             }
           }
-        }, _callee9, this, [[8, 15], [23, 93], [25, 32], [69, 76]]);
+        }, _callee9, this, [[8, 15], [23, 90], [25, 32], [66, 73]]);
       }));
 
       function createAndSendStopAutoStakingTx(_x15, _x16, _x17) {
