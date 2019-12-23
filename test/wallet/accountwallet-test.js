@@ -131,7 +131,7 @@ async function TestCreateAndSendNativeToken() {
   await sleep(10000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "112t8rnaqXpcge9BETLXdBnSVMq37pVzSr1i3tcvTJ3jQMs5NCWgv5VmMwRwtm9zzELKzz6WgtoPMR9PBgY95Cf15QMGVTFvpPii3TkW2tUB";
+  let senderPrivateKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -219,7 +219,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
   // sender key (private key)
-  let senderSpendingKeyStr = "112t8rnaqXpcge9BETLXdBnSVMq37pVzSr1i3tcvTJ3jQMs5NCWgv5VmMwRwtm9zzELKzz6WgtoPMR9PBgY95Cf15QMGVTFvpPii3TkW2tUB";
+  let senderSpendingKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -227,7 +227,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   accountSender.key = senderKeyWallet;
 
   // receivers (payment address)
-  let receiverPaymentAddressStr = "12RuEdPjq4yxivzm8xPxRVHmkL74t4eAdUKPdKKhMEnpxPH3k8GEyULbwq4hjwHWmHQr7MmGBJsMpdCHsYAqNE18jipWQwciBf9yqvQ";
+  let receiverPaymentAddressStr = "12S4NL3DZ1KoprFRy1k5DdYSXUq81NtxFKdvUTP3PLqQypWzceL5fBBwXooAsX5s23j7cpb1Za37ddmfSaMpEJDPsnJGZuyWTXJSZZ5";
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddressStr);
 
   // payment info for PRV
@@ -237,14 +237,14 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   //   message: "ABC"
   // }];
   let paymentInfos = [];
-  let amountTransfer = 10;
+  let amountTransfer = 20000;
 
   // prepare token param for tx custom token init
   let tokenParams = {
     Privacy: true,
-    TokenID: "5d98f50c766faa34c85ae9801756bfcf3b78a1bc77f678300e810663058bbf7b",
-    TokenName: "Rose",
-    TokenSymbol: "Rose",
+    TokenID: "f08312d24a12225d02b50031451818ed4c100b71977d7d8a10c2816a587f1a83",
+    TokenName: "",
+    TokenSymbol: "",
     TokenTxType: CustomTokenTransfer,
     TokenAmount: amountTransfer,
     TokenReceivers: [{
@@ -699,3 +699,22 @@ async function TestCreateAndSendReplacePrivacyTokenTransfer() {
 }
 
 // TestCreateAndSendReplacePrivacyTokenTransfer();
+
+async function TestGetOutputCoins(){
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+  // sender key (private key)
+  let senderSpendingKeyStr = "";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
+
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  let allCoins = await accountSender.getAllOutputCoins(null, Wallet.RpcClient);
+  console.log("allCoins: ", allCoins);
+}
+
+// TestGetOutputCoins()
