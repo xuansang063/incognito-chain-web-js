@@ -6446,7 +6446,6 @@ var RpcClient = function RpcClient(url, user, password) {
     regeneratorRuntime.mark(function _callee29(tokenIDStr1) {
       var tokenIDStr2,
           beaconHeight,
-          res,
           pdeStateRes,
           tokenIDArray,
           keyValue,
@@ -6459,40 +6458,18 @@ var RpcClient = function RpcClient(url, user, password) {
 
               if (tokenIDStr2 === "") {
                 tokenIDStr2 = _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"];
-              } // get latest beacon height
+              }
 
-
-              _context29.prev = 2;
-              _context29.next = 5;
+              _context29.next = 4;
               return _this.getBeaconHeight();
 
-            case 5:
-              res = _context29.sent;
-              beaconHeight = res.beaconHeight;
-              _context29.next = 12;
-              break;
-
-            case 9:
-              _context29.prev = 9;
-              _context29.t0 = _context29["catch"](2);
-              throw _context29.t0;
-
-            case 12:
-              _context29.prev = 12;
-              _context29.next = 15;
+            case 4:
+              beaconHeight = _context29.sent;
+              _context29.next = 7;
               return _this.getPDEState(beaconHeight);
 
-            case 15:
+            case 7:
               pdeStateRes = _context29.sent;
-              _context29.next = 21;
-              break;
-
-            case 18:
-              _context29.prev = 18;
-              _context29.t1 = _context29["catch"](12);
-              throw _context29.t1;
-
-            case 21:
               console.log("pdeStateRes: ", pdeStateRes);
               tokenIDArray = [tokenIDStr1, tokenIDStr2];
               tokenIDArray.sort();
@@ -6500,37 +6477,37 @@ var RpcClient = function RpcClient(url, user, password) {
               console.log("pdeStateRes.state.PDEPoolPairs[keyValue]: ", pdeStateRes.state.PDEPoolPairs[keyValue]);
 
               if (!(pdeStateRes.state.PDEPoolPairs[keyValue] !== null && pdeStateRes.state.PDEPoolPairs[keyValue] !== undefined)) {
-                _context29.next = 32;
+                _context29.next = 19;
                 break;
               }
 
               if (!(tokenIDArray[0] == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token1PoolValue < 10000 * 1e9)) {
-                _context29.next = 29;
+                _context29.next = 16;
                 break;
               }
 
               return _context29.abrupt("return", false);
 
-            case 29:
+            case 16:
               if (!(tokenIDArray[1] == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token2PoolValue < 10000 * 1e9)) {
-                _context29.next = 31;
+                _context29.next = 18;
                 break;
               }
 
               return _context29.abrupt("return", false);
 
-            case 31:
+            case 18:
               return _context29.abrupt("return", true);
 
-            case 32:
+            case 19:
               return _context29.abrupt("return", false);
 
-            case 33:
+            case 20:
             case "end":
               return _context29.stop();
           }
         }
-      }, _callee29, null, [[2, 9], [12, 18]]);
+      }, _callee29);
     }));
 
     return function (_x25) {
