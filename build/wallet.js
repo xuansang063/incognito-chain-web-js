@@ -6236,7 +6236,7 @@ var RpcClient = function RpcClient(url, user, password) {
               data = {
                 "id": 1,
                 "jsonrpc": "1.0",
-                "method": "getpdecontributionstatusv2",
+                "method": "getpdecontributionstatus",
                 "params": [{
                   "ContributionPairID": pairId
                 }]
@@ -6289,12 +6289,12 @@ var RpcClient = function RpcClient(url, user, password) {
     };
   }());
 
-  _defineProperty(this, "getPDEWithdrawalStatus",
+  _defineProperty(this, "getPDEContributionStatusV2",
   /*#__PURE__*/
   function () {
     var _ref24 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee24(txId) {
+    regeneratorRuntime.mark(function _callee24(pairId) {
       var data, response;
       return regeneratorRuntime.wrap(function _callee24$(_context24) {
         while (1) {
@@ -6303,9 +6303,9 @@ var RpcClient = function RpcClient(url, user, password) {
               data = {
                 "id": 1,
                 "jsonrpc": "1.0",
-                "method": "getpdewithdrawalstatus",
+                "method": "getpdecontributionstatusv2",
                 "params": [{
-                  "TxRequestIDStr": txId
+                  "ContributionPairID": pairId
                 }]
               };
               _context24.prev = 1;
@@ -6328,7 +6328,7 @@ var RpcClient = function RpcClient(url, user, password) {
                 break;
               }
 
-              throw new Error("Can't request API getPDEWithdrawalStatus");
+              throw new Error("Can't request API getPDEContributionStatus");
 
             case 14:
               if (!response.data.Error) {
@@ -6356,26 +6356,74 @@ var RpcClient = function RpcClient(url, user, password) {
     };
   }());
 
-  _defineProperty(this, "getBlockChainInfo",
+  _defineProperty(this, "getPDEWithdrawalStatus",
   /*#__PURE__*/
-  _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee25() {
-    return regeneratorRuntime.wrap(function _callee25$(_context25) {
-      while (1) {
-        switch (_context25.prev = _context25.next) {
-          case 0:
-            return _context25.abrupt("return", parseResponse(_this.rpcHttpService, 'getblockchaininfo'));
+  function () {
+    var _ref25 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee25(txId) {
+      var data, response;
+      return regeneratorRuntime.wrap(function _callee25$(_context25) {
+        while (1) {
+          switch (_context25.prev = _context25.next) {
+            case 0:
+              data = {
+                "id": 1,
+                "jsonrpc": "1.0",
+                "method": "getpdewithdrawalstatus",
+                "params": [{
+                  "TxRequestIDStr": txId
+                }]
+              };
+              _context25.prev = 1;
+              _context25.next = 4;
+              return _this.rpcHttpService.postRequest(data);
 
-          case 1:
-          case "end":
-            return _context25.stop();
+            case 4:
+              response = _context25.sent;
+              _context25.next = 10;
+              break;
+
+            case 7:
+              _context25.prev = 7;
+              _context25.t0 = _context25["catch"](1);
+              throw _context25.t0;
+
+            case 10:
+              if (!(response.status !== 200)) {
+                _context25.next = 14;
+                break;
+              }
+
+              throw new Error("Can't request API getPDEWithdrawalStatus");
+
+            case 14:
+              if (!response.data.Error) {
+                _context25.next = 16;
+                break;
+              }
+
+              throw response.data.Error;
+
+            case 16:
+              return _context25.abrupt("return", {
+                state: response.data.Result
+              });
+
+            case 17:
+            case "end":
+              return _context25.stop();
+          }
         }
-      }
-    }, _callee25);
-  })));
+      }, _callee25, null, [[1, 7]]);
+    }));
 
-  _defineProperty(this, "listRewardAmount",
+    return function (_x25) {
+      return _ref25.apply(this, arguments);
+    };
+  }());
+
+  _defineProperty(this, "getBlockChainInfo",
   /*#__PURE__*/
   _asyncToGenerator(
   /*#__PURE__*/
@@ -6384,7 +6432,7 @@ var RpcClient = function RpcClient(url, user, password) {
       while (1) {
         switch (_context26.prev = _context26.next) {
           case 0:
-            return _context26.abrupt("return", parseResponse(_this.rpcHttpService, 'listrewardamount'));
+            return _context26.abrupt("return", parseResponse(_this.rpcHttpService, 'getblockchaininfo'));
 
           case 1:
           case "end":
@@ -6394,7 +6442,7 @@ var RpcClient = function RpcClient(url, user, password) {
     }, _callee26);
   })));
 
-  _defineProperty(this, "getBeaconBestStateDetail",
+  _defineProperty(this, "listRewardAmount",
   /*#__PURE__*/
   _asyncToGenerator(
   /*#__PURE__*/
@@ -6403,7 +6451,7 @@ var RpcClient = function RpcClient(url, user, password) {
       while (1) {
         switch (_context27.prev = _context27.next) {
           case 0:
-            return _context27.abrupt("return", parseResponse(_this.rpcHttpService, 'getbeaconbeststatedetail'));
+            return _context27.abrupt("return", parseResponse(_this.rpcHttpService, 'listrewardamount'));
 
           case 1:
           case "end":
@@ -6413,24 +6461,18 @@ var RpcClient = function RpcClient(url, user, password) {
     }, _callee27);
   })));
 
-  _defineProperty(this, "getBeaconHeight",
+  _defineProperty(this, "getBeaconBestStateDetail",
   /*#__PURE__*/
   _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee28() {
-    var data;
     return regeneratorRuntime.wrap(function _callee28$(_context28) {
       while (1) {
         switch (_context28.prev = _context28.next) {
           case 0:
-            _context28.next = 2;
-            return _this.getBlockChainInfo();
+            return _context28.abrupt("return", parseResponse(_this.rpcHttpService, 'getbeaconbeststatedetail'));
 
-          case 2:
-            data = _context28.sent;
-            return _context28.abrupt("return", data.BestBlocks['-1'].Height);
-
-          case 4:
+          case 1:
           case "end":
             return _context28.stop();
         }
@@ -6438,38 +6480,63 @@ var RpcClient = function RpcClient(url, user, password) {
     }, _callee28);
   })));
 
+  _defineProperty(this, "getBeaconHeight",
+  /*#__PURE__*/
+  _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee29() {
+    var data;
+    return regeneratorRuntime.wrap(function _callee29$(_context29) {
+      while (1) {
+        switch (_context29.prev = _context29.next) {
+          case 0:
+            _context29.next = 2;
+            return _this.getBlockChainInfo();
+
+          case 2:
+            data = _context29.sent;
+            return _context29.abrupt("return", data.BestBlocks['-1'].Height);
+
+          case 4:
+          case "end":
+            return _context29.stop();
+        }
+      }
+    }, _callee29);
+  })));
+
   _defineProperty(this, "isExchangeRatePToken",
   /*#__PURE__*/
   function () {
-    var _ref29 = _asyncToGenerator(
+    var _ref30 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee29(tokenIDStr1) {
+    regeneratorRuntime.mark(function _callee30(tokenIDStr1) {
       var tokenIDStr2,
           beaconHeight,
           pdeStateRes,
           tokenIDArray,
           keyValue,
-          _args29 = arguments;
-      return regeneratorRuntime.wrap(function _callee29$(_context29) {
+          _args30 = arguments;
+      return regeneratorRuntime.wrap(function _callee30$(_context30) {
         while (1) {
-          switch (_context29.prev = _context29.next) {
+          switch (_context30.prev = _context30.next) {
             case 0:
-              tokenIDStr2 = _args29.length > 1 && _args29[1] !== undefined ? _args29[1] : "";
+              tokenIDStr2 = _args30.length > 1 && _args30[1] !== undefined ? _args30[1] : "";
 
               if (tokenIDStr2 === "") {
                 tokenIDStr2 = _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"];
               }
 
-              _context29.next = 4;
+              _context30.next = 4;
               return _this.getBeaconHeight();
 
             case 4:
-              beaconHeight = _context29.sent;
-              _context29.next = 7;
+              beaconHeight = _context30.sent;
+              _context30.next = 7;
               return _this.getPDEState(beaconHeight);
 
             case 7:
-              pdeStateRes = _context29.sent;
+              pdeStateRes = _context30.sent;
               console.log("pdeStateRes: ", pdeStateRes);
               tokenIDArray = [tokenIDStr1, tokenIDStr2];
               tokenIDArray.sort();
@@ -6477,54 +6544,54 @@ var RpcClient = function RpcClient(url, user, password) {
               console.log("pdeStateRes.state.PDEPoolPairs[keyValue]: ", pdeStateRes.state.PDEPoolPairs[keyValue]);
 
               if (!(pdeStateRes.state.PDEPoolPairs[keyValue] !== null && pdeStateRes.state.PDEPoolPairs[keyValue] !== undefined)) {
-                _context29.next = 19;
+                _context30.next = 19;
                 break;
               }
 
               if (!(tokenIDArray[0] == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token1PoolValue < 10000 * 1e9)) {
-                _context29.next = 16;
+                _context30.next = 16;
                 break;
               }
 
-              return _context29.abrupt("return", false);
+              return _context30.abrupt("return", false);
 
             case 16:
               if (!(tokenIDArray[1] == _wallet_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"] && pdeStateRes.state.PDEPoolPairs[keyValue].Token2PoolValue < 10000 * 1e9)) {
-                _context29.next = 18;
+                _context30.next = 18;
                 break;
               }
 
-              return _context29.abrupt("return", false);
+              return _context30.abrupt("return", false);
 
             case 18:
-              return _context29.abrupt("return", true);
+              return _context30.abrupt("return", true);
 
             case 19:
-              return _context29.abrupt("return", false);
+              return _context30.abrupt("return", false);
 
             case 20:
             case "end":
-              return _context29.stop();
+              return _context30.stop();
           }
         }
-      }, _callee29);
+      }, _callee30);
     }));
 
-    return function (_x25) {
-      return _ref29.apply(this, arguments);
+    return function (_x26) {
+      return _ref30.apply(this, arguments);
     };
   }());
 
   _defineProperty(this, "getTransactionByReceiver",
   /*#__PURE__*/
   function () {
-    var _ref30 = _asyncToGenerator(
+    var _ref31 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee30(paymentAdrr, viewingKey) {
+    regeneratorRuntime.mark(function _callee31(paymentAdrr, viewingKey) {
       var data, response, result;
-      return regeneratorRuntime.wrap(function _callee30$(_context30) {
+      return regeneratorRuntime.wrap(function _callee31$(_context31) {
         while (1) {
-          switch (_context30.prev = _context30.next) {
+          switch (_context31.prev = _context31.next) {
             case 0:
               data = {
                 "jsonrpc": "1.0",
@@ -6533,72 +6600,6 @@ var RpcClient = function RpcClient(url, user, password) {
                   "PaymentAddress": paymentAdrr,
                   "ReadonlyKey": viewingKey
                 }],
-                "id": 1
-              };
-              _context30.prev = 1;
-              _context30.next = 4;
-              return _this.rpcHttpService.postRequest(data);
-
-            case 4:
-              response = _context30.sent;
-              _context30.next = 10;
-              break;
-
-            case 7:
-              _context30.prev = 7;
-              _context30.t0 = _context30["catch"](1);
-              throw _context30.t0;
-
-            case 10:
-              if (!(response.status !== 200)) {
-                _context30.next = 14;
-                break;
-              }
-
-              throw new Error("Can't request API get all output coins");
-
-            case 14:
-              if (!response.data.Error) {
-                _context30.next = 16;
-                break;
-              }
-
-              throw response.data.Error;
-
-            case 16:
-              result = response.data.Result;
-              return _context30.abrupt("return", {
-                receivedTransactions: result.ReceivedTransactions
-              });
-
-            case 18:
-            case "end":
-              return _context30.stop();
-          }
-        }
-      }, _callee30, null, [[1, 7]]);
-    }));
-
-    return function (_x26, _x27) {
-      return _ref30.apply(this, arguments);
-    };
-  }());
-
-  _defineProperty(this, "getListPrivacyCustomTokenBalance",
-  /*#__PURE__*/
-  function () {
-    var _ref31 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee31(privateKey) {
-      var data, response;
-      return regeneratorRuntime.wrap(function _callee31$(_context31) {
-        while (1) {
-          switch (_context31.prev = _context31.next) {
-            case 0:
-              data = {
-                "jsonrpc": "1.0",
-                "method": "getlistprivacycustomtokenbalance",
-                "params": [privateKey],
                 "id": 1
               };
               _context31.prev = 1;
@@ -6621,7 +6622,7 @@ var RpcClient = function RpcClient(url, user, password) {
                 break;
               }
 
-              throw new Error("Can't request API get list privacy custom token balance");
+              throw new Error("Can't request API get all output coins");
 
             case 14:
               if (!response.data.Error) {
@@ -6632,9 +6633,12 @@ var RpcClient = function RpcClient(url, user, password) {
               throw response.data.Error;
 
             case 16:
-              return _context31.abrupt("return", response.data.Result && response.data.Result.ListCustomTokenBalance || []);
+              result = response.data.Result;
+              return _context31.abrupt("return", {
+                receivedTransactions: result.ReceivedTransactions
+              });
 
-            case 17:
+            case 18:
             case "end":
               return _context31.stop();
           }
@@ -6642,8 +6646,71 @@ var RpcClient = function RpcClient(url, user, password) {
       }, _callee31, null, [[1, 7]]);
     }));
 
-    return function (_x28) {
+    return function (_x27, _x28) {
       return _ref31.apply(this, arguments);
+    };
+  }());
+
+  _defineProperty(this, "getListPrivacyCustomTokenBalance",
+  /*#__PURE__*/
+  function () {
+    var _ref32 = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee32(privateKey) {
+      var data, response;
+      return regeneratorRuntime.wrap(function _callee32$(_context32) {
+        while (1) {
+          switch (_context32.prev = _context32.next) {
+            case 0:
+              data = {
+                "jsonrpc": "1.0",
+                "method": "getlistprivacycustomtokenbalance",
+                "params": [privateKey],
+                "id": 1
+              };
+              _context32.prev = 1;
+              _context32.next = 4;
+              return _this.rpcHttpService.postRequest(data);
+
+            case 4:
+              response = _context32.sent;
+              _context32.next = 10;
+              break;
+
+            case 7:
+              _context32.prev = 7;
+              _context32.t0 = _context32["catch"](1);
+              throw _context32.t0;
+
+            case 10:
+              if (!(response.status !== 200)) {
+                _context32.next = 14;
+                break;
+              }
+
+              throw new Error("Can't request API get list privacy custom token balance");
+
+            case 14:
+              if (!response.data.Error) {
+                _context32.next = 16;
+                break;
+              }
+
+              throw response.data.Error;
+
+            case 16:
+              return _context32.abrupt("return", response.data.Result && response.data.Result.ListCustomTokenBalance || []);
+
+            case 17:
+            case "end":
+              return _context32.stop();
+          }
+        }
+      }, _callee32, null, [[1, 7]]);
+    }));
+
+    return function (_x29) {
+      return _ref32.apply(this, arguments);
     };
   }());
 
