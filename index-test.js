@@ -4,7 +4,7 @@ require("./loadwasm");
 
 // wallet test
 // require("./test/wallet/wallet-test");
-require("./test/wallet/accountwallet-test");
+// require("./test/wallet/accountwallet-test");
 // require("./test/wallet/hdwallet-test");
 // require("./test/wallet/utils-test");
 
@@ -42,6 +42,8 @@ require("./test/wallet/accountwallet-test");
 
 // require('./test/txfordev/sendPrivateTokentoReceivers');
 // require('./test/txfordev/sendPRVToReceivers');
+
+require('./test/txfordev/paymentAddrToPubKey');
 
 /************* RPC TEST **************/
 // require('./test/rpc/rpc-test');
