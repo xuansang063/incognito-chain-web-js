@@ -358,7 +358,7 @@ async function TestGetBalance() {
   await sleep(5000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "";
+  let senderPrivateKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -508,7 +508,7 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
   // staker
-  let senderSpendingKeyStr = "112t8rnbY15f1GnDxbcJUr84EH8pdFc9ayJ7HLMgccajtYSW9U9k7H2yJj9mUcC8CT1gAHZpubAE59At7soD4KeQaRLbREieSFMDC8AdQ44a";
+  let senderSpendingKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
@@ -516,18 +516,18 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
 
-  let feePRV = 5;
+  let feePRV = 10;
   let feePToken = 0;
-  let sellAmount = 100;
-  let tokenIDToBuyStr = "4878bf0b99839f01baf909767ac79d7b6f724153bacb6f7b9022d7e896a312fd";
-  let minAcceptableAmount = 9000000000;
-  let tradingFee = 10;
+  let sellAmount = 300000000;
+  let tokenIDToBuyStr = "0000000000000000000000000000000000000000000000000000000000000004";
+  let minAcceptableAmount = 680000000000;
+  let tradingFee = 0;
 
   let tokenParams = {
     Privacy: true,
-    TokenID: "b5612ceb9d91b1440e5ec596e48e5733f557aeb3f33b43515e12d8049dd1dde6",
-    TokenName: "DEX C",
-    TokenSymbol: "DEXC"
+    TokenID: "716fd1009e2a1669caacc36891e707bfdf02590f96ebd897548e8963c95ebac0",
+    TokenName: "",
+    TokenSymbol: ""
   }
 
   // create and send staking tx
@@ -535,25 +535,26 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
     let res = await accountSender.createAndSendPTokenTradeRequestTx(
       tokenParams, feePRV, feePToken, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee
     );
+    console.log("REs: ", res);
 
     // replace tx
-    let newFee = feePRV *2;
-  let newFeePToken = feePToken * 2;
-  let newInfo = "abc";
-  let newMessageForNativeToken = "Incognito-chain";
-  let newMessageForPToken = "Incognito-chain";
-  let isEncryptMessageForPToken = false;
-  let isEncryptMessageForNativeToken = false;
+  //   let newFee = feePRV *2;
+  // let newFeePToken = feePToken * 2;
+  // let newInfo = "abc";
+  // let newMessageForNativeToken = "Incognito-chain";
+  // let newMessageForPToken = "Incognito-chain";
+  // let isEncryptMessageForPToken = false;
+  // let isEncryptMessageForNativeToken = false;
 
-    let response2 =  await accountSender.replaceTx(res.txId, newFee, newFeePToken, 
-      newInfo, newMessageForNativeToken, isEncryptMessageForNativeToken, newMessageForPToken, isEncryptMessageForPToken);
-    console.log("Send tx 2 done : ", response2);
+  //   let response2 =  await accountSender.replaceTx(res.txId, newFee, newFeePToken, 
+  //     newInfo, newMessageForNativeToken, isEncryptMessageForNativeToken, newMessageForPToken, isEncryptMessageForPToken);
+  //   console.log("Send tx 2 done : ", response2);
   } catch (e) {
     console.log("Error when trading native token: ", e);
   }
 }
 
-// TestCreateAndSendPTokenTradeRequestTx();
+TestCreateAndSendPTokenTradeRequestTx();
 
 
 async function GetListReceivedTx() {
