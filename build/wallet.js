@@ -14637,7 +14637,7 @@ function () {
       var _getReceivedTransaction = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee23() {
-        var rpcClient, paymentAddress, viewingKey, txs, i, tx, messageForNativeToken, messageForPToken, historyObj, txHistoryInfo;
+        var rpcClient, paymentAddress, viewingKey, txs, i, tx, messageForNativeToken, messageForPToken, infoDecode, historyObj, txHistoryInfo;
         return regeneratorRuntime.wrap(function _callee23$(_context23) {
           while (1) {
             switch (_context23.prev = _context23.next) {
@@ -14677,31 +14677,32 @@ function () {
                 messageForPToken = "";
 
                 if (!tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]]) {
-                  _context23.next = 21;
+                  _context23.next = 20;
                   break;
                 }
 
-                console.log("tx.ReceivedAmounts[PRVIDSTR].CoinDetails.Info:", tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]].CoinDetails.Info);
-                _context23.next = 20;
+                _context23.next = 19;
                 return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["decryptMessageOutCoin"])(this, tx.ReceivedAmounts[_constants__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]].CoinDetails.Info);
 
-              case 20:
+              case 19:
                 messageForNativeToken = _context23.sent;
 
-              case 21:
+              case 20:
                 if (!tx.ReceivedAmounts[tx.PrivacyCustomTokenID]) {
-                  _context23.next = 26;
+                  _context23.next = 24;
                   break;
                 }
 
-                console.log("tx.ReceivedAmounts[tx.PrivacyCustomTokenID].CoinDetails.Info: ", tx.ReceivedAmounts[tx.PrivacyCustomTokenID].CoinDetails.Info);
-                _context23.next = 25;
+                _context23.next = 23;
                 return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["decryptMessageOutCoin"])(this, tx.ReceivedAmounts[tx.PrivacyCustomTokenID].CoinDetails.Info);
 
-              case 25:
+              case 23:
                 messageForPToken = _context23.sent;
 
-              case 26:
+              case 24:
+                infoDecode = Object(_base58__WEBPACK_IMPORTED_MODULE_5__["checkDecode"])(tx.Info).bytesDecoded;
+                infoDecode = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["bytesToString"])(infoDecode);
+
                 try {
                   historyObj = {
                     txID: tx.Hash,
@@ -14726,7 +14727,7 @@ function () {
                     listUTXOForPToken: [],
                     hashOriginalTx: "",
                     metaData: tx.Metadata,
-                    info: tx.Info,
+                    info: infoDecode,
                     messageForNativeToken: messageForNativeToken,
                     messageForPToken: messageForPToken
                   };

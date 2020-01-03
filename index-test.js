@@ -44,9 +44,10 @@ require("./loadwasm");
 // require('./test/txfordev/sendPRVToReceivers');
 
 // require('./test/txfordev/paymentAddrToPubKey');
+require('./test/txfordev/getIncommingTxs');
 
 /************* RPC TEST **************/
-require('./test/rpc/rpc-test');
+// require('./test/rpc/rpc-test');
 
 /************* PRIVACY TEST **************/
 // require('./test/privacy/hybridenc-test');

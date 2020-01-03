@@ -7,8 +7,8 @@ import {ENCODE_VERSION} from "../../lib/constants";
 import {checkEncode} from "../../lib/base58";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-// const rpcClient = new RpcClient("https://test-mobile.incognito.org");
-const rpcClient = new RpcClient("http://localhost:9998");
+const rpcClient = new RpcClient("https://test-node.incognito.org");
+// const rpcClient = new RpcClient("http://localhost:9998");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 
@@ -300,7 +300,7 @@ async function TestCreateAndSendStakingTx() {
   }
 }
 
-TestCreateAndSendStakingTx();
+// TestCreateAndSendStakingTx();
 
 
 async function TestCreateAndSendStopAutoStakingTx() {
@@ -554,14 +554,14 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
   }
 }
 
-TestCreateAndSendPTokenTradeRequestTx();
+// TestCreateAndSendPTokenTradeRequestTx();
 
 
 async function GetListReceivedTx() {
   Wallet.RpcClient = rpcClient;
   await sleep(5000);
 
-  let senderSpendingKeyStr = "112t8rnaWQbUWmdGZW2LtF2dzBFVfWBBzH3xviG7TWvwCVNZ3tPygcTKK8kv4jzYQwHo3BDZvERWJHL9Kp9AhAMtG4my9GoARtXDxTUyWSRD";
+  let senderSpendingKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -719,3 +719,4 @@ async function TestGetOutputCoins(){
 }
 
 // TestGetOutputCoins()
+
