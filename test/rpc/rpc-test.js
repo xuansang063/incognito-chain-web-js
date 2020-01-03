@@ -1,11 +1,12 @@
 import {RpcClient} from "../../lib/rpcclient/rpcclient";
+import {getBurningAddress} from "../../lib/wallet/utils";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-// const rpcClient = new RpcClient("https://test-node.incognito.org");
+const rpcClient = new RpcClient("https://test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:20032");
 // const rpcClient = new RpcClient("http://172.105.115.134:20004");
 
-const rpcClient = new RpcClient("http://localhost:9998");
+// const rpcClient = new RpcClient("http://localhost:9998");
 async function sleep(sleepTime) {
   return new Promise(resolve => setTimeout(resolve, sleepTime));
 }
@@ -33,7 +34,7 @@ async function TestGetListPrivacyToken(){
 // TestGetListPrivacyToken()
 
 async function TestGetBurningAddress(){
-  let burningAddress = await rpcClient.getBurningAddress(10);
+  let burningAddress = await getBurningAddress(rpcClient);
   console.log("burningAddress: ", burningAddress);
 }
 

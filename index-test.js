@@ -43,10 +43,10 @@ require("./loadwasm");
 // require('./test/txfordev/sendPrivateTokentoReceivers');
 // require('./test/txfordev/sendPRVToReceivers');
 
-require('./test/txfordev/paymentAddrToPubKey');
+// require('./test/txfordev/paymentAddrToPubKey');
 
 /************* RPC TEST **************/
-// require('./test/rpc/rpc-test');
+require('./test/rpc/rpc-test');
 
 /************* PRIVACY TEST **************/
 // require('./test/privacy/hybridenc-test');

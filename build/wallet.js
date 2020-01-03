@@ -6754,7 +6754,7 @@ var RpcClient = function RpcClient(url, user, password) {
               break;
             }
 
-            throw new Error("Can't request API get list privacy custom token balance");
+            throw new Error("Can't request API get burning address");
 
           case 15:
             if (!response.data.Error) {
@@ -10172,7 +10172,7 @@ function () {
                   AutoReStaking: autoReStaking
                 };
                 _context9.next = 36;
-                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.getBurningAddress();
+                return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["getBurningAddress"])(_wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
               case 36:
                 burningAddress = _context9.sent;
@@ -10426,7 +10426,7 @@ function () {
                   CommitteePublicKey: committeeKey
                 };
                 _context10.next = 22;
-                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.getBurningAddress();
+                return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["getBurningAddress"])(_wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
               case 22:
                 burningAddress = _context10.sent;
@@ -12526,7 +12526,7 @@ function () {
 
               case 28:
                 _context15.next = 30;
-                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.getBurningAddress();
+                return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["getBurningAddress"])(_wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
               case 30:
                 burningAddress = _context15.sent;
@@ -13184,7 +13184,7 @@ function () {
                 isPrivacy = false; // always false
 
                 _context18.next = 8;
-                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.getBurningAddress();
+                return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["getBurningAddress"])(_wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
               case 8:
                 burningAddress = _context18.sent;
@@ -13434,7 +13434,7 @@ function () {
                 paramPaymentInfosForNativeToken = [];
                 amountTransferPRV = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
                 _context19.next = 8;
-                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.getBurningAddress();
+                return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["getBurningAddress"])(_wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
               case 8:
                 burningAddress = _context19.sent;
@@ -13807,7 +13807,7 @@ function () {
                 isPrivacy = false; // always false
 
                 _context20.next = 8;
-                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.getBurningAddress();
+                return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["getBurningAddress"])(_wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
               case 8:
                 burningAddress = _context20.sent;
@@ -14061,7 +14061,7 @@ function () {
                 paramPaymentInfosForNativeToken = [];
                 amountTransferPRV = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
                 _context21.next = 8;
-                return _wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient.getBurningAddress();
+                return Object(_utils__WEBPACK_IMPORTED_MODULE_17__["getBurningAddress"])(_wallet__WEBPACK_IMPORTED_MODULE_8__["Wallet"].RpcClient);
 
               case 8:
                 burningAddress = _context21.sent;
@@ -15626,7 +15626,7 @@ function () {
 /*!*****************************!*\
   !*** ./lib/wallet/utils.js ***!
   \*****************************/
-/*! exports provided: addChecksumToBytes, toPRV, toNanoPRV, encryptMessageOutCoin, decryptMessageOutCoin */
+/*! exports provided: addChecksumToBytes, toPRV, toNanoPRV, encryptMessageOutCoin, decryptMessageOutCoin, getBurningAddress */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15636,6 +15636,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toNanoPRV", function() { return toNanoPRV; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "encryptMessageOutCoin", function() { return encryptMessageOutCoin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "decryptMessageOutCoin", function() { return decryptMessageOutCoin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getBurningAddress", function() { return getBurningAddress; });
 /* harmony import */ var _base58__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../base58 */ "./lib/base58.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./lib/wallet/constants.js");
 /* harmony import */ var _wallet__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./wallet */ "./lib/wallet/wallet.js");
@@ -15756,11 +15757,6 @@ function _encryptMessageOutCoin() {
 function decryptMessageOutCoin(_x2, _x3) {
   return _decryptMessageOutCoin.apply(this, arguments);
 }
-/**
- * 
- * @param {nanoAmountPRV : number} nanoAmountPRV 
- */
-
 
 function _decryptMessageOutCoin() {
   _decryptMessageOutCoin = _asyncToGenerator(
@@ -15800,6 +15796,55 @@ function _decryptMessageOutCoin() {
     }, _callee2);
   }));
   return _decryptMessageOutCoin.apply(this, arguments);
+}
+
+function getBurningAddress(_x4) {
+  return _getBurningAddress.apply(this, arguments);
+}
+/**
+ * 
+ * @param {nanoAmountPRV : number} nanoAmountPRV 
+ */
+
+
+function _getBurningAddress() {
+  _getBurningAddress = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee3(rpcClient) {
+    var beaconHeight,
+        burningAddress,
+        _args3 = arguments;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            beaconHeight = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : 0;
+            _context3.prev = 1;
+            _context3.next = 4;
+            return rpcClient.getBurningAddress(beaconHeight);
+
+          case 4:
+            burningAddress = _context3.sent;
+            _context3.next = 11;
+            break;
+
+          case 7:
+            _context3.prev = 7;
+            _context3.t0 = _context3["catch"](1);
+            console.log(_context3.t0);
+            burningAddress = _constants__WEBPACK_IMPORTED_MODULE_1__["BurnAddress"];
+
+          case 11:
+            return _context3.abrupt("return", burningAddress);
+
+          case 12:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[1, 7]]);
+  }));
+  return _getBurningAddress.apply(this, arguments);
 }
 
 var toPRV = function toPRV(nanoAmountPRV) {
