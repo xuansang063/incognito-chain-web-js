@@ -29,8 +29,8 @@ require("./loadwasm");
 // require('./test/utils-test');
 // require('./test/committeekey-test');
 
-/************* SCRIPTS FOR DEV **************/
 
+/************* SCRIPTS FOR DEV **************/
 
 // require('./test/txfordev/getBalanceMultiUsers');
 // require('./test/txfordev/multiStakingTxs.js');
@@ -41,10 +41,10 @@ require("./loadwasm");
 // require('./test/txfordev/PRVContribute');
 
 // require('./test/txfordev/sendPrivateTokentoReceivers');
-// require('./test/txfordev/sendPRVToReceivers');
+require('./test/txfordev/sendPRVToReceivers');
 
 // require('./test/txfordev/paymentAddrToPubKey');
-require('./test/txfordev/getIncommingTxs');
+// require('./test/txfordev/getIncommingTxs');
 
 /************* RPC TEST **************/
 // require('./test/rpc/rpc-test');

@@ -9,7 +9,7 @@ const fs = require('fs');
 Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 // Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
-// const rpcClient = new RpcClient("http://54.39.158.106:20032");
+// Wallet.RpcClient = new RpcClient("http://51.83.36.184:20001");   // fullnode testnet
 
 async function SendPRVToReceivers() {
     let data = csvJSON('./test/txfordev/sendPRVPayload.csv');
@@ -21,20 +21,22 @@ async function SendPRVToReceivers() {
         paymentInfos[i].amount = parseInt(paymentInfos[i].amount);
     }
 
-    // set private for sender
+    // TODO: set private key of sender
     let senderSpendingKeyStr = "";
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
     senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
     let accountSender = new AccountWallet();
     accountSender.key = senderKeyWallet;
 
-    let fee = 20; // nano PRV
+    let fee = 100; // nano PRV
     let isPrivacy = true;
 
     let offset = 0;
-    let maxReceivers = 25;  // except change UTXO for sender
+    let maxReceivers = 20;  // except change UTXO for sender
     let isDone = false;
     let count = 0;
+    let loopNumber = 0;
+
     while (!isDone) {
         let paymentInfoTmp;
         if (paymentInfos.length >= offset + maxReceivers){
@@ -42,20 +44,25 @@ async function SendPRVToReceivers() {
             offset = offset + maxReceivers;
         } else{
             paymentInfoTmp = paymentInfos.slice(offset, paymentInfos.length);
-           isDone = true;     
+            isDone = true;     
         }
+        console.log("================== Round ", loopNumber, " ==================");
+        console.log("Payment infos: ", paymentInfoTmp);
         count += paymentInfoTmp.length;
 
         try {
             let response = await accountSender.createAndSendNativeToken(paymentInfoTmp, fee, isPrivacy, "");
             console.log("congratulations to you! Create transaction successfully! ^.^")
             console.log("Response: ", response);
-            console.log("Number of payment transfer: ", count);
+            console.log("Total Number payment transfer: ", count);
+            loopNumber++;
 
             // waiting for creating next transaction
             if (!isDone){
                 console.log("WAITING FOR CREATING NEXT TRANSACTION..................");
-                await sleep(2*60*1000);
+                await sleep(5*60*1000);
+            } else {
+                console.log("DONE!!!");
             }
         } catch (e) {
             console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");

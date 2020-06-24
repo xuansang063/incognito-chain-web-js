@@ -9,7 +9,7 @@ const fs = require('fs');
 Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 // Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
-// const rpcClient = new RpcClient("http://54.39.158.106:20032");
+// Wallet.RpcClient = new RpcClient("http://51.83.36.184:20001");   // fullnode testnet
 
 async function SendPrivacyTokenToReceivers() {
     let data = csvJSON('./test/txfordev/sendPrivateTokenPayload.csv');
@@ -23,9 +23,9 @@ async function SendPrivacyTokenToReceivers() {
         paymentInfos[i].amount = parseInt(paymentInfos[i].amount);
     }
 
-    // 1. need to fill Private Key
+    // TODO 1. need to fill Private Key
     let senderSpendingKeyStr = "";
-    // 2. need to fill token ID, default pUSDT
+    // TODO 2. need to fill token ID, default pUSDT
     let tokenID = "716fd1009e2a1669caacc36891e707bfdf02590f96ebd897548e8963c95ebac0";
 
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
@@ -33,15 +33,16 @@ async function SendPrivacyTokenToReceivers() {
     let accountSender = new AccountWallet();
     accountSender.key = senderKeyWallet;
 
-    let feePRV = 20;
+    let feePRV = 100;
     let feePToken = 0;
     let hasPrivacyForToken = true;
     let hasPrivacyForPRV = true;
 
     let offset = 0;
-    let maxReceivers = 25; 
+    let maxReceivers = 20; 
     let isDone = false;
     let count = 0;
+    let loopNumber = 0;
     while (!isDone) {
         let paymentInfoTmp;
         if (paymentInfos.length >= offset + maxReceivers) {
@@ -52,7 +53,8 @@ async function SendPrivacyTokenToReceivers() {
             isDone = true;
         }
 
-        console.log("Payment info list: ", paymentInfoTmp);
+        console.log("================== Round ", loopNumber, " ==================");
+        console.log("Payment infos: ", paymentInfoTmp);
 
         try {
             let tokenParams = {
@@ -74,15 +76,18 @@ async function SendPrivacyTokenToReceivers() {
             }
 
             let response = await accountSender.createAndSendPrivacyToken([], tokenParams, feePRV, feePToken, hasPrivacyForPRV, hasPrivacyForToken, "", true, true);
-            console.log("Response: ", response);
+            console.log("Response from sending tx: ", response);
             console.log("Congrats!!! Create transaction successfully! ^.^")
 
             count += paymentInfoTmp.length;
+            loopNumber++;
            
             console.log("Total Number payment transfer: ", count);
             if (!isDone) {
                 console.log("WAITING FOR CREATING NEXT TRANSACTION..................");
                 await sleep(5 * 60 * 1000);
+            } else {
+                console.log("DONE!!!");
             }
         } catch (e) {
             console.log("Sorry!!! You cannot send this transaction. Please try again. ^.^", e);
