@@ -11,8 +11,8 @@ import { SSL_OP_EPHEMERAL_RSA } from 'constants';
 const fs = require('fs');
 
 // Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
-// Wallet.RpcClient = new RpcClient("http://54.39.158.106:20032");
+// Wallet.RpcClient = new RpcClient("https://test-node.incognito.org");
+Wallet.RpcClient = new RpcClient("http://51.83.36.184:20001");
 // Wallet.RpcClient = new RpcClient("http://localhost:9334");
 
 async function sleep(sleepTime) {
@@ -26,8 +26,8 @@ async function SendRewardsToOneAddress() {
   let data = JSON.parse(jsonString);
   console.log("Data private key list: ", data);
 
-  let toAddressList = data.toAddress;
-  let fromAddress = data.fromAddress;
+  let toAddress = data.toAddress;
+  let fromAddressList = data.fromAddress;
 
   await sleep(5000);
  
@@ -41,9 +41,9 @@ async function SendRewardsToOneAddress() {
   let totalTransfer = 0;
   let numTxSuccess  = 0;
 
-  for (let i = 0; i < toAddressList.length; i++) {
+  for (let i = 0; i < fromAddressList.length; i++) {
     // set private for funder
-    let senderPrivateKeyStr = toAddressList[i];
+    let senderPrivateKeyStr = fromAddressList[i];
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
     senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -58,11 +58,12 @@ async function SendRewardsToOneAddress() {
       if (tokenID == null){
         let amountTransfer = balance - feePRV;
         let paymentInfo = [{
-          "paymentAddressStr": fromAddress,
+          "paymentAddressStr": toAddress,
           "amount": amountTransfer,
         }]
         let response = await accountSender.createAndSendNativeToken(paymentInfo, feePRV, isPrivacyPRV);
         if (response.txId != null){
+          console.log("TxID: ", response.txId);
           numTxSuccess++;
           totalTransfer = totalTransfer + amountTransfer;
         }
