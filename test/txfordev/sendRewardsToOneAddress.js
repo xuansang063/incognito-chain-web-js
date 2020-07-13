@@ -1,13 +1,7 @@
-import { Wallet, DefaultStorage } from '../../lib/wallet/wallet'
+import { Wallet } from '../../lib/wallet/wallet'
 import { KeyWallet as keyWallet } from "../../lib/wallet/hdwallet";
 import { AccountWallet } from "../../lib/wallet/accountWallet";
-import * as key from "../../lib/key";
-import bn from 'bn.js';
 import { RpcClient } from "../../lib/rpcclient/rpcclient";
-import { PaymentAddressType } from '../../lib/wallet/constants';
-import { ENCODE_VERSION } from '../../lib/constants';
-import {checkEncode} from "../../lib/base58";
-import { SSL_OP_EPHEMERAL_RSA } from 'constants';
 const fs = require('fs');
 
 // Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
@@ -20,11 +14,11 @@ async function sleep(sleepTime) {
 }
 
 async function SendRewardsToOneAddress() {
-  // load file paymentAddr.json to set payment infos
+  // load file sendRewardsToOneAddress.json to get fromAddress and toAddress
   let jsonString = fs.readFileSync('./test/txfordev/sendRewardsToOneAddress.json');
 
   let data = JSON.parse(jsonString);
-  console.log("Data private key list: ", data);
+  console.log("Data from Json file: ", data);
 
   let toAddress = data.toAddress;
   let fromAddressList = data.fromAddress;
@@ -42,7 +36,7 @@ async function SendRewardsToOneAddress() {
   let numTxSuccess  = 0;
 
   for (let i = 0; i < fromAddressList.length; i++) {
-    // set private for funder
+    // set private key of sender
     let senderPrivateKeyStr = fromAddressList[i];
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
     senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
@@ -53,7 +47,7 @@ async function SendRewardsToOneAddress() {
     // get balance
     let balance = await accountSender.getBalance(tokenID);
    
-    // create tx transfering reward to fromAddress
+    // create tx transfering reward to toAddress
     if (balance > 0) {
       if (tokenID == null){
         let amountTransfer = balance - feePRV;
@@ -71,6 +65,8 @@ async function SendRewardsToOneAddress() {
         console.log("Coming soon");
         break;
       }
+    } else {
+      console.log("Balance of Private key: ", senderPrivateKeyStr, " is zero");
     }
     await sleep(1000);
   }
