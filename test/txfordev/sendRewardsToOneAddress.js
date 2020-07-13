@@ -28,7 +28,7 @@ async function SendRewardsToOneAddress() {
   //  tokenID, default null for PRV
   let tokenID = null;
 
-  let feePRV = 1000;      // nano PRV
+  let feePRV = 200;      // nano PRV
   let isPrivacyPRV = true;
   let isPrivacyPToken = true;  
 
@@ -55,11 +55,16 @@ async function SendRewardsToOneAddress() {
           "paymentAddressStr": toAddress,
           "amount": amountTransfer,
         }]
-        let response = await accountSender.createAndSendNativeToken(paymentInfo, feePRV, isPrivacyPRV);
-        if (response.txId != null){
-          console.log("TxID: ", response.txId);
-          numTxSuccess++;
-          totalTransfer = totalTransfer + amountTransfer;
+        try {
+          let response = await accountSender.createAndSendNativeToken(paymentInfo, feePRV, isPrivacyPRV);
+          if (response.txId != null){
+            console.log("TxID: ", response.txId);
+            numTxSuccess++;
+            totalTransfer = totalTransfer + amountTransfer;
+          }
+        } catch(e) {
+          console.log("Error when sending PRV from ", senderPrivateKeyStr, e);
+          break;
         }
       } else{
         console.log("Coming soon");
