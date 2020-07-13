@@ -28,7 +28,7 @@ async function SendRewardsToOneAddress() {
   //  tokenID, default null for PRV
   let tokenID = null;
 
-  let feePRV = 10;      // nano PRV
+  let feePRV = 1000;      // nano PRV
   let isPrivacyPRV = true;
   let isPrivacyPToken = true;  
 
