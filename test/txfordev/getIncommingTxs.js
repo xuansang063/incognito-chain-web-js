@@ -24,7 +24,7 @@ async function GetIncommingTxs() {
     accountSender.key = senderKeyWallet;
 
     let receivedTxs = await accountSender.getReceivedTransaction();
-    console.log(JSON.stringify(receivedTxs, null, 2));
+    
 
     // write result to file
     let filenameResult = "./getincommingtxs.txt";

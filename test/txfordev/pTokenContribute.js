@@ -42,7 +42,7 @@ async function PTokenContribute() {
       tokenParam, feeNativeToken, feePToken, pdeContributionPairID, contributedAmount
     );
   } catch (e) {
-    console.log("Error when sending tx: ", e);
+    
   }
 }
 
