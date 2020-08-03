@@ -16,7 +16,7 @@ async function PTokenContribute() {
   await sleep(5000);
   
   // contributor
-  // 1. need to fill in your private key
+  // TODO 1: fill in your private key
   let privateKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(privateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
@@ -24,23 +24,29 @@ async function PTokenContribute() {
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
 
-  let feeNativeToken = 10;  
+  let feeNativeToken = 100;  
   let feePToken = 0;
-  let pdeContributionPairID = "";     // 2. need to fill in your contribution pair ID
-  let contributedAmount = 500;        // 3. need to fill in contribution amount
+  // TODO 2: fill in your contribution pair ID
+  let pdeContributionPairID = "";    
 
+  // TODO 3: fill in contribution amount in nano unit
+  let contributedAmount = 500;    
+  
+  // TODO 4: fill in tokenID that you want to add 
   let tokenParam = {
     Privacy: true,
-    TokenID: "",            // 4. need to fill in token 
+    TokenID: "",            
     TokenName: "",
     TokenSymbol: ""
   }
 
   // create and send contribution tx
   try {
-    await accountSender.createAndSendPTokenContributionTx(
+    let response = await accountSender.createAndSendPTokenContributionTx(
       tokenParam, feeNativeToken, feePToken, pdeContributionPairID, contributedAmount
     );
+
+    console.log("You added liquidity sucessfully with TxID: ", response.txId);
   } catch (e) {
     console.log("Error when sending tx: ", e);
   }

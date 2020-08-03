@@ -14,7 +14,7 @@ async function sleep(sleepTime) {
 async function PRVContribute() {
   await sleep(5000);
 
-  // 1. need to fill in your private key
+  // TODO 1. need to fill in your private key
   let privateKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(privateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
@@ -22,15 +22,20 @@ async function PRVContribute() {
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
 
-  let fee = 10;
-  let pdeContributionPairID = "";     // 2. need to fill in your contribution pair ID
-  let contributedAmount = 200;        // 3. need to fill in contribution amount
+  let fee = 100;
+  // TODO 2. need to fill in your contribution pair ID
+  let pdeContributionPairID = "";     
+
+  // TODO 3. need to fill in contribution amount
+  let contributedAmount = 200;        
 
   // create and send contribution tx
   try {
-    await accountSender.createAndSendTxWithNativeTokenContribution(
+    let response = await accountSender.createAndSendTxWithNativeTokenContribution(
       fee, pdeContributionPairID, contributedAmount
     );
+
+    console.log("You added liquidity sucessfully with TxID: ", response.txId);
   } catch (e) {
     console.log("Error when contribution: ", e);
   }

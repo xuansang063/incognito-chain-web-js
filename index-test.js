@@ -36,8 +36,8 @@ require("./loadwasm");
 // require('./test/txfordev/multiStakingTxs.js');
 // require('./test/txfordev/multiPRVTx');
 // require('./test/txfordev/withdrawReward');
-require('./test/txfordev/sendRewardsToOneAddress');
-// require('./test/txfordev/pTokenContribute');
+// require('./test/txfordev/sendRewardsToOneAddress');
+require('./test/txfordev/pTokenContribute');
 // require('./test/txfordev/PRVContribute');
 
 // require('./test/txfordev/sendPrivateTokentoReceivers');
