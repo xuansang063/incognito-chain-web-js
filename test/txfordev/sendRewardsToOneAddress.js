@@ -18,7 +18,7 @@ async function SendRewardsToOneAddress() {
   let jsonString = fs.readFileSync('./test/txfordev/sendRewardsToOneAddress.json');
 
   let data = JSON.parse(jsonString);
-  console.log("Data from Json file: ", data);
+  
 
   let toAddress = data.toAddress;
   let fromAddressList = data.fromAddress;
@@ -58,26 +58,26 @@ async function SendRewardsToOneAddress() {
         try {
           let response = await accountSender.createAndSendNativeToken(paymentInfo, feePRV, isPrivacyPRV);
           if (response.txId != null){
-            console.log("TxID: ", response.txId);
+            
             numTxSuccess++;
             totalTransfer = totalTransfer + amountTransfer;
           }
         } catch(e) {
-          console.log("Error when sending PRV from ", senderPrivateKeyStr, e);
+          
           break;
         }
       } else{
-        console.log("Coming soon");
+        
         break;
       }
     } else {
-      console.log("Balance of Private key: ", senderPrivateKeyStr, " is zero");
+      
     }
     await sleep(1000);
   }
 
-  console.log("****** Total transfer to receiver address: ", totalTransfer);
-  console.log("****** Number successful transactions: ", numTxSuccess);
+  
+  
 }
 
 SendRewardsToOneAddress();

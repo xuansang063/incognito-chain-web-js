@@ -13,7 +13,7 @@ Wallet.RpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 
 async function SendPRVToReceivers() {
     let data = csvJSON('./test/txfordev/sendPRVPayload.csv');
-    console.log("data: ", data);
+    
     let paymentInfos = JSON.parse(data);
     await sleep(5000);
 
@@ -46,26 +46,26 @@ async function SendPRVToReceivers() {
             paymentInfoTmp = paymentInfos.slice(offset, paymentInfos.length);
             isDone = true;     
         }
-        console.log("================== Round ", loopNumber, " ==================");
-        console.log("Payment infos: ", paymentInfoTmp);
+        
+        
         count += paymentInfoTmp.length;
 
         try {
             let response = await accountSender.createAndSendNativeToken(paymentInfoTmp, fee, isPrivacy, "");
-            console.log("congratulations to you! Create transaction successfully! ^.^")
-            console.log("Response: ", response);
-            console.log("Total Number payment transfer: ", count);
+            
+            
+            
             loopNumber++;
 
             // waiting for creating next transaction
             if (!isDone){
-                console.log("WAITING FOR CREATING NEXT TRANSACTION..................");
+                
                 await sleep(5*60*1000);
             } else {
-                console.log("DONE!!!");
+                
             }
         } catch (e) {
-            console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
+            
         }
     }
 }

@@ -24,7 +24,7 @@ async function MultiStaking() {
   let jsonString = fs.readFileSync('./test/txfordev/privateKeyList.json');
 
   let data = JSON.parse(jsonString);
-  console.log("Data multi staking: ", data);
+  
 
   await sleep(5000);
   let wrongCount = 0;
@@ -51,16 +51,16 @@ async function MultiStaking() {
 
     try {
       let response = await accountFunder.createAndSendStakingTx(param, fee, candidatePaymentAddress,  candidateMiningSeedKey, rewardReceiverPaymentAddress, autoReStaking);
-      console.log("congratulations to you! Stake successfully! ^.^")
-      console.log("Response: ", response);
+      
+      
     } catch (e) {
       wrongCount++;
-      console.log(e);
-      console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
+      
+      
     }
     await sleep(1000);
   }
-  console.log("Running staking test with wrong count: ", wrongCount);
+  
 }
 
 MultiStaking();

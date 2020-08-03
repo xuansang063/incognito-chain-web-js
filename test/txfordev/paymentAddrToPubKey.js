@@ -171,17 +171,17 @@ async function PaymentAddressToPubKey() {
     let publicKeyBytes = senderKeyWallet.KeySet.PaymentAddress.Pk;
 
     let pubKeyB58 = checkEncode(publicKeyBytes, 0x00);
-    console.log(`'${pubKeyB58}'`);
+    
     
 
     if (pubKeyB58 == "1q9ip8q7NFih7E5ZVrZA2cUJSZ5xeLYSvVUzztqeouj4cHa9qB"){
-      console.log("Found!!! ")
-      console.log("pubKeyB58: ", pubKeyB58, i);
+      
+      
       break;
     }
   }
 
-  console.log("Not found")
+  
   
 }
 

@@ -37,7 +37,7 @@ async function PRVContribute() {
 
     console.log("You added liquidity sucessfully with TxID: ", response.txId);
   } catch (e) {
-    console.log("Error when contribution: ", e);
+    
   }
 }
 

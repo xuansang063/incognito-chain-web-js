@@ -19,7 +19,7 @@ async function MultiWithdrawReward() {
   let jsonString = fs.readFileSync('./test/txfordev/withdrawReward.json');
 
   let data = JSON.parse(jsonString);
-  console.log("Data multi withdraw reward: ", data);
+  
 
   await sleep(5000);
   let wrongCount = 0;
@@ -40,26 +40,26 @@ async function MultiWithdrawReward() {
     let amountReward = 0;
     try {
       amountReward = await AccountWallet.getRewardAmount(senderPaymentAddressStr, false, tokenIDStr);
-      console.log("amountReward: ", amountReward);
+      
     } catch (e) {
-      console.log("Error get reward amount: ", e);
+      
     }
 
     if (amountReward > 0) {
       try {
         let response = await accountFunder.createAndSendWithdrawRewardTx(tokenIDStr);
-        console.log("congratulations to you! Withdraw successfully! ^.^")
-        console.log("Response: ", response);
+        
+        
       } catch (e) {
         wrongCount++;
-        console.log(e);
-        console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
+        
+        
       }
     }
     
     await sleep(1000);
   }
-  console.log("Running withdraw amount test with wrong count: ", wrongCount);
+  
 }
 
 MultiWithdrawReward();
