@@ -15,7 +15,7 @@ async function SendPrivacyTokenToReceivers() {
     let data = csvJSON('./test/txfordev/sendPrivateTokenPayload.csv');
     await sleep(5000);
 
-    
+    console.log("data: ", data);
 
     let paymentInfos = JSON.parse(data);
 
@@ -53,8 +53,8 @@ async function SendPrivacyTokenToReceivers() {
             isDone = true;
         }
 
-        
-        
+        console.log("================== Round ", loopNumber, " ==================");
+        console.log("Payment infos: ", paymentInfoTmp);
 
         try {
             let tokenParams = {
@@ -76,21 +76,21 @@ async function SendPrivacyTokenToReceivers() {
             }
 
             let response = await accountSender.createAndSendPrivacyToken([], tokenParams, feePRV, feePToken, hasPrivacyForPRV, hasPrivacyForToken, "", true, true);
-            
-            
+            console.log("Response from sending tx: ", response);
+            console.log("Congrats!!! Create transaction successfully! ^.^")
 
             count += paymentInfoTmp.length;
             loopNumber++;
            
-            
+            console.log("Total Number payment transfer: ", count);
             if (!isDone) {
-                
+                console.log("WAITING FOR CREATING NEXT TRANSACTION..................");
                 await sleep(5 * 60 * 1000);
             } else {
-                
+                console.log("DONE!!!");
             }
         } catch (e) {
-            
+            console.log("Sorry!!! You cannot send this transaction. Please try again. ^.^", e);
         }
     }
 }
