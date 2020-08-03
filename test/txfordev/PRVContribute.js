@@ -32,7 +32,7 @@ async function PRVContribute() {
       fee, pdeContributionPairID, contributedAmount
     );
   } catch (e) {
-    
+    console.log("Error when contribution: ", e);
   }
 }
 

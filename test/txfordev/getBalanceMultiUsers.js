@@ -18,7 +18,7 @@ async function GetBalanceMultiUsers() {
   let jsonString = fs.readFileSync('./test/txfordev/getBalanceMultiUsers.json');
 
   let data = JSON.parse(jsonString);
-  
+  console.log("Data multi staking: ", data);
 
   await sleep(5000);
 
@@ -37,18 +37,18 @@ async function GetBalanceMultiUsers() {
     try {
       let response = await accountFunder.getBalance();
       if (response != expectedBalance){
-        
+        console.log("[RES] Private key ", data.privateKeys[i], "has : ", response);
         wrongCount++;
       } else{
 
-        
+        console.log("Has expected amoount : ", data.privateKeys[i]);
       }
     } catch (e) {
-      
-      
+      console.log(e);
+      console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
     }
 
-    
+    console.log("Running get balance test with wrong count: ", wrongCount);
   }
 }
 

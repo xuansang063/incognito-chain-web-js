@@ -53,7 +53,7 @@ async function TestMultiCreateAndSendNativeToken() {
         try {
             response = await accountSender.createAndSendNativeToken(paymentInfosParam, fee, isPrivacy, info, true);
         } catch (e) {
-            
+            console.log("Error when send PRV: ", e);
         }
 
         let expectedBalance = responseBalanceBefore - amountTransfer - fee;
@@ -61,16 +61,16 @@ async function TestMultiCreateAndSendNativeToken() {
         while (true) {
             let responseBalanceAfter = await accountSender.getBalance();
             if (responseBalanceAfter != expectedBalance) {
-                
+                console.log("Waiting....");
             } else {
                 countSuccess++;
                 break;
             }
         }
-        
+        console.log("Send tx 1 done, txID: ", response.txId);
     }
 
-    
+    console.log("countSuccess: ", countSuccess);
 }
 
 TestMultiCreateAndSendNativeToken()
