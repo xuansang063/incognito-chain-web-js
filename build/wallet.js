@@ -12098,6 +12098,7 @@ function () {
             isEncryptMessageOutCoinNativeToken,
             isEncryptMessageOutCoinPToken,
             amountTransferPRV,
+            remoteFee,
             i,
             _i25,
             burningAddress,
@@ -12175,6 +12176,7 @@ function () {
 
               case 13:
                 amountTransferPRV = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
+                remoteFee = 0;
 
                 for (i = 0; i < paramPaymentInfosForNativeToken.length; i++) {
                   amountTransferPRV = amountTransferPRV.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(paramPaymentInfosForNativeToken[i].amount));
@@ -12182,28 +12184,28 @@ function () {
 
 
                 if (!isEncryptMessageOutCoinNativeToken) {
-                  _context15.next = 21;
+                  _context15.next = 22;
                   break;
                 }
 
-                _context15.next = 18;
+                _context15.next = 19;
                 return Object(_utils__WEBPACK_IMPORTED_MODULE_14__["encryptMessageOutCoin"])(paramPaymentInfosForNativeToken);
 
-              case 18:
+              case 19:
                 paramPaymentInfosForNativeToken = _context15.sent;
-                _context15.next = 22;
+                _context15.next = 23;
                 break;
 
-              case 21:
+              case 22:
                 for (_i25 = 0; _i25 < paramPaymentInfosForNativeToken.length; _i25++) {
                   paramPaymentInfosForNativeToken[_i25].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_12__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_12__["stringToBytes"])(paramPaymentInfosForNativeToken[_i25].message));
                 }
 
-              case 22:
-                _context15.next = 24;
+              case 23:
+                _context15.next = 25;
                 return Object(_utils__WEBPACK_IMPORTED_MODULE_14__["getBurningAddress"])(_wallet__WEBPACK_IMPORTED_MODULE_7__["Wallet"].RpcClient);
 
-              case 24:
+              case 25:
                 burningAddress = _context15.sent;
                 paymentInfoForPToken = [{
                   paymentAddressStr: burningAddress,
@@ -12211,11 +12213,12 @@ function () {
                   message: ""
                 }];
                 submitParam.TokenReceivers.forEach(function (receiver) {
-                  return paymentInfoForPToken.push({
+                  paymentInfoForPToken.push({
                     paymentAddressStr: receiver.paymentAddress,
                     amount: receiver.amount,
                     message: receiver.message || ''
                   });
+                  remoteFee += receiver.amount;
                 }); // token param
                 // get current token to get token param
 
@@ -12231,80 +12234,80 @@ function () {
                 }; // encrypt message for output coins native token
 
                 if (!isEncryptMessageOutCoinPToken) {
-                  _context15.next = 34;
+                  _context15.next = 35;
                   break;
                 }
 
-                _context15.next = 31;
+                _context15.next = 32;
                 return Object(_utils__WEBPACK_IMPORTED_MODULE_14__["encryptMessageOutCoin"])(tokenParamJson.paymentInfoForPToken);
 
-              case 31:
+              case 32:
                 tokenParamJson.paymentInfoForPToken = _context15.sent;
-                _context15.next = 35;
+                _context15.next = 36;
                 break;
 
-              case 34:
+              case 35:
                 for (_i26 = 0; _i26 < tokenParamJson.paymentInfoForPToken.length; _i26++) {
                   tokenParamJson.paymentInfoForPToken[_i26].message = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_12__["base64Encode"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_12__["stringToBytes"])(tokenParamJson.paymentInfoForPToken[_i26].message));
                 }
 
-              case 35:
-                amountTransferPToken = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(submitParam.TokenReceivers.Amount);
+              case 36:
+                amountTransferPToken = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(tokenParamJson.amount);
                 isPrivacyNativeToken = true;
                 isPrivacyForPToken = false;
                 senderSkStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_3__["PriKeyType"]);
                 paymentAddressStr = this.key.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_3__["PaymentAddressType"]);
-                _context15.next = 42;
+                _context15.next = 43;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_5__["prepareInputForTx"])(amountTransferPRV, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(feeNativeToken), isPrivacyNativeToken, null, this, _wallet__WEBPACK_IMPORTED_MODULE_7__["Wallet"].RpcClient);
 
-              case 42:
+              case 43:
                 inputForTx = _context15.sent;
-                _context15.next = 45;
+                _context15.next = 46;
                 return _wallet__WEBPACK_IMPORTED_MODULE_7__["Wallet"].updateProgressTx(30);
 
-              case 45:
-                _context15.next = 47;
+              case 46:
+                _context15.next = 48;
                 return Object(_tx_utils__WEBPACK_IMPORTED_MODULE_5__["prepareInputForTxPrivacyToken"])(tokenParamJson, this, _wallet__WEBPACK_IMPORTED_MODULE_7__["Wallet"].RpcClient, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(feePToken), isPrivacyForPToken);
 
-              case 47:
+              case 48:
                 inputForPrivacyTokenTx = _context15.sent;
-                _context15.next = 50;
+                _context15.next = 51;
                 return _wallet__WEBPACK_IMPORTED_MODULE_7__["Wallet"].updateProgressTx(50);
 
-              case 50:
+              case 51:
                 tokenParamJson.tokenInputs = inputForPrivacyTokenTx.tokenInputs; // verify tokenID is valid or not
 
                 listCustomTokens = inputForPrivacyTokenTx.listPrivacyToken;
                 k = 0;
                 k = 0;
 
-              case 54:
+              case 55:
                 if (!(k < listCustomTokens.length)) {
-                  _context15.next = 60;
+                  _context15.next = 61;
                   break;
                 }
 
                 if (!(listCustomTokens[k].ID.toLowerCase() === tokenParamJson.propertyID)) {
-                  _context15.next = 57;
+                  _context15.next = 58;
                   break;
                 }
 
-                return _context15.abrupt("break", 60);
+                return _context15.abrupt("break", 61);
 
-              case 57:
+              case 58:
                 k++;
-                _context15.next = 54;
+                _context15.next = 55;
                 break;
 
-              case 60:
+              case 61:
                 if (!(k === listCustomTokens.length)) {
-                  _context15.next = 62;
+                  _context15.next = 63;
                   break;
                 }
 
                 throw new Error("invalid token ID");
 
-              case 62:
+              case 63:
                 nOutputForNativeToken = paramPaymentInfosForNativeToken.length;
 
                 if (inputForTx.totalValueInput.cmp(amountTransferPRV) === 1) {
@@ -12315,24 +12318,24 @@ function () {
                 sndOutputsForNativeToken = new Array(nOutputForNativeToken);
 
                 if (!(nOutputForNativeToken > 0)) {
-                  _context15.next = 73;
+                  _context15.next = 74;
                   break;
                 }
 
-                _context15.next = 68;
+                _context15.next = 69;
                 return _wasm_wasmfuncwrapper__WEBPACK_IMPORTED_MODULE_15__["default"].randomScalars(nOutputForNativeToken.toString());
 
-              case 68:
+              case 69:
                 sndOutputStrsForNativeToken = _context15.sent;
 
                 if (!(sndOutputStrsForNativeToken === null || sndOutputStrsForNativeToken === "")) {
-                  _context15.next = 71;
+                  _context15.next = 72;
                   break;
                 }
 
                 throw new Error("Can not random scalar for native token output");
 
-              case 71:
+              case 72:
                 sndDecodes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_12__["base64Decode"])(sndOutputStrsForNativeToken);
 
                 for (_i27 = 0; _i27 < nOutputForNativeToken; _i27++) {
@@ -12340,7 +12343,7 @@ function () {
                   sndOutputsForNativeToken[_i27] = Object(_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(sndBytes, _constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"]);
                 }
 
-              case 73:
+              case 74:
                 // random snd for output native token
                 nOutputForPToken = tokenParamJson.paymentInfoForPToken.length;
 
@@ -12351,24 +12354,24 @@ function () {
                 sndOutputsForPToken = new Array(nOutputForPToken);
 
                 if (!(nOutputForPToken > 0)) {
-                  _context15.next = 84;
+                  _context15.next = 85;
                   break;
                 }
 
-                _context15.next = 79;
+                _context15.next = 80;
                 return _wasm_wasmfuncwrapper__WEBPACK_IMPORTED_MODULE_15__["default"].randomScalars(nOutputForPToken.toString());
 
-              case 79:
+              case 80:
                 sndOutputStrsForPToken = _context15.sent;
 
                 if (!(sndOutputStrsForPToken === null || sndOutputStrsForPToken === "")) {
-                  _context15.next = 82;
+                  _context15.next = 83;
                   break;
                 }
 
                 throw new Error("Can not random scalar for privacy token output");
 
-              case 82:
+              case 83:
                 _sndDecodes3 = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_12__["base64Decode"])(sndOutputStrsForPToken);
 
                 for (_i28 = 0; _i28 < nOutputForPToken; _i28++) {
@@ -12376,7 +12379,7 @@ function () {
                   sndOutputsForPToken[_i28] = Object(_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(_sndBytes3, _constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"]);
                 }
 
-              case 84:
+              case 85:
                 // prepare meta data for tx
                 burningReqMetadata = {
                   BurnerAddress: paymentAddressStr,
@@ -12388,20 +12391,20 @@ function () {
                 };
                 paramInitTx = Object(_tx_utils__WEBPACK_IMPORTED_MODULE_5__["newParamInitPrivacyTokenTx"])(senderSkStr, paramPaymentInfosForNativeToken, inputForTx.inputCoinStrs, feeNativeToken, isPrivacyNativeToken, isPrivacyForPToken, tokenParamJson, burningReqMetadata, "", inputForTx.commitmentIndices, inputForTx.myCommitmentIndices, inputForTx.commitmentStrs, sndOutputsForNativeToken, inputForPrivacyTokenTx.commitmentIndices, inputForPrivacyTokenTx.myCommitmentIndices, inputForPrivacyTokenTx.commitmentStrs, sndOutputsForPToken);
                 paramInitTxJson = circular_json__WEBPACK_IMPORTED_MODULE_9___default.a.stringify(paramInitTx);
-                _context15.next = 89;
+                _context15.next = 90;
                 return _wasm_wasmfuncwrapper__WEBPACK_IMPORTED_MODULE_15__["default"].initBurningRequestTx(paramInitTxJson);
 
-              case 89:
+              case 90:
                 resInitTx = _context15.sent;
 
                 if (!(resInitTx === null || resInitTx === "")) {
-                  _context15.next = 92;
+                  _context15.next = 93;
                   break;
                 }
 
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_13__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_13__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-              case 92:
+              case 93:
                 //base64 decode txjson
                 resInitTxBytes = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_12__["base64Decode"])(resInitTx); // get b58 check encode tx json
 
@@ -12411,29 +12414,29 @@ function () {
                 lockTime = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(lockTimeBytes).toNumber();
                 tokenIDBytes = resInitTxBytes.slice(resInitTxBytes.length - 32);
                 tokenID = Object(_common__WEBPACK_IMPORTED_MODULE_10__["convertHashToStr"])(tokenIDBytes).toLowerCase();
-                _context15.next = 100;
+                _context15.next = 101;
                 return _wallet__WEBPACK_IMPORTED_MODULE_7__["Wallet"].updateProgressTx(80);
 
-              case 100:
-                _context15.prev = 100;
-                _context15.next = 103;
+              case 101:
+                _context15.prev = 101;
+                _context15.next = 104;
                 return _wallet__WEBPACK_IMPORTED_MODULE_7__["Wallet"].RpcClient.sendRawTxCustomTokenPrivacy(b58CheckEncodeTx);
 
-              case 103:
+              case 104:
                 response = _context15.sent;
-                _context15.next = 109;
+                _context15.next = 110;
                 break;
 
-              case 106:
-                _context15.prev = 106;
-                _context15.t0 = _context15["catch"](100);
+              case 107:
+                _context15.prev = 107;
+                _context15.t0 = _context15["catch"](101);
                 throw new _errorhandler__WEBPACK_IMPORTED_MODULE_13__["CustomError"](_errorhandler__WEBPACK_IMPORTED_MODULE_13__["ErrorObject"].SendTxErr, "Can not send privacy token tx", _context15.t0);
 
-              case 109:
-                _context15.next = 111;
+              case 110:
+                _context15.next = 112;
                 return _wallet__WEBPACK_IMPORTED_MODULE_7__["Wallet"].updateProgressTx(90);
 
-              case 111:
+              case 112:
                 // saving history tx
                 // check status of tx
                 listUTXOForPRV = [];
@@ -12445,7 +12448,7 @@ function () {
                   status = _constants__WEBPACK_IMPORTED_MODULE_3__["SuccessTx"];
                   response.typeTx = _tx_constants__WEBPACK_IMPORTED_MODULE_1__["TxCustomTokenPrivacyType"];
                   response.feeNativeToken = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(feeNativeToken).toNumber();
-                  response.feePToken = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(feePToken).toNumber();
+                  response.feePToken = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(feePToken + remoteFee).toNumber();
                   response.lockTime = lockTime;
                   response.amountNativeToken = amountTransferPRV.toNumber();
                   response.amountPToken = amountTransferPToken.toNumber();
@@ -12474,18 +12477,18 @@ function () {
 
                 isIn = false;
                 this.savePrivacyTokenTxHistory(response, [burningAddress], isIn, isPrivacyNativeToken, isPrivacyForPToken, listUTXOForPRV, listUTXOForPToken, "", burningReqMetadata);
-                _context15.next = 119;
+                _context15.next = 120;
                 return _wallet__WEBPACK_IMPORTED_MODULE_7__["Wallet"].updateProgressTx(100);
 
-              case 119:
+              case 120:
                 return _context15.abrupt("return", response);
 
-              case 120:
+              case 121:
               case "end":
                 return _context15.stop();
             }
           }
-        }, _callee15, this, [[100, 106]]);
+        }, _callee15, this, [[101, 107]]);
       }));
 
       function createAndSendBurningRequestTx() {
