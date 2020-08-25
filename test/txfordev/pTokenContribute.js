@@ -32,7 +32,7 @@ async function PTokenContribute() {
   // TODO 3: fill in contribution amount in nano unit
   let contributedAmount = 500;    
   
-  // TODO 4: fill in tokenID that you want to add 
+  // TODO 4: fill in TokenID that you want to add 
   let tokenParam = {
     Privacy: true,
     TokenID: "",            
