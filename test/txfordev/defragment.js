@@ -13,7 +13,7 @@ async function sleep(sleepTime) {
 async function Defragment() {
   await sleep(8000);
   // TODO 1. FILL YOUR PRIVATE KEY
-  const privateKeyStr = "112t8ro7bsF9uitHsbaWX9kfcuDKqr3vphwfupKyqPL3YhvBwgtgtvtDCWLdrH6MJ4RHRtfWKMBjP86sewLqKLKVDD1QHLysLfRZLWzYg3Er";
+  const privateKeyStr = "";
   const senderKeyWallet = keyWallet.base58CheckDeserialize(privateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
