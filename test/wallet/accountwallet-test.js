@@ -2,13 +2,13 @@ import {KeyWallet as keyWallet} from "../../lib/wallet/hdwallet";
 import {AccountWallet, Wallet} from "../../lib/wallet/wallet";
 import {RpcClient} from "../../lib/rpcclient/rpcclient";
 import {CustomTokenInit, CustomTokenTransfer} from "../../lib/tx/constants";
-import {PaymentAddressType} from "../../lib/wallet/constants";
+import { PaymentAddressType, PRVIDSTR } from "../../lib/wallet/constants";
 import {ENCODE_VERSION} from "../../lib/constants";
 import {checkEncode} from "../../lib/base58";
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 const rpcClient = new RpcClient("https://testnet.incognito.org/fullnode");
-// const rpcClient = new RpcClient("http://localhost:9998");
+// const rpcClient = new RpcClient("http://localhost:9354");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 
@@ -131,7 +131,7 @@ async function TestCreateAndSendNativeToken() {
   await sleep(10000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "112t8rnjeorQyyy36Vz5cqtfQNoXuM7M2H92eEvLWimiAtnQCSZiP2HXpMW7mECSRXeRrP8yPwxKGuziBvGVfmxhQJSt2KqHAPZvYmM1ZKwR";
+  let senderPrivateKeyStr = "113G5oSiKADearq753S38NMqQA1jKPGxpqJaHkaZk7s6rZHXx3cxQ6RN2gnVTBNDbV32adPuN1aFr5oa5rM9XhWUNjR7LKrKjeLejPxm7uXD";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -139,7 +139,7 @@ async function TestCreateAndSendNativeToken() {
   accountSender.key = senderKeyWallet;
 
   // receiver key (payment address)
-  let receiverPaymentAddrStr = "12Rwz4HXkVABgRnSb5Gfu1FaJ7auo3fLNXVGFhxx1dSytxHpWhbkimT1Mv5Z2oCMsssSXTVsapY8QGBZd2J4mPiCTzJAtMyCzb4dDcy";
+  let receiverPaymentAddrStr = "12S5gFMbfrPqF76K6WAbq89reUj2PipxqGnS9Zpja1vXZnVT3eNDmMaJd9Rn1ppJT13wgQG8J59Spb3tpVfD1i7sW3mfYSaqtGhp3RS";
   // let receiverKeyWallet = keyWallet.base58CheckDeserialize(receiverPaymentAddrStr);
   // let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
 
@@ -148,10 +148,10 @@ async function TestCreateAndSendNativeToken() {
   let balance = await accountSender.getBalance();
   console.log("AAA balance: ", balance);
 
-  let fee = 5;
+  let fee = 100;
   let isPrivacy = false;
   let info = "";
-  let amountTransfer = 1 * 1e9; // in nano PRV
+  let amountTransfer = balance - fee; // in nano PRV
 
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -334,9 +334,10 @@ async function TestCreateAndSendStopAutoStakingTx() {
 // TestCreateAndSendStopAutoStakingTx();
 
 async function TestDefragment() {
+  await sleep(8000);
   Wallet.RpcClient = rpcClient;
   // sender
-  let senderSpendingKeyStr = "112t8rnXgFuVb4pfnqh9wkwrAZZRp7WHQVtnHnxBNkaHimBoL42DvsFVLisDqXiTZpnKFAZahQsCaoWdEQ9s77FFPzRey6H9CS7JeC6ipgoB";
+  let senderSpendingKeyStr = "112t8ro4JyjNxs1JtGt4HG9s39wY9QDz61H8tXuo28Ufb9HE9Pshqc8pdChjAs8BXEzkam3PaJc7yHfmYJVsc5NG47eTijME4RqfS9JcR1u9";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -346,7 +347,7 @@ async function TestDefragment() {
   // create and send defragment tx
   let response;
   try {
-    response = await accountSender.defragment(100, 2, true);
+    response = await accountSender.defragmentNativeCoin(100, true);
   } catch (e) {
     console.log(e);
   }
@@ -356,6 +357,96 @@ async function TestDefragment() {
 
 // TestDefragment();
 
+async function TestFragment() {
+  await sleep(10000);
+  const senders = [
+    '113Hg4ewhksLe3SN5UfMS6AprNVjxjLX1AKNDRkp1vxfZkLbLRfT1iG2Cj8txpJ7PvP6jqwnUHTw1qNyDQTjR9Tx6g1WQK9PQeVJPvGh1TAp',
+    '113KHgyWDDSVjP5mp2Sd4Nc4cjopm3WjBHnFgnfYhGzvz8fAMeEj5CWcudzxpr84A6kL923SB9Qh5pxfd7K25mFtYdaiYZnPTR8WiYBszFAo',
+    '113G5oSiKADearq753S38NMqQA1jKPGxpqJaHkaZk7s6rZHXx3cxQ6RN2gnVTBNDbV32adPuN1aFr5oa5rM9XhWUNjR7LKrKjeLejPxm7uXD',
+    '113DgVBM9RXdmHxmKS6FobrH1UTcVvVknMHjrAZnSCJZpmEkRT9z2KKEV7GaVCmujUomx6tQZfYLiUy1JJRzfoZPwhnijFWEUg1qqUZVPMvu',
+    '113MhKk6mnvuheMDXrgZmCmeuvTDaN92YrDVNMgY5L5XDYPm6m2ohNNx5dHsuCdwje1c8WhCvfdU9QskXPFMLJ1etxcEuwAKsyRwjfybQgU1',
+    '113iK2Y4DXfFv2D4bjWTpA9VL7QdY89WkzSfzg9jzwANHUAFozVCoj2zpmmucUkY2goN2xnaiNyLe7FnER7jXmYYxjN9Jn6uJNFUjc3GpcwS',
+    '113dK4sfCN7qrcfrBMytergECXMyWoJj1QcTJUTd1kin4tfP87xBKr99NkBnHokf9U4vgn1C8zDYYjQpHjpDZ8vbY17K977b53rRQSGwiupT',
+    '1137kFVc6NrAzCM4osTpYiyZ7Yup4AKEF7AzT8sLQBKz69PWL18XtUNfqspSWfsTdqVLxATrpAZhRZipbbVryQLpKQwHkFDnuC9vnbNwykYF',
+    '112zsr73UXUCNqEUa3tHjUr3CQxCvfDcsYNCC7pdez7CRyvPkynXoH2wgQTYMDoEokSBve1S4Zc9EaTEvdZwzyFbdgiJbpWLvXhqf5GogTHs',
+    '113Qr9vH4USFNpNyWoZqQ869sBYzofeBuA7PyQSBxtmrARPCqiGFKPzm2nxpM1UMvSC9EJaKhn6X8bHNxGW6Phm6mDnr75vtaZMnYE65FBfL',
+  ];
+  Wallet.RpcClient = rpcClient;
+
+  const fragmentAccountKey = '113FavVjd4dEFCqkkdA5TP1HQMWVjczzRx7yprpMPmFuBMJ3gq17ouA6azaj4Hp5aHwNBBq1KpFnaRPoVHET6gPshyJxykgkdHBDKeffNFwt';
+  const fragmentSenderKeyWallet = keyWallet.base58CheckDeserialize(fragmentAccountKey);
+  fragmentSenderKeyWallet.KeySet.importFromPrivateKey(fragmentSenderKeyWallet.KeySet.PrivateKey);
+  const fragmentAccount = new AccountWallet();
+  fragmentAccount.key = fragmentSenderKeyWallet;
+
+  let utxos = 0;
+
+  const receivers = [
+    '12S6kxWd2ygd6AhuQtmfkDux7EZo4AVL9iro6xgwij55FePNaeymeweFE4MJCejSEKh8Bpjw9WvJEhaVxJby4mQ5o7QW1tB44Lkvcg7',
+    '12S3MLa5HfubAXYYz4zapJ3pTDzzpuLWvu4W8nHxY2BHpa1dS1VCHyfCN6PRZh8Akh653AcpuU9fhqYxRRABKNUCtD2LJuoq8nT9y7q',
+    '12S1uv3VaT9KaAVdoAzqRZJVtZJoRRRvpY4ZSkJa8WjD9YLtNB5fFpX1zSoPZxacU1CMZwxPGpxUfWepN8N1G6GF25FrT4qyqNj5ojG',
+    '12S4sPkKkf2ooWmogoK8fVUbFvsrewLSbBb5sd3gAMmWNikVUHUbYPGWj3tKp1qJKEVekXJsgZ8cxkzcXvzU4kMfP7QkaAkwboXbzwt',
+    '12S422ZBpe3MeXbZsHQ1YzUwa6ZhvM78bNhvzEB55CA3SZbmWwAFXKSqT7tqjTxNYKc5SAP7eihkxc6gYfrKZ2mbKEZyQGH74rWprJD',
+  ];
+
+  const amountTransfer = 1e5;
+  const paymentInfos = receivers.map(item => ({
+    "paymentAddressStr": item,
+    "amount": amountTransfer,
+  }));
+
+  while (utxos < 100) {
+    for (const sender of senders) {
+      const senderKeyWallet = keyWallet.base58CheckDeserialize(sender);
+      senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+      const accountSender = new AccountWallet();
+      accountSender.key = senderKeyWallet;
+
+      // create and send PRV
+      const res = await accountSender.createAndSendNativeToken(paymentInfos, 100, false, "Fragment", false);
+      console.log('Send tx succesfully with TxID: ', res.txId);
+    }
+
+    await sleep(120000);
+    utxos += 10;
+    console.log('NEW UTXOs', utxos)
+  }
+}
+
+TestFragment();
+
+async function TestSendMultiple() {
+  await sleep(10000);
+  const masterKey = '112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or';
+  Wallet.RpcClient = rpcClient;
+
+  const receivers = [
+    '12RqtTDruw2nbxz2rtqHvam2hGmBwPsMUCes6WZGMaUYfXz23E2gRTwA6MAKGzeVZXeRvc7bEk7bvT6BmQ4Ao6c1JwkY5fAxrTqWhzS',
+    '12RwX8oHx8uWaUKA7QR24mRRYjZJN9utAD9wyZj72fgawSRoiymHVeH3YZFV1rcxuBrmqGB5dm8VM23UH5MuXq2FHg7WsX2gZNtyAJS',
+    '12S5gFMbfrPqF76K6WAbq89reUj2PipxqGnS9Zpja1vXZnVT3eNDmMaJd9Rn1ppJT13wgQG8J59Spb3tpVfD1i7sW3mfYSaqtGhp3RS',
+    '12S1Gj97eNmXDx3E35A1rULXmqQPN3oNkgtNLpNYMysERbHBdjJNJ4jUZ7Mab1NExEje8Crztcs8CBP3gCcAQsUAHhHXs21THTRXx1W',
+    '12RyDsu2p2y5Rp6fP4GMAdYVDcTycX2f3QVRYjrNSwVKyL6s8QMojT5xVm1mEuo3j6S1Nbk7C6U1rzouxhV63cqGv5v5FQFgtQZFre1',
+    '12S25ZFRh7fusQtSWpdUVz9qvbpCKUoZLtZKhKcXCdXfrxAQRUwdU6o3EJ1runKJHEHLFt4se4GQiHFjiy7Ea884wu8z6jn4B3DGBbq',
+    '12S2ixNYzczL8b6fMaWY5XTCa19hqzLX7oQJHH8TN9rb7qioVJjPNxA7DXJFYhKMEhpKfcPAsQsRAG1jnS5kgkqJzU3ZXpAEF94FVnW',
+    '12S3A1qWz6kng9YRfBmDn9HTNq9sGMhotZEHX2uuK2Qj6ijVALgzKtNr3GotF3BKrDPQYusaxTTXyEuEbDBmee1et7aLKCqQ6mt8rrV',
+    '12S49TkrtJPHrPqwXwiKSiv8VeWYVmwVGQCujPV8Veu1jEkyW8YdS2JUM3i3krcFMkaPoEqfcVf8QJPJ8mFtwv1VVSqNPK74ZEM56Dv',
+    '12RsLeV5TH4R71qJPWPX6uHht9cKbHY5o5huEeRtA7wB512XddyK2viXQFdMmMpVtKEyp1dd1yWgppdLe8oxFhB3gDQq5Mqyc26abiC',
+  ];
+  const amount = 100e9;
+  const paymentInfos = receivers.map(item => ({
+    "paymentAddressStr": item,
+    "amount": amount,
+  }));
+
+  const senderKeyWallet = keyWallet.base58CheckDeserialize(masterKey);
+  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  const accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+  const res = await accountSender.createAndSendNativeToken(paymentInfos, 100, true, "Fragment", false);
+  console.log('Send tx succesfully with TxID: ', res.txId);
+}
+
+// TestSendMultiple();
 
 async function TestGetBalance() {
   Wallet.RpcClient = rpcClient;
@@ -404,7 +495,6 @@ async function TestGetAllPrivacyTokenBalance() {
 }
 
 // TestGetAllPrivacyTokenBalance();
-
 
 /************************* DEX **************************/
 
@@ -550,7 +640,7 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
   // let isEncryptMessageForPToken = false;
   // let isEncryptMessageForNativeToken = false;
 
-  //   let response2 =  await accountSender.replaceTx(res.txId, newFee, newFeePToken, 
+  //   let response2 =  await accountSender.replaceTx(res.txId, newFee, newFeePToken,
   //     newInfo, newMessageForNativeToken, isEncryptMessageForNativeToken, newMessageForPToken, isEncryptMessageForPToken);
   //   console.log("Send tx 2 done : ", response2);
   } catch (e) {
@@ -697,8 +787,8 @@ async function TestCreateAndSendReplacePrivacyTokenTransfer() {
   let isEncryptMessageForPToken = false;
   let isEncryptMessageForNativeToken = false;
 
-  let response2 =  await accountSender.replaceTx(response1.txId, newFee, newFeePToken, 
-    newInfo, newMessageForNativeToken, isEncryptMessageForNativeToken, 
+  let response2 =  await accountSender.replaceTx(response1.txId, newFee, newFeePToken,
+    newInfo, newMessageForNativeToken, isEncryptMessageForNativeToken,
     newMessageForPToken, isEncryptMessageForPToken);
   console.log("Send tx 2 done : ", response2);
 }
