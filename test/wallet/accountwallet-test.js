@@ -337,7 +337,7 @@ async function TestDefragment() {
   await sleep(8000);
   Wallet.RpcClient = rpcClient;
   // sender
-  let senderSpendingKeyStr = "112t8ro4JyjNxs1JtGt4HG9s39wY9QDz61H8tXuo28Ufb9HE9Pshqc8pdChjAs8BXEzkam3PaJc7yHfmYJVsc5NG47eTijME4RqfS9JcR1u9";
+  let senderSpendingKeyStr = "113X9KCeDKyF3GCSwmjLnE6ufeVZUUobymQYsEfquV3rqoKiNgi53o5NMnJwWMVtqLeu75ksAGkhrqzz59d9egf1HyapW2txpYUMpfNx3bb1";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -345,14 +345,14 @@ async function TestDefragment() {
   accountSender.key = senderKeyWallet;
 
   // create and send defragment tx
-  let response;
   try {
-    response = await accountSender.defragmentNativeCoin(100, true);
+    for (let i = 0; i < 10; i++) {
+      const response = await accountSender.defragmentNativeCoin(100, true, 10, 30);
+      console.log("Response defragment: ", accountSender.spendingCoins, response);
+    }
   } catch (e) {
-    console.log(e);
+    console.log('ERROR', e);
   }
-
-  console.log("REsponse defragment: ", response);
 }
 
 // TestDefragment();
@@ -395,7 +395,7 @@ async function TestFragment() {
     "amount": amountTransfer,
   }));
 
-  while (utxos < 100) {
+  while (utxos < 500) {
     for (const sender of senders) {
       const senderKeyWallet = keyWallet.base58CheckDeserialize(sender);
       senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
@@ -407,7 +407,7 @@ async function TestFragment() {
       console.log('Send tx succesfully with TxID: ', res.txId);
     }
 
-    await sleep(120000);
+    await sleep(30000);
     utxos += 10;
     console.log('NEW UTXOs', utxos)
   }
