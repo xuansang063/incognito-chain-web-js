@@ -9,22 +9,22 @@ async function sleep(sleepTime) {
 
 async function TestKey() {
   await sleep(5000);
-  let sk = key.GeneratePrivateKey([123]);
+  let sk = await key.GeneratePrivateKey([123]);
   console.log("Spending key : ", sk.join(", "));
 
-  let pk = key.GeneratePublicKey(sk);
+  let pk = await key.GeneratePublicKey(sk);
   console.log("Public key : ", pk.join(", "));
 
-  let rk = key.GenerateReceivingKey(sk);
+  let rk = await key.GenerateReceivingKey(sk);
   console.log('Receiving key: ', rk.join(", "));
 
-  let tk = key.GenerateTransmissionKey(rk);
+  let tk = await key.GenerateTransmissionKey(rk);
   console.log('Transmission key: ', tk.join(", "));
 
   let vk = new key.ViewingKey(sk);
   console.log('Viewing key: ', vk.toBytes().join(", "));
 
-  let paymentAddr = new key.PaymentAddress().fromPrivateKey(sk);
+  let paymentAddr = await (new key.PaymentAddress().fromPrivateKey(sk));
   console.log('Payment addr: ', paymentAddr);
   let paymentAddrBytes = paymentAddr.toBytes();
   console.log("Payment address bytes: ", paymentAddrBytes.join(", "));

@@ -24,7 +24,7 @@ async function SendPRVToReceivers() {
     // TODO: set private key of sender
     let senderSpendingKeyStr = "";
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-    senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+    await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
     let accountSender = new AccountWallet();
     accountSender.key = senderKeyWallet;
 
@@ -44,7 +44,7 @@ async function SendPRVToReceivers() {
             offset = offset + maxReceivers;
         } else{
             paymentInfoTmp = paymentInfos.slice(offset, paymentInfos.length);
-            isDone = true;     
+            isDone = true;
         }
         console.log("================== Round ", loopNumber, " ==================");
         console.log("Payment infos: ", paymentInfoTmp);
