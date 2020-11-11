@@ -22,7 +22,7 @@ async function TestGetRewardAmount() {
   // HN1 change money
   let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -45,7 +45,7 @@ async function TestCreateAndSendRewardAmountTx() {
   // sender key
   let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -69,7 +69,7 @@ async function TestBurningRequestTx() {
   // sender key
   let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -106,7 +106,7 @@ async function TestStakerStatus() {
   // sender key
   let senderSpendingKeyStr = "112t8rnYZr2s7yMuD8V2VtXxEAWPbRjE4ycQbpuQktKADoJYiKxbCxgefjGQG64YbufDPdbTHxhczS8ucQWcXnp84X74PxSW7Kb2VsaSPZ48";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -133,7 +133,7 @@ async function TestCreateAndSendNativeToken() {
   // sender key (private key)
   let senderPrivateKeyStr = "113G5oSiKADearq753S38NMqQA1jKPGxpqJaHkaZk7s6rZHXx3cxQ6RN2gnVTBNDbV32adPuN1aFr5oa5rM9XhWUNjR7LKrKjeLejPxm7uXD";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -178,7 +178,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
   // sender key (private key)
   let senderSpendingKeyStr = "112t8rnjeorQyyy36Vz5cqtfQNoXuM7M2H92eEvLWimiAtnQCSZiP2HXpMW7mECSRXeRrP8yPwxKGuziBvGVfmxhQJSt2KqHAPZvYmM1ZKwR";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
   let accountSender = new AccountWallet();
@@ -223,7 +223,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   // sender key (private key)
   let senderSpendingKeyStr = "112t8rnjeorQyyy36Vz5cqtfQNoXuM7M2H92eEvLWimiAtnQCSZiP2HXpMW7mECSRXeRrP8yPwxKGuziBvGVfmxhQJSt2KqHAPZvYmM1ZKwR";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -281,7 +281,7 @@ async function TestCreateAndSendStakingTx() {
   // staker
   let senderSpendingKeyStr = "112t8rnjeorQyyy36Vz5cqtfQNoXuM7M2H92eEvLWimiAtnQCSZiP2HXpMW7mECSRXeRrP8yPwxKGuziBvGVfmxhQJSt2KqHAPZvYmM1ZKwR";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
   let accountSender = new AccountWallet();
@@ -313,7 +313,7 @@ async function TestCreateAndSendStopAutoStakingTx() {
   // staker
   let senderSpendingKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
   let accountSender = new AccountWallet();
@@ -339,7 +339,7 @@ async function TestDefragment() {
   // sender
   let senderSpendingKeyStr = "113X9KCeDKyF3GCSwmjLnE6ufeVZUUobymQYsEfquV3rqoKiNgi53o5NMnJwWMVtqLeu75ksAGkhrqzz59d9egf1HyapW2txpYUMpfNx3bb1";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -373,32 +373,22 @@ async function TestFragment() {
   ];
   Wallet.RpcClient = rpcClient;
 
-  const fragmentAccountKey = '113FavVjd4dEFCqkkdA5TP1HQMWVjczzRx7yprpMPmFuBMJ3gq17ouA6azaj4Hp5aHwNBBq1KpFnaRPoVHET6gPshyJxykgkdHBDKeffNFwt';
-  const fragmentSenderKeyWallet = keyWallet.base58CheckDeserialize(fragmentAccountKey);
-  fragmentSenderKeyWallet.KeySet.importFromPrivateKey(fragmentSenderKeyWallet.KeySet.PrivateKey);
-  const fragmentAccount = new AccountWallet();
-  fragmentAccount.key = fragmentSenderKeyWallet;
-
   let utxos = 0;
 
   const receivers = [
-    '12S6kxWd2ygd6AhuQtmfkDux7EZo4AVL9iro6xgwij55FePNaeymeweFE4MJCejSEKh8Bpjw9WvJEhaVxJby4mQ5o7QW1tB44Lkvcg7',
-    '12S3MLa5HfubAXYYz4zapJ3pTDzzpuLWvu4W8nHxY2BHpa1dS1VCHyfCN6PRZh8Akh653AcpuU9fhqYxRRABKNUCtD2LJuoq8nT9y7q',
-    '12S1uv3VaT9KaAVdoAzqRZJVtZJoRRRvpY4ZSkJa8WjD9YLtNB5fFpX1zSoPZxacU1CMZwxPGpxUfWepN8N1G6GF25FrT4qyqNj5ojG',
-    '12S4sPkKkf2ooWmogoK8fVUbFvsrewLSbBb5sd3gAMmWNikVUHUbYPGWj3tKp1qJKEVekXJsgZ8cxkzcXvzU4kMfP7QkaAkwboXbzwt',
-    '12S422ZBpe3MeXbZsHQ1YzUwa6ZhvM78bNhvzEB55CA3SZbmWwAFXKSqT7tqjTxNYKc5SAP7eihkxc6gYfrKZ2mbKEZyQGH74rWprJD',
+    '12RsABJk9vAu4qAJqPEMbJsVsTXUBMJWNsPoFr4fWZjQbiETxtWrdjZkZyjgk7vrD4iZaJJVEXJYmZapLKE2gvFKrd2pPnAYjoNDJH7',
   ];
 
-  const amountTransfer = 1e5;
+  const amountTransfer = 1e3;
   const paymentInfos = receivers.map(item => ({
     "paymentAddressStr": item,
     "amount": amountTransfer,
   }));
 
-  while (utxos < 500) {
+  while (utxos <= 40) {
     for (const sender of senders) {
       const senderKeyWallet = keyWallet.base58CheckDeserialize(sender);
-      senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+      await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
       const accountSender = new AccountWallet();
       accountSender.key = senderKeyWallet;
 
@@ -407,7 +397,7 @@ async function TestFragment() {
       console.log('Send tx succesfully with TxID: ', res.txId);
     }
 
-    await sleep(30000);
+    await sleep(180000);
     utxos += 10;
     console.log('NEW UTXOs', utxos)
   }
@@ -416,7 +406,7 @@ async function TestFragment() {
 TestFragment();
 
 async function TestSendMultiple() {
-  await sleep(10000);
+  await sleep(20000);
   const masterKey = '112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or';
   Wallet.RpcClient = rpcClient;
 
@@ -439,7 +429,7 @@ async function TestSendMultiple() {
   }));
 
   const senderKeyWallet = keyWallet.base58CheckDeserialize(masterKey);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   const accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
   const res = await accountSender.createAndSendNativeToken(paymentInfos, 100, true, "Fragment", false);
@@ -455,7 +445,7 @@ async function TestGetBalance() {
   // sender key (private key)
   let senderPrivateKeyStr = "112t8rnYcipb3f1tZ1nN5H9ekjX5H93pX9zpHNhDZN6UAjkRLSM1nfearhQTBijJufkZSFgRp7y1yvoS38wbG51j6wCX8GL4748Zd4r8u7TG";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -480,7 +470,7 @@ async function TestGetAllPrivacyTokenBalance() {
   // sender key (private key)
   let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -504,7 +494,7 @@ async function TestCreateAndSendPRVContributionTx() {
   // staker
   let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
   let accountSender = new AccountWallet();
@@ -533,7 +523,7 @@ async function TestCreateAndSendPRVContributionTx() {
 //   // staker
 //   let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
 //   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-//   senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+//   await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 //   // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
 //   let accountSender = new AccountWallet();
@@ -565,7 +555,7 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
   // staker
   let senderSpendingKeyStr = "112t8rnewVmmbP8poZSRmUvmohTYo2GG5qfmfHhWHZja3tvCLYLWXFwb1LZgFRMN6BA4hXioDqvBUMpajJBiNi7PAmryfAz2eNXiQ1xxvTV7";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
   let accountSender = new AccountWallet();
@@ -604,7 +594,7 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
   // staker
   let senderSpendingKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
   let accountSender = new AccountWallet();
@@ -657,7 +647,7 @@ async function GetListReceivedTx() {
 
   let senderSpendingKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -678,7 +668,7 @@ async function TestReplaceNormalTx() {
   // sender key (private key)
   let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
@@ -732,7 +722,7 @@ async function TestCreateAndSendReplacePrivacyTokenTransfer() {
   // sender key (private key)
   let senderSpendingKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
 
@@ -801,7 +791,7 @@ async function TestGetOutputCoins(){
   // sender key (private key)
   let senderSpendingKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
   // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
 
 

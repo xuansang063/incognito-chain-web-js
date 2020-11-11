@@ -20,7 +20,7 @@ async function TestMultiCreateAndSendNativeToken() {
     // sender key (private key)
     let senderPrivateKeyStr = "112t8rnX7qWSJFCnGBq4YPHYN2D29NmGowC5RSbuDUC8Kg8ywg6GsPda5xRJMAmzmVKwLevdJNi5XfrqHRWDzSGEg37kbsrcWrAEQatR1UQQ";
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
-    senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+    await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
     let accountSender = new AccountWallet();
     accountSender.key = senderKeyWallet;

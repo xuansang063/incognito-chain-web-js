@@ -17,17 +17,17 @@ async function PRVContribute() {
   // TODO 1. need to fill in your private key
   let privateKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(privateKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
 
   let fee = 100;
   // TODO 2. need to fill in your contribution pair ID
-  let pdeContributionPairID = "";     
+  let pdeContributionPairID = "";
 
   // TODO 3. need to fill in contribution amount
-  let contributedAmount = 200;        
+  let contributedAmount = 200;
 
   // create and send contribution tx
   try {

@@ -15,7 +15,7 @@ async function Defragment() {
   // TODO 1. need to fill in your private key
   const privateKeyStr = "";
   const senderKeyWallet = keyWallet.base58CheckDeserialize(privateKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;

@@ -18,7 +18,7 @@ async function GetIncommingTxs() {
     // Todo: Fill in your private key
     let senderSpendingKeyStr = "";
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-    senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+    await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
     let accountSender = new AccountWallet();
     accountSender.key = senderKeyWallet;

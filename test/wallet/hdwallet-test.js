@@ -8,9 +8,9 @@ async function sleep(sleepTime) {
 
 async function TestKeyWallet() {
   await sleep(4000);
-  let spendingKey = key.GeneratePrivateKey([123]);
+  let spendingKey = await key.GeneratePrivateKey([123]);
   console.log("Spending key: ", spendingKey.join(" , "));
-  let keyWallet = new KeyWallet().fromPrivateKey(spendingKey);
+  let keyWallet = await (new KeyWallet().fromPrivateKey(spendingKey));
   console.log("key wallet : ", keyWallet);
 
   let privateKeyStr = keyWallet.base58CheckSerialize(constants.PriKeyType);

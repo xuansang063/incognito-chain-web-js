@@ -29,7 +29,7 @@ async function SendPrivacyTokenToReceivers() {
     let tokenID = "716fd1009e2a1669caacc36891e707bfdf02590f96ebd897548e8963c95ebac0";
 
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
-    senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+    await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
     let accountSender = new AccountWallet();
     accountSender.key = senderKeyWallet;
 
@@ -39,7 +39,7 @@ async function SendPrivacyTokenToReceivers() {
     let hasPrivacyForPRV = true;
 
     let offset = 0;
-    let maxReceivers = 20; 
+    let maxReceivers = 20;
     let isDone = false;
     let count = 0;
     let loopNumber = 0;
@@ -81,7 +81,7 @@ async function SendPrivacyTokenToReceivers() {
 
             count += paymentInfoTmp.length;
             loopNumber++;
-           
+
             console.log("Total Number payment transfer: ", count);
             if (!isDone) {
                 console.log("WAITING FOR CREATING NEXT TRANSACTION..................");

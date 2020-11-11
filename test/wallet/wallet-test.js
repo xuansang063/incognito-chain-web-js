@@ -17,7 +17,7 @@ async function TestInitWallet() {
   // wallet.save("12345678")
 
   let wallet2 = new Wallet()
-  wallet2.init("1", 1, "Wallet", new DefaultStorage())
+  await wallet2.init("1", 1, "Wallet", new DefaultStorage())
   // wallet2.Storage = storage
   // await wallet2.loadWallet("12345678")
 
@@ -26,7 +26,7 @@ async function TestInitWallet() {
 
   let accounts = wallet2.listAccount();
   console.log("accounts: ", accounts);
-  
+
   let account2 = await wallet2.listAccountWithBLSPubKey();
   console.log("accounts: ", account2);
 
@@ -60,14 +60,14 @@ async function TestImportWallet() {
 
   words = words.join(" ");
 
-  wallet.import(words, "1", 3, "Wallet", new DefaultStorage(), 3);
+  await wallet.import(words, "1", 3, "Wallet", new DefaultStorage(), 3);
 
   // wallet2.createNewAccount("Test 2")
   // // let privKey = wallet2.exportAccountPrivateKey(0)
 
   // let accounts = wallet2.listAccount();
   // console.log("accounts: ", accounts);
-  
+
   // let account2 = await wallet2.listAccountWithBLSPubKey();
   // console.log("accounts: ", account2);
   wallet.save("1");
@@ -88,9 +88,9 @@ async function TestImportAccount(){
 
   let passphrase = "1";
   let wallet = new Wallet();
-  wallet.init(passphrase, 1, "Wallet", new DefaultStorage())
+  await wallet.init(passphrase, 1, "Wallet", new DefaultStorage())
 
-  wallet.importAccount("12Ryp47jXJfkz5Cketp4D9U7uTH4hFgFUVUEzq6k5ikvAZ94JucsYbi235siCMud5GdtRi1DoSecsTD2nkiic9TH7YNkLEoEhrvxvwt", "Hien", passphrase);
+  await wallet.importAccount("12Ryp47jXJfkz5Cketp4D9U7uTH4hFgFUVUEzq6k5ikvAZ94JucsYbi235siCMud5GdtRi1DoSecsTD2nkiic9TH7YNkLEoEhrvxvwt", "Hien", passphrase);
 
   console.log("Wallet: ", wallet.MasterAccount.child[1].key);
 
