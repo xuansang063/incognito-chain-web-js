@@ -31,12 +31,12 @@ async function MultiWithdrawReward() {
     // set private for funder
     let senderPrivateKeyStr = data.privateKeys[i];
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
-    senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+    await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
     let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
     let accountFunder = new AccountWallet();
     accountFunder.key = senderKeyWallet;
 
-    // get reward amount 
+    // get reward amount
     let amountReward = 0;
     try {
       amountReward = await AccountWallet.getRewardAmount(senderPaymentAddressStr, false, tokenIDStr);
@@ -56,7 +56,7 @@ async function MultiWithdrawReward() {
         console.log("Sorry. You can not send this transaction. Please try again. Fighting ^.^");
       }
     }
-    
+
     await sleep(1000);
   }
   console.log("Running withdraw amount test with wrong count: ", wrongCount);

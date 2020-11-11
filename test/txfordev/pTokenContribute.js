@@ -14,28 +14,28 @@ async function sleep(sleepTime) {
 
 async function PTokenContribute() {
   await sleep(5000);
-  
+
   // contributor
   // TODO 1: fill in your private key
   let privateKeyStr = "";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(privateKeyStr);
-  senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
   let accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
 
-  let feeNativeToken = 100;  
+  let feeNativeToken = 100;
   let feePToken = 0;
   // TODO 2: fill in your contribution pair ID
-  let pdeContributionPairID = "";    
+  let pdeContributionPairID = "";
 
   // TODO 3: fill in contribution amount in nano unit
-  let contributedAmount = 500;    
-  
-  // TODO 4: fill in TokenID that you want to add 
+  let contributedAmount = 500;
+
+  // TODO 4: fill in TokenID that you want to add
   let tokenParam = {
     Privacy: true,
-    TokenID: "",            
+    TokenID: "",
     TokenName: "",
     TokenSymbol: ""
   }

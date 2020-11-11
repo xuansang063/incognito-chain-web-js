@@ -24,13 +24,13 @@ async function SendRewardsToOneAddress() {
   let fromAddressList = data.fromAddress;
 
   await sleep(5000);
- 
+
   //  tokenID, default null for PRV
   let tokenID = null;
 
   let feePRV = 200;      // nano PRV
   let isPrivacyPRV = true;
-  let isPrivacyPToken = true;  
+  let isPrivacyPToken = true;
 
   let totalTransfer = 0;
   let numTxSuccess  = 0;
@@ -39,14 +39,14 @@ async function SendRewardsToOneAddress() {
     // set private key of sender
     let senderPrivateKeyStr = fromAddressList[i];
     let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
-    senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+    await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
     let accountSender = new AccountWallet();
     accountSender.key = senderKeyWallet;
 
     // get balance
     let balance = await accountSender.getBalance(tokenID);
-   
+
     // create tx transfering reward to toAddress
     if (balance > 0) {
       if (tokenID == null){
