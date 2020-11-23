@@ -8,7 +8,7 @@ async function sleep(sleepTime) {
 
 async function TestKey() {
   await sleep(10000);
-  const seed = bip39.mnemonicToSeedSync('artefact just insect then little marble cereal near tomato speak during menu');
+  const seed = bip39.mnemonicToSeedSync('before divert sausage wire creek patch female limit chuckle ahead liar kite');
 
   const masterAccountKey = await NewKey(seed, 0, 0);
   const account = new AccountWallet();
