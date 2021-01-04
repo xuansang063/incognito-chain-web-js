@@ -1,0 +1,30 @@
+{
+  "errors": [
+    "Entry module not found: Error: Can't resolve './lib/core/index.js' in '/Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib'\nresolve './lib/core/index.js' in '/Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib'\n  using description file: /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/package.json (relative path: ./lib)\n    Field 'browser' doesn't contain a valid alias configuration\n    using description file: /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/package.json (relative path: ./lib/lib/core/index.js)\n      no extension\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/core/index.js doesn't exist\n      .wasm\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/core/index.js.wasm doesn't exist\n      .mjs\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/core/index.js.mjs doesn't exist\n      .js\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/core/index.js.js doesn't exist\n      .json\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/core/index.js.json doesn't exist\n      as directory\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/core/index.js doesn't exist",
+    "Entry module not found: Error: Can't resolve './lib/transactor.js' in '/Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib'\nresolve './lib/transactor.js' in '/Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib'\n  using description file: /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/package.json (relative path: ./lib)\n    Field 'browser' doesn't contain a valid alias configuration\n    using description file: /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/package.json (relative path: ./lib/lib/transactor.js)\n      no extension\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/transactor.js doesn't exist\n      .wasm\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/transactor.js.wasm doesn't exist\n      .mjs\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/transactor.js.mjs doesn't exist\n      .js\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/transactor.js.js doesn't exist\n      .json\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/transactor.js.json doesn't exist\n      as directory\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/transactor.js doesn't exist",
+    "Entry module not found: Error: Can't resolve './lib/wallet.js' in '/Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib'\nresolve './lib/wallet.js' in '/Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib'\n  using description file: /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/package.json (relative path: ./lib)\n    Field 'browser' doesn't contain a valid alias configuration\n    using description file: /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/package.json (relative path: ./lib/lib/wallet.js)\n      no extension\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/wallet.js doesn't exist\n      .wasm\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/wallet.js.wasm doesn't exist\n      .mjs\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/wallet.js.mjs doesn't exist\n      .js\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/wallet.js.js doesn't exist\n      .json\n        Field 'browser' doesn't contain a valid alias configuration\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/wallet.js.json doesn't exist\n      as directory\n        /Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/lib/lib/wallet.js doesn't exist"
+  ],
+  "warnings": [],
+  "version": "4.44.2",
+  "hash": "74bae60de1431573f668",
+  "time": 30,
+  "builtAt": 1608883823645,
+  "publicPath": "",
+  "outputPath": "/Users/Macbook_Autonomous/work/go/src/github.com/incognitochain/app/dist",
+  "assetsByChunkName": {},
+  "assets": [],
+  "filteredAssets": 0,
+  "entrypoints": {},
+  "namedChunkGroups": {},
+  "chunks": [],
+  "modules": [],
+  "filteredModules": 0,
+  "logging": {
+    "webpack.buildChunkGraph.visitModules": {
+      "entries": [],
+      "filteredEntries": 1,
+      "debug": false
+    }
+  },
+  "children": []
+}

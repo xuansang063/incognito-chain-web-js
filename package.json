@@ -1,22 +1,50 @@
 {
-  "name": "contain-chain-web-js",
+  "name": "incognito-chain-web-js",
   "version": "1.0.0",
   "description": "Constant-chain Javascript API",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "lib/wallet.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --eval \"const inc = require('.')\" -i",
+    "build:watch": "webpack --config webpack.config.js --watch",
+    "build": "webpack --config webpack.config.js --mode production",
+    "build:dev": "webpack --config webpack.config.js --mode development",
+    "test": "node -r esm ./test/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/constant-money/constain-chain-web-js.git"
+    "url": "git+https://github.com/incognitochain/incognito-chain-web-js.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/constant-money/constain-chain-web-js/issues"
+    "url": "https://github.com/incognitochain/incognito-chain-web-js/issues"
   },
-  "homepage": "https://github.com/constant-money/constain-chain-web-js#readme",
+  "homepage": "https://github.com/incognitochain/incognito-chain-web-js#readme",
   "dependencies": {
-    "privacy-js-lib": "git://github.com/constant-money/privacy-js-lib"
+    "axios": "^0.19.0",
+    "circular-json": "^0.5.9",
+    "crypto-js": "^3.1.9-1",
+    "esm": "^3.2.25",
+    "lodash": "^4.17.20",
+    "sha3": "^2.0.7",
+    "yarn": "^1.19.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/polyfill": "^7.2.5",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-lodash": "^3.3.4",
+    "core-js": "3",
+    "file-loader": "^4.0.0",
+    "fs": "0.0.1-security",
+    "lodash-webpack-plugin": "^0.11.6",
+    "terser-webpack-plugin": "^1.2.3",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
   }
 }
