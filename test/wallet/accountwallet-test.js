@@ -131,7 +131,7 @@ async function TestCreateAndSendNativeToken() {
 
     await setup();
     let fee = 10;
-    let info = "";
+    let info = "INFOFO";
     let amountTransfer = 400; // in nano PRV
     console.log("Will Transfer: ", amountTransfer);
 
@@ -470,25 +470,26 @@ async function MainRoutine(){
 	try{
 		await TestGetBalance();
 		await TestGetAllPrivacyTokenBalance();
-		await Wallet.sleep(20000);
+		await Wallet.sleep(30000);
 		await TestCreateAndSendConversion();
-		await Wallet.sleep(20000);
+		await Wallet.sleep(30000);
 		await TestCreateAndSendNativeToken();
-		await Wallet.sleep(20000);
+		await Wallet.sleep(30000);
+
 		await TestCreateAndSendStakingTx();
-		await Wallet.sleep(20000);
+		await Wallet.sleep(30000);
         await GetListReceivedTx();
-        await Wallet.sleep(20000);
+        await Wallet.sleep(30000);
 		await TestStakerStatus();
-        await Wallet.sleep(20000);
+        await Wallet.sleep(30000);
 		await TestCreateAndSendTokenConversion();
-		await Wallet.sleep(20000);
+		await Wallet.sleep(30000);
         // init token may err when a token of that name already exists
 		let newTokenID = await TestCreateAndSendPrivacyTokenInit();
-		await Wallet.sleep(20000);
+		await Wallet.sleep(30000);
 		await TestSendMultiple();
 		await Wallet.sleep(30000);
-  //    // burning will return an error since this is not a bridge token
+     // burning will return an error since this is not a bridge token
 		await TestBurningRequestTx();
 		await Wallet.sleep(30000);
 		await TestCreateAndSendPrivacyTokenTransfer();
@@ -496,9 +497,9 @@ async function MainRoutine(){
 		console.log("New token", tokenID);
 		await Wallet.sleep(30000);
 		await TestCreateAndSendPrivacyTokenTransfer();
-		await Wallet.sleep(20000);
+		await Wallet.sleep(30000);
 		await TestGetOutputCoins();
-		await Wallet.sleep(20000);
+		await Wallet.sleep(30000);
 		await TestCreateAndSendStopAutoStakingTx();
 	}catch(e){
 		console.log("Test failed");
@@ -518,7 +519,7 @@ async function PDERoutine(){
         await Wallet.sleep(30000);
         console.log("TRADE");
         await TestCreateAndSendNativeTokenTradeRequestTx();
-        await Wallet.sleep(20000);
+        await Wallet.sleep(30000);
         await TestCreateAndSendPTokenTradeRequestTx();
         await Wallet.sleep(100000);
         console.log("Remember to check the balance of these accounts")
