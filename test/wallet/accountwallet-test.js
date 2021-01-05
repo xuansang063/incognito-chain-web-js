@@ -131,7 +131,6 @@ async function TestCreateAndSendNativeToken() {
 
     await setup();
     let fee = 10;
-    let isPrivacy = false;
     let info = "";
     let amountTransfer = 400; // in nano PRV
     console.log("Will Transfer: ", amountTransfer);
@@ -140,12 +139,12 @@ async function TestCreateAndSendNativeToken() {
     paymentInfosParam[0] = {
         "PaymentAddress": receiverPaymentAddrStr,
         "Amount": amountTransfer,
-        // "message": "A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute"
+        "Message": "A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute"
     };
 
     // create and send PRV
     try {
-        let res = await accountSender.createAndSendNativeToken(paymentInfosParam, fee, isPrivacy, info, false);
+        let res = await accountSender.createAndSendNativeToken(paymentInfosParam, fee, info, true);
         console.log('Send tx succesfully with TxID: ', res.txId);
     } catch (e) {
         console.log("Error when send PRV: ", e);
@@ -170,7 +169,7 @@ async function TestSendMultiple() {
         "Amount": amount,
     }));
     try{
-	    const res = await accountSender.createAndSendNativeToken(paymentInfos, 100, true, info, false);
+	    const res = await accountSender.createAndSendNativeToken(paymentInfos, 100, info, false);
 	    console.log('Send tx succesfully with TxID: ', res.txId);
 	}catch(e){
 		console.log("error:",e);
@@ -181,7 +180,6 @@ async function TestCreateAndSendConversion() {
 
     await setup();
     let fee = 100;
-    let isPrivacy = false;
     let info = "";
     console.log("Will convert all PRV");
 
@@ -201,7 +199,6 @@ async function TestCreateAndSendTokenConversion() {
 
     await setup();
     let fee = 100;
-    let isPrivacy = false;
     let info = "";
     // use the global var tokenID instead
     // let tokenID = "89eddbfac0e6c4827f378c4c453c9011c2b78e50cc54479d70914c505946d526";
@@ -241,10 +238,9 @@ async function TestCreateAndSendPrivacyTokenInit() {
     }]
 
     let feePRV = 50;
-    let hasPrivacy = false;
 
     try {
-        let res = await accountSender.createAndSendPrivacyToken("", paymentInfos, tokenPaymentInfo, feePRV, hasPrivacy, "", false, false, tokenParams);
+        let res = await accountSender.createAndSendPrivacyToken("", paymentInfos, tokenPaymentInfo, feePRV, "", false, false, tokenParams);
         console.log('Send tx succesfully with TxID: ', res.txId);
         return res.TokenID;
     } catch (e) {
@@ -267,10 +263,9 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     }]
 
     let feePRV = 10;
-    let hasPrivacy = true;
 
     try{
-    	let res = await accountSender.createAndSendPrivacyToken(tokenID, paymentInfos, tokenPaymentInfo, feePRV, hasPrivacy, "");
+    	let res = await accountSender.createAndSendPrivacyToken(tokenID, paymentInfos, tokenPaymentInfo, feePRV, "");
     	console.log('Send tx succesfully with TxID: ', res.txId);
     }catch (e) {
         console.log("Error when transferring ptoken: ", e);
@@ -320,7 +315,7 @@ async function TestDefragment() {
     // create and send defragment tx
     let response;
     try {
-        response = await accountSender.defragmentNativeCoin(100, true, 30);
+        response = await accountSender.defragmentNativeCoin(100, 30);
     } catch (e) {
         console.log(e);
         throw e;
@@ -361,11 +356,11 @@ async function TestMakeFragments() {
             accountSender.key = senderKeyWallet;
 
             // create and send PRV
-            let res = await accountSender.createAndSendNativeToken(paymentInfos, 100, false, "Fragment", false);
+            let res = await accountSender.createAndSendNativeToken(paymentInfos, 100, "Fragment", false);
             console.log('Send tx succesfully with TxID: ', res.txId);
         }
 
-        await Wallet.sleep(20000);
+        await Wallet.sleep(30000);
         utxos += 2;
         console.log('NEW UTXOs', utxos);
     }
