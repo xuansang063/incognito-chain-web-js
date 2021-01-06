@@ -131,7 +131,7 @@ async function TestCreateAndSendNativeToken() {
   await sleep(10000);
 
   // sender key (private key)
-  let senderPrivateKeyStr = "113G5oSiKADearq753S38NMqQA1jKPGxpqJaHkaZk7s6rZHXx3cxQ6RN2gnVTBNDbV32adPuN1aFr5oa5rM9XhWUNjR7LKrKjeLejPxm7uXD";
+  let senderPrivateKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
   let senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 
@@ -151,7 +151,7 @@ async function TestCreateAndSendNativeToken() {
   let fee = 100;
   let isPrivacy = false;
   let info = "";
-  let amountTransfer = balance - fee; // in nano PRV
+  let amountTransfer = 1e9; // in nano PRV
 
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -170,7 +170,7 @@ async function TestCreateAndSendNativeToken() {
   console.log("Send tx 1 done");
 }
 
-// TestCreateAndSendNativeToken();
+TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;
@@ -403,7 +403,7 @@ async function TestFragment() {
   }
 }
 
-TestFragment();
+// TestFragment();
 
 async function TestSendMultiple() {
   await sleep(20000);
