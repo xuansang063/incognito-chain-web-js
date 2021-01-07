@@ -439,7 +439,7 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
     let fee = 100;
     let sellAmount = 100;
     let tokenIDToSellStr = null;
-    let tokenIDToBuyStr = "f6c2aca5a808f439690a81e3190a36e8e4f5bdb518ede086c9ee0c1ff52eb681";
+    let tokenIDToBuyStr = tokenID;
     let minAcceptableAmount = 100;
     let tradingFee = 25;
 
@@ -461,7 +461,7 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
 
     let feePRV = 10;
     let sellAmount = 300;
-    let tokenIDToSellStr = "f6c2aca5a808f439690a81e3190a36e8e4f5bdb518ede086c9ee0c1ff52eb681";
+    let tokenIDToSellStr = tokenID;
     let tokenIDToBuyStr = null;
     let minAcceptableAmount = 600;
     let tradingFee = 10;
@@ -475,6 +475,23 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
         console.log("RESPONSE: ", res);
     } catch (e) {
         console.log("Error when trading native token: ", e);
+        throw e;
+    }
+}
+async function TestCreateAndSendPDEWithdrawTx() {
+    await setup();
+    let fee = 10;
+    let withdrawShareAmount = 500;
+    let tokenID1 = null;
+    let tokenID2 = tokenID;
+
+    try {
+        let res = await accountSender.createAndSendWithdrawDexTx(
+            fee, tokenID1, tokenID2, withdrawShareAmount
+        );
+        console.log("res: ", res);
+    } catch (e) {
+        console.log("Error when withdrawing pdex: ", e);
         throw e;
     }
 }
@@ -547,14 +564,16 @@ async function MainRoutine(){
 async function PDERoutine(){
     console.log("BEGIN PDE TEST");
     try{
-        await TestCreateAndSendPRVContributionTx();
-        await Wallet.sleep(10000);
-        await TestCreateAndSendPTokenContributionTx();
+        // await TestCreateAndSendPRVContributionTx();
+        // await Wallet.sleep(10000);
+        // await TestCreateAndSendPTokenContributionTx();
         // await Wallet.sleep(30000);
         // console.log("TRADE");
         // await TestCreateAndSendNativeTokenTradeRequestTx();
         // await Wallet.sleep(30000);
         // await TestCreateAndSendPTokenTradeRequestTx();
+        // await Wallet.sleep(100000);
+        await TestCreateAndSendPDEWithdrawTx();
         // await Wallet.sleep(100000);
         console.log("Remember to check the balance of these accounts")
     }catch(e){
