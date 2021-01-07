@@ -28,24 +28,27 @@ import {
 // const rpcClient = new RpcClient("http://localhost:9334");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
-
+// const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
+ 
 let senderPrivateKeyStr;
 let senderKeyWallet;
 let accountSender;
 let senderPaymentAddressStr;
 let receiverPaymentAddrStr;
+let receiverPaymentAddrStr2;
 
 async function setup(){
 	// await sleep(10000);
 	await Wallet.setProvider("http://localhost:9334");
-	senderPrivateKeyStr = "112t8rnXoBXrThDTACHx2rbEq7nBgrzcZhVZV4fvNEcGJetQ13spZRMuW5ncvsKA1KvtkauZuK2jV8pxEZLpiuHtKX3FkKv2uC5ZeRC8L6we";
+	senderPrivateKeyStr = "112t8rnjeorQyyy36Vz5cqtfQNoXuM7M2H92eEvLWimiAtnQCSZiP2HXpMW7mECSRXeRrP8yPwxKGuziBvGVfmxhQJSt2KqHAPZvYmM1ZKwR";
 	senderKeyWallet = KeyWallet.base58CheckDeserialize(senderPrivateKeyStr);
 
 	await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
 	accountSender = Wallet.NewTransactor();
 	accountSender.key = senderKeyWallet;
 	senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
-	receiverPaymentAddrStr = "12si2KgWLGuhXACeqHGquGpyQy7JZiA5qRTCWW7YTYrEzZBuZC2eGBfckc2NRXkQXiw7XwK2WVfKxC8AcwKGCsyRVr9SR8bN9vTcnk2PPbymztCWadgr9JMP1UY6oSk9XZb56EAKunejzNnmo9Ln";
+    receiverPaymentAddrStr = "12shR6fDe7ZcprYn6rjLwiLcL7oJRiek66ozzYu3B3rBxYXkqJeZYj6ZWeYy4qR4UHgaztdGYQ9TgHEueRXN7VExNRGB5t4auo3jTgXVBiLJmnTL5LzqmTXezhwmQvyrRjCbED5xVWf4ETHbRCSP";
+    receiverPaymentAddrStr2 = "12sm28usKxzw8HuwGiEojZZLWgvDinAkmZ3NvBNRQLuPrf5LXNLXVXiu4VBCMVDrDm97qjLrgFck3P36UTSWfqNX1PBP9PBD78Cpa95em8vcnjQrnwDNi8EdkdkSA6CWcs4oFatQYze7ETHAUBKH";
 }
 async function TestGetBalance() {
 
@@ -132,14 +135,14 @@ async function TestCreateAndSendNativeToken() {
     await setup();
     let fee = 10;
     let info = "INFOFO";
-    let amountTransfer = 400; // in nano PRV
+    let amountTransfer = 1000000000; // in nano PRV
     console.log("Will Transfer: ", amountTransfer);
 
     let paymentInfosParam = [];
     paymentInfosParam[0] = {
         "PaymentAddress": receiverPaymentAddrStr,
         "Amount": amountTransfer,
-        "Message": "A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute A mouse is so cute"
+        "Message": "ABC"
     };
 
     // create and send PRV
@@ -155,15 +158,13 @@ async function TestCreateAndSendNativeToken() {
 async function TestSendMultiple() {
     await setup();
 
-    let info = "Fragment";
+    let info = "";
 
     const receivers = [
-        '12smKh2tQ8CSqfXYKYXePDAxok9fb9xxxA6bszbtKGzd2ierpgz93kFfxiRxaSs4dFtUwghEoFW79YTJUyF6mXefiqtjWH2cBuNUSq5oGgG4aEeJj2UmeL9WhvikdsHr16KYpRxsKNkskUR53xyS',
-        '12sxXoS2bfRwbC3awyzdjCmUSdGPbU5mqrWM5GchPfxTPVnvHBFiti9ZfyGPxQefj6CSqdAb1JdgXYEisXZCx5rKQkTkiLEpoaDttS7t4H4C3uygrRyLZEgxJyc3ZgnK5vimtjxeFSNpZniga9Av',
-        '12sebYMiUvwF3EkmjPPG8bHWgjueKZS1A7QZKxvsaSydbHoJv18m8Dz9EsRK1gTVTKQVz4zpBKFwW9cxdUuTDbJpAkRHHTAXeMimzyw7yhXHkmKVcXg4CU8wZVSTNUfg7Sfe2AFdvjzsyy6pF9PK',
-        '12ssf4RwD6Pqy9q4uM7M3mfchdoYJ3QG3pG5rfKe7PZ49w8BttR3VjuFsAQDu4amMCEkBW1qidtwhrHcodNtJ26BAmtM81piW2Ntmyztk2FC4x9EPifXbKibnz6PkvwTVUhNuNAdBZvj8zYvmSBR',
+        '12shR6fDe7ZcprYn6rjLwiLcL7oJRiek66ozzYu3B3rBxYXkqJeZYj6ZWeYy4qR4UHgaztdGYQ9TgHEueRXN7VExNRGB5t4auo3jTgXVBiLJmnTL5LzqmTXezhwmQvyrRjCbED5xVWf4ETHbRCSP',
+        '12sm28usKxzw8HuwGiEojZZLWgvDinAkmZ3NvBNRQLuPrf5LXNLXVXiu4VBCMVDrDm97qjLrgFck3P36UTSWfqNX1PBP9PBD78Cpa95em8vcnjQrnwDNi8EdkdkSA6CWcs4oFatQYze7ETHAUBKH',
     ];
-    const amount = 1400;
+    const amount = 1*1e9;
     const paymentInfos = receivers.map(item => ({
         "PaymentAddress": item,
         "Amount": amount,
@@ -227,14 +228,15 @@ async function TestCreateAndSendPrivacyTokenInit() {
     let amountInit = 10000;
     let tokenParams = {
         TokenID: "",
-        TokenName: "Rose",
+        TokenName: "Rose1",
         TokenSymbol: "RSE",
         TokenTxType: CustomTokenInit,
         Amount: amountInit
     }
     let tokenPaymentInfo = [{
             PaymentAddress: senderPaymentAddressStr,
-            Amount: amountInit
+            Amount: amountInit,
+            Message: "Your token",
     }]
 
     let feePRV = 50;
@@ -259,7 +261,38 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     let tokenPaymentInfo = [{
             PaymentAddress: receiverPaymentAddrStr,
             Amount: amountTransfer,
-            // Message: "ABC"
+            Message: "Transfer ptoken"
+    }]
+
+    let feePRV = 10;
+    let hasPrivacy = true;
+
+    try{
+    	let res = await accountSender.createAndSendPrivacyToken(tokenID, paymentInfos, tokenPaymentInfo, feePRV, hasPrivacy, "");
+    	console.log('Send tx succesfully with TxID: ', res.txId);
+    }catch (e) {
+        console.log("Error when transferring ptoken: ", e);
+        throw e;
+    }
+}
+
+async function TestMultipleSendPrivacyToken() {
+
+    await setup();
+
+    let paymentInfos = [];
+    let amountTransfer = 100;
+
+    // prepare token param for tx custom token init
+    let tokenPaymentInfo = [{
+            PaymentAddress: receiverPaymentAddrStr,
+            Amount: amountTransfer,
+            Message: "Transfer ptoken"
+    },
+    {
+            PaymentAddress: receiverPaymentAddrStr2,
+            Amount: amountTransfer,
+            Message: "Transfer ptoken 2"
     }]
 
     let feePRV = 10;
@@ -326,8 +359,8 @@ async function TestDefragment() {
 async function TestMakeFragments() {
     await setup();
     const senders = [
-        '112t8rnXoBXrThDTACHx2rbEq7nBgrzcZhVZV4fvNEcGJetQ13spZRMuW5ncvsKA1KvtkauZuK2jV8pxEZLpiuHtKX3FkKv2uC5ZeRC8L6we',
-        '112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKhzbNJkxpJU6',
+        '112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or',
+        '112t8rnjeorQyyy36Vz5cqtfQNoXuM7M2H92eEvLWimiAtnQCSZiP2HXpMW7mECSRXeRrP8yPwxKGuziBvGVfmxhQJSt2KqHAPZvYmM1ZKwR',
     ];
 
     const fragmentAccountKey = '113FavVjd4dEFCqkkdA5TP1HQMWVjczzRx7yprpMPmFuBMJ3gq17ouA6azaj4Hp5aHwNBBq1KpFnaRPoVHET6gPshyJxykgkdHBDKeffNFwt';
@@ -404,7 +437,7 @@ async function TestCreateAndSendNativeTokenTradeRequestTx() {
     await setup();
 
     let fee = 100;
-    let sellAmount = 2000;
+    let sellAmount = 100;
     let tokenIDToSellStr = null;
     let tokenIDToBuyStr = tokenID;
     let minAcceptableAmount = 100;
@@ -445,6 +478,23 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
         throw e;
     }
 }
+async function TestCreateAndSendPDEWithdrawTx() {
+    await setup();
+    let fee = 10;
+    let withdrawShareAmount = 500;
+    let tokenID1 = null;
+    let tokenID2 = tokenID;
+
+    try {
+        let res = await accountSender.createAndSendWithdrawDexTx(
+            fee, tokenID1, tokenID2, withdrawShareAmount
+        );
+        console.log("res: ", res);
+    } catch (e) {
+        console.log("Error when withdrawing pdex: ", e);
+        throw e;
+    }
+}
 async function TestGetOutputCoins() {
     await setup();
     // accountSender.setIsRevealViewKeyToGetCoins(true);
@@ -463,44 +513,45 @@ async function GetListReceivedTx() {
 }
 
 // to run this test flow, make sure the account has enough PRV to stake & some 10000 of this token; both are version 1
-var tokenID = "699a3006d1865ebdc437053b33df6a62c6c7c2f554f2fd0adf99a60f5117f945";
+// var tokenID = "699a3006d1865ebdc437053b33df6a62c6c7c2f554f2fd0adf99a60f5117f945";
+var tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine(){
 	console.log("BEGIN WEB WALLET TEST");
 	// sequential execution of tests; the wait might still be too short
 	try{
 		await TestGetBalance();
-		await TestGetAllPrivacyTokenBalance();
-		await Wallet.sleep(30000);
-		await TestCreateAndSendConversion();
-		await Wallet.sleep(30000);
+		// await TestGetAllPrivacyTokenBalance();
+		// await Wallet.sleep(30000);
+		// await TestCreateAndSendConversion();
+		// await Wallet.sleep(30000);
 		await TestCreateAndSendNativeToken();
-		await Wallet.sleep(30000);
+		// await Wallet.sleep(30000);
 
-		await TestCreateAndSendStakingTx();
-		await Wallet.sleep(30000);
-        await GetListReceivedTx();
-        await Wallet.sleep(30000);
-		await TestStakerStatus();
-        await Wallet.sleep(30000);
-		await TestCreateAndSendTokenConversion();
-		await Wallet.sleep(30000);
-        // init token may err when a token of that name already exists
-		let newTokenID = await TestCreateAndSendPrivacyTokenInit();
-		await Wallet.sleep(30000);
-		await TestSendMultiple();
-		await Wallet.sleep(30000);
-     // burning will return an error since this is not a bridge token
-		await TestBurningRequestTx();
-		await Wallet.sleep(30000);
-		await TestCreateAndSendPrivacyTokenTransfer();
-		tokenID = newTokenID;
-		console.log("New token", tokenID);
-		await Wallet.sleep(30000);
-		await TestCreateAndSendPrivacyTokenTransfer();
-		await Wallet.sleep(30000);
-		await TestGetOutputCoins();
-		await Wallet.sleep(30000);
-		await TestCreateAndSendStopAutoStakingTx();
+	// 	await TestCreateAndSendStakingTx();
+	// 	await Wallet.sleep(30000);
+    //     await GetListReceivedTx();
+    //     await Wallet.sleep(30000);
+	// 	await TestStakerStatus();
+    //     await Wallet.sleep(30000);
+	// 	await TestCreateAndSendTokenConversion();
+	// 	await Wallet.sleep(30000);
+    //     // init token may err when a token of that name already exists
+	// 	let newTokenID = await TestCreateAndSendPrivacyTokenInit();
+	// 	await Wallet.sleep(30000);
+	// 	await TestSendMultiple();
+	// 	await Wallet.sleep(30000);
+    //  // burning will return an error since this is not a bridge token
+	// 	await TestBurningRequestTx();
+	// 	await Wallet.sleep(30000);
+	// 	await TestCreateAndSendPrivacyTokenTransfer();
+	// 	tokenID = newTokenID;
+	// 	console.log("New token", tokenID);
+	// 	await Wallet.sleep(30000);
+	// 	await TestCreateAndSendPrivacyTokenTransfer();
+	// 	await Wallet.sleep(30000);
+	// 	await TestGetOutputCoins();
+	// 	await Wallet.sleep(30000);
+	// 	await TestCreateAndSendStopAutoStakingTx();
 	}catch(e){
 		console.log("Test failed");
 		console.error(e);
@@ -508,20 +559,22 @@ async function MainRoutine(){
 	}
 	console.log("END WEB WALLET TEST");
 }
-MainRoutine();
+// MainRoutine();
 
 async function PDERoutine(){
     console.log("BEGIN PDE TEST");
     try{
-        await TestCreateAndSendPRVContributionTx();
-        await Wallet.sleep(10000);
-        await TestCreateAndSendPTokenContributionTx();
-        await Wallet.sleep(30000);
-        console.log("TRADE");
-        await TestCreateAndSendNativeTokenTradeRequestTx();
-        await Wallet.sleep(30000);
-        await TestCreateAndSendPTokenTradeRequestTx();
-        await Wallet.sleep(100000);
+        // await TestCreateAndSendPRVContributionTx();
+        // await Wallet.sleep(10000);
+        // await TestCreateAndSendPTokenContributionTx();
+        // await Wallet.sleep(30000);
+        // console.log("TRADE");
+        // await TestCreateAndSendNativeTokenTradeRequestTx();
+        // await Wallet.sleep(30000);
+        // await TestCreateAndSendPTokenTradeRequestTx();
+        // await Wallet.sleep(100000);
+        await TestCreateAndSendPDEWithdrawTx();
+        // await Wallet.sleep(100000);
         console.log("Remember to check the balance of these accounts")
     }catch(e){
         console.log("Test failed");
@@ -530,7 +583,7 @@ async function PDERoutine(){
     }
     console.log("END PDE TEST");
 }
-// PDERoutine();
+PDERoutine();
 
 // to use this test flow, make sure acc1 has some 10000s in PRV in version 2 coins
 async function DefragmentRoutine(){
@@ -546,4 +599,4 @@ async function DefragmentRoutine(){
     }
     console.log("END DEFRAG TEST");
 }
-// DefragmentRoutine();
+// DefragmentRoutine()

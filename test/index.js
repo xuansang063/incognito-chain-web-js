@@ -10,3 +10,4 @@ const wasm = load("./privacy.wasm");
 // require("./privacy/hybridenc-test");
 // require("./wallet/wallet-test");
 require("./wallet/accountwallet-test");
+// require("./rpc/rpc-test");
