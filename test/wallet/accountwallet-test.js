@@ -465,12 +465,37 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
     let tokenIDToBuyStr = null;
     let minAcceptableAmount = 600;
     let tradingFee = 10;
+async function TestCustomContribution(pdeContributionPairID, contributingTokenID, contributedAmount, isCross = false) {
+async function TestCustomContribution(pdeContributionPairID, contributingTokenID, contributedAmount) {
 
+    await setup();
+    let fee = 50;
+    // let pdeContributionPairID = "123";
+    // let contributedAmount = 1000000;
+
+    try {
+        await accountSender.createAndSendTxWithContribution(
+            fee, pdeContributionPairID, contributedAmount, "", contributingTokenID
+        );
+    } catch (e) {
+        console.log("Error when staking: ", e);
+        throw e;
+    }
+}
+async function TestCustomTradeRequest(tokenIDToSellStr, tokenIDToBuyStr, sellAmount, minAcceptableAmount) {
+    await setup();
+
+    let feePRV = 50;
+    // let sellAmount = 300;
+    // let tokenIDToSellStr = tokenID;
+    // let tokenIDToBuyStr = null;
+    // let minAcceptableAmount = 2900;
+    let tradingFee = 50;
 
     // create and send staking tx
     try {
         let res = await accountSender.createAndSendNativeTokenTradeRequestTx(
-            feePRV, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee
+            feePRV, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee, "", tokenIDToSellStr
         );
         console.log("RESPONSE: ", res);
     } catch (e) {
@@ -478,6 +503,7 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
         throw e;
     }
 }
+
 async function TestCreateAndSendPDEWithdrawTx() {
     await setup();
     let fee = 10;
@@ -514,6 +540,7 @@ async function GetListReceivedTx() {
 
 // to run this test flow, make sure the account has enough PRV to stake & some 10000 of this token; both are version 1
 // var tokenID = "699a3006d1865ebdc437053b33df6a62c6c7c2f554f2fd0adf99a60f5117f945";
+var secondTokenID = "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
 var tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine(){
 	console.log("BEGIN WEB WALLET TEST");
@@ -561,9 +588,34 @@ async function MainRoutine(){
 }
 // MainRoutine();
 
+// to run this test flow, make sure the account has about 2.5mil PRV, 120k of each of FIRST and SECOND token; all version 2
 async function PDERoutine(){
     console.log("BEGIN PDE TEST");
     try{
+    	// // 10:1 ratio; contribute 1mil PRV and 100k token
+    	TestCustomContribution("first-prv", null, 1000000);
+    	await Wallet.sleep(30000);
+    	TestCustomContribution("first-prv", tokenID, 100000);
+    	await Wallet.sleep(30000);
+    	// sell 10000 PRV for at least 800 token
+    	TestCustomTradeRequest(null, tokenID, 10000, 800);
+    	await Wallet.sleep(30000);
+    	// sell 1000 token for at least 8000 PRV
+    	TestCustomTradeRequest(tokenID, null, 1000, 8000);
+    	await Wallet.sleep(30000);
+
+    	// to cross trade, we need the above pair and a new second-prv pair
+    	// also 10:1 ratio
+    	TestCustomContribution("second-prv", null, 1000000);
+    	await Wallet.sleep(30000);
+    	TestCustomContribution("second-prv", secondTokenID, 100000);
+    	await Wallet.sleep(30000);
+    	// sell 15000 FIRST for at least 14000 SECOND
+    	TestCustomTradeRequest(tokenID, secondTokenID, 15000, 10000);
+    	await Wallet.sleep(30000);
+    	// sell 5000 SECOND for at least 4000 PRV
+    	TestCustomTradeRequest(secondTokenID, tokenID, 5000, 3000);
+
         // await TestCreateAndSendPRVContributionTx();
         // await Wallet.sleep(10000);
         // await TestCreateAndSendPTokenContributionTx();
@@ -573,8 +625,8 @@ async function PDERoutine(){
         // await Wallet.sleep(30000);
         // await TestCreateAndSendPTokenTradeRequestTx();
         // await Wallet.sleep(100000);
-        await TestCreateAndSendPDEWithdrawTx();
-        // await Wallet.sleep(100000);
+        // await TestCreateAndSendPDEWithdrawTx();
+        await Wallet.sleep(100000);
         console.log("Remember to check the balance of these accounts")
     }catch(e){
         console.log("Test failed");
