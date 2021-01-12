@@ -465,7 +465,20 @@ async function TestCreateAndSendPTokenTradeRequestTx() {
     let tokenIDToBuyStr = null;
     let minAcceptableAmount = 600;
     let tradingFee = 10;
-async function TestCustomContribution(pdeContributionPairID, contributingTokenID, contributedAmount, isCross = false) {
+
+
+    // create and send staking tx
+    try {
+        let res = await accountSender.createAndSendNativeTokenTradeRequestTx(
+            feePRV, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee, "", tokenIDToSellStr
+        );
+        console.log("RESPONSE: ", res);
+    } catch (e) {
+        console.log("Error when trading native token: ", e);
+        throw e;
+    }
+}
+
 async function TestCustomContribution(pdeContributionPairID, contributingTokenID, contributedAmount) {
 
     await setup();
