@@ -53,7 +53,7 @@ func makeTxToken(txPRV *Tx, pubkey, sig []byte, proof privacy.Proof) *Tx{
 		Type: 		txPRV.Type,
 		LockTime: 	txPRV.LockTime,
 		Fee: 		0,
-		PubKeyLastByteSender: txPRV.PubKeyLastByteSender,
+		PubKeyLastByteSender: GetShardIDFromLastByte(txPRV.PubKeyLastByteSender),
 		Metadata: 	nil,
 	}
 	var clonedInfo []byte = nil
@@ -428,8 +428,8 @@ func (tx *Tx) proveCA(params_compat *TxPrivacyInitParams, params_token *TokenInn
 	}
 
 	
-	jsb, _ := json.Marshal(tx)
-	println("will sign CA on TX and hash", string(jsb), tx.Hash().String())
+	// jsb, _ := json.Marshal(tx)
+	// println("will sign CA on TX and hash", string(jsb), tx.Hash().String())
 	err = tx.signCA(inputCoins, inputIndexes, outputCoins, sharedSecrets, params_compat, params_token, tx.Hash()[:])
 	return isBurning, err
 }

@@ -41,7 +41,7 @@ func initializeTxConversion(tx *Tx, params *TxPrivacyInitParams, paymentsPtr *[]
 	tx.Fee = params.Fee
 	tx.Version = 2
 	tx.Type = common.TxConversionType
-	tx.PubKeyLastByteSender = senderPaymentAddress.Pk[len(senderPaymentAddress.Pk)-1]
+	tx.PubKeyLastByteSender = GetShardIDFromLastByte(senderPaymentAddress.Pk[len(senderPaymentAddress.Pk)-1])
 	tx.LockTime = time.Now().Unix()
 	tx.Info = params.Info
 	// Params: update balance if overbalance

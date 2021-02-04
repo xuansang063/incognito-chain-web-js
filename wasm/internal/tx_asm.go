@@ -759,7 +759,7 @@ func (tx *Tx) initializeTxAndParams(params_compat *TxPrivacyInitParams, payments
 	// normal type indicator
 	tx.Type = TxNormalType
 	tx.Metadata = params_compat.Metadata
-	tx.PubKeyLastByteSender = senderPaymentAddress.Pk[len(senderPaymentAddress.Pk)-1]
+	tx.PubKeyLastByteSender = GetShardIDFromLastByte(senderPaymentAddress.Pk[len(senderPaymentAddress.Pk)-1])
 	// we don't support version 1
 	tx.Version = 2
 	tx.Info = params_compat.Info
