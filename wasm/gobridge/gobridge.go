@@ -4,6 +4,7 @@ package gobridge
 
 import (
 	"syscall/js"
+	"github.com/pkg/errors"
 )
 
 var bridgeRoot js.Value
@@ -29,8 +30,19 @@ func registrationWrapper(fn func(this js.Value, args []js.Value) (interface{}, e
 }
 
 // RegisterCallback registers a Go function to be a callback used in JavaScript
-func RegisterCallback(name string, callback func(this js.Value, args []js.Value) (interface{}, error)) {
-	bridgeRoot.Set(name, js.FuncOf(registrationWrapper(callback)))
+func RegisterCallback(name string, callback func(string, int64) (interface{}, error)) {
+	mycb := func(_ js.Value, jsInputs []js.Value) (interface{}, error){
+		if len(jsInputs)<1{
+			return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
+		}
+		args := jsInputs[0].String()
+		var num int64 = 0
+		if len(jsInputs)>=2 && jsInputs[1].Type()==js.TypeNumber{
+			num = int64(jsInputs[1].Int())
+		}
+		return callback(args, num)
+	}
+	bridgeRoot.Set(name, js.FuncOf(registrationWrapper(mycb)))
 }
 
 // RegisterValue registers a static value output from Go for access in JavaScript

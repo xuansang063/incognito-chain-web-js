@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"syscall/js"
+	// "syscall/js"
 	"encoding/hex"
 	"encoding/json"
 	"strconv"
@@ -18,16 +18,13 @@ import (
 	// "math/big"
 )
 
-func CreateTransaction(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	args := jsInputs[0].String()
-	var theirTime int64 = 0
-	if len(jsInputs)>=2 && jsInputs[1].Type()==js.TypeNumber{
-		theirTime = int64(jsInputs[1].Int())
-	}
+type TxResult struct{
+	B58EncodedTx string `json:"b58EncodedTx"`
+	Hash string `json:"hash"`
+}
 
+func CreateTransaction(args string, num int64) (interface{}, error){
+	var theirTime int64 = num
 	params := &InitParamsAsm{}
 	// println("Before parse - TX parameters")
 	// println(args)
@@ -41,6 +38,7 @@ func CreateTransaction(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	// println(string(thoseBytesAgain))
 
 	var txJson []byte
+	var hash *common.Hash
 	if params.TokenParams==nil{			
 		tx := &Tx{}
 		err = tx.InitASM(params, theirTime)
@@ -56,6 +54,7 @@ func CreateTransaction(_ js.Value, jsInputs []js.Value) (interface{}, error){
 			println("Can not marshal tx: ", err)
 			return "", err
 		}
+		hash = tx.Hash()
 	}else{
 		tx := &TxToken{}
 		err = tx.InitASM(params, theirTime)
@@ -71,21 +70,17 @@ func CreateTransaction(_ js.Value, jsInputs []js.Value) (interface{}, error){
 			println("Error marshalling tx: ", err)
 			return "", err
 		}
+		hash = tx.Hash()
 	}
-	res := b58.Encode(txJson, common.ZeroByte)
+	encodedTx := b58.Encode(txJson, common.ZeroByte)
+	txResult := TxResult{B58EncodedTx: encodedTx, Hash: hash.String()}
+	jsonResult, _ := json.Marshal(txResult)
 
-	return res, nil
+	return string(jsonResult), nil
 }
 
-func CreateConvertTx(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	args := jsInputs[0].String()
-	var theirTime int64 = 0
-	if len(jsInputs)>=2 && jsInputs[1].Type()==js.TypeNumber{
-		theirTime = int64(jsInputs[1].Int())
-	}
+func CreateConvertTx(args string, num int64) (interface{}, error){
+	var theirTime int64 = num
 
 	params := &InitParamsAsm{}
 	// println("Before parse - TX parameters")
@@ -100,6 +95,7 @@ func CreateConvertTx(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	// println(string(thoseBytesAgain))
 
 	var txJson []byte
+	var hash *common.Hash
 	if params.TokenParams==nil{			
 		tx := &Tx{}
 		err = InitConversionASM(tx, params, theirTime)
@@ -115,6 +111,7 @@ func CreateConvertTx(_ js.Value, jsInputs []js.Value) (interface{}, error){
 			println("Can not marshal tx: ", err)
 			return "", err
 		}
+		hash = tx.Hash()
 	}else{
 		tx := &TxToken{}
 		err = InitTokenConversionASM(tx, params, theirTime)
@@ -130,18 +127,16 @@ func CreateConvertTx(_ js.Value, jsInputs []js.Value) (interface{}, error){
 			println("Error marshalling tx: ", err)
 			return "", err
 		}
+		hash = tx.Hash()
 	}
-	res := b58.Encode(txJson, common.ZeroByte)
+	encodedTx := b58.Encode(txJson, common.ZeroByte)
+	txResult := TxResult{B58EncodedTx: encodedTx, Hash: hash.String()}
+	jsonResult, _ := json.Marshal(txResult)
 
-	return res, nil
+	return string(jsonResult), nil
 }
 
-func NewKeySetFromPrivate(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	skStr := jsInputs[0].String()
-
+func NewKeySetFromPrivate(skStr string, _ int64) (interface{}, error){
 	var err error
 	skHolder := struct{
 		PrivateKey []byte `json:"PrivateKey"`
@@ -166,12 +161,7 @@ func NewKeySetFromPrivate(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	return string(txJson), nil
 }
 
-func DecryptCoin(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	paramStr := jsInputs[0].String()
-
+func DecryptCoin(paramStr string, _ int64) (interface{}, error){
 	var err error
 	temp := &struct{
 		Coin 	CoinInter
@@ -222,12 +212,7 @@ func DecryptCoin(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	return string(resJson), nil
 }
 
-func CreateCoin(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	paramStr := jsInputs[0].String()
-
+func CreateCoin(paramStr string, _ int64) (interface{}, error){
 	var err error
 	temp := &struct{
 		PaymentInfo 	printedPaymentInfo
@@ -267,11 +252,7 @@ func CreateCoin(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	return string(resJson), nil
 }
 
-func GenerateBLSKeyPairFromSeed(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	args := jsInputs[0].String()
+func GenerateBLSKeyPairFromSeed(args string, _ int64) (interface{}, error){
 	seed, err := b64.DecodeString(args)
 	if err != nil {
 		return "", err
@@ -284,11 +265,7 @@ func GenerateBLSKeyPairFromSeed(_ js.Value, jsInputs []js.Value) (interface{}, e
 	return keyPairEncode, nil
 }
 
-func GenerateKeyFromSeed(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	args := jsInputs[0].String()
+func GenerateKeyFromSeed(args string, _ int64) (interface{}, error){
 	seed, err := b64.DecodeString(args)
 	if err != nil {
 		return "", err
@@ -298,12 +275,7 @@ func GenerateKeyFromSeed(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	return res, nil
 }
 
-func HybridEncrypt(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	args := jsInputs[0].String()
-	
+func HybridEncrypt(args string, _ int64) (interface{}, error){	
 	raw, _ := b64.DecodeString(args)
 	publicKeyBytes := raw[0:privacy.Ed25519KeySize]
 	publicKeyPoint, err := new(privacy.Point).FromBytesS(publicKeyBytes)
@@ -319,12 +291,7 @@ func HybridEncrypt(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	return b64.EncodeToString(ciphertext.Bytes()), nil
 }
 
-func HybridDecrypt(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	args := jsInputs[0].String()
-	
+func HybridDecrypt(args string, _ int64) (interface{}, error){
 	raw, _ := b64.DecodeString(args)
 	privateKeyBytes := raw[0:privacy.Ed25519KeySize]
 	privateKeyScalar := new(privacy.Scalar).FromBytesS(privateKeyBytes)
@@ -340,11 +307,7 @@ func HybridDecrypt(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	return b64.EncodeToString(plaintextBytes), nil
 }
 
-func ScalarMultBase(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	args := jsInputs[0].String()
+func ScalarMultBase(args string, _ int64) (interface{}, error){
 	scalar, err := b64.DecodeString(args)
 	if err != nil {
 		return "", err
@@ -355,11 +318,7 @@ func ScalarMultBase(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	return res, nil
 }
 
-func RandomScalars(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	args := jsInputs[0].String()
+func RandomScalars(args string, _ int64) (interface{}, error){
 	num, err := strconv.ParseUint(args, 10, 64)
 	if err != nil {
 		return "", nil
@@ -374,11 +333,7 @@ func RandomScalars(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	return res, nil
 }
 
-func GetSignPublicKey(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	args := jsInputs[0].String()
+func GetSignPublicKey(args string, _ int64) (interface{}, error){
 	raw := []byte(args)
 	var holder struct{
 		Data struct{
@@ -406,11 +361,7 @@ func GetSignPublicKey(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	return hex.EncodeToString(sigPubKey), nil
 }
 
-func SignPoolWithdraw(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<1{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
-	}
-	args := jsInputs[0].String()
+func SignPoolWithdraw(args string, _ int64) (interface{}, error){
 	raw := []byte(args)
 	var holder struct{
 		Data struct{
@@ -448,11 +399,22 @@ func SignPoolWithdraw(_ js.Value, jsInputs []js.Value) (interface{}, error){
 }
 
 // signEncode string, signPublicKeyEncode string, amount string, paymentAddress string
-func VerifySign(_ js.Value, jsInputs []js.Value) (interface{}, error){
-	if len(jsInputs)<4{
-		return nil, errors.Errorf("Invalid number of parameters. Expected %d", 4)
+func VerifySign(args string, _ int64) (interface{}, error){
+	raw := []byte(args)
+	var holder struct{
+		Data struct{
+			Pk string `json:"publicKey"`
+			Signature string `json:"signature"`
+			Amount string `json:"amount"`
+			PaymentAddress string `json:"paymentAddress"`
+		} `json:"data"`
 	}
-	temp, err := hex.DecodeString(jsInputs[1].String())
+	err := json.Unmarshal(raw, &holder)
+	if err != nil {
+		println("Error can not unmarshal data : %v\n", err)
+		return "", err
+	}
+	temp, err := hex.DecodeString(holder.Data.Pk)
 	if err != nil {
 		return "", errors.Errorf("Can not decode sign public key")
 	}
@@ -463,16 +425,25 @@ func VerifySign(_ js.Value, jsInputs []js.Value) (interface{}, error){
 	verifyKey := new(privacy.SchnorrPublicKey)
 	verifyKey.Set(sigPublicKey)
 
-	temp, err = hex.DecodeString(jsInputs[0].String())
+	temp, err = hex.DecodeString(holder.Data.Signature)
 	signature := new(privacy.SchnSignature)
 	err = signature.SetBytes(temp)
 	if err != nil {
 		return false, errors.Errorf("Sig set bytes error")
 	}
-	message := jsInputs[3].String() + jsInputs[2].String()
+	message := holder.Data.PaymentAddress + holder.Data.Amount
 	hashed := common.HashH([]byte(message))
 	res := verifyKey.Verify(signature, hashed[:])
 
 	return res, nil
 }
 
+// func ComputeTransactionHash(args string, _ int64) (interface{}, error){
+// 	// handle both json and b58-json encodings
+// 	raw, _, err1 := b58.Decode(args)
+// 	if err1!=nil{
+// 		raw = []byte(args)
+// 	}
+// 	result := common.HashH(raw).String()
+// 	return result, nil
+// }
