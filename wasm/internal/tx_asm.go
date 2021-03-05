@@ -122,20 +122,50 @@ func (sigPub *SigPubKey) SetBytes(b []byte) error {
 
 type Tx struct {
 	// Basic data, required
-	Version  int8   `json:"Version"`
-	Type     string `json:"Type"` // Transaction type
-	LockTime int64  `json:"LockTime"`
-	Fee      uint64 `json:"Fee"` // Fee applies: always consant
-	Info     []byte // 512 bytes
+	Version  int8   
+	Type     string
+	LockTime int64
+	Fee      uint64
+	Info     []byte
 
 	// Sign and Privacy proof, required
-	SigPubKey            []byte `json:"SigPubKey"` // 33 bytes
-	Sig                  []byte `json:"Sig"`       //
+	SigPubKey            []byte
+	Sig                  []byte
 	Proof                privacy.Proof
-	PubKeyLastByteSender byte
+	pubKeyLastByteSender byte
 	Metadata metadata.Metadata
 	// private field, not use for json parser, only use as temp variable
-	sigPrivKey       []byte       // is ALWAYS private property of struct, if privacy: 64 bytes, and otherwise, 32 bytes
+	sigPrivKey       []byte
+}
+
+func (tx Tx) MarshalJSON() ([]byte, error){
+	var temp = struct{
+		// Basic data, required
+		Version  int8   `json:"Version"`
+		Type     string `json:"Type"` // Transaction type
+		LockTime int64  `json:"LockTime"`
+		Fee      uint64 `json:"Fee"` // Fee applies: always consant
+		Info     []byte // 512 bytes
+
+		// Sign and Privacy proof, required
+		SigPubKey            []byte `json:"SigPubKey"` // 33 bytes
+		Sig                  []byte `json:"Sig"`       //
+		Proof                privacy.Proof
+		PubKeyLastByteSender int    `json:"PubKeyLastByteSender"`
+		Metadata metadata.Metadata  `json:"Metadata`
+	}{
+		Version: tx.Version, 
+		Type: tx.Type,
+		LockTime: tx.LockTime,
+		Fee: tx.Fee,
+		Info: tx.Info,
+		SigPubKey: tx.SigPubKey,
+		Sig: tx.Sig,
+		Proof: tx.Proof,
+		PubKeyLastByteSender: int(tx.pubKeyLastByteSender),
+		Metadata: tx.Metadata,
+	}
+	return json.Marshal(temp)
 }
 
 type CoinCache struct{
@@ -657,7 +687,7 @@ func (tx *Tx) sign(inp []privacy.PlainCoin, inputIndexes []uint64, out []*privac
 		return piErr
 	}
 	var pi int = int(piBig.Int64())
-	shardID := GetShardIDFromLastByte(tx.PubKeyLastByteSender)
+	shardID := common.GetShardIDFromLastByte(tx.pubKeyLastByteSender)
 	ring, indexes, commitmentToZero, err := generateMlsagRing(inp, inputIndexes, out, params, pi, shardID, ringSize)
 	if err != nil {
 		return err
@@ -759,7 +789,7 @@ func (tx *Tx) initializeTxAndParams(params_compat *TxPrivacyInitParams, payments
 	// normal type indicator
 	tx.Type = TxNormalType
 	tx.Metadata = params_compat.Metadata
-	tx.PubKeyLastByteSender = GetShardIDFromLastByte(senderPaymentAddress.Pk[len(senderPaymentAddress.Pk)-1])
+	tx.pubKeyLastByteSender = common.GetShardIDFromLastByte(senderPaymentAddress.Pk[len(senderPaymentAddress.Pk)-1])
 	// we don't support version 1
 	tx.Version = 2
 	tx.Info = params_compat.Info

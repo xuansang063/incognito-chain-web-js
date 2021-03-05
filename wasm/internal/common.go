@@ -34,9 +34,6 @@ func RandBigIntMaxRange(max *big.Int) (*big.Int, error) {
 	return rand.Int(rand.Reader, max)
 }
 
-func GetShardIDFromLastByte(b byte) byte {
-	return byte(int(b) % MaxShardNumber)
-}
 
 func grabBytes(coinBytes *[]byte, offset *int) ([]byte, error) {
 	b := *coinBytes

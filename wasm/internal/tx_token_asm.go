@@ -53,7 +53,7 @@ func makeTxToken(txPRV *Tx, pubkey, sig []byte, proof privacy.Proof) *Tx{
 		Type: 		txPRV.Type,
 		LockTime: 	txPRV.LockTime,
 		Fee: 		0,
-		PubKeyLastByteSender: GetShardIDFromLastByte(txPRV.PubKeyLastByteSender),
+		pubKeyLastByteSender: common.GetShardIDFromLastByte(txPRV.pubKeyLastByteSender),
 		Metadata: 	nil,
 	}
 	var clonedInfo []byte = nil
@@ -120,7 +120,7 @@ type TxTokenParams struct {
 	TokenParams        *TokenParam
 	HasPrivacyCoin     bool
 	HasPrivacyToken    bool
-	ShardID            byte
+	shardID            byte
 	Metadata           metadata.Metadata
 	Info               []byte
 }
@@ -218,10 +218,10 @@ func (params *InitParamsAsm) GetCompatTxTokenParams() *TxTokenParams{
 	shardID := byte(0)
 	if len(ics)>0{
 		otaPub := ics[0].GetPublicKey().ToBytesS()
-		shardID = GetShardIDFromLastByte(otaPub[len(otaPub)-1])
+		shardID = common.GetShardIDFromLastByte(otaPub[len(otaPub)-1])
 	}
 
-	return &TxTokenParams{SenderKey: &params.SenderSK, PaymentInfo: pInfos, InputCoin: ics, FeeNativeCoin: params.Fee, HasPrivacyCoin: params.HasPrivacy, HasPrivacyToken: params.HasPrivacy, ShardID: shardID, Metadata: md, Info: info, TokenParams: tp}
+	return &TxTokenParams{SenderKey: &params.SenderSK, PaymentInfo: pInfos, InputCoin: ics, FeeNativeCoin: params.Fee, HasPrivacyCoin: params.HasPrivacy, HasPrivacyToken: params.HasPrivacy, shardID: shardID, Metadata: md, Info: info, TokenParams: tp}
 }
 
 func createPrivKeyMlsagCA(inputCoins []privacy.PlainCoin, outputCoins []*privacy.CoinV2, outputSharedSecrets []*privacy.Point, params *TxPrivacyInitParams, shardID byte, commitmentsToZero []*privacy.Point) ([]*privacy.Scalar, error) {
@@ -450,7 +450,7 @@ func (tx *Tx) signCA(inp []privacy.PlainCoin, inputIndexes []uint64, out []*priv
 		return piErr
 	}
 	var pi int = int(piBig.Int64())
-	shardID := common.GetShardIDFromLastByte(tx.PubKeyLastByteSender)
+	shardID := common.GetShardIDFromLastByte(tx.pubKeyLastByteSender)
 	ring, indexes, commitmentsToZero, err := generateMlsagRingCA(inp, inputIndexes, out, params_token, pi, shardID, ringSize)
 	if err != nil {
 		return err
@@ -572,7 +572,7 @@ func (txToken *TxToken) initToken(txNormal *Tx, params *InitParamsAsm) error {
 			plainTokenID = &propertyID
 		} else {
 			//NOTICE: @merman update PropertyID calculated from hash of tokendata and shardID
-			newHashInitToken := common.HashH(append(hashInitToken.GetBytes(), params_compat.ShardID))
+			newHashInitToken := common.HashH(append(hashInitToken.GetBytes(), params_compat.shardID))
 			plainTokenID = &newHashInitToken		}
 
 		// set the unblinded asset tag
