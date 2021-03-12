@@ -5,7 +5,9 @@
   "main": "lib/index.js",
   "module": "lib/wallet.js",
   "scripts": {
-    "start": "node --eval \"const inc = require('.')\" -i",
+    "start": "yarn build:wasm; node --experimental-repl-await --eval \"const Inc = require('.'); const inc = new Inc.Lib(); inc.init()\" -i",
+    "start:dev": "yarn build:wasm; node --experimental-repl-await --eval \"const preload = require('./lib/env/debug/preload')\" -i",
+    "build:wasm": "cd wasm && ./build.sh && cd ..",
     "build:watch": "webpack --config webpack.config.js --watch",
     "build": "webpack --config webpack.config.js --mode production",
     "build:dev": "webpack --config webpack.config.js --mode development",
@@ -45,6 +47,7 @@
     "lodash-webpack-plugin": "^0.11.6",
     "terser-webpack-plugin": "^1.2.3",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.2.3",
+    "merkle-patricia-tree": "^4.0.0"
   }
 }
