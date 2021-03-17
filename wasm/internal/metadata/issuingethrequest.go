@@ -2,12 +2,36 @@ package metadata
 
 import (
 	"encoding/hex"
+	"encoding/json"
+	"errors"
+
 	"incognito-chain/common"
-	"github.com/pkg/errors"
 )
 
+type BytesAsHex []byte
+
+func (b BytesAsHex) MarshalJSON() ([]byte, error) {
+	s := "0x" + hex.EncodeToString(b)
+	return json.Marshal(s)
+}
+
+func (b *BytesAsHex) UnmarshalJSON(raw []byte) error {
+	var s string
+	err := json.Unmarshal(raw, &s)
+	if err != nil {
+		return err
+	}
+	// must haev prefix
+	if len(s) < 2 || s[:2] != "0x" {
+		return errors.New("hex string invalid : prefix missing")
+	}
+	temp, err := hex.DecodeString(s[2:])
+	*b = temp
+	return err
+}
+
 type IssuingETHRequest struct {
-	BlockHash  []byte
+	BlockHash  BytesAsHex
 	TxIndex    uint
 	ProofStrs  []string
 	IncTokenID common.Hash
@@ -51,32 +75,6 @@ func NewIssuingETHRequest(
 	}
 	issuingETHReq.MetadataBase = metadataBase
 	return issuingETHReq, nil
-}
-
-func NewIssuingETHRequestFromMap(
-	data map[string]interface{},
-) (*IssuingETHRequest, error) {
-	blockHash := data["BlockHash"].([]byte)
-	txIdx := uint(data["TxIndex"].(float64))
-	proofsRaw := data["ProofStrs"].([]interface{})
-	proofStrs := []string{}
-	for _, item := range proofsRaw {
-		proofStrs = append(proofStrs, item.(string))
-	}
-
-	incTokenID, err := common.Hash{}.NewHashFromStr(data["IncTokenID"].(string))
-	if err != nil {
-		return nil, errors.Errorf("TokenID incorrect")
-	}
-
-	req, _ := NewIssuingETHRequest(
-		blockHash,
-		txIdx,
-		proofStrs,
-		*incTokenID,
-		IssuingETHRequestMeta,
-	)
-	return req, nil
 }
 
 func (iReq IssuingETHRequest) Hash() *common.Hash {
