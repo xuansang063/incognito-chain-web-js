@@ -170,7 +170,7 @@ async function TestCreateAndSendNativeToken() {
   console.log("Send tx 1 done");
 }
 
-TestCreateAndSendNativeToken();
+// TestCreateAndSendNativeToken();
 
 async function TestCreateAndSendPrivacyTokenInit() {
   Wallet.RpcClient = rpcClient;
@@ -804,3 +804,38 @@ async function TestGetOutputCoins(){
 
 // TestGetOutputCoins()
 
+
+
+async function TestCreateAndSendIssuingETHRequestTx() {
+  Wallet.RpcClient = rpcClient;
+  await sleep(5000);
+  // staker
+  let senderSpendingKeyStr = "112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or";
+  let senderKeyWallet = keyWallet.base58CheckDeserialize(senderSpendingKeyStr);
+  await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
+  // let senderPaymentAddressStr = senderKeyWallet.base58CheckSerialize(PaymentAddressType);
+
+  let accountSender = new AccountWallet();
+  accountSender.key = senderKeyWallet;
+
+  let feeNativeToken = 5;
+  let blockHash = "0xfc53d50ff007adbbf1648d8015e2f26fb29d76b773ae923d6f2e532a59be58d4";
+  let txIndex = 4;
+  let proofStrs = [
+    "+FGggKmex74/foz79U0bOlqQE/sR7NEBplVdFelONIHja/2AgICAgICAoFop3naKPRjMxEE8IObToE44hr1FaAfD+eKg65HjjbfhgICAgICAgIA=",
+    "+LGAoFHfLCe5UnCckFsY/r6PSIzigjhJIElkGTgabJZjWXiSoPcWVFtwJAeMCp18ctcWsxAvKtVET33f88uMczMnQShloEejTdsmEj7JHIam2swjqUrWPLheAessL9nkjL9aBWweoEnDYWDbqLIC4TBMZI3bgL7YOcefkw14qhIeQYB5Ron8oC+mR3yTiZWabG0w6kyW++XEPhZUimGHkTmTpcA+BV3YgICAgICAgICAgIA=",
+    "+QJPILkCS/kCSAGDAsGguQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPkBPfkBOpR8fjcdHiV3HyJCgzwaNU3OhG8+yOGgLUtZeTXzzWf7Luvx203ryTTO5ce6pxU/mA/b6y50CE65AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALGivC7FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZzEyUzVMcnMxWGVRTGJxTjR5U3lLdGpBamQyZDdzQlAydGpGaWp6bXA2YXZycmtRQ05GTXBrWG0zRlB6ajJXY3UyWk5xSkVtaDlKcmlWdVJFclZ3aHVRbkxtV1NhZ2dvYkVXc0JFY2kAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  ];
+  let incTokenID = "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
+
+  // create and send staking tx
+  try {
+    let res = await accountSender.createAndSendIssuingETHRequestTx(blockHash, txIndex, proofStrs, incTokenID, feeNativeToken);
+
+    console.log("RES: ", res);
+  } catch (e) {
+    console.log("Error when trading native token: ", e);
+  }
+}
+
+TestCreateAndSendIssuingETHRequestTx();
