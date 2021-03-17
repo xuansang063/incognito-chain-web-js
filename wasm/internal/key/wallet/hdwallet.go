@@ -2,9 +2,11 @@ package wallet
 
 import (
 	"bytes"
-	// "crypto/hmac"
-	// "crypto/sha512"
+	"crypto/hmac"
+	"crypto/sha512"
 	"errors"
+	"fmt"
+	
 	"incognito-chain/common"
 	"incognito-chain/common/base58"
 	"incognito-chain/key/incognitokey"
@@ -75,23 +77,23 @@ type KeyWallet struct {
 // }
 
 // getIntermediary
-// func (key *KeyWallet) getIntermediary(childIdx uint32) ([]byte, error) {
-// 	childIndexBytes := common.Uint32ToBytes(childIdx)
+func (key *KeyWallet) getIntermediary(childIdx uint32) ([]byte, error) {
+	childIndexBytes := common.Uint32ToBytes(childIdx)
 
-// 	var data []byte
-// 	data = append(data, childIndexBytes...)
+	var data []byte
+	data = append(data, childIndexBytes...)
 
-// 	hmacObj := hmac.New(sha512.New, key.ChainCode)
-// 	_, err := hmacObj.Write(data)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return hmacObj.Sum(nil), nil
-// }
+	hmacObj := hmac.New(sha512.New, key.ChainCode)
+	_, err := hmacObj.Write(data)
+	if err != nil {
+		return nil, err
+	}
+	return hmacObj.Sum(nil), nil
+}
 
 // Serialize receives keyType and serializes key which has keyType to bytes array
 // and append 4-byte checksum into bytes array
-func (key *KeyWallet) Serialize(keyType byte) ([]byte, error) {
+func (key *KeyWallet) Serialize(keyType byte, isNewCheckSum bool) ([]byte, error) {
 	// Write fields to buffer in order
 	buffer := new(bytes.Buffer)
 	buffer.WriteByte(keyType)
@@ -135,35 +137,28 @@ func (key *KeyWallet) Serialize(keyType byte) ([]byte, error) {
 		keyBytes = append(keyBytes, byte(len(key.KeySet.OTAKey.GetOTASecretKey().ToBytesS()))) // set length OTASecretKey
 		keyBytes = append(keyBytes, key.KeySet.OTAKey.GetOTASecretKey().ToBytesS()[:]...)      // set OTASecretKey
 		buffer.Write(keyBytes)
-	}else{
+	} else {
 		return []byte{}, NewWalletError(InvalidKeyTypeErr, nil)
 	}
 
-	// Append the standard doublesha256 checksum
-	serializedKey, err := key.addChecksumToBytes(buffer.Bytes())
-	if err != nil {
-		Logger.log.Error(err)
-		return nil, err
-	}
 
+	checkSum := base58.ChecksumFirst4Bytes(buffer.Bytes(), isNewCheckSum)
+
+
+	serializedKey := append(buffer.Bytes(), checkSum...)
 	return serializedKey, nil
-}
-
-func (key KeyWallet) addChecksumToBytes(data []byte) ([]byte, error) {
-	checksum := base58.ChecksumFirst4Bytes(data)
-	return append(data, checksum...), nil
 }
 
 // Base58CheckSerialize encodes the key corresponding to keyType in KeySet
 // in the standard Incognito base58 encoding
 // It returns the encoding string of the key
 func (key *KeyWallet) Base58CheckSerialize(keyType byte) string {
-	serializedKey, err := key.Serialize(keyType)
+	serializedKey, err := key.Serialize(keyType, true) //Must use the new checksum from now on
 	if err != nil {
 		return ""
 	}
 
-	return base58.Base58Check{}.Encode(serializedKey, common.ZeroByte)
+	return base58.Base58Check{}.NewEncode(serializedKey, common.ZeroByte) //Must use the new encoding algorithm from now on
 }
 
 // Deserialize receives a byte array and deserializes into KeySet
@@ -191,9 +186,9 @@ func deserialize(data []byte) (*KeyWallet, error) {
 			return nil, err
 		}
 	} else if keyType == PaymentAddressType {
-		if !bytes.Equal(burnAddress1BytesDecode, data){
-			if len(data) != paymentAddrSerializedBytesLen && len(data) != paymentAddrSerializedBytesLen + 1 +operation.Ed25519KeySize{
-				return nil, NewWalletError(InvalidSeserializedKey, errors.New("length ota public key not valid: " + string(len(data))))
+		if !bytes.Equal(burnAddress1BytesDecode, data) {
+			if len(data) != paymentAddrSerializedBytesLen && len(data) != paymentAddrSerializedBytesLen+1+operation.Ed25519KeySize {
+				return nil, NewWalletError(InvalidSeserializedKey, errors.New("length ota public key not valid: "+string(len(data))))
 			}
 		}
 		apkKeyLength := int(data[1])
@@ -203,10 +198,10 @@ func deserialize(data []byte) (*KeyWallet, error) {
 		copy(key.KeySet.PaymentAddress.Pk[:], data[2:2+apkKeyLength])
 		copy(key.KeySet.PaymentAddress.Tk[:], data[3+apkKeyLength:3+apkKeyLength+pkencKeyLength])
 		//Deserialize OTAPublic Key
-		if len(data) > paymentAddrSerializedBytesLen{
+		if len(data) > paymentAddrSerializedBytesLen {
 			otapkLength := int(data[apkKeyLength+pkencKeyLength+3])
 			if otapkLength != operation.Ed25519KeySize {
-				return nil, NewWalletError(InvalidSeserializedKey, errors.New("length ota public key not valid: " + string(otapkLength)))
+				return nil, NewWalletError(InvalidSeserializedKey, errors.New("length ota public key not valid: "+string(otapkLength)))
 			}
 			key.KeySet.PaymentAddress.OTAPublic = append([]byte{}, data[apkKeyLength+pkencKeyLength+4:apkKeyLength+pkencKeyLength+otapkLength+4]...)
 		}
@@ -225,8 +220,8 @@ func deserialize(data []byte) (*KeyWallet, error) {
 		key.KeySet.ReadonlyKey.Rk = make([]byte, skencKeyLength)
 		copy(key.KeySet.ReadonlyKey.Pk[:], data[2:2+apkKeyLength])
 		copy(key.KeySet.ReadonlyKey.Rk[:], data[3+apkKeyLength:3+apkKeyLength+skencKeyLength])
-	}else if keyType == OTAKeyType {
-		if len(data) != otaKeySerializedBytesLen{
+	} else if keyType == OTAKeyType {
+		if len(data) != otaKeySerializedBytesLen {
 			return nil, NewWalletError(InvalidSeserializedKey, nil)
 		}
 
@@ -236,20 +231,23 @@ func deserialize(data []byte) (*KeyWallet, error) {
 		}
 		skKeyLength := int(data[pkKeyLength+2])
 
-		key.KeySet.OTAKey.SetPublicSpend(data[2:2+pkKeyLength])
-		key.KeySet.OTAKey.SetOTASecretKey(data[3+pkKeyLength :3+pkKeyLength+skKeyLength])
-	} else{
+		key.KeySet.OTAKey.SetPublicSpend(data[2 : 2+pkKeyLength])
+		key.KeySet.OTAKey.SetOTASecretKey(data[3+pkKeyLength : 3+pkKeyLength+skKeyLength])
+	} else {
 		return nil, NewWalletError(InvalidKeyTypeErr, errors.New("cannot detect key type"))
 	}
 
-	// validate checksum
-	cs1 := base58.ChecksumFirst4Bytes(data[0 : len(data)-4])
+	// validate checksum: allowing both new- and old-encoded strings
+	// try to verify in the new way first
+	cs1 := base58.ChecksumFirst4Bytes(data[0 : len(data)-4], true)
 	cs2 := data[len(data)-4:]
-	for i := range cs1 {
-		if cs1[i] != cs2[i] {
+	if !bytes.Equal(cs1, cs2){ // try to compare old checksum
+		oldCS1 := base58.ChecksumFirst4Bytes(data[0: len(data) - 4], false)
+		if !bytes.Equal(oldCS1, cs2){
 			return nil, NewWalletError(InvalidChecksumErr, nil)
 		}
 	}
+
 	return key, nil
 }
 
@@ -262,4 +260,86 @@ func Base58CheckDeserialize(data string) (*KeyWallet, error) {
 		return nil, err
 	}
 	return deserialize(b)
+}
+
+//Retrieves the payment address ver 1 from the payment address ver 2.
+//
+//	Payment Address V1 consists of: PK + TK
+//	Payment Address V2 consists of: PK + TK + PublicOTA
+//
+//If the input is a payment address ver 2, try to retrieve the corresponding payment address ver 1.
+//Otherwise, return the input.
+func GetPaymentAddressV1(addr string, isNewEncoding bool) (string, error) {
+	newWallet, err := Base58CheckDeserialize(addr)
+	if err != nil {
+		return "", err
+	}
+
+	if len(newWallet.KeySet.PaymentAddress.Pk) == 0 || len(newWallet.KeySet.PaymentAddress.Pk) == 0 {
+		return "", errors.New(fmt.Sprintf("something must be wrong with the provided payment address: %v", addr))
+	}
+
+	//Remove the publicOTA key and try to deserialize
+	newWallet.KeySet.PaymentAddress.OTAPublic = nil
+
+	if isNewEncoding{
+		addrV1 := newWallet.Base58CheckSerialize(PaymentAddressType)
+		if len(addrV1) == 0 {
+			return "", errors.New(fmt.Sprintf("cannot decode new payment address: %v", addr))
+		}
+
+		return addrV1, nil
+	}else{
+		addr1InBytes, err := newWallet.Serialize(PaymentAddressType, false)
+		if err != nil {
+			return "", errors.New(fmt.Sprintf("cannot decode new payment address: %v", addr))
+		}
+
+		addrV1 := base58.Base58Check{}.Encode(addr1InBytes, common.ZeroByte)
+		if len(addrV1) == 0 {
+			return "", errors.New(fmt.Sprintf("cannot decode new payment address: %v", addr))
+		}
+
+		return addrV1, nil
+	}
+}
+
+//Checks if two payment addresses are generated from the same private key.
+//
+//Just need to compare PKs and TKs.
+func ComparePaymentAddresses(addr1, addr2 string) (bool, error) {
+	//If these address strings are the same, just try to deserialize one of them
+	if addr1 == addr2 {
+		_, err := Base58CheckDeserialize(addr1)
+		if err != nil{
+			return false, err
+		}
+		return true, nil
+	}
+	//If their lengths are the same, just compare the inputs
+	keyWallet1, err := Base58CheckDeserialize(addr1)
+	if err != nil{
+		return false, err
+	}
+
+	keyWallet2, err := Base58CheckDeserialize(addr2)
+	if err != nil {
+		return false, err
+	}
+
+	pk1 := keyWallet1.KeySet.PaymentAddress.Pk
+	tk1 := keyWallet1.KeySet.PaymentAddress.Tk
+
+	pk2 := keyWallet2.KeySet.PaymentAddress.Pk
+	tk2 := keyWallet2.KeySet.PaymentAddress.Tk
+
+	if !bytes.Equal(pk1, pk2) {
+		return false, errors.New(fmt.Sprintf("public keys mismatch: %v, %v", pk1, pk2))
+	}
+
+	if !bytes.Equal(tk1, tk2) {
+		return false, errors.New(fmt.Sprintf("transmission keys mismatch: %v, %v", tk1, tk2))
+	}
+
+	return true, nil
 }
