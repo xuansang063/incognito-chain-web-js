@@ -60,7 +60,7 @@ async function TestGetBalance() {
     // create and send PRV
     try {
         let balance = await accountSender.getBalance(null);
-        console.log("balance: ", balance);
+        console.log("balance: ", balance.toString());
     } catch (e) {
         console.log("Error when get balance: ", e);
     }
@@ -276,7 +276,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     let hasPrivacy = true;
 
     try{
-        let res = await accountSender.createAndSendPrivacyToken(tokenID, paymentInfos, tokenPaymentInfo, feePRV, hasPrivacy, "");
+        let res = await accountSender.createAndSendPrivacyToken(tokenID, paymentInfos, tokenPaymentInfo, feePRV, "SOME INFO WHEN TRANSFERRING TOKEN");
         console.log('Send tx succesfully with TxID: ', res.Response.txId);
         return res.Response.txId;
     }catch (e) {
@@ -678,3 +678,9 @@ async function DefragmentRoutine(){
     console.log("END DEFRAG TEST");
 }
 // DefragmentRoutine()
+
+export{
+    MainRoutine,
+    PDERoutine,
+    DefragmentRoutine
+}
