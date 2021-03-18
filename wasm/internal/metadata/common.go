@@ -32,6 +32,8 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 	}
 	theType := int(typeFloat)
 	switch theType {
+	case InitTokenRequestMeta:
+		md = &InitTokenRequest{}
 	case IssuingRequestMeta:
 		md = &IssuingRequest{}
 	case IssuingResponseMeta:

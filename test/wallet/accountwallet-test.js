@@ -573,19 +573,21 @@ async function MainRoutine(){
         txh = await TestCreateAndSendNativeToken();
         await accountSender.waitTx(txh, 5);
 
-        txh = await TestCreateAndSendStakingTx();
-        await accountSender.waitTx(txh, 5);
-
+        // txh = await TestCreateAndSendStakingTx();
+        // await accountSender.waitTx(txh, 5);
         await GetListReceivedTx();
         await TestStakerStatus();
+        await accountSender.waitTx(txh, 10);
         txh = await TestCreateAndSendTokenConversion();
         await accountSender.waitTx(txh, 5);
+        // txh = await TestCreateAndSendStopAutoStakingTx();
+        // await accountSender.waitTx(txh, 5);
         // init token may err when a token of that name already exists
-        let temp = await TestCreateAndSendPrivacyTokenInit();
-        await accountSender.waitTx(temp.Response.txId, 5);
+        // let temp = await TestCreateAndSendPrivacyTokenInit();
+        // await accountSender.waitTx(temp.Response.txId, 5);
         txh = await TestSendMultiple();
         await accountSender.waitTx(txh, 5);
-     // burning will return an error since this is not a bridge token
+        // burning will return an error since this is not a bridge token
         txh = await TestBurningRequestTx();
         if (txh){
             await accountSender.waitTx(txh, 5);
@@ -593,14 +595,11 @@ async function MainRoutine(){
         txh = await TestCreateAndSendPrivacyTokenTransfer();
         await accountSender.waitTx(txh, 5);
 
-        tokenID = temp.tokenID;
-        console.log("New token", temp.tokenID);
-        txh = await TestCreateAndSendPrivacyTokenTransfer();
+        // tokenID = temp.tokenID;
+        // console.log("New token", temp.tokenID);
+        // txh = await TestCreateAndSendPrivacyTokenTransfer();
         await accountSender.waitTx(txh, 5);
         await TestGetOutputCoins();
-
-        txh = await TestCreateAndSendStopAutoStakingTx();
-        await accountSender.waitTx(txh, 5);
     }catch(e){
         console.log("Test failed");
         console.error(e);
@@ -661,7 +660,7 @@ async function PDERoutine(){
     }
     console.log("END PDE TEST");
 }
-PDERoutine();
+// PDERoutine();
 
 // to use this test flow, make sure acc1 has some 10000s in PRV in version 2 coins
 async function DefragmentRoutine(){

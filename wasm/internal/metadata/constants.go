@@ -11,6 +11,8 @@ const (
 	IssuingETHRequestMeta  = 80
 	IssuingETHResponseMeta = 81
 
+	InitTokenRequestMeta  = 244
+
 	ShardBlockReward             = 36
 	AcceptedBlockRewardInfoMeta  = 37
 	ShardBlockSalaryResponseMeta = 38
