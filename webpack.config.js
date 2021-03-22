@@ -1,6 +1,5 @@
-var path = require('path');
+const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
-
 
 const optimization = {
   minimize: true,
@@ -10,25 +9,25 @@ const optimization = {
         warnings: false,
         compress: {
           comparisons: false,
-          drop_console: true,
+          drop_console: true
         },
         parse: {},
         mangle: true,
         output: {
           comments: false,
-          ascii_only: true,
-        },
+          ascii_only: true
+        }
       },
       parallel: true,
       cache: true,
-      sourceMap: false,
-    }),
+      sourceMap: false
+    })
   ],
-  nodeEnv: 'production',
+  nodeEnv: 'production'
 };
 
 const devConfig = {
-  mode: 'development',
+  mode: 'development'
 };
 
 const prodConfig = {
@@ -36,9 +35,8 @@ const prodConfig = {
   optimization
 };
 
-
 module.exports = (env, argv) => {
-  const isProduction = (argv.mode === 'production');
+  const isProduction = argv.mode === 'production';
 
   return {
     devtool: 'source-map',
@@ -51,15 +49,15 @@ module.exports = (env, argv) => {
       library: '',
       libraryTarget: 'umd'
     },
-    target: "web",
+    target: 'web',
     node: {
-      fs: "empty"
+      fs: 'empty'
     },
     module: {
       rules: [
-        {test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"}
+        { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
       ]
     },
-    ...isProduction ? prodConfig : devConfig
+    ...(isProduction ? prodConfig : devConfig)
   };
 };
