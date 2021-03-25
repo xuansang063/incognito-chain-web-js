@@ -154,19 +154,16 @@ async function TestStakerStatus() {
 // TestCreateAndSendNativeToken();
 async function TestCreateAndSendNativeToken() {
   Wallet.RpcClient = rpcClient;
-  await sleep(10000);
-
+  await sleep(5000);
   // sender key (private key)
   const senderPrivateKeyStr =
-    '112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or';
+    '112t8rnXKfvZc5iAqrGtKT7kfMnbnrMLRfTTu5xfjgGYssEMdaSBC6NuPDqq8Z4QZAWhnBu1mccsJ2dU7S9f45zGyX1qw4DCRBe6Hjkhhvx7';
   const senderKeyWallet = keyWallet.base58CheckDeserialize(senderPrivateKeyStr);
   await senderKeyWallet.KeySet.importFromPrivateKey(
     senderKeyWallet.KeySet.PrivateKey
   );
-
   const accountSender = new AccountWallet();
   accountSender.key = senderKeyWallet;
-
   // receiver key (payment address)
   const receiverPaymentAddrStr =
     '12S5gFMbfrPqF76K6WAbq89reUj2PipxqGnS9Zpja1vXZnVT3eNDmMaJd9Rn1ppJT13wgQG8J59Spb3tpVfD1i7sW3mfYSaqtGhp3RS';
@@ -175,13 +172,13 @@ async function TestCreateAndSendNativeToken() {
 
   // get balance
 
-  const balance = await accountSender.getBalance();
+  let balance = await accountSender.getBalance();
   console.log('AAA balance: ', balance);
 
   const fee = 100;
   const isPrivacy = false;
   const info = '';
-  const amountTransfer = 1e9; // in nano PRV
+  const amountTransfer = 100; // in nano PRV
 
   const paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -200,10 +197,15 @@ async function TestCreateAndSendNativeToken() {
       false
     );
     console.log('Send tx succesfully with TxID: ', res.txId);
+    console.log('Send tx 1 done');
+    await sleep(3 * 60 * 1000);
+    balance = await accountSender.getBalance();
+    console.log('AFTER SEND balance: ', balance);
+    await sleep(2 * 60 * 1000);
+    console.log('AFTER SEND 2S balance: ', balance);
   } catch (e) {
     console.log('Error when send PRV: ', e);
   }
-  console.log('Send tx 1 done');
 }
 
 // TestCreateAndSendPrivacyTokenInit();
@@ -562,7 +564,7 @@ async function TestGetBalance() {
   try {
     // sender key (private key)
     const senderPrivateKeyStr =
-      '112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or';
+      '112t8rnXKfvZc5iAqrGtKT7kfMnbnrMLRfTTu5xfjgGYssEMdaSBC6NuPDqq8Z4QZAWhnBu1mccsJ2dU7S9f45zGyX1qw4DCRBe6Hjkhhvx7';
     const senderKeyWallet = keyWallet.base58CheckDeserialize(
       senderPrivateKeyStr
     );
@@ -586,7 +588,7 @@ async function TestgetBalance() {
     await sleep(5000);
     // sender key (private key)
     const senderPrivateKeyStr =
-      // '112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or';
+      // '112t8roafGgHL1rhAP9632Yef3sx5k8xgp8cwK4MCJsCL1UWcxXvpzg97N4dwvcD735iKf31Q2ZgrAvKfVjeSUEvnzKJyyJD3GqqSZdxN4or'; //ico
       '113hagqt552h92LXY6dWPdBGS8pPdLQX5eFBLgsnzbEoU1nUTLGJkkyrTnWCz7XuURtSKzkUKFfKrMPmoNVPAbmryRbMxvNTst9cY5xqiPNN';
     const senderKeyWallet = keyWallet.base58CheckDeserialize(
       senderPrivateKeyStr
@@ -1014,15 +1016,18 @@ async function TestGetOutputCoins() {
 const main = async () => {
   try {
     await sleep(5000);
+    await TestCreateAndSendNativeToken();
+    // await sleep(2 * 60 * 1 * 1000);
     // const balance = await TestGetBalance();
-    let balance = await TestgetBalance();
-    console.debug('balance V2', balance);
-    await sleep(60 * 1000);
-    balance = await TestgetBalance();
-    console.debug('balance V2 after', balance);
-    await sleep(60 * 10000);
-    balance = await TestgetBalance();
-    console.debug('balance V2 final', balance);
+    // let balance = await TestgetBalance();
+    // console.debug('balance V2', balance);
+    // await sleep(60 * 1000);
+    // balance = await TestgetBalance();
+    // console.debug('balance V2 after', balance);
+    // await sleep(60 * 10000);
+    // balance = await TestgetBalance();
+    // console.debug('balance V2 final', balance);
+    // await TestCreateAndSendNativeToken();
   } catch (error) {
     console.log(error);
   }
