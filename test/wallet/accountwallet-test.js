@@ -171,14 +171,13 @@ async function TestCreateAndSendNativeToken() {
   // let receiverPaymentAddr = receiverKeyWallet.KeySet.PaymentAddress;
 
   // get balance
-
-  let balance = await accountSender.getBalance();
-  console.log('AAA balance: ', balance);
+  const tokenId = PRVIDSTR;
+  let balance = await accountSender.getBalance(tokenId);
 
   const fee = 100;
   const isPrivacy = false;
   const info = '';
-  const amountTransfer = 100; // in nano PRV
+  const amountTransfer = 1e9; // in nano PRV
 
   const paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -189,20 +188,31 @@ async function TestCreateAndSendNativeToken() {
 
   // create and send PRV
   try {
-    const res = await accountSender.createAndSendNativeToken(
+    let res = await accountSender.createAndSendNativeToken(
       paymentInfosParam,
       fee,
       isPrivacy,
       info,
       false
     );
-    console.log('Send tx succesfully with TxID: ', res.txId);
-    console.log('Send tx 1 done');
-    await sleep(3 * 60 * 1000);
-    balance = await accountSender.getBalance();
-    console.log('AFTER SEND balance: ', balance);
-    await sleep(2 * 60 * 1000);
-    console.log('AFTER SEND 2S balance: ', balance);
+    console.log(res);
+    await sleep(1000);
+    res = await accountSender.createAndSendNativeToken(
+      paymentInfosParam,
+      fee,
+      isPrivacy,
+      info,
+      false
+    );
+    console.log(res);
+    // res = await accountSender.createAndSendNativeToken(
+    //   paymentInfosParam,
+    //   200,
+    //   isPrivacy,
+    //   info,
+    //   false
+    // );
+    // console.log(res);
   } catch (e) {
     console.log('Error when send PRV: ', e);
   }
@@ -1017,7 +1027,6 @@ const main = async () => {
   try {
     await sleep(5000);
     await TestCreateAndSendNativeToken();
-    // await sleep(2 * 60 * 1 * 1000);
     // const balance = await TestGetBalance();
     // let balance = await TestgetBalance();
     // console.debug('balance V2', balance);
