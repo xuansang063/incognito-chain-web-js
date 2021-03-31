@@ -19,7 +19,7 @@ const rpcClient = new RpcClient('https://testnet.incognito.org/fullnode');
 // const rpcClient = new RpcClient('http://139.162.55.124:8334');
 
 Wallet.RpcClient = rpcClient;
-setCoinsServicesURL({ url: 'http://51.161.119.66:9001' });
+setCoinsServicesURL({ url: 'https://api-stg.coinservice.incognito.corncob.dev' });
 
 async function sleep(sleepTime) {
   return new Promise((resolve) => setTimeout(resolve, sleepTime));
@@ -493,7 +493,7 @@ async function TestFragment() {
   let utxos = 0;
 
   const receivers = [
-    '12RsABJk9vAu4qAJqPEMbJsVsTXUBMJWNsPoFr4fWZjQbiETxtWrdjZkZyjgk7vrD4iZaJJVEXJYmZapLKE2gvFKrd2pPnAYjoNDJH7',
+    '12RxCd38pJo4MfXygBhHm7FAi2QWy5VR2nWBuKLhtK8xexaXfmfgk4kdCZfhCBZWateSUaeADyuYyKF9sWwu2wiGGHeDbfwPHwkhnyS',
   ];
 
   const amountTransfer = 1e3;
@@ -1026,7 +1026,8 @@ async function TestGetOutputCoins() {
 const main = async () => {
   try {
     await sleep(5000);
-    await TestCreateAndSendNativeToken();
+    await TestFragment();
+    // await TestCreateAndSendNativeToken();
     // const balance = await TestGetBalance();
     // let balance = await TestgetBalance();
     // console.debug('balance V2', balance);
