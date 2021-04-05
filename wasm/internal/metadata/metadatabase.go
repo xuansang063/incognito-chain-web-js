@@ -1,24 +1,59 @@
 package metadata
 
 import (
+	"errors"
 	"strconv"
 
 	"incognito-chain/common"
+	"incognito-chain/privacy"
 )
 
 type MetadataBase struct {
 	Type int
-	Sig []byte
 }
 
-func (mb *MetadataBase) SetSig(sig []byte) { mb.Sig = sig }
+func (mb *MetadataBase) Sign(privateKey *privacy.PrivateKey, tx MDContainer) error {
+	return nil
+}
 
-func (mb MetadataBase) GetSig() []byte { return mb.Sig }
+type MetadataBaseWithSignature struct {
+	MetadataBase
+	Sig []byte 		`json:"Sig,omitempty"`
+}
 
-func (mb *MetadataBase) ShouldSignMetaData() bool { return false }
+func NewMetadataBaseWithSignature(thisType int) *MetadataBaseWithSignature {
+	return &MetadataBaseWithSignature{MetadataBase: MetadataBase{Type: thisType}, Sig: []byte{}}
+}
+
+func (mbs *MetadataBaseWithSignature) Sign(privateKey *privacy.PrivateKey, tx MDContainer) error {
+	hashForMd := tx.HashWithoutMetadataSig()
+	if hashForMd == nil {
+		// the metadata type does not need signing
+		return nil
+	}
+	if len(mbs.Sig) > 0 {
+		return errors.New("Cannot overwrite metadata signature")
+	}
+
+	/****** using Schnorr signature *******/
+	sk := new(privacy.Scalar).FromBytesS(*privateKey)
+	r := new(privacy.Scalar).FromUint64(0)
+	sigKey := new(privacy.SchnorrPrivateKey)
+	sigKey.Set(sk, r)
+
+	// signing
+	signature, err := sigKey.Sign(hashForMd[:])
+	if err != nil {
+		return err
+	}
+
+	// convert signature to byte array
+	mbs.Sig = signature.Bytes()
+	return nil
+}
 
 func NewMetadataBase(thisType int) *MetadataBase {
-	return &MetadataBase{Type: thisType, Sig: []byte{}}
+	return &MetadataBase{Type: thisType}
 }
 
 func (mb MetadataBase) IsMinerCreatedMetaType() bool {

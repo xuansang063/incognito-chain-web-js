@@ -12,7 +12,7 @@ type PDEFeeWithdrawalRequest struct {
 	WithdrawalToken1IDStr string
 	WithdrawalToken2IDStr string
 	WithdrawalFeeAmt      uint64
-	MetadataBase
+	MetadataBaseWithSignature
 }
 
 type PDEFeeWithdrawalRequestAction struct {
@@ -28,20 +28,17 @@ func NewPDEFeeWithdrawalRequest(
 	withdrawalFeeAmt uint64,
 	metaType int,
 ) (*PDEFeeWithdrawalRequest, error) {
-	metadataBase := MetadataBase{
-		Type: metaType, Sig: []byte{},
-	}
+	metadataBase := NewMetadataBaseWithSignature(metaType)
 	pdeFeeWithdrawalRequest := &PDEFeeWithdrawalRequest{
 		WithdrawerAddressStr:  withdrawerAddressStr,
 		WithdrawalToken1IDStr: withdrawalToken1IDStr,
 		WithdrawalToken2IDStr: withdrawalToken2IDStr,
 		WithdrawalFeeAmt:      withdrawalFeeAmt,
 	}
-	pdeFeeWithdrawalRequest.MetadataBase = metadataBase
+	pdeFeeWithdrawalRequest.MetadataBaseWithSignature = *metadataBase
 	return pdeFeeWithdrawalRequest, nil
 }
 
-func (*PDEFeeWithdrawalRequest) ShouldSignMetaData() bool { return true }
 
 func (pc PDEFeeWithdrawalRequest) Hash() *common.Hash {
 	record := pc.MetadataBase.Hash().String()

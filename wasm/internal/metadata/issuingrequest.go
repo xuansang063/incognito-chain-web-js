@@ -16,7 +16,7 @@ type IssuingRequest struct {
 	DepositedAmount uint64
 	TokenID         common.Hash
 	TokenName       string
-	MetadataBase
+	MetadataBaseWithSignature
 }
 
 type IssuingReqAction struct {
@@ -53,16 +53,14 @@ func NewIssuingRequest(
 	tokenName string,
 	metaType int,
 ) (*IssuingRequest, error) {
-	metadataBase := MetadataBase{
-		Type: metaType, Sig: []byte{},
-	}
+	metadataBase := NewMetadataBaseWithSignature(metaType)
 	issuingReq := &IssuingRequest{
 		ReceiverAddress: receiverAddress,
 		DepositedAmount: depositedAmount,
 		TokenID:         tokenID,
 		TokenName:       tokenName,
 	}
-	issuingReq.MetadataBase = metadataBase
+	issuingReq.MetadataBaseWithSignature = *metadataBase
 	return issuingReq, nil
 }
 
@@ -99,8 +97,6 @@ func NewIssuingRequestFromMap(data map[string]interface{}) (Metadata, error) {
 		IssuingRequestMeta,
 	)
 }
-
-func (*IssuingRequest) ShouldSignMetaData() bool { return true }
 
 func (iReq IssuingRequest) Hash() *common.Hash {
 	record := iReq.ReceiverAddress.String()

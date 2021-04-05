@@ -9,7 +9,7 @@ import (
 )
 
 type WithDrawRewardRequest struct {
-	MetadataBase
+	MetadataBaseWithSignature
 	PaymentAddress privacy.PaymentAddress
 	TokenID common.Hash
 	Version int
@@ -44,10 +44,8 @@ func (withDrawRewardRequest WithDrawRewardRequest) HashWithoutSig() *common.Hash
 	}
 }
 
-func (*WithDrawRewardRequest) ShouldSignMetaData() bool { return true }
-
 func NewWithDrawRewardRequest(tokenIDStr string, paymentAddStr string, version float64, metaType int) (*WithDrawRewardRequest, error) {
-	metadataBase := NewMetadataBase(metaType)
+	metadataBase := NewMetadataBaseWithSignature(metaType)
 	tokenID, err := common.Hash{}.NewHashFromStr(tokenIDStr)
 	if err != nil {
 		return nil, errors.New("token ID is invalid")
@@ -62,7 +60,7 @@ func NewWithDrawRewardRequest(tokenIDStr string, paymentAddStr string, version f
 	// }
 
 	withdrawRewardRequest := &WithDrawRewardRequest{
-		MetadataBase: *metadataBase,
+		MetadataBaseWithSignature: *metadataBase,
 		TokenID:  *tokenID,
 		PaymentAddress: paymentAddWallet.KeySet.PaymentAddress,
 		Version: int(version),

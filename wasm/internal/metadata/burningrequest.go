@@ -40,8 +40,6 @@ func NewBurningRequest(
 	return burningReq, nil
 }
 
-func (bReq *BurningRequest) ShouldSignMetaData() bool { return true }
-
 func (bReq BurningRequest) Hash() *common.Hash {
 	record := bReq.MetadataBase.Hash().String()
 	record += bReq.BurnerAddress.String()

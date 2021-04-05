@@ -13,7 +13,7 @@ type PDEWithdrawalRequest struct {
 	WithdrawalToken1IDStr string
 	WithdrawalToken2IDStr string
 	WithdrawalShareAmt    uint64
-	MetadataBase
+	MetadataBaseWithSignature
 }
 
 type PDEWithdrawalRequestAction struct {
@@ -40,20 +40,17 @@ func NewPDEWithdrawalRequest(
 	withdrawalShareAmt uint64,
 	metaType int,
 ) (*PDEWithdrawalRequest, error) {
-	metadataBase := MetadataBase{
-		Type: metaType, Sig: []byte{},
-	}
+	metadataBase := NewMetadataBaseWithSignature(metaType)
 	pdeWithdrawalRequest := &PDEWithdrawalRequest{
 		WithdrawerAddressStr:  withdrawerAddressStr,
 		WithdrawalToken1IDStr: withdrawalToken1IDStr,
 		WithdrawalToken2IDStr: withdrawalToken2IDStr,
 		WithdrawalShareAmt:    withdrawalShareAmt,
 	}
-	pdeWithdrawalRequest.MetadataBase = metadataBase
+	pdeWithdrawalRequest.MetadataBaseWithSignature = *metadataBase
 	return pdeWithdrawalRequest, nil
 }
 
-func (*PDEWithdrawalRequest) ShouldSignMetaData() bool { return true }
 func (pc PDEWithdrawalRequest) Hash() *common.Hash {
 	record := pc.MetadataBase.Hash().String()
 	record += pc.WithdrawerAddressStr
@@ -86,7 +83,7 @@ func (pc *PDEWithdrawalRequest) UnmarshalJSON(raw []byte) error{
 		WithdrawalToken1IDStr string
 		WithdrawalToken2IDStr string
 		WithdrawalShareAmt    uintMaybeString
-		MetadataBase
+		MetadataBaseWithSignature
 	}
 	err := json.Unmarshal(raw, &temp)
 	*pc = PDEWithdrawalRequest{
@@ -94,7 +91,7 @@ func (pc *PDEWithdrawalRequest) UnmarshalJSON(raw []byte) error{
 		WithdrawalToken1IDStr: temp.WithdrawalToken1IDStr,
 		WithdrawalToken2IDStr: temp.WithdrawalToken2IDStr,
 		WithdrawalShareAmt: uint64(temp.WithdrawalShareAmt),
-		MetadataBase: temp.MetadataBase,
+		MetadataBaseWithSignature: temp.MetadataBaseWithSignature,
 	}
 	return err
 }

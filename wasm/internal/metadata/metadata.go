@@ -10,12 +10,15 @@ import (
 // Interface for all types of metadata in tx
 type Metadata interface {
 	GetType() int
-	GetSig() []byte
-	SetSig([]byte)
-	ShouldSignMetaData() bool
+	Sign(*privacy.PrivateKey, MDContainer) error
 	Hash() *common.Hash
 	HashWithoutSig() *common.Hash
 	IsMinerCreatedMetaType() bool
+}
+
+// Transaction is a MDContainer
+type MDContainer interface {
+	HashWithoutMetadataSig() *common.Hash
 }
 
 // This is tx struct which is really saved in tx mempool
