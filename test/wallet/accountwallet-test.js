@@ -534,7 +534,6 @@ async function TestCreateAndSendPDEWithdrawTx() {
             fee, tokenID1, tokenID2, withdrawShareAmount
         );
         return res.Response.txId;
-        console.log("res: ", res);
     } catch (e) {
         console.log("Error when withdrawing pdex: ", e);
         throw e;
@@ -640,18 +639,20 @@ async function PDERoutine(){
         // sell 5000 SECOND for at least 4000 PRV
         txh = await TestCustomTradeRequest(secondTokenID, tokenID, 5000, 3000);
         await accountSender.waitTx(txh, 15);
+
+        // withdraw some from the first pair
+        txh = await TestCreateAndSendPDEWithdrawTx();
+        await accountSender.waitTx(txh, 5);
         // deprecated test flows
         // await TestCreateAndSendPRVContributionTx();
         // await wallet.sleep(10000);
         // await TestCreateAndSendPTokenContributionTx();
         // await wallet.sleep(30000);
-        // console.log("TRADE");
         // await TestCreateAndSendNativeTokenTradeRequestTx();
         // await wallet.sleep(30000);
         // await TestCreateAndSendPTokenTradeRequestTx();
         // await wallet.sleep(100000);
-        // await TestCreateAndSendPDEWithdrawTx();
-        // await wallet.sleep(100000);
+        
         console.log("Remember to check the balance of these accounts")
     }catch(e){
         console.log("Test failed");

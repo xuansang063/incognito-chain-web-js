@@ -1,53 +1,45 @@
-const { expect } = require('chai');
+const chai = require('chai');
+const expect = chai.expect;
+const chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 const bn = require('bn.js');
 const Inc = require('..');
-
-let loadLegacyTests = (name) => async function() {
-    require = require("esm")(module);
-    const m = require(name);
-    this.legacyTests = m;
-}
-
-let setup = () => async function() {
-    this.inc = new Inc.Lib();
-    await this.inc.init();
-    const t0 = await this.inc.NewTransactor('112t8rnXoBXrThDTACHx2rbEq7nBgrzcZhVZV4fvNEcGJetQ13spZRMuW5ncvsKA1KvtkauZuK2jV8pxEZLpiuHtKX3FkKv2uC5ZeRC8L6we');
-    const t1 = await this.inc.NewTransactor('112t8rne7fpTVvSgZcSgyFV23FYEv3sbRRJZzPscRcTo8DsdZwstgn6UyHbnKHmyLJrSkvF13fzkZ4e8YD5A2wg8jzUZx6Yscdr4NuUUQDAt');
-    // currently using a 2-shard environment
-    this.transactorOfShard = [t0, t1];
-    this.incAddresses = this.transactorOfShard.map(_t => _t.key.base58CheckSerialize(Inc.constants.PaymentAddressType));
-}
+const { setup } = require('./basic.spec.js');
 
 let initToken = (amount) => async function() {
     amount = new bn(amount).toString();
-    let res = await this.transactorOfShard[0].newToken(new Inc.types.PaymentInfo(this.incAddresses[0], amount), 40, "My New Token", "MNT");
-    console.log("Must now wait balance change for token", res.TokenID);
-    let change = await this.transactorOfShard[0].waitBalanceChange(res.TokenID);
-    console.log(change);
+    let res = await this.transactors[0].newToken(new Inc.types.PaymentInfo(this.incAddresses[0], amount), 40, "My New Token", "MNT");
+    console.log(`after creation, wait balance change for token ${res.TokenID}, address ${this.incAddresses[0]}`);
+    let change = await this.transactors[0].waitBalanceChange(res.TokenID);
     change = new bn(change.balance) - new bn(change.oldBalance);
-    await expect(change.toString()).to.equal(amount, "Created Token balance mismatch")
-    // console.log("PLZ look in beacon logs")
+    this.newTokenID = res.TokenID;
+    await expect(change.toString(), "Created Token balance mismatch").to.equal(amount);
 }
-let transferToken = () => async function() {}
 
-describe('Tests for Web-js module', async function() {
+let transferToken = (amount) => async function() {
+    amount = new bn(amount).toString();
+    let res = await this.transactors[0].token(this.newTokenID, [], [new Inc.types.PaymentInfo(this.incAddresses[1], amount)], 40, "TOKEN TRANSFER");
+    console.log(`after same-shard transfer, wait balance change for token ${this.newTokenID}, address ${this.incAddresses[1]}`);
+    let change = await this.transactors[1].waitBalanceChange(this.newTokenID);
+    change = new bn(change.balance) - new bn(change.oldBalance);
+    await expect(change.toString(), "Transferred Token balance mismatch").to.equal(amount);
+}
+
+let crossTransferToken = (amount) => async function() {
+    amount = new bn(amount).toString();
+    let res = await this.transactors[0].token(this.newTokenID, [], [new Inc.types.PaymentInfo(this.incAddresses[2], amount)], 40, "CROSS-SHARD TOKEN TRANSFER");
+    console.log(`after cross-shard transfer, wait balance change for token ${this.newTokenID}, address ${this.incAddresses[2]}`);
+    let change = await this.transactors[2].waitBalanceChange(this.newTokenID);
+    change = new bn(change.balance) - new bn(change.oldBalance);
+    await expect(change.toString(), "Transferred Token balance mismatch").to.equal(amount);
+}
+
+describe.skip('Tests for updated token-init flow', async function() {
     before(setup());
-    before(loadLegacyTests("./wallet/accountwallet-test"));
-    describe('Init token with updated flow', async function() {
+    describe('init token', async function() {
         const startAmount = 808080;
-        it('should create new token & see balance update', initToken(startAmount))
-        it.skip('should send some new token to the same shard', transferToken())
-        it.skip('should send some new token to another shard', transferToken())
-    })
-    describe('Legacy tests', async function() {
-        it('runs main flow', async function() {
-            await this.legacyTests.MainRoutine();
-        });
-        it.skip('runs PDex flow', async function() {
-            await this.legacyTests.PDERoutine();
-        });
-        it.skip('runs Defrag flow', async function() {
-            await this.legacyTests.DefragmentRoutine();
-        })
-    })
+        it('should create new token & see balance update', initToken(startAmount));
+        it('should send some new token to the same shard', transferToken(80));
+        it('should send some new token to another shard', crossTransferToken(100));
+    });
 })
