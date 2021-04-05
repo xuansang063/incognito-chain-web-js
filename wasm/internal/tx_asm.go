@@ -657,21 +657,15 @@ func (tx *Tx) proveAsm(params *InitParamsAsm) error {
 	if err != nil {
 		return err
 	}
-	if tx.ShouldSignMetaData() {
-		if err := tx.signMetadata(&params.SenderSK); err != nil {
+
+	if tx.Metadata != nil {
+		if err := tx.Metadata.Sign(&params.SenderSK, tx); err != nil {
 			return err
 		}
 	}
 
 	err = tx.sign(inputCoins, inputIndexes, outputCoins, params, tx.Hash()[:])
 	return err
-}
-
-func (tx Tx) ShouldSignMetaData() bool {
-	if tx.Metadata == nil {
-		return false
-	}
-	return tx.Metadata.ShouldSignMetaData()
 }
 
 func (tx *Tx) sign(inp []privacy.PlainCoin, inputIndexes []uint64, out []*privacy.CoinV2, params *InitParamsAsm, hashedMessage []byte) error {
@@ -723,32 +717,6 @@ func (tx *Tx) sign(inp []privacy.PlainCoin, inputIndexes []uint64, out []*privac
 	tx.Sig, err = mlsagSignature.ToBytes()
 
 	return err
-}
-
-func (tx *Tx) signMetadata(privateKey *privacy.PrivateKey) error {
-	// signOnMessage meta data
-	metaSig := tx.Metadata.GetSig()
-	if metaSig != nil && len(metaSig) > 0 {
-		return errors.Errorf("meta.Sig should be empty or nil")
-	}
-
-	/****** using Schnorr signature *******/
-	sk := new(privacy.Scalar).FromBytesS(*privateKey)
-	r := new(privacy.Scalar).FromUint64(0)
-	sigKey := new(privacy.SchnorrPrivateKey)
-	sigKey.Set(sk, r)
-
-	// signing
-	signature, err := sigKey.Sign(tx.HashWithoutMetadataSig()[:])
-	if err != nil {
-		return err
-	}
-
-	// convert signature to byte array
-	tx.Metadata.SetSig(signature.Bytes())
-	// println("Signed MD")
-	// println(tx.Metadata.GetSig())
-	return nil
 }
 
 func (tx *Tx) InitASM(params *InitParamsAsm, theirTime int64) error {

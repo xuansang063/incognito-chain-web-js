@@ -19,8 +19,9 @@ import (
 )
 
 type TxResult struct{
-	B58EncodedTx string `json:"b58EncodedTx"`
-	Hash string `json:"hash"`
+	B58EncodedTx 	string `json:"b58EncodedTx"`
+	Hash 			string `json:"hash"`
+	Outputs 		[]CoinInter `json:"outputs,omitempty"`
 }
 
 func CreateTransaction(args string, num int64) (interface{}, error){
@@ -39,6 +40,7 @@ func CreateTransaction(args string, num int64) (interface{}, error){
 
 	var txJson []byte
 	var hash *common.Hash
+	var outputs []CoinInter
 	if params.TokenParams==nil{			
 		tx := &Tx{}
 		err = tx.InitASM(params, theirTime)
@@ -55,6 +57,16 @@ func CreateTransaction(args string, num int64) (interface{}, error){
 			return "", err
 		}
 		hash = tx.Hash()
+		outputCoins := tx.Proof.GetOutputCoins()
+		if len(outputCoins) != 0 {
+			for _, c := range outputCoins {
+				cv2, ok := c.(*privacy.CoinV2)
+				if !ok {
+					continue
+				}
+				outputs = append(outputs, GetCoinInter(cv2))
+			}	
+		}
 	}else{
 		tx := &TxToken{}
 		err = tx.InitASM(params, theirTime)
@@ -71,9 +83,29 @@ func CreateTransaction(args string, num int64) (interface{}, error){
 			return "", err
 		}
 		hash = tx.Hash()
+		outputCoins := tx.Tx.Proof.GetOutputCoins()
+		if len(outputCoins) != 0 {
+			for _, c := range outputCoins {
+				cv2, ok := c.(*privacy.CoinV2)
+				if !ok {
+					continue
+				}
+				outputs = append(outputs, GetCoinInter(cv2))
+			}	
+		}
+		outputCoins = tx.TokenData.Proof.GetOutputCoins()
+		if len(outputCoins) != 0 {
+			for _, c := range outputCoins {
+				cv2, ok := c.(*privacy.CoinV2)
+				if !ok {
+					continue
+				}
+				outputs = append(outputs, GetCoinInter(cv2))
+			}	
+		}
 	}
 	encodedTx := b58.Encode(txJson, common.ZeroByte)
-	txResult := TxResult{B58EncodedTx: encodedTx, Hash: hash.String()}
+	txResult := TxResult{B58EncodedTx: encodedTx, Hash: hash.String(), Outputs: outputs}
 	jsonResult, _ := json.Marshal(txResult)
 
 	return string(jsonResult), nil

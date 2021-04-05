@@ -627,8 +627,8 @@ func (tx *Tx) provePRV(params *InitParamsAsm) ([]privacy.PlainCoin, []uint64, []
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	if tx.ShouldSignMetaData() {
-		if err := tx.signMetadata(&params.SenderSK); err != nil {
+	if tx.Metadata != nil {
+		if err := tx.Metadata.Sign(&params.SenderSK, tx); err != nil {
 			return nil, nil, nil, err
 		}
 	}
