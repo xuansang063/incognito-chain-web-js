@@ -6,6 +6,12 @@ const bn = require('bn.js');
 const Inc = require('..');
 const { setup } = require('./basic.spec.js');
 
+let getFirstTokenID = (lst) => {
+    let tokens = lst.filter(t => t.Symbol.length >= 3);
+    if (tokens.length > 0) return tokens[0].ID;
+    else throw 'Error : a token is required'
+}
+
 // assume the pool is at rate 1:1
 let createTxsWithSameOTAs = async (ctx, amount, tokenID, overrideSubOTA = false, sellPRV = true) => {
     ctx.transactors[0].offlineMode = true;
@@ -88,11 +94,11 @@ let createTxsWithSameOTAs = async (ctx, amount, tokenID, overrideSubOTA = false,
 }
 
 let frontRunPRVTradeRequest = (amount) => async function() {
-    let tokenID = this.incTokens[0].ID;
+    let tokenID = getFirstTokenID(this.incTokens);
     let txTransferResult, txRequestResult;
     [txTransferResult, txRequestResult] = await createTxsWithSameOTAs(this, amount, tokenID);
     let res = await this.inc.rpc.sendRawTxCustomTokenPrivacy(txTransferResult.Tx.Encoded);
-    await this.transactors[0].waitTx(res.TxID, 0);
+    await this.transactors[0].waitTx(res.TxID, 2);
     let theError = {};
     res = await this.inc.rpc.sendRawTx(txRequestResult.Tx.Encoded).catch((e) => theError = e);
     expect(theError, `TX not expected to succeed ${JSON.stringify(res)}`).to.have.property('Code').that.equals(-6005);
@@ -100,18 +106,18 @@ let frontRunPRVTradeRequest = (amount) => async function() {
 
     [txTransferResult, txRequestResult] = await createTxsWithSameOTAs(this, amount, tokenID, true);
     res = await this.inc.rpc.sendRawTxCustomTokenPrivacy(txTransferResult.Tx.Encoded);
-    await this.transactors[0].waitTx(res.TxID, 0);
+    await this.transactors[0].waitTx(res.TxID, 2);
     res = await this.inc.rpc.sendRawTx(txRequestResult.Tx.Encoded).catch((e) => theError = e);
     expect(theError, `TX not expected to succeed ${JSON.stringify(res)}`).to.have.property('Code').that.equals(-6005);
     console.error("Chain Rejected TX with :", theError);
 }
 
 let frontRunTokenTradeRequest = (amount) => async function() {
-    let tokenID = this.incTokens[0].ID;
+    let tokenID = getFirstTokenID(this.incTokens);
     let txTransferResult, txRequestResult;
     [txTransferResult, txRequestResult] = await createTxsWithSameOTAs(this, amount, tokenID, false, false);
     let res = await this.inc.rpc.sendRawTxCustomTokenPrivacy(txTransferResult.Tx.Encoded);
-    await this.transactors[0].waitTx(res.TxID, 0);
+    await this.transactors[0].waitTx(res.TxID, 2);
     let theError = {};
     res = await this.inc.rpc.sendRawTxCustomTokenPrivacy(txRequestResult.Tx.Encoded).catch((e) => theError = e);
     expect(theError, `TX not expected to succeed ${JSON.stringify(res)}`).to.have.property('Code').that.equals(-6005);
@@ -119,11 +125,11 @@ let frontRunTokenTradeRequest = (amount) => async function() {
 }
 
 let overridePRVTransfer = (amount) => async function() {
-    let tokenID = this.incTokens[0].ID;
+    let tokenID = getFirstTokenID(this.incTokens);
     let txTransferResult, txRequestResult;
     [txTransferResult, txRequestResult] = await createTxsWithSameOTAs(this, amount, tokenID);
     let res = await this.inc.rpc.sendRawTx(txRequestResult.Tx.Encoded);
-    await this.transactors[0].waitTx(res.TxID, 0);
+    await this.transactors[0].waitTx(res.TxID, 2);
     let theError = {};
     res = await this.inc.rpc.sendRawTxCustomTokenPrivacy(txTransferResult.Tx.Encoded).catch((e) => theError = e);
     expect(theError, `TX not expected to succeed ${JSON.stringify(res)}`).to.have.property('Code').that.equals(-6005);
@@ -131,18 +137,18 @@ let overridePRVTransfer = (amount) => async function() {
 
     [txTransferResult, txRequestResult] = await createTxsWithSameOTAs(this, amount, tokenID, true);
     res = await this.inc.rpc.sendRawTx(txRequestResult.Tx.Encoded);
-    await this.transactors[0].waitTx(res.TxID, 0);
+    await this.transactors[0].waitTx(res.TxID, 2);
     res = await this.inc.rpc.sendRawTxCustomTokenPrivacy(txTransferResult.Tx.Encoded).catch((e) => theError = e);
     expect(theError, `TX not expected to succeed ${JSON.stringify(res)}`).to.have.property('Code').that.equals(-6005);
     console.error("Chain Rejected TX with :", theError);
 }
 
 let overrideTokenTransfer = (amount) => async function() {
-    let tokenID = this.incTokens[0].ID;
+    let tokenID = getFirstTokenID(this.incTokens);
     let txTransferResult, txRequestResult;
     [txTransferResult, txRequestResult] = await createTxsWithSameOTAs(this, amount, tokenID, false, false);
     let res = await this.inc.rpc.sendRawTxCustomTokenPrivacy(txRequestResult.Tx.Encoded);
-    await this.transactors[0].waitTx(res.TxID, 0);
+    await this.transactors[0].waitTx(res.TxID, 2);
     let theError = {};
     res = await this.inc.rpc.sendRawTxCustomTokenPrivacy(txTransferResult.Tx.Encoded).catch((e) => theError = e);
     expect(theError, `TX not expected to succeed ${JSON.stringify(res)}`).to.have.property('Code').that.equals(-6005);
@@ -150,7 +156,7 @@ let overrideTokenTransfer = (amount) => async function() {
 }
 
 let frontRunTradeRequestSameBlock = (amount) => async function() {
-    let tokenID = this.incTokens[0].ID;
+    let tokenID = getFirstTokenID(this.incTokens);
     let txTransferResult, txRequestResult;
     [txTransferResult, txRequestResult] = await createTxsWithSameOTAs(this, amount, tokenID);
     let res = await this.inc.rpc.sendRawTx(txRequestResult.Tx.Encoded);
@@ -178,7 +184,7 @@ let frontRunTradeRequestSameBlock = (amount) => async function() {
 }
 
 let overrideTransferSameBlock = (amount) => async function() {
-    let tokenID = this.incTokens[0].ID;
+    let tokenID = getFirstTokenID(this.incTokens);
     let txTransferResult, txRequestResult;
     [txTransferResult, txRequestResult] = await createTxsWithSameOTAs(this, amount, tokenID);
     let res = await this.inc.rpc.sendRawTxCustomTokenPrivacy(txTransferResult.Tx.Encoded);

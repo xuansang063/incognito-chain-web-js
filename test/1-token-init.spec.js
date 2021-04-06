@@ -34,12 +34,12 @@ let crossTransferToken = (amount) => async function() {
     await expect(change.toString(), "Transferred Token balance mismatch").to.equal(amount);
 }
 
-describe.skip('Tests for updated token-init flow', async function() {
+describe('Tests for updated token-init flow', async function() {
     before(setup());
     describe('init token', async function() {
         const startAmount = 808080;
         it('should create new token & see balance update', initToken(startAmount));
-        it('should send some new token to the same shard', transferToken(80));
+        it('should send some new token to the same shard', transferToken(80000));
         it('should send some new token to another shard', crossTransferToken(100));
     });
 })
