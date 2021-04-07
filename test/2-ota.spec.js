@@ -3,6 +3,7 @@ const expect = chai.expect;
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 const bn = require('bn.js');
+chai.use(require('chai-bn')(bn));
 const Inc = require('..');
 const { setup } = require('./basic.spec.js');
 
@@ -210,6 +211,38 @@ let overrideTransferSameBlock = (amount) => async function() {
     console.error("Chain Rejected TX with :", theError);
 }
 
+let withdrawReward = () => async function() {
+    console.log(this.incAddresses[0], " => wait for staker reward");
+    let maxWaitTime = this.transactors[0].timeout;
+    let rewardAmount = new bn(0);
+    while(rewardAmount.lten(0)) {
+        try {
+            // get reward amount for acc0, shard0
+            const response = await this.inc.rpc.getRewardAmount(this.incAddresses[0]);
+            // console.log(response);
+            rewardAmount = new bn(response.rewards.PRV);
+            // wait 3sec between requests
+            maxWaitTime = await this.transactors[0].sleepCapped(3000, maxWaitTime);
+        } catch (e) {
+            throw `Error querying reward : ${e}`
+        }
+    }
+    console.log(`Reward : ${rewardAmount.toString()}`);
+    const balanceBefore = await this.transactors[0].balance();
+    const fee = 10;
+    let res;
+    try {
+        res = await this.transactors[0].withdraw(fee);
+        await this.transactors[0].waitTx(res.Response.txId);
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+    const balance = await this.transactors[0].balance();
+    const bChange = new bn(balance).addn(fee).sub(new bn(balanceBefore));
+    expect(bChange, 'balance change vs reward mismatch').to.bignumber.equal(rewardAmount);
+}
+
 describe('OTA tests', async function() {
     before(setup());
     const startAmount = 50;
@@ -221,4 +254,5 @@ describe('OTA tests', async function() {
 
     it('should fail to front-run trade with a same-block transfer', frontRunTradeRequestSameBlock(startAmount));
     it('should fail to override OTA with a same-block trade request', overrideTransferSameBlock(startAmount));
+    it('should withdraw reward for TEST staker successfully', withdrawReward())
 })
