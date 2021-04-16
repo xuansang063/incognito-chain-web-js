@@ -52,13 +52,11 @@ module.exports = (env, argv) => {
         devtool: '', //'source-map',
         entry: {
             wallet: './lib/wallet.js',
-            // tx: './lib/transactor.js',
-            // 'crypto-js': './node_modules/crypto-js/index.js'
         },
 
         output: {
-            path: path.resolve(__dirname, 'dist'),
-            filename: '[name].bundle.js',
+            path: path.resolve(__dirname, 'build'),
+            filename: '[name].js',
             library: '',
             libraryTarget: 'umd'
         },
