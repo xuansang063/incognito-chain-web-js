@@ -1026,11 +1026,11 @@ async function TestGetOutputCoins() {
 const main = async () => {
   try {
     await sleep(5000);
-    await TestFragment();
+    // await TestFragment();
     // await TestCreateAndSendNativeToken();
-    // const balance = await TestGetBalance();
+    const balance = await TestGetBalance();
     // let balance = await TestgetBalance();
-    // console.debug('balance V2', balance);
+    console.debug('balance V2', balance);
     // await sleep(60 * 1000);
     // balance = await TestgetBalance();
     // console.debug('balance V2 after', balance);
