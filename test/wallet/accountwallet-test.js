@@ -574,7 +574,7 @@ async function TestGetBalance() {
   try {
     // sender key (private key)
     const senderPrivateKeyStr =
-      '112t8rnXKfvZc5iAqrGtKT7kfMnbnrMLRfTTu5xfjgGYssEMdaSBC6NuPDqq8Z4QZAWhnBu1mccsJ2dU7S9f45zGyX1qw4DCRBe6Hjkhhvx7';
+      '112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch';
     const senderKeyWallet = keyWallet.base58CheckDeserialize(
       senderPrivateKeyStr
     );
