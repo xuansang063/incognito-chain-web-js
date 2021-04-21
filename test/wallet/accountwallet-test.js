@@ -11,15 +11,16 @@ import { ENCODE_VERSION } from '../../lib/constants';
 import { checkEncode } from '../../lib/base58';
 import { setCoinsServicesURL } from '../../lib/http/coinsServices';
 
-// const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-const rpcClient = new RpcClient('https://testnet.incognito.org/fullnode');
+const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
+// const rpcClient = new RpcClient('https://testnet.incognito.org/fullnode');
 // const rpcClient = new RpcClient("http://localhost:9354");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient('http://139.162.55.124:8334');
 
 Wallet.RpcClient = rpcClient;
-setCoinsServicesURL({ url: 'https://api-stg.coinservice.incognito.corncob.dev' });
+// setCoinsServicesURL({ url: 'https://api-coinservice-staging.incognito.org' });
+setCoinsServicesURL({ url: 'https://api-coinservice.incognito.org' });
 
 async function sleep(sleepTime) {
   return new Promise((resolve) => setTimeout(resolve, sleepTime));
@@ -574,7 +575,7 @@ async function TestGetBalance() {
   try {
     // sender key (private key)
     const senderPrivateKeyStr =
-      '112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch';
+      '112t8rnXtGQEAEwjzbkTj6rv5X3DFqQYNPmeDrexhoq3T6hiUW6e15cZvYKE2M1yKeKfhDhzytYcNkeEwVTBk3Mxb32h9bvDiKnNhSgeissd';
     const senderKeyWallet = keyWallet.base58CheckDeserialize(
       senderPrivateKeyStr
     );
