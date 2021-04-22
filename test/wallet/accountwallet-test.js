@@ -1,28 +1,18 @@
 // import {
-//     KeyWallet as keyWallet
-// } from "../../lib/core/hdwallet";
-import {
-    Wallet,
-} from "../../lib/wallet";
-import {
-    RpcClient
-} from "../../lib/rpcclient/rpcclient";
-import {
-    CustomTokenInit,
-    CustomTokenTransfer
-} from "../../lib/tx/constants";
-import {
-    PaymentAddressType,
-    PRVIDSTR,
-    base58CheckDeserialize,
-    KeyWallet
-} from "../../lib/core";
-import {
-    ENCODE_VERSION
-} from "../../lib/common/constants";
-import {
-    checkEncode
-} from "../../lib/common/base58";
+//     Wallet,
+//     AccountWallet,
+//     RpcClient,
+//     PaymentAddressType,
+//     PRVIDSTR,
+//     KeyWallet,
+//     ENCODE_VERSION,
+//     checkEncode
+// }
+
+const { Wallet, Transactor : AccountWallet, types, constants, utils } = require('../../');
+const { KeyWallet, RpcClient } = types;
+const { PaymentAddressType, PRVIDSTR, ENCODE_VERSION } = constants;
+const { base58CheckEncode : checkEncode } = utils;
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
 // const rpcClient = new RpcClient("https://testnet.incognito.org/fullnode");
@@ -39,18 +29,20 @@ let senderPaymentAddressStr;
 let receiverPaymentAddrStr;
 let receiverPaymentAddrStr2;
 
+let tokenID, secondTokenID;
 async function setup(){
+    tokenID = "699a3006d1865ebdc437053b33df6a62c6c7c2f554f2fd0adf99a60f5117f945";
+    secondTokenID = "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
     // await sleep(10000);
     wallet = new Wallet();
-    await wallet.setProvider("http://localhost:9334");
+    wallet.setProvider("http://localhost:9334");
     senderPrivateKeyStr = "112t8rnXoBXrThDTACHx2rbEq7nBgrzcZhVZV4fvNEcGJetQ13spZRMuW5ncvsKA1KvtkauZuK2jV8pxEZLpiuHtKX3FkKv2uC5ZeRC8L6we";
-    // senderKeyWallet = base58CheckDeserialize(senderPrivateKeyStr);
-    // await senderKeyWallet.KeySet.importFromPrivateKey(senderKeyWallet.KeySet.PrivateKey);
-    // accountSender.key = senderKeyWallet;
 
-    accountSender = await wallet.NewTransactor(senderPrivateKeyStr);
+    accountSender = new AccountWallet(Wallet);
+    accountSender.useCoinsService = false;
+    await accountSender.setKey(senderPrivateKeyStr);
     senderPaymentAddressStr = accountSender.key.base58CheckSerialize(PaymentAddressType);
-    accountSender.isSubmitOtaKey = true;
+    await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
     receiverPaymentAddrStr = "12shR6fDe7ZcprYn6rjLwiLcL7oJRiek66ozzYu3B3rBxYXkqJeZYj6ZWeYy4qR4UHgaztdGYQ9TgHEueRXN7VExNRGB5t4auo3jTgXVBiLJmnTL5LzqmTXezhwmQvyrRjCbED5xVWf4ETHbRCSP";
     receiverPaymentAddrStr2 = "12sm28usKxzw8HuwGiEojZZLWgvDinAkmZ3NvBNRQLuPrf5LXNLXVXiu4VBCMVDrDm97qjLrgFck3P36UTSWfqNX1PBP9PBD78Cpa95em8vcnjQrnwDNi8EdkdkSA6CWcs4oFatQYze7ETHAUBKH";
 }
@@ -250,6 +242,9 @@ async function TestCreateAndSendPrivacyTokenInit() {
     try {
         let res = await accountSender.createAndSendPrivacyToken("", paymentInfos, tokenPaymentInfo, feePRV, "", false, false, tokenParams);
         console.log('Send tx succesfully with TxID: ', res.Response.txId);
+        console.log('Waiting for new token balance to update');
+        const change = await accountSender.waitBalanceChange(res.TokenID);
+        console.log(change);
         return {
             tokenID: res.TokenID,
             Response: res.Response
@@ -557,9 +552,7 @@ async function GetListReceivedTx() {
 }
 
 // to run this test flow, make sure the account has enough PRV to stake & some 10000 of this token; both are version 1
-var tokenID = "699a3006d1865ebdc437053b33df6a62c6c7c2f554f2fd0adf99a60f5117f945";
-var secondTokenID = "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
-// var tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
+// tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine(){
     console.log("BEGIN WEB WALLET TEST");
     // sequential execution of tests; the wait might still be too short
@@ -581,7 +574,7 @@ async function MainRoutine(){
         await accountSender.waitTx(txh, 5);
         // txh = await TestCreateAndSendStopAutoStakingTx();
         // await accountSender.waitTx(txh, 5);
-        // init token may err when a token of that name already exists
+        // deprecated init-token method
         // let temp = await TestCreateAndSendPrivacyTokenInit();
         // await accountSender.waitTx(temp.Response.txId, 5);
         txh = await TestSendMultiple();
@@ -652,7 +645,7 @@ async function PDERoutine(){
         // await wallet.sleep(30000);
         // await TestCreateAndSendPTokenTradeRequestTx();
         // await wallet.sleep(100000);
-        
+
         console.log("Remember to check the balance of these accounts")
     }catch(e){
         console.log("Test failed");
@@ -679,7 +672,7 @@ async function DefragmentRoutine(){
 }
 // DefragmentRoutine()
 
-export{
+module.exports = {
     MainRoutine,
     PDERoutine,
     DefragmentRoutine

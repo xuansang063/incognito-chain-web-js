@@ -42,7 +42,7 @@ func main() {
 	gobridge.RegisterCallback("withdrawDexTx", internal.CreateTransaction)
 	gobridge.RegisterCallback("hybridEncryptionASM", internal.HybridEncrypt)
 	gobridge.RegisterCallback("hybridDecryptionASM", internal.HybridDecrypt)
-
+	gobridge.RegisterCallback("estimateTxSize", internal.EstimateTxSizeInKB)
 	// not applicable
 	// gobridge.RegisterCallback("deriveSerialNumber", internal.DeriveSerialNumber)
 

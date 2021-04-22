@@ -4,6 +4,7 @@ import (
 	// "syscall/js"
 	"encoding/hex"
 	"encoding/json"
+	"math"
 	"strconv"
 
 	"incognito-chain/common"
@@ -186,7 +187,7 @@ func NewKeySetFromPrivate(skStr string, _ int64) (interface{}, error){
 	}
 	txJson, err := json.Marshal(ks)
 	if err != nil {
-		println("Error marshalling ket set: ", err)
+		println("Error marshalling key set: ", err)
 		return "", err
 	}
 
@@ -238,7 +239,7 @@ func DecryptCoin(paramStr string, _ int64) (interface{}, error){
 	res.Index = temp.Coin.Index
 	resJson, err := json.Marshal(res)
 	if err != nil {
-		println("Error marshalling ket set: ", err)
+		println("Error marshalling key set: ", err)
 		return "", err
 	}
 	return string(resJson), nil
@@ -468,6 +469,19 @@ func VerifySign(args string, _ int64) (interface{}, error){
 	res := verifyKey.Verify(signature, hashed[:])
 
 	return res, nil
+}
+
+func EstimateTxSizeInKB(paramStr string, _ int64) (interface{}, error){
+	var err error
+	temp := &EstimateTxSizeParam{}
+	err = json.Unmarshal([]byte(paramStr), temp)
+	if err!=nil{
+		return "", err
+	}
+
+	size := EstimateTxSize(temp)
+	result := uint64(math.Ceil(float64(size) / 1024))
+	return result, nil
 }
 
 // func ComputeTransactionHash(args string, _ int64) (interface{}, error){

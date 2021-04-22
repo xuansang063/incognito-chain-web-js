@@ -2,8 +2,8 @@
   "name": "incognito-chain-web-js",
   "version": "1.0.0",
   "description": "Constant-chain Javascript API",
-  "main": "lib/index.js",
-  "module": "lib/wallet.js",
+  "main": "build/node/inc.js",
+  "module": "build/wallet.js",
   "scripts": {
     "start": "yarn build:wasm; node --experimental-repl-await --eval \"const Inc = require('.'); const inc = new Inc.Lib(); inc.init()\" -i",
     "start:dev": "yarn build:wasm; node --experimental-repl-await --eval \"const preload = require('./lib/env/debug/preload')\" -i",
@@ -25,10 +25,11 @@
   "homepage": "https://github.com/incognitochain/incognito-chain-web-js#readme",
   "dependencies": {
     "axios": "^0.19.0",
+    "bip39": "^3.0.3",
     "circular-json": "^0.5.9",
     "crypto-js": "^3.1.9-1",
-    "esm": "^3.2.25",
     "lodash": "^4.17.20",
+    "regenerator-runtime": "^0.13.7",
     "sha3": "^2.0.7",
     "yarn": "^1.19.1"
   },
@@ -44,7 +45,7 @@
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "chai-bn": "^0.2.1",
-    "core-js": "3",
+    "core-js": "^3.10.2",
     "file-loader": "^4.0.0",
     "fs": "0.0.1-security",
     "lodash-webpack-plugin": "^0.11.6",

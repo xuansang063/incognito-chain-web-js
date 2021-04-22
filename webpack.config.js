@@ -1,16 +1,8 @@
 var path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 
-var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-
-var webpack = require('webpack');
-
 
 const optimization = {
-    //   splitChunks: {
-    // // include all types of chunks
-    // chunks: 'all'
-    //   },
     minimize: true,
     minimizer: [
         new TerserPlugin({
@@ -48,15 +40,14 @@ const prodConfig = {
 module.exports = (env, argv) => {
     const isProduction = (argv.mode === 'production');
 
-    return {
-        devtool: '', //'source-map',
+    const cfg = {
+        devtool: 'source-map',
         entry: {
-            wallet: './lib/wallet.js',
+            wallet: './lib/wallet.js'
         },
-
         output: {
-            path: path.resolve(__dirname, 'build'),
-            filename: '[name].js',
+            path: path.resolve(__dirname),
+            filename: 'build/[name].js',
             library: '',
             libraryTarget: 'umd'
         },
@@ -70,14 +61,37 @@ module.exports = (env, argv) => {
                 exclude: /node_modules/,
                 loader: "babel-loader",
                 'options': {
-                    'plugins': ['lodash'],
+                    'plugins': ['lodash', '@babel/plugin-proposal-class-properties'],
+                    'presets': ['@babel/preset-env']
                 }
             }]
         },
-        'plugins': [
-            new LodashModuleReplacementPlugin,
-            // new webpack.optimize.UglifyJsPlugin
-        ],
         ...isProduction ? prodConfig : devConfig
     };
+    const nodeCfg = {
+        devtool: 'source-map',
+        entry: {
+            inc: './lib/lib.js',
+        },
+        output: {
+            path: path.resolve(__dirname, 'build/node'),
+            filename: '[name].js',
+            library: '',
+            libraryTarget: 'commonjs2'
+        },
+        target: "node",
+        module: {
+            rules: [{
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: "babel-loader",
+                'options': {
+                    'plugins': ['lodash', '@babel/plugin-proposal-class-properties'],
+                    'presets': ['@babel/preset-env']
+                }
+            }]
+        },
+        ...isProduction ? prodConfig : devConfig
+    };
+    return [cfg, nodeCfg];
 };

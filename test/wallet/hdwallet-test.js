@@ -37,7 +37,7 @@ function TestGetKeySetFromPrivateKeyStr(){
   let privateKey = "112t8rneH8RSZmLfmtYibmrAxpBtpSnLtkdJY57JJmdhRdnTTF8yxrzaMxi9ctjQyXXETNZ26pTnmNL2LDPWxahVQgQQyNUKy4dHiBcFSjng"
 
   // let keyWallet = new(KeyWallet)
-  let res = KeyWallet.getKeySetFromPrivateKeyStr(privateKey);
+  let res = await KeyWallet.getKeySetFromPrivateKeyStr(privateKey);
   console.log("res: ", res)
 
 }
