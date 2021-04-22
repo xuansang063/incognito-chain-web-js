@@ -74,12 +74,15 @@ module.exports = (env, argv) => {
             inc: './lib/lib.js',
         },
         output: {
-            path: path.resolve(__dirname, 'build/node'),
+            path: path.resolve(__dirname, 'build-node'),
             filename: '[name].js',
             library: '',
             libraryTarget: 'commonjs2'
         },
         target: "node",
+        node: {
+            __dirname: false
+        },
         module: {
             rules: [{
                 test: /\.js$/,

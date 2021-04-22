@@ -87,7 +87,7 @@ async function TestCreateAndSendRewardAmountTx() {
     let fee = 10;
     let response;
     try {
-        response = await accountSender.createAndSendWithdrawRewardTx(fee, null);
+        response = await accountSender.createAndSendWithdrawRewardTx({ transfer: { fee }});
         console.log("Response createAndSendWithdrawRewardTx: ", response);
         return response.Response.txId;
     } catch (e) {
@@ -103,7 +103,7 @@ async function TestBurningRequestTx() {
     // create and send burning request tx
     let response;
     try {
-        response = await accountSender.createAndSendBurningRequestTx([], fee, tokenID, "d5808Ba261c91d640a2D4149E8cdb3fD4512efe4", 100);
+        response = await accountSender.createAndSendBurningRequestTx({ transfer: { fee, tokenID }, extra: { remoteAddress: "d5808Ba261c91d640a2D4149E8cdb3fD4512efe4", burnAmount: 100 }});
         console.log("Response createAndSendBurningRequestTx: ", response);
         return response.Response.txId;
     } catch (e) {
@@ -144,7 +144,7 @@ async function TestCreateAndSendNativeToken() {
 
     // create and send PRV
     try {
-        let res = await accountSender.createAndSendNativeToken(paymentInfosParam, fee, info, true);
+        let res = await accountSender.createAndSendNativeToken({ transfer: { prvPayments: paymentInfosParam, fee, info }, extra: { isEncryptMessage: true }});
         console.log('Send tx succesfully with TxID: ', res.Response.txId);
         return res.Response.txId;
     } catch (e) {
@@ -167,7 +167,7 @@ async function TestSendMultiple() {
         "Amount": amount,
     }));
     try{
-        const res = await accountSender.createAndSendNativeToken(paymentInfos, 100, info, false);
+        const res = await accountSender.createAndSendNativeToken({ transfer: { prvPayments: paymentInfos, fee: 100, info }});
         console.log('Send tx succesfully with TxID: ', res.Response.txId);
         return res.Response.txId;
     }catch(e){
@@ -186,7 +186,7 @@ async function TestCreateAndSendConversion() {
 
     // create and send PRV
     try {
-        let res = await accountSender.createAndSendConvertTx(paymentInfosParam, fee, info, false);
+        let res = await accountSender.createAndSendConvertTx({ transfer: { prvPayments: paymentInfosParam, fee, info }, extra: { isEncryptMessage: true }});
         console.log('Send tx succesfully with TxID: ', res.Response.txId);
         return res.Response.txId;
     } catch (e) {
@@ -209,7 +209,7 @@ async function TestCreateAndSendTokenConversion() {
 
     // create and send PRV
     try {
-        let res = await accountSender.createAndSendTokenConvertTx(tokenID, paymentInfo, tokenPaymentInfo, fee, info, false);
+        let res = await accountSender.createAndSendTokenConvertTx({ transfer: { tokenID, prvPayments: paymentInfo, tokenPayments: tokenPaymentInfo, fee, info }, extra: { isEncryptMessageToken: true }});
         console.log('Send tx succesfully with TxID: ', res.Response.txId);
         return res.Response.txId;
     } catch (e) {
@@ -217,6 +217,7 @@ async function TestCreateAndSendTokenConversion() {
         throw e;
     }
 }
+
 async function TestCreateAndSendPrivacyTokenInit() {
 
     await setup();
@@ -240,7 +241,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
     let feePRV = 50;
 
     try {
-        let res = await accountSender.createAndSendPrivacyToken("", paymentInfos, tokenPaymentInfo, feePRV, "", false, false, tokenParams);
+        let res = await accountSender.newToken({ transfer: { tokenPayments: tokenPaymentInfo, fee: feePRV }, extra: { tokenName: tokenParams.TokenName, tokenSymbol: tokenParams.TokenSymbol }});
         console.log('Send tx succesfully with TxID: ', res.Response.txId);
         console.log('Waiting for new token balance to update');
         const change = await accountSender.waitBalanceChange(res.TokenID);
@@ -254,6 +255,7 @@ async function TestCreateAndSendPrivacyTokenInit() {
         throw e;
     }
 }
+
 async function TestCreateAndSendPrivacyTokenTransfer() {
     await setup();
 
@@ -271,7 +273,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     let hasPrivacy = true;
 
     try{
-        let res = await accountSender.createAndSendPrivacyToken(tokenID, paymentInfos, tokenPaymentInfo, feePRV, "SOME INFO WHEN TRANSFERRING TOKEN");
+        let res = await accountSender.createAndSendPrivacyToken({ transfer: { tokenID, prvPayments: paymentInfos, tokenPayments: tokenPaymentInfo, fee: feePRV, info: "SOME INFO WHEN TRANSFERRING TOKEN" }});
         console.log('Send tx succesfully with TxID: ', res.Response.txId);
         return res.Response.txId;
     }catch (e) {
@@ -302,7 +304,7 @@ async function TestMultipleSendPrivacyToken() {
     let feePRV = 10;
 
     try{
-        let res = await accountSender.createAndSendPrivacyToken(tokenID, paymentInfos, tokenPaymentInfo, feePRV, "");
+        let res = await accountSender.createAndSendPrivacyToken({ transfer: { tokenID, prvPayments: paymentInfos, tokenPayments: tokenPaymentInfo, fee: feePRV }});
         console.log('Send tx succesfully with TxID: ', res.Response.txId);
         return res.Response.txId;
     }catch (e) {
@@ -327,7 +329,7 @@ async function TestCreateAndSendStakingTx() {
 
     // create and send staking tx
     try {
-        let response = await accountSender.createAndSendStakingTx(param, fee, candidatePaymentAddress, candidateMiningSeedKey, rewardReceiverPaymentAddress, autoReStaking);
+        let response = await accountSender.createAndSendStakingTx({ transfer: { fee }, extra: { candidatePaymentAddress, candidateMiningSeedKey, rewardReceiverPaymentAddress, autoReStaking, stakingType: param.type }});
         return response.Response.txId;
     } catch (e) {
         console.log("Error when staking: ", e);
@@ -343,7 +345,7 @@ async function TestCreateAndSendStopAutoStakingTx() {
 
     // create and send staking tx
     try {
-        let response = await accountSender.createAndSendStopAutoStakingTx(fee, candidatePaymentAddress, candidateMiningSeedKey);
+        let response = await accountSender.createAndSendStopAutoStakingTx({ transfer: { fee }, extra: { candidatePaymentAddress, candidateMiningSeedKey }});
         return response.Response.txId;
     } catch (e) {
         console.log("Error when staking: ", e);
@@ -355,7 +357,7 @@ async function TestDefragment() {
     // create and send defragment tx
     let response;
     try {
-        response = await accountSender.defragmentNativeCoin(100, 30);
+        response = await accountSender.defragmentNativeCoin({ transfer: { fee: 100 }});
     } catch (e) {
         console.log(e);
         throw e;
@@ -382,10 +384,11 @@ async function TestMakeFragments() {
 
     while (utxos < 150) {
         for (const sender of senders) {
-            let accountSender = await wallet.NewTransactor(sender);
+            let accountSender = new AccountWallet(Wallet);
+            await accountSender.setKey(sender);
 
             // create and send PRV
-            let res = await accountSender.createAndSendNativeToken(paymentInfos, 100, "Fragment", false);
+            let res = await accountSender.createAndSendNativeToken({ transfer: { prvPayments: paymentInfos, fee: 100, info: "Fragment" }});
             console.log('Send tx succesfully with TxID: ', res.Response.txId);
             await accountSender.waitTx(res.Response.txId, 3);
         }
@@ -395,88 +398,6 @@ async function TestMakeFragments() {
     }
 }
 /************************* DEX **************************/
-// 1:10 ratio
-async function TestCreateAndSendPTokenContributionTx() {
-
-    await setup();
-    let fee = 15;
-    let pdeContributionPairID = "123";
-    let contributedAmount = 100;
-
-    try {
-        let response = await accountSender.createAndSendTxWithContribution(
-            fee, pdeContributionPairID, contributedAmount, "", tokenID
-        );
-        return response.Response.txId;
-    } catch (e) {
-        console.log("Error when staking: ", e);
-        throw e;
-    }
-}
-async function TestCreateAndSendPRVContributionTx() {
-
-    await setup();
-    let fee = 15;
-    let pdeContributionPairID = "123";
-    let contributedAmount = 1000;
-
-    try {
-        let response = await accountSender.createAndSendTxWithContribution(
-            fee, pdeContributionPairID, contributedAmount
-        );
-        return response.Response.txId;
-    } catch (e) {
-        console.log("Error when staking: ", e);
-        throw e;
-    }
-}
-async function TestCreateAndSendNativeTokenTradeRequestTx() {
-
-    await setup();
-
-    let fee = 100;
-    let sellAmount = 100;
-    let tokenIDToSellStr = null;
-    let tokenIDToBuyStr = tokenID;
-    let minAcceptableAmount = 100;
-    let tradingFee = 25;
-
-    // create and send staking tx
-    try {
-        let res = await accountSender.createAndSendNativeTokenTradeRequestTx(
-            fee, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee, "", tokenIDToSellStr
-        );
-        return res.Response.txId;
-        console.log("RESPONSE: ", res);
-    } catch (e) {
-        console.log("Error when trading native token: ", e);
-        throw e;
-    }
-}
-async function TestCreateAndSendPTokenTradeRequestTx() {
-
-    await setup();
-
-    let feePRV = 10;
-    let sellAmount = 300;
-    let tokenIDToSellStr = tokenID;
-    let tokenIDToBuyStr = null;
-    let minAcceptableAmount = 600;
-    let tradingFee = 10;
-
-
-    // create and send staking tx
-    try {
-        let res = await accountSender.createAndSendNativeTokenTradeRequestTx(
-            feePRV, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee, "", tokenIDToSellStr
-        );
-        return res.Response.txId;
-        console.log("RESPONSE: ", res);
-    } catch (e) {
-        console.log("Error when trading native token: ", e);
-        throw e;
-    }
-}
 
 async function TestCustomContribution(pdeContributionPairID, contributingTokenID, contributedAmount) {
     await setup();
@@ -485,9 +406,10 @@ async function TestCustomContribution(pdeContributionPairID, contributingTokenID
     // let contributedAmount = 1000000;
 
     try {
-        let response = await accountSender.createAndSendTxWithContribution(
-            fee, pdeContributionPairID, contributedAmount, "", contributingTokenID
-        );
+        let response = await accountSender.createAndSendTxWithContribution({
+            transfer: { fee, tokenID: contributingTokenID },
+            extra: { pairID: pdeContributionPairID, contributedAmount }
+        });
         return response.Response.txId;
     } catch (e) {
         console.log("Error when staking: ", e);
@@ -506,9 +428,10 @@ async function TestCustomTradeRequest(tokenIDToSellStr, tokenIDToBuyStr, sellAmo
 
     // create and send staking tx
     try {
-        let res = await accountSender.createAndSendNativeTokenTradeRequestTx(
-            feePRV, tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee, "", tokenIDToSellStr
-        );
+        let res = await accountSender.createAndSendNativeTokenTradeRequestTx({
+            transfer: { feePRV },
+            extra: { tokenIDToBuy: tokenIDToBuyStr, sellAmount, minAcceptableAmount, tradingFee, tokenIDToSell: tokenIDToSellStr }
+        });
         return res.Response.txId;
         console.log("RESPONSE: ", res);
     } catch (e) {
@@ -525,9 +448,10 @@ async function TestCreateAndSendPDEWithdrawTx() {
     let tokenID2 = tokenID;
 
     try {
-        let res = await accountSender.createAndSendWithdrawDexTx(
-            fee, tokenID1, tokenID2, withdrawShareAmount
-        );
+        let res = await accountSender.createAndSendWithdrawDexTx({
+            transfer: { fee },
+            extra: { tokenIDs: [ tokenID1, tokenID2 ], withdrawalShareAmt: withdrawShareAmount }
+        });
         return res.Response.txId;
     } catch (e) {
         console.log("Error when withdrawing pdex: ", e);
@@ -536,8 +460,8 @@ async function TestCreateAndSendPDEWithdrawTx() {
 }
 async function TestGetOutputCoins() {
     await setup();
-    // accountSender.setIsRevealViewKeyToGetCoins(true);
-    let allCoins = await accountSender.fetchOutputCoins(null, wallet.RpcClient, -1);
+    // get all PRV coins from both versions (including spent coins)
+    let allCoins = await accountSender.fetchOutputCoins(null, -1);
     console.log("allCoins: ", allCoins);
 }
 

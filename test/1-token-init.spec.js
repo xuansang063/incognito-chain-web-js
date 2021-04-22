@@ -8,7 +8,7 @@ const { setup } = require('./basic.spec.js');
 
 let initToken = (amount) => async function() {
     amount = new bn(amount).toString();
-    let res = await this.transactors[0].newToken(new Inc.types.PaymentInfo(this.incAddresses[0], amount), 40, "My New Token", "MNT");
+    let res = await this.transactors[0].newToken({ transfer: { tokenPayments: new Inc.types.PaymentInfo(this.incAddresses[0], amount), fee: 40 }, extra: { tokenName: "My New Token", tokenSymbol: "MNT" }});
     console.log(`after creation, wait balance change for token ${res.TokenID}, address ${this.incAddresses[0]}`);
     let change = await this.transactors[0].waitBalanceChange(res.TokenID);
     change = new bn(change.balance) - new bn(change.oldBalance);
@@ -18,7 +18,7 @@ let initToken = (amount) => async function() {
 
 let transferToken = (amount) => async function() {
     amount = new bn(amount).toString();
-    let res = await this.transactors[0].token(this.newTokenID, [], [new Inc.types.PaymentInfo(this.incAddresses[1], amount)], 40, "TOKEN TRANSFER");
+    let res = await this.transactors[0].token({ transfer: { tokenID: this.newTokenID, tokenPayments: [new Inc.types.PaymentInfo(this.incAddresses[1], amount)], fee: 40, info: "TOKEN TRANSFER" }});
     console.log(`after same-shard transfer, wait balance change for token ${this.newTokenID}, address ${this.incAddresses[1]}`);
     let change = await this.transactors[1].waitBalanceChange(this.newTokenID);
     change = new bn(change.balance) - new bn(change.oldBalance);
@@ -27,7 +27,7 @@ let transferToken = (amount) => async function() {
 
 let crossTransferToken = (amount) => async function() {
     amount = new bn(amount).toString();
-    let res = await this.transactors[0].token(this.newTokenID, [], [new Inc.types.PaymentInfo(this.incAddresses[2], amount)], 40, "CROSS-SHARD TOKEN TRANSFER");
+    let res = await this.transactors[0].token({ transfer: { tokenID: this.newTokenID, tokenPayments: [new Inc.types.PaymentInfo(this.incAddresses[2], amount)], fee: 40, info: "CROSS-SHARD TOKEN TRANSFER" }});
     console.log(`after cross-shard transfer, wait balance change for token ${this.newTokenID}, address ${this.incAddresses[2]}`);
     let change = await this.transactors[2].waitBalanceChange(this.newTokenID);
     change = new bn(change.balance) - new bn(change.oldBalance);

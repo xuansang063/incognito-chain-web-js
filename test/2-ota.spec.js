@@ -22,7 +22,7 @@ let createTxsWithSameOTAs = async (ctx, amount, tokenID, overrideSubOTA = false,
     // make TXs from different origins to make sure there's no double spent input
     // send PRV and token to the same receiver in one tx
     const paymentInfos = [new Inc.types.PaymentInfo(ctx.incAddresses[0], transferAmount.toString())];
-    let txTransferResult = await ctx.transactors[1].token(tokenID, paymentInfos, paymentInfos, 10);
+    let txTransferResult = await ctx.transactors[1].token({ transfer: { tokenID, prvPayments: paymentInfos, tokenPayments: paymentInfos, fee: 10 }});
 
     let output;
     if (sellPRV) {
@@ -87,9 +87,9 @@ let createTxsWithSameOTAs = async (ctx, amount, tokenID, overrideSubOTA = false,
     }
     let txRequestResult;
     if (sellPRV){
-        txRequestResult = await ctx.transactors[0].make(prvPaymentInfos, 10, metadata);
+        txRequestResult = await ctx.transactors[0].make({ transfer: { prvPayments: prvPaymentInfos, fee: 10 }, extra: { metadata }});
     }else{
-        txRequestResult = await ctx.transactors[0].make(prvPaymentInfos, 10, metadata, "", tokenIDToSellStr, tokenPaymentInfos);
+        txRequestResult = await ctx.transactors[0].make({ transfer: { prvPayments: prvPaymentInfos, tokenPayments: tokenPaymentInfos, fee: 10 }, extra: { metadata, tokenIDToSell: tokenIDToSellStr }});
     }
     return [txTransferResult, txRequestResult]
 }
@@ -232,7 +232,7 @@ let withdrawReward = () => async function() {
     const fee = 10;
     let res;
     try {
-        res = await this.transactors[0].withdraw(fee);
+        res = await this.transactors[0].withdraw({ transfer: { fee }});
         await this.transactors[0].waitTx(res.Response.txId);
     } catch (e) {
         console.error(e);
