@@ -20,7 +20,7 @@ const optimization = {
       },
       parallel: true,
       cache: true,
-      sourceMap: false
+      sourceMap: true
     })
   ],
   nodeEnv: 'production'
