@@ -25,7 +25,7 @@ type TxResult struct{
 	Outputs 		[]CoinInter `json:"outputs,omitempty"`
 }
 
-func CreateTransaction(args string, num int64) (interface{}, error){
+func CreateTransaction(args string, num int64) (string, error){
 	var theirTime int64 = num
 	params := &InitParamsAsm{}
 	// println("Before parse - TX parameters")
@@ -112,7 +112,7 @@ func CreateTransaction(args string, num int64) (interface{}, error){
 	return string(jsonResult), nil
 }
 
-func CreateConvertTx(args string, num int64) (interface{}, error){
+func CreateConvertTx(args string, num int64) (string, error){
 	var theirTime int64 = num
 
 	params := &InitParamsAsm{}
@@ -169,7 +169,7 @@ func CreateConvertTx(args string, num int64) (interface{}, error){
 	return string(jsonResult), nil
 }
 
-func NewKeySetFromPrivate(skStr string, _ int64) (interface{}, error){
+func NewKeySetFromPrivate(skStr string) (string, error){
 	var err error
 	skHolder := struct{
 		PrivateKey []byte `json:"PrivateKey"`
@@ -194,7 +194,7 @@ func NewKeySetFromPrivate(skStr string, _ int64) (interface{}, error){
 	return string(txJson), nil
 }
 
-func DecryptCoin(paramStr string, _ int64) (interface{}, error){
+func DecryptCoin(paramStr string) (string, error){
 	var err error
 	temp := &struct{
 		Coin 	CoinInter
@@ -245,7 +245,7 @@ func DecryptCoin(paramStr string, _ int64) (interface{}, error){
 	return string(resJson), nil
 }
 
-func CreateCoin(paramStr string, _ int64) (interface{}, error){
+func CreateCoin(paramStr string) (string, error){
 	var err error
 	temp := &struct{
 		PaymentInfo 	printedPaymentInfo
@@ -285,7 +285,7 @@ func CreateCoin(paramStr string, _ int64) (interface{}, error){
 	return string(resJson), nil
 }
 
-func GenerateBLSKeyPairFromSeed(args string, _ int64) (interface{}, error){
+func GenerateBLSKeyPairFromSeed(args string) (string, error){
 	seed, err := b64.DecodeString(args)
 	if err != nil {
 		return "", err
@@ -298,7 +298,7 @@ func GenerateBLSKeyPairFromSeed(args string, _ int64) (interface{}, error){
 	return keyPairEncode, nil
 }
 
-func GenerateKeyFromSeed(args string, _ int64) (interface{}, error){
+func GenerateKeyFromSeed(args string) (string, error){
 	seed, err := b64.DecodeString(args)
 	if err != nil {
 		return "", err
@@ -308,7 +308,7 @@ func GenerateKeyFromSeed(args string, _ int64) (interface{}, error){
 	return res, nil
 }
 
-func HybridEncrypt(args string, _ int64) (interface{}, error){	
+func HybridEncrypt(args string) (string, error){	
 	raw, _ := b64.DecodeString(args)
 	publicKeyBytes := raw[0:privacy.Ed25519KeySize]
 	publicKeyPoint, err := new(privacy.Point).FromBytesS(publicKeyBytes)
@@ -324,7 +324,7 @@ func HybridEncrypt(args string, _ int64) (interface{}, error){
 	return b64.EncodeToString(ciphertext.Bytes()), nil
 }
 
-func HybridDecrypt(args string, _ int64) (interface{}, error){
+func HybridDecrypt(args string) (string, error){
 	raw, _ := b64.DecodeString(args)
 	privateKeyBytes := raw[0:privacy.Ed25519KeySize]
 	privateKeyScalar := new(privacy.Scalar).FromBytesS(privateKeyBytes)
@@ -340,7 +340,7 @@ func HybridDecrypt(args string, _ int64) (interface{}, error){
 	return b64.EncodeToString(plaintextBytes), nil
 }
 
-func ScalarMultBase(args string, _ int64) (interface{}, error){
+func ScalarMultBase(args string) (string, error){
 	scalar, err := b64.DecodeString(args)
 	if err != nil {
 		return "", err
@@ -351,7 +351,7 @@ func ScalarMultBase(args string, _ int64) (interface{}, error){
 	return res, nil
 }
 
-func RandomScalars(args string, _ int64) (interface{}, error){
+func RandomScalars(args string) (string, error){
 	num, err := strconv.ParseUint(args, 10, 64)
 	if err != nil {
 		return "", nil
@@ -366,7 +366,7 @@ func RandomScalars(args string, _ int64) (interface{}, error){
 	return res, nil
 }
 
-func GetSignPublicKey(args string, _ int64) (interface{}, error){
+func GetSignPublicKey(args string) (string, error){
 	raw := []byte(args)
 	var holder struct{
 		Data struct{
@@ -394,7 +394,7 @@ func GetSignPublicKey(args string, _ int64) (interface{}, error){
 	return hex.EncodeToString(sigPubKey), nil
 }
 
-func SignPoolWithdraw(args string, _ int64) (interface{}, error){
+func SignPoolWithdraw(args string) (string, error){
 	raw := []byte(args)
 	var holder struct{
 		Data struct{
@@ -432,7 +432,7 @@ func SignPoolWithdraw(args string, _ int64) (interface{}, error){
 }
 
 // signEncode string, signPublicKeyEncode string, amount string, paymentAddress string
-func VerifySign(args string, _ int64) (interface{}, error){
+func VerifySign(args string) (bool, error){
 	raw := []byte(args)
 	var holder struct{
 		Data struct{
@@ -445,15 +445,15 @@ func VerifySign(args string, _ int64) (interface{}, error){
 	err := json.Unmarshal(raw, &holder)
 	if err != nil {
 		println("Error can not unmarshal data : %v\n", err)
-		return "", err
+		return false, err
 	}
 	temp, err := hex.DecodeString(holder.Data.Pk)
 	if err != nil {
-		return "", errors.Errorf("Can not decode sign public key")
+		return false, errors.Errorf("Can not decode sign public key")
 	}
 	sigPublicKey, err := new(privacy.Point).FromBytesS(temp)
 	if err != nil {
-		return "", errors.Errorf("Get sigPublicKey error")
+		return false, errors.Errorf("Get sigPublicKey error")
 	}
 	verifyKey := new(privacy.SchnorrPublicKey)
 	verifyKey.Set(sigPublicKey)
@@ -471,20 +471,20 @@ func VerifySign(args string, _ int64) (interface{}, error){
 	return res, nil
 }
 
-func EstimateTxSizeInKB(paramStr string, _ int64) (interface{}, error){
+func EstimateTxSizeInKB(paramStr string) (int64, error){
 	var err error
 	temp := &EstimateTxSizeParam{}
 	err = json.Unmarshal([]byte(paramStr), temp)
 	if err!=nil{
-		return "", err
+		return -1, err
 	}
 
 	size := EstimateTxSize(temp)
-	result := uint64(math.Ceil(float64(size) / 1024))
+	result := int64(math.Ceil(float64(size) / 1024))
 	return result, nil
 }
 
-// func ComputeTransactionHash(args string, _ int64) (interface{}, error){
+// func ComputeTransactionHash(args string) (string, error){
 // 	// handle both json and b58-json encodings
 // 	raw, _, err1 := b58.Decode(args)
 // 	if err1!=nil{

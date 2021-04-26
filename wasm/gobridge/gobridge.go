@@ -29,18 +29,35 @@ func registrationWrapper(fn func(this js.Value, args []js.Value) (interface{}, e
 	}
 }
 
+type intCallback = func(string) (int64, error)
+type stringCallback = func(string) (string, error)
+type boolCallback = func(string) (bool, error)
+type txCallback = func(string, int64) (string, error)
+
 // RegisterCallback registers a Go function to be a callback used in JavaScript
-func RegisterCallback(name string, callback func(string, int64) (interface{}, error)) {
+func RegisterCallback(name string, inputFunc interface{}) {
 	mycb := func(_ js.Value, jsInputs []js.Value) (interface{}, error){
 		if len(jsInputs)<1{
-			return nil, errors.Errorf("Invalid number of parameters. Expected %d", 1)
+			return nil, errors.Errorf("Invalid number of parameters. Expected at least 1")
 		}
 		args := jsInputs[0].String()
 		var num int64 = 0
 		if len(jsInputs)>=2 && jsInputs[1].Type()==js.TypeNumber{
 			num = int64(jsInputs[1].Int())
 		}
-		return callback(args, num)
+		switch callback := inputFunc.(type) {
+		case intCallback:
+			return callback(args)
+		case stringCallback:
+			return callback(args)
+		case boolCallback:
+			return callback(args)
+		case txCallback:
+			return callback(args, num)
+		default:
+			return "", errors.Errorf("Unexpected error when executing callback")
+		}
+		
 	}
 	bridgeRoot.Set(name, js.FuncOf(registrationWrapper(mycb)))
 }
