@@ -1,6 +1,6 @@
 var path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
-
+const webpack = require('webpack');
 
 const optimization = {
     minimize: true,
@@ -61,11 +61,19 @@ module.exports = (env, argv) => {
                 exclude: /node_modules/,
                 loader: "babel-loader",
                 'options': {
-                    'plugins': ['lodash', '@babel/plugin-proposal-class-properties'],
+                    'plugins': [
+                        'lodash', 
+                        '@babel/plugin-proposal-class-properties'
+                    ],
                     'presets': ['@babel/preset-env']
                 }
             }]
         },
+        plugins: [
+            new webpack.optimize.LimitChunkCountPlugin({
+              maxChunks: 1
+            })
+        ],
         ...isProduction ? prodConfig : devConfig
     };
     const nodeCfg = {

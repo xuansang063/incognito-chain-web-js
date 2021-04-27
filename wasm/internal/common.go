@@ -1,4 +1,4 @@
-package internal
+package gomobile
 
 import (
 	"crypto/rand"
