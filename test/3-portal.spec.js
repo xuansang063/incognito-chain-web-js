@@ -14,7 +14,7 @@ let setup = () => async function() {
 let generateBTCShieldingAddress = (incAddress, chainName) => async function() {
     console.log("Generate BTC Shielding Address For Inc Payment Address: ", incAddress)
     let portal = this.inc.NewPortal(chainName)
-    let btcAddress = portal.generateBTCShieldingAddress(incAddress)
+    let btcAddress = portal.generateBTCMultisigAddress(incAddress)
     console.log("BTC Address", btcAddress)
 }
 
