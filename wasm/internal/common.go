@@ -4,7 +4,8 @@ import (
 	"crypto/rand"
 	"math"
 	"math/big"
-	// "encoding/hex"
+	// _ "syscall/js"
+	// "encoding/json"
 	// "errors"
 
 	// "golang.org/x/crypto/sha3"
@@ -56,10 +57,10 @@ func grabBytes(coinBytes *[]byte, offset *int) ([]byte, error) {
 }
 
 type EstimateTxSizeParam struct {
-	numInputCoins            int 				`json:"NumInputs"`
-	numPayments              int 				`json:"NumPayments"`
-	metadata                 metadata.Metadata 	`json:"Metadata"`
-	privacyCustomTokenParams *TokenParam 		`json:"TokenParams"`
+	NumInputCoins            int 				`json:"NumInputs"`
+	NumPayments              int 				`json:"NumPayments"`
+	Metadata                 metadata.Metadata 	`json:"Metadata"`
+	PrivacyCustomTokenParams *TokenInnerParams	`json:"TokenParams"`
 }
 
 func toB64Len(numOfBytes uint64) uint64{
@@ -78,6 +79,8 @@ func EstimateProofSize(numIn, numOut uint64) uint64{
 }
 
 func EstimateTxSize(estimateTxSizeParam *EstimateTxSizeParam) uint64{
+	// jsb, _ := json.Marshal(estimateTxSizeParam)
+	// println("PARAMS", string(jsb))
 	jsonKeysSizeBound := uint64(20 * 10 + 2)
 	sizeVersion := uint64(1)  // int8
 	sizeType := uint64(5)     // string, max : 5
@@ -85,40 +88,42 @@ func EstimateTxSize(estimateTxSizeParam *EstimateTxSizeParam) uint64{
 	sizeFee := uint64(8) * 3      // uint64
 	sizeInfo := toB64Len(uint64(512))
 
-	numIn := uint64(estimateTxSizeParam.numInputCoins)
-	numOut := uint64(estimateTxSizeParam.numPayments)
+	numIn := uint64(estimateTxSizeParam.NumInputCoins)
+	numOut := uint64(estimateTxSizeParam.NumPayments)
 
 	sizeSigPubKey := uint64(numIn) * privacy.RingSize * 9 + 2
 	sizeSigPubKey = toB64Len(sizeSigPubKey)
-	sizeSig := uint64(1) + numIn + (numIn + 2) * privacy.RingSize 
+	sizeSig := uint64(1) + numIn + (numIn + 2) * privacy.RingSize
 	sizeSig = sizeSig * 33 + 3
 
 	sizeProof := EstimateProofSize(numIn, numOut)
 
 	sizePubKeyLastByte := uint64(1) * 3
 	sizeMetadata := uint64(0)
-	if estimateTxSizeParam.metadata != nil {
-		sizeMetadata += metadata.CalculateSize(estimateTxSizeParam.metadata)
+	if estimateTxSizeParam.Metadata != nil {
+		sizeMetadata += metadata.CalculateSize(estimateTxSizeParam.Metadata)
 	}
 
 	sizeTx := jsonKeysSizeBound + sizeVersion + sizeType + sizeLockTime + sizeFee + sizeInfo + sizeSigPubKey + sizeSig + sizeProof + sizePubKeyLastByte + sizeMetadata
-	if estimateTxSizeParam.privacyCustomTokenParams != nil {
+	// println("PRV size", sizeTx)
+	if estimateTxSizeParam.PrivacyCustomTokenParams != nil {
 		tokenKeysSizeBound := uint64(20 * 8 + 2)
-		tokenSize := toB64Len(uint64(len(estimateTxSizeParam.privacyCustomTokenParams.PropertyID)))
-		tokenSize += uint64(len(estimateTxSizeParam.privacyCustomTokenParams.PropertySymbol))
-		tokenSize += uint64(len(estimateTxSizeParam.privacyCustomTokenParams.PropertyName))
+		tokenSize := toB64Len(uint64(len(estimateTxSizeParam.PrivacyCustomTokenParams.TokenID)))
+		tokenSize += uint64(len(estimateTxSizeParam.PrivacyCustomTokenParams.TokenSymbol))
+		tokenSize += uint64(len(estimateTxSizeParam.PrivacyCustomTokenParams.TokenName))
 		tokenSize += 2
-		numIn = uint64(len(estimateTxSizeParam.privacyCustomTokenParams.TokenInput))
-		numOut = uint64(len(estimateTxSizeParam.privacyCustomTokenParams.Receiver))
+		numIn = uint64(len(estimateTxSizeParam.PrivacyCustomTokenParams.TokenInput))
+		numOut = uint64(len(estimateTxSizeParam.PrivacyCustomTokenParams.TokenPaymentInfo))
 
 		// shadow variable names
 		sizeSigPubKey := uint64(numIn) * privacy.RingSize * 9 + 2
 		sizeSigPubKey = toB64Len(sizeSigPubKey)
-		sizeSig := uint64(1) + numIn + (numIn + 2) * privacy.RingSize 
+		sizeSig := uint64(1) + numIn + (numIn + 2) * privacy.RingSize
 		sizeSig = sizeSig * 33 + 3
 
 		sizeProof := EstimateProofSize(numIn, numOut)
 		tokenSize += tokenKeysSizeBound + sizeSigPubKey + sizeSig + sizeProof
+		// println("Token size", tokenSize)
 		sizeTx += tokenSize
 	}
 	return sizeTx

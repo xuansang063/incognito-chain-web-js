@@ -142,7 +142,7 @@ type TokenInnerParams struct{
 	TokenID 	string 					   	`json:"TokenID"`
 	TokenPaymentInfo []printedPaymentInfo  	`json:"PaymentInfo"`
 	TokenInput	[]CoinInter				   	`json:"InputCoins"`
-	TokenCache 	CoinCache 				   	`json:"CoinCache"`
+	TokenCache 	CoinCache 				   	`json:"CoinCache",omitempty`
 	Type 		int 						`json:"TokenTxType",omitempty`
 	TokenName 	string 						`json:"TokenName",omitempty`
 	TokenSymbol string 						`json:"TokenSymbol",omitempty`
