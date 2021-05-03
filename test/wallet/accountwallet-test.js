@@ -1,14 +1,3 @@
-// import {
-//     Wallet,
-//     AccountWallet,
-//     RpcClient,
-//     PaymentAddressType,
-//     PRVIDSTR,
-//     KeyWallet,
-//     ENCODE_VERSION,
-//     checkEncode
-// }
-
 const { Wallet, Transactor : AccountWallet, types, constants, utils } = require('../../');
 const { KeyWallet, RpcClient } = types;
 const { PaymentAddressType, PRVIDSTR, ENCODE_VERSION } = constants;
