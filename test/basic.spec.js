@@ -33,13 +33,19 @@ let setup = () => async function() {
     // reset to shard 0 endpoint
     this.inc.setProvider(providers[0]);
     this.incAddresses = this.transactors.map(_t => _t.key.base58CheckSerialize(Inc.constants.PaymentAddressType));
-    const resp = await this.inc.rpc.listTokens();
+    let resp = {};
+    try {
+        resp = await this.inc.rpc.listTokens();
+    } catch(e) {
+        console.error(e);
+        console.warn('Could not get token list. Maybe check your node endpoints')
+    }
     this.incTokens = resp.listPrivacyToken;
 }
 
 describe('Basic Tests for Web-js module', async function() {
     before(setup());
-    before(loadLegacyTests("./wallet/accountwallet-test", "./wallet/wallet-test"));
+    before(loadLegacyTests('./wallet/accountwallet-test', './wallet/wallet-test', './wallet/hdwallet-test', './committeekey-test', './identicon-test', './rpc/rpc-test', './privacy/hybridenc-test', './privacy/utils-test'));
     describe('Legacy tests', async function() {
         it.skip('main flow', async function() {
             await this.legacyTests.MainRoutine();
@@ -54,6 +60,22 @@ describe('Basic Tests for Web-js module', async function() {
             await this.legacyTests.TestInitWallet();
             await this.legacyTests.TestImportWallet();
             await this.legacyTests.TestImportAccount();
+            await this.legacyTests.TestKeyWallet();
+            await this.legacyTests.TestGetKeySetFromPrivateKeyStr();
+        })
+        it('Committee key tests', async function() {
+            await this.legacyTests.TestCommitteeKey();
+            await this.legacyTests.TestBLSPubKey();
+        })
+        it('RPC tests (to Incognito node)', async function() {
+            await this.legacyTests.TestIdenticon();
+            await this.legacyTests.TestGetBurningAddress();
+            await this.legacyTests.TestGetListPrivacyToken();
+            await this.legacyTests.TestGetExchangeRatePToken();
+        })
+        it('Privacy function tests', async function() {
+            await this.legacyTests.TestHybridEncryption();
+            await this.legacyTests.TestConvertStringAndBytesArray();
         })
     })
 })
