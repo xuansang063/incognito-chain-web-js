@@ -92,6 +92,8 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &BurningRequest{}
 	case BurningForDepositToSCRequestMetaV2:
 		md = &BurningRequest{}
+	case PortalV4UnshieldRequestMeta:
+		md = &PortalUnshieldRequest{}
 	default:
 		return nil, errors.Errorf("Could not parse metadata with type: %d", theType)
 	}

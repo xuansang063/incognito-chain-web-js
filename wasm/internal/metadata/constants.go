@@ -96,6 +96,9 @@ const (
 	BurningForDepositToSCRequestMetaV2 = 242
 	BurningConfirmForDepositToSCMeta   = 97
 	BurningConfirmForDepositToSCMetaV2 = 243
+
+	// portal v4
+	PortalV4UnshieldRequestMeta = 252;
 )
 
 var minerCreatedMetaTypes = []int{
@@ -121,6 +124,7 @@ var minerCreatedMetaTypes = []int{
 	PortalLiquidationCustodianDepositResponseMetaV2,
 	PortalPortingResponseMeta,
 	PortalTopUpWaitingPortingResponseMeta,
+	PortalV4UnshieldRequestMeta,
 }
 
 // Special rules for shardID: stored as 2nd param of instruction of BeaconBlock
