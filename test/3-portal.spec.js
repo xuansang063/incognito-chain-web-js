@@ -27,12 +27,12 @@ let generateBTCShieldingAddress = (incAddress, chainName) => async function() {
     console.log("BTC Address:", btcAddress)
 }
 
-let sendUnshieldingRequest = (tokenID, chainName, unshieldAmount, remoteAddress) => async function() {
+let sendUnshieldingRequest = (tokenID, unshieldAmount, remoteAddress) => async function() {
     let fee = 100
     try {
         result = await this.transactors[0].unshieldPortal({
             transfer: {fee, tokenID},
-            extra: {chainName, unshieldAmount, remoteAddress},
+            extra: {unshieldAmount, remoteAddress},
         })
         console.log("TxHash:", result.Hash)
     } catch (e) {
@@ -49,5 +49,5 @@ describe('Portal V4 Tests', async function() {
     let unshieldAmount = 100000
     let remoteAddress = 'mxQAt2EJGrGJHtozUXmWMMFsFnBtfZD4ia'
     let unshieldingTokenID = 'ef5947f70ead81a76a53c7c8b7317dd5245510c665d3a13921dc9a581188728b'
-    it('generate unshielding request', sendUnshieldingRequest(unshieldingTokenID, chainName, unshieldAmount, remoteAddress))
+    it('generate unshielding request', sendUnshieldingRequest(unshieldingTokenID, unshieldAmount, remoteAddress))
 })
