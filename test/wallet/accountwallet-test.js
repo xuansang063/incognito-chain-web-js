@@ -1,4 +1,4 @@
-const { Wallet, Transactor : AccountWallet, types, constants, utils } = require('../../');
+const { Wallet, Transactor : AccountWallet, types, constants, utils, init } = require('../../');
 const { KeyWallet, RpcClient } = types;
 const { PaymentAddressType, PRVIDSTR, ENCODE_VERSION } = constants;
 const { base58CheckEncode : checkEncode } = utils;
@@ -9,6 +9,7 @@ const { base58CheckEncode : checkEncode } = utils;
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
+// const rpcCoinService = "http://51.161.119.66:9001"  //dev-test-coin-service
 
 let wallet;
 let senderPrivateKeyStr;
@@ -20,26 +21,26 @@ let receiverPaymentAddrStr2;
 
 let tokenID, secondTokenID;
 async function setup(){
+    await init();
     tokenID = "699a3006d1865ebdc437053b33df6a62c6c7c2f554f2fd0adf99a60f5117f945";
     secondTokenID = "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
     // await sleep(10000);
     wallet = new Wallet();
-    wallet.setProvider("http://localhost:9334");
-    senderPrivateKeyStr = "112t8rnXoBXrThDTACHx2rbEq7nBgrzcZhVZV4fvNEcGJetQ13spZRMuW5ncvsKA1KvtkauZuK2jV8pxEZLpiuHtKX3FkKv2uC5ZeRC8L6we";
-
+    wallet.setProvider("http://139.162.55.124:8334");
+    wallet.setRpcHTTPCoinServiceClient("http://51.161.119.66:9009");
+    senderPrivateKeyStr = "112t8rnqawFcfb4TCLwvSMgza64EuC4HMPUnwrqG1wn1UFpyyuCBcGPMcuT7vxfFCehzpj3jexavU33qUUJcdSyz321b27JFZFj6smyyQRza";
     accountSender = new AccountWallet(Wallet);
-    accountSender.useCoinsService = false;
     await accountSender.setKey(senderPrivateKeyStr);
     senderPaymentAddressStr = accountSender.key.base58CheckSerialize(PaymentAddressType);
-    await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
+    // await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
     receiverPaymentAddrStr = "12shR6fDe7ZcprYn6rjLwiLcL7oJRiek66ozzYu3B3rBxYXkqJeZYj6ZWeYy4qR4UHgaztdGYQ9TgHEueRXN7VExNRGB5t4auo3jTgXVBiLJmnTL5LzqmTXezhwmQvyrRjCbED5xVWf4ETHbRCSP";
     receiverPaymentAddrStr2 = "12sm28usKxzw8HuwGiEojZZLWgvDinAkmZ3NvBNRQLuPrf5LXNLXVXiu4VBCMVDrDm97qjLrgFck3P36UTSWfqNX1PBP9PBD78Cpa95em8vcnjQrnwDNi8EdkdkSA6CWcs4oFatQYze7ETHAUBKH";
 }
 async function TestGetBalance() {
-
     await setup();
     // create and send PRV
     try {
+        accountSender.useCoinsService = true;
         let balance = await accountSender.getBalance(null);
         console.log("balance: ", balance.toString());
     } catch (e) {
@@ -472,6 +473,7 @@ async function MainRoutine(){
     try{
         let txh;
         await TestGetBalance();
+        return;
         await TestGetAllPrivacyTokenBalance();
         txh = await TestCreateAndSendConversion();
         await accountSender.waitTx(txh, 5);
@@ -512,7 +514,7 @@ async function MainRoutine(){
     }
     console.log("END WEB WALLET TEST");
 }
-// MainRoutine();
+MainRoutine();
 
 // to run this test flow, make sure the account has about 2.5mil PRV, 120k of each of FIRST and SECOND token; all version 2
 async function PDERoutine(){
