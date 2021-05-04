@@ -11,7 +11,8 @@
     "build:watch": "webpack --config webpack.config.js --watch",
     "build": "webpack --config webpack.config.js --mode production",
     "build:dev": "webpack --config webpack.config.js --mode development",
-    "test": "yarn build:wasm; mocha \"test/**/*.spec.js\""
+    "test": "yarn build:wasm; mocha \"test/**/*.spec.js\"",
+    "test-account": "yarn build:dev && node ./test/wallet/accountwallet-test"
   },
   "repository": {
     "type": "git",
