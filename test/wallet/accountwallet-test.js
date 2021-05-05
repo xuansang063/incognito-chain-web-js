@@ -22,7 +22,7 @@ let receiverPaymentAddrStr2;
 let tokenID, secondTokenID;
 async function setup(){
     await init();
-    tokenID = "699a3006d1865ebdc437053b33df6a62c6c7c2f554f2fd0adf99a60f5117f945";
+    tokenID = "c575c9a7f0706db902fb83dcad85be2f5488e1ac3bc382cb1f3cbffebf814fef";
     secondTokenID = "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
     // await sleep(10000);
     wallet = new Wallet();
@@ -41,7 +41,7 @@ async function TestGetBalance() {
     // create and send PRV
     try {
         accountSender.useCoinsService = true;
-        let balance = await accountSender.getBalance(null);
+        let balance = await accountSender.getBalance(tokenID);
         console.log("balance: ", balance.toString());
     } catch (e) {
         console.log("Error when get balance: ", e);
