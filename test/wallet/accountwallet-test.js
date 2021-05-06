@@ -18,28 +18,39 @@ let senderPaymentAddressStr;
 let receiverPaymentAddrStr;
 let receiverPaymentAddrStr2;
 
-let tokenID, secondTokenID;
-async function setup(){
-    tokenID = "699a3006d1865ebdc437053b33df6a62c6c7c2f554f2fd0adf99a60f5117f945";
-    secondTokenID = "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
+let tokenID, secondTokenID, initialized = false;
+// subsequent `setup()` calls will only change accountSender, while the first also populates the above variables
+async function setup(_transactor){
+    if (_transactor) accountSender = _transactor;
+    if (initialized) {
+        console.warn('Setup was done before. Skipping...');
+        return
+    }
+    initialized = true;
+    const [ token1, token2 ] = global.testingTokens || [];
+    tokenID = token1 || "699a3006d1865ebdc437053b33df6a62c6c7c2f554f2fd0adf99a60f5117f945";
+    secondTokenID = token2 || "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
+    console.log(`Testing tokens ${tokenID}, ${secondTokenID}`);
     // await sleep(10000);
-    wallet = new Wallet();
-    wallet.setProvider("http://localhost:9334");
+    // wallet = new Wallet();
+    // wallet.setProvider("http://139.162.55.124:8334");
     senderPrivateKeyStr = "112t8rnXoBXrThDTACHx2rbEq7nBgrzcZhVZV4fvNEcGJetQ13spZRMuW5ncvsKA1KvtkauZuK2jV8pxEZLpiuHtKX3FkKv2uC5ZeRC8L6we";
 
-    accountSender = new AccountWallet(Wallet);
-    accountSender.useCoinsService = false;
-    await accountSender.setKey(senderPrivateKeyStr);
+    if (!accountSender) {
+        accountSender = new AccountWallet(Wallet);
+        await accountSender.setKey(senderPrivateKeyStr);
+        accountSender.useCoinsService = false;
+        await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
+    }
     senderPaymentAddressStr = accountSender.key.base58CheckSerialize(PaymentAddressType);
-    await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
     receiverPaymentAddrStr = "12shR6fDe7ZcprYn6rjLwiLcL7oJRiek66ozzYu3B3rBxYXkqJeZYj6ZWeYy4qR4UHgaztdGYQ9TgHEueRXN7VExNRGB5t4auo3jTgXVBiLJmnTL5LzqmTXezhwmQvyrRjCbED5xVWf4ETHbRCSP";
     receiverPaymentAddrStr2 = "12sm28usKxzw8HuwGiEojZZLWgvDinAkmZ3NvBNRQLuPrf5LXNLXVXiu4VBCMVDrDm97qjLrgFck3P36UTSWfqNX1PBP9PBD78Cpa95em8vcnjQrnwDNi8EdkdkSA6CWcs4oFatQYze7ETHAUBKH";
 }
 async function TestGetBalance() {
-
     await setup();
     // create and send PRV
     try {
+        // accountSender.useCoinsService = true;
         let balance = await accountSender.getBalance(null);
         console.log("balance: ", balance.toString());
     } catch (e) {
@@ -150,7 +161,7 @@ async function TestSendMultiple() {
         '12shR6fDe7ZcprYn6rjLwiLcL7oJRiek66ozzYu3B3rBxYXkqJeZYj6ZWeYy4qR4UHgaztdGYQ9TgHEueRXN7VExNRGB5t4auo3jTgXVBiLJmnTL5LzqmTXezhwmQvyrRjCbED5xVWf4ETHbRCSP',
         '12sm28usKxzw8HuwGiEojZZLWgvDinAkmZ3NvBNRQLuPrf5LXNLXVXiu4VBCMVDrDm97qjLrgFck3P36UTSWfqNX1PBP9PBD78Cpa95em8vcnjQrnwDNi8EdkdkSA6CWcs4oFatQYze7ETHAUBKH',
     ];
-    const amount = 1*1e9;
+    const amount = 2020;
     const paymentInfos = receivers.map(item => ({
         "PaymentAddress": item,
         "Amount": amount,
@@ -302,7 +313,6 @@ async function TestMultipleSendPrivacyToken() {
     }
 }
 async function TestCreateAndSendStakingTx() {
-
     await setup();
 
     let param = {
@@ -318,7 +328,13 @@ async function TestCreateAndSendStakingTx() {
 
     // create and send staking tx
     try {
+        // we only test that the staking TX is created successfully; submitting is skipped since we would need to keep a validator node running
+        accountSender.offlineMode = true;
         let response = await accountSender.createAndSendStakingTx({ transfer: { fee }, extra: { candidatePaymentAddress, candidateMiningSeedKey, rewardReceiverPaymentAddress, autoReStaking, stakingType: param.type }});
+        accountSender = new AccountWallet(Wallet);
+        await accountSender.setKey(senderPrivateKeyStr);
+        accountSender.useCoinsService = false;
+        accountSender.isSubmitOtaKey = true;
         return response.Response.txId;
     } catch (e) {
         console.log("Error when staking: ", e);
@@ -337,8 +353,9 @@ async function TestCreateAndSendStopAutoStakingTx() {
         let response = await accountSender.createAndSendStopAutoStakingTx({ transfer: { fee }, extra: { candidatePaymentAddress, candidateMiningSeedKey }});
         return response.Response.txId;
     } catch (e) {
-        console.log("Error when staking: ", e);
-        throw e;
+        // since we tolerate staking TX being rejected, we do the same for stop-staking TX
+        console.error("Error when sending stop-staking TX: ", e);
+        // throw e;
     }
 }
 async function TestDefragment() {
@@ -464,45 +481,48 @@ async function GetListReceivedTx() {
     }
 }
 
-// to run this test flow, make sure the account has enough PRV to stake & some 10000 of this token; both are version 1
-// tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
+// to run this test flow, make sure the account has enough PRV to stake & some 10000 of this token
 async function MainRoutine(){
     console.log("BEGIN WEB WALLET TEST");
-    // sequential execution of tests; the wait might still be too short
+    // sequential execution of tests
     try{
         let txh;
+        // `convert` is not repeatable on devnet
+        // txh = await TestCreateAndSendConversion();
+        // await accountSender.waitTx(txh, 5);
+        // txh = await TestCreateAndSendNativeToken();
+        // await accountSender.waitTx(txh, 5);
+        // txh = await TestCreateAndSendTokenConversion();
+        // await accountSender.waitTx(txh, 5);
+
         await TestGetBalance();
         await TestGetAllPrivacyTokenBalance();
-        txh = await TestCreateAndSendConversion();
-        await accountSender.waitTx(txh, 5);
-        txh = await TestCreateAndSendNativeToken();
-        await accountSender.waitTx(txh, 5);
 
-        // txh = await TestCreateAndSendStakingTx();
-        // await accountSender.waitTx(txh, 5);
+        txh = await TestCreateAndSendStakingTx();
+        if (txh){
+            await accountSender.waitTx(txh, 5);
+        } else {
+            console.warn('Tx was successfully created, but rejected !');
+        }
+        txh = await TestCreateAndSendStopAutoStakingTx();
+        if (txh){
+            await accountSender.waitTx(txh, 5);
+        } else {
+            console.warn('Tx was successfully created, but rejected !');
+        }
         await GetListReceivedTx();
         await TestStakerStatus();
-        await accountSender.waitTx(txh, 10);
-        txh = await TestCreateAndSendTokenConversion();
-        await accountSender.waitTx(txh, 5);
-        // txh = await TestCreateAndSendStopAutoStakingTx();
-        // await accountSender.waitTx(txh, 5);
-        // deprecated init-token method
-        // let temp = await TestCreateAndSendPrivacyTokenInit();
-        // await accountSender.waitTx(temp.Response.txId, 5);
         txh = await TestSendMultiple();
         await accountSender.waitTx(txh, 5);
-        // burning will return an error since this is not a bridge token
+        // burning TX could be rejected due to environment configs
         txh = await TestBurningRequestTx();
         if (txh){
             await accountSender.waitTx(txh, 5);
+        } else {
+            console.warn('Tx was successfully created, but rejected !');
         }
         txh = await TestCreateAndSendPrivacyTokenTransfer();
         await accountSender.waitTx(txh, 5);
-
-        // tokenID = temp.tokenID;
-        // console.log("New token", temp.tokenID);
-        // txh = await TestCreateAndSendPrivacyTokenTransfer();
         await accountSender.waitTx(txh, 5);
         await TestGetOutputCoins();
     }catch(e){
@@ -586,6 +606,7 @@ async function DefragmentRoutine(){
 // DefragmentRoutine()
 
 module.exports = {
+    AccountWalletTestSetup: setup,
     MainRoutine,
     PDERoutine,
     DefragmentRoutine

@@ -5,9 +5,10 @@ chai.use(chaiAsPromised);
 const bn = require('bn.js');
 chai.use(require('chai-bn')(bn));
 const Inc = require('..');
-const { setup } = require('./basic.spec.js');
+const { setup } = require('./setup');
 
 let getFirstTokenID = (lst) => {
+    if (global.testingTokens && global.testingTokens[0]) return global.testingTokens[0];
     let tokens = lst.filter(t => t.Symbol.length >= 3);
     if (tokens.length > 0) return tokens[0].ID;
     else throw 'Error : a token is required'
@@ -243,7 +244,7 @@ let withdrawReward = () => async function() {
     expect(bChange, 'balance change vs reward mismatch').to.bignumber.equal(rewardAmount);
 }
 
-describe('OTA tests', async function() {
+describe.skip('OTA tests', async function() {
     before(setup());
     const startAmount = 50;
     it('should fail to front-run trade request with a PRV transfer', frontRunPRVTradeRequest(startAmount));
