@@ -9,7 +9,7 @@ const { base58CheckEncode : checkEncode } = utils;
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
-// const rpcCoinService = "http://51.161.119.66:9001"  //dev-test-coin-service
+const rpcCoinService = "http://51.161.119.66:9001"  //dev-test-coin-service
 
 let wallet;
 let senderPrivateKeyStr;
@@ -27,8 +27,8 @@ async function setup(){
     // await sleep(10000);
     wallet = new Wallet();
     wallet.setProvider("http://139.162.55.124:8334");
-    wallet.setRpcHTTPCoinServiceClient("http://51.161.119.66:9009");
-    senderPrivateKeyStr = "112t8rnqawFcfb4TCLwvSMgza64EuC4HMPUnwrqG1wn1UFpyyuCBcGPMcuT7vxfFCehzpj3jexavU33qUUJcdSyz321b27JFZFj6smyyQRza";
+    wallet.setRpcHTTPCoinServiceClient(rpcCoinService);
+    senderPrivateKeyStr = "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
     accountSender = new AccountWallet(Wallet);
     await accountSender.setKey(senderPrivateKeyStr);
     senderPaymentAddressStr = accountSender.key.base58CheckSerialize(PaymentAddressType);
@@ -465,6 +465,17 @@ async function GetListReceivedTx() {
     }
 }
 
+async function GetUnspentCoinV1() {
+    await setup();
+    try{
+        accountSender.setPrivacyVersion('1');
+        let unspentCoinsV1 = await accountSender.getAllUnspentCoinsV1();
+        console.log(unspentCoinsV1);
+    }catch(e){
+        throw e;
+    }
+}
+
 // to run this test flow, make sure the account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine(){
@@ -472,7 +483,7 @@ async function MainRoutine(){
     // sequential execution of tests; the wait might still be too short
     try{
         let txh;
-        await TestGetBalance();
+        await GetUnspentCoinV1();
         return;
         await TestGetAllPrivacyTokenBalance();
         txh = await TestCreateAndSendConversion();
