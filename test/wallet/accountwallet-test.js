@@ -9,7 +9,7 @@ const { base58CheckEncode : checkEncode } = utils;
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
-// const rpcCoinService = "http://51.161.119.66:9001"  //dev-test-coin-service
+// const rpcCoinService = "http://51.161.119.66:9009"  //dev-test-coin-service
 
 let wallet;
 let senderPrivateKeyStr;
