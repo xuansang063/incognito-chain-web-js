@@ -378,7 +378,7 @@ async function TestMakeFragments() {
     ];
 
     let utxos = 0;
-    // the address of our testing account; it will receive a lot of 'fragments'
+    // the address of our testing Account; it will receive a lot of 'fragments'
     const receiver = '12sxXUjkMJZHz6diDB6yYnSjyYcDYiT5QygUYFsUbGUqK8PH8uhxf4LePiAE8UYoDcNkHAdJJtT1J6T8hcvpZoWLHAp8g6h1BQEfp4h5LQgEPuhMpnVMquvr1xXZZueLhTNCXc8fkVXseeVAGCt8';
 
     const amountTransfer = 200;
@@ -481,7 +481,7 @@ async function GetListReceivedTx() {
     }
 }
 
-// to run this test flow, make sure the account has enough PRV to stake & some 10000 of this token
+// to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token
 async function MainRoutine(){
     console.log("BEGIN WEB WALLET TEST");
     // sequential execution of tests
@@ -534,7 +534,7 @@ async function MainRoutine(){
 }
 // MainRoutine();
 
-// to run this test flow, make sure the account has about 2.5mil PRV, 120k of each of FIRST and SECOND token; all version 2
+// to run this test flow, make sure the Account has about 2.5mil PRV, 120k of each of FIRST and SECOND token; all version 2
 async function PDERoutine(){
     console.log("BEGIN PDE TEST");
     try{
