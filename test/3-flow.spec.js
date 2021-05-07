@@ -17,7 +17,7 @@ let loadLegacyTests = (...filenames) => async function() {
 
 describe('Basic Tests for Web-js module', async function() {
     before(setup());
-    before(loadLegacyTests('./wallet/accountwallet-test', './wallet/wallet-test', './wallet/hdwallet-test', './committeekey-test', './identicon-test', './rpc/rpc-test', './privacy/hybridenc-test', './privacy/utils-test'));
+    before(loadLegacyTests('./wallet/basic-test', './wallet/wallet-test', './wallet/hdwallet-test', './committeekey-test', './identicon-test', './rpc/rpc-test', './privacy/hybridenc-test', './privacy/utils-test'));
     describe('Legacy tests', async function() {
         it('main flow', async function() {
             await this.legacyTests.AccountWalletTestSetup(this.transactors[0]);
