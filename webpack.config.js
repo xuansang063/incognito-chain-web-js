@@ -36,6 +36,14 @@ const prodConfig = {
   optimization,
 };
 
+const aliasConfig = {
+  resolve: {
+    alias: {
+      "@lib": path.resolve(__dirname, "lib"),
+    },
+  },
+};
+
 module.exports = (env, argv) => {
   const isProduction = argv.mode === "production";
 
@@ -73,6 +81,7 @@ module.exports = (env, argv) => {
       }),
     ],
     ...(isProduction ? prodConfig : devConfig),
+    ...aliasConfig,
   };
   const nodeCfg = {
     devtool: "source-map",
@@ -103,6 +112,7 @@ module.exports = (env, argv) => {
       ],
     },
     ...(isProduction ? prodConfig : devConfig),
+    ...aliasConfig,
   };
   return [cfg, nodeCfg];
 };
