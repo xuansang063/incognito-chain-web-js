@@ -21,32 +21,41 @@ import(
 
 const MaxSizeByte = (1 << 8) - 1
 var b58 = base58.Base58Check{}
+var b64 = base64.StdEncoding
 
-type b58CompatBytes []byte
-func (b b58CompatBytes) MarshalJSON() ([]byte, error){
+type encodedBytes []byte
+func (b encodedBytes) MarshalJSON() ([]byte, error){
 	var res string
 	if len([]byte(b))==0{
 		res = ""
 	}else{
-		res = b58.Encode(b, common.ZeroByte)
+		if common.EncodeCoinsWithBase64 {
+			res = b64.EncodeToString(b, )
+		} else {
+			res = b58.Encode(b, common.ZeroByte)
+		}
 	}
-	// println(res)
 	return json.Marshal(res)
 }
-func (b *b58CompatBytes) UnmarshalJSON(src []byte) error{
+func (b *encodedBytes) UnmarshalJSON(src []byte) error{
 	var theStr string
 	json.Unmarshal(src, &theStr)
 	if len(theStr)==0{
-		*b = b58CompatBytes([]byte{})
+		*b = encodedBytes([]byte{})
 		return nil
 	}
-	// println(theStr)
-	res, _, err := b58.Decode(theStr)
-	*b = res
-	return err
+	if common.EncodeCoinsWithBase64 {
+		res, err := b64.DecodeString(theStr)
+		*b = res
+		return err
+	} else {
+		res, _, err := b58.Decode(theStr)
+		*b = res
+		return err
+	}
 }
 
-func (b b58CompatBytes) IsBlank() bool{
+func (b encodedBytes) IsBlank() bool{
 	return len([]byte(b))==0
 }
 
@@ -169,9 +178,9 @@ func (tx Tx) MarshalJSON() ([]byte, error){
 }
 
 type CoinCache struct{
-	PublicKeys 		[]b58CompatBytes 			`json:"PublicKeys"`
-	Commitments 	[]b58CompatBytes 			`json:"Commitments"`
-	AssetTags		[]b58CompatBytes 			`json:"AssetTags,omitempty"`
+	PublicKeys 		[]encodedBytes 			`json:"PublicKeys"`
+	Commitments 	[]encodedBytes 			`json:"Commitments"`
+	AssetTags		[]encodedBytes 			`json:"AssetTags,omitempty"`
 	Indexes 		[]uint64 					`json:"Indexes"`
 }
 func MakeCoinCache() *CoinCache{
@@ -183,7 +192,6 @@ func MakeCoinCache() *CoinCache{
 	}
 }
 
-var b64 = base64.StdEncoding
 var genericError = errors.New("Generic error for ASM")
 
 // []byte equivalents are by default encoded with base64 when handled by JSON
@@ -340,23 +348,24 @@ func (u *printedUintStr) UnmarshalJSON(raw []byte) error{
 
 type CoinInter struct {
 	Version    		printedUintStr	`json:"Version"`
-	Info       		b58CompatBytes 	`json:"Info"`
-	Index      		b58CompatBytes 	`json:"Index"`
-	PublicKey  		b58CompatBytes 	`json:"PublicKey"`
-	Commitment 		b58CompatBytes 	`json:"Commitment"`
-	KeyImage   		b58CompatBytes 	`json:"KeyImage"`
+	Info       		encodedBytes 	`json:"Info"`
+	Index      		encodedBytes 	`json:"Index"`
+	PublicKey  		encodedBytes 	`json:"PublicKey"`
+	Commitment 		encodedBytes 	`json:"Commitment"`
+	KeyImage   		encodedBytes 	`json:"KeyImage"`
 
-	SharedRandom 	b58CompatBytes 	`json:"SharedRandom"`
-	SharedConcealRandom 	b58CompatBytes 	`json:"SharedConcealRandom"`
-	TxRandom     	b58CompatBytes 	`json:"TxRandom"`
-	Mask    		b58CompatBytes 	`json:"Randomness"`
+	SharedRandom 	encodedBytes 	`json:"SharedRandom"`
+	SharedConcealRandom 	encodedBytes 	`json:"SharedConcealRandom"`
+	TxRandom     	encodedBytes 	`json:"TxRandom"`
+	Mask    		encodedBytes 	`json:"Randomness"`
 	Value 			printedUintStr 	`json:"Value"`
-	Amount 			b58CompatBytes 	`json:"CoinDetailsEncrypted"`
+	Amount 			encodedBytes 	`json:"CoinDetailsEncrypted"`
 
 	// for v1
-	SNDerivator     b58CompatBytes 	`json:"SNDerivator"`
+	SNDerivator     encodedBytes 	`json:"SNDerivator"`
 	// tag is nil unless confidential asset
-	AssetTag  		b58CompatBytes 	`json:"AssetTag"`
+	AssetTag  		encodedBytes 	`json:"AssetTag"`
+	useBase64Encoding bool 			`json:"UseBase64Encoding"`
 }
 func (c CoinInter) ToCoin() (*privacy.CoinV2, uint64, error){
 	var err error

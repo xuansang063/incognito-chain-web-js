@@ -471,7 +471,7 @@ func VerifySign(args string) (bool, error){
 	return res, nil
 }
 
-func EstimateTxSizeInKB(paramStr string) (int64, error){
+func EstimateTxSize(paramStr string) (int64, error){
 	var err error
 	temp := &EstimateTxSizeParam{}
 	err = json.Unmarshal([]byte(paramStr), temp)
@@ -479,7 +479,7 @@ func EstimateTxSizeInKB(paramStr string) (int64, error){
 		return -1, err
 	}
 
-	size := EstimateTxSize(temp)
+	size := estimateTxSizeAsBytes(temp)
 	result := int64(math.Ceil(float64(size) / 1024))
 	return result, nil
 }
