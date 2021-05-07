@@ -1,4 +1,5 @@
-import {bytesToString, stringToBytes} from "../../lib/privacy/utils";
+const { utils } = require('../../');
+const { bytesToString, stringToBytes } = utils;
 
 function TestConvertStringAndBytesArray(){
     let str = "rose's so cute";
@@ -9,5 +10,8 @@ function TestConvertStringAndBytesArray(){
     console.log("str2: ", str2);
 
 }
+// TestConvertStringAndBytesArray();
 
-TestConvertStringAndBytesArray();
+module.exports = {
+    TestConvertStringAndBytesArray
+}

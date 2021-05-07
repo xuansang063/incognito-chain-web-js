@@ -1,16 +1,13 @@
-import * as key from "../../lib/key";
-import * as constants from "../../lib/wallet/constants";
-import { KeyWallet } from "../../lib/wallet/hdwallet"
-
-async function sleep(sleepTime) {
-  return new Promise(resolve => setTimeout(resolve, sleepTime));
-}
+const { Wallet, Transactor : AccountWallet, types, constants, utils } = require('../../');
+const { KeyWallet } = types;
+const { base58CheckEncode : checkEncode, base64Encode, base64Decode } = utils;
+const { wasm } = require('../../lib/wasm');
 
 async function TestKeyWallet() {
-  await sleep(4000);
-  let spendingKey = key.GeneratePrivateKey([123]);
+  let privateKeyB64Encode = await wasm.generateKeyFromSeed(base64Encode([123]));
+  let spendingKey = base64Decode(privateKeyB64Encode);
   console.log("Spending key: ", spendingKey.join(" , "));
-  let keyWallet = new KeyWallet().fromPrivateKey(spendingKey);
+  let keyWallet = await (new KeyWallet().fromPrivateKey(spendingKey));
   console.log("key wallet : ", keyWallet);
 
   let privateKeyStr = keyWallet.base58CheckSerialize(constants.PriKeyType);
@@ -29,11 +26,10 @@ async function TestKeyWallet() {
   keyDeserialize = KeyWallet.base58CheckDeserialize(readonlyKeystr);
   console.log("key deserialize :", keyDeserialize);
 }
+// TestKeyWallet();
 
-TestKeyWallet();
 
-
-function TestGetKeySetFromPrivateKeyStr(){
+async function TestGetKeySetFromPrivateKeyStr(){
   let privateKey = "112t8rneH8RSZmLfmtYibmrAxpBtpSnLtkdJY57JJmdhRdnTTF8yxrzaMxi9ctjQyXXETNZ26pTnmNL2LDPWxahVQgQQyNUKy4dHiBcFSjng"
 
   // let keyWallet = new(KeyWallet)
@@ -41,5 +37,9 @@ function TestGetKeySetFromPrivateKeyStr(){
   console.log("res: ", res)
 
 }
-
 // TestGetKeySetFromPrivateKeyStr()
+
+module.exports = {
+    TestKeyWallet,
+    TestGetKeySetFromPrivateKeyStr
+}
