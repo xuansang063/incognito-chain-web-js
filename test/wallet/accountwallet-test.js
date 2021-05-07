@@ -21,7 +21,7 @@ const { base58CheckEncode: checkEncode } = utils;
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
-const rpcCoinService = "http://51.161.119.66:9001"; //dev-test-coin-service
+const rpcCoinService = "http://51.161.119.66:9009"; //dev-test-coin-service
 
 let wallet;
 let senderPrivateKeyStr;
@@ -41,11 +41,11 @@ async function setup() {
   wallet = new Wallet();
   wallet.setProvider("http://139.162.55.124:8334");
   wallet.setRpcHTTPCoinServiceClient(rpcCoinService);
-  wallet.setPrivacyVersion("1");
-  senderPrivateKeyStr =
-    "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
+  wallet.setPrivacyVersion("2");
   //   senderPrivateKeyStr =
-  //     "112t8rnqawFcfb4TCLwvSMgza64EuC4HMPUnwrqG1wn1UFpyyuCBcGPMcuT7vxfFCehzpj3jexavU33qUUJcdSyz321b27JFZFj6smyNMmGc";
+  //     "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
+  senderPrivateKeyStr =
+    "112t8rnqawFcfb4TCLwvSMgza64EuC4HMPUnwrqG1wn1UFpyyuCBcGPMcuT7vxfFCehzpj3jexavU33qUUJcdSyz321b27JFZFj6smyNMmGc";
   accountSender = new AccountWallet(Wallet);
   await accountSender.setKey(senderPrivateKeyStr);
   senderPaymentAddressStr = accountSender.key.base58CheckSerialize(
@@ -61,7 +61,6 @@ async function TestGetBalance() {
   await setup();
   // create and send PRV
   try {
-    accountSender.useCoinsService = true;
     let balance = await accountSender.getBalance(tokenID);
     console.log("balance: ", balance.toString());
   } catch (e) {
@@ -585,7 +584,7 @@ async function MainRoutine() {
   // sequential execution of tests; the wait might still be too short
   try {
     let txh;
-    await GetUnspentCoinV1();
+    await TestGetBalance();
     return;
     await TestGetAllPrivacyTokenBalance();
     txh = await TestCreateAndSendConversion();
