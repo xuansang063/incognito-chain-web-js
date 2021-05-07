@@ -78,7 +78,7 @@ func EstimateProofSize(numIn, numOut uint64) uint64{
 	return toB64Len(result)
 }
 
-func EstimateTxSize(estimateTxSizeParam *EstimateTxSizeParam) uint64{
+func estimateTxSizeAsBytes(estimateTxSizeParam *EstimateTxSizeParam) uint64{
 	// jsb, _ := json.Marshal(estimateTxSizeParam)
 	// println("PARAMS", string(jsb))
 	jsonKeysSizeBound := uint64(20 * 10 + 2)
