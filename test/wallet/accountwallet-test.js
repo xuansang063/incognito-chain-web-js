@@ -442,7 +442,7 @@ async function TestMakeFragments() {
   ];
 
   let utxos = 0;
-  // the address of our testing account; it will receive a lot of 'fragments'
+  // the address of our testing Account; it will receive a lot of 'fragments'
   const receiver =
     "12sxXUjkMJZHz6diDB6yYnSjyYcDYiT5QygUYFsUbGUqK8PH8uhxf4LePiAE8UYoDcNkHAdJJtT1J6T8hcvpZoWLHAp8g6h1BQEfp4h5LQgEPuhMpnVMquvr1xXZZueLhTNCXc8fkVXseeVAGCt8";
 
@@ -570,21 +570,41 @@ async function GetUnspentCoinV1() {
   await setup();
   try {
     accountSender.useCoinsService = true;
-    accountSender.setPrivacyVersion("1");
     await accountSender.getAllUnspentCoinsV1();
   } catch (e) {
     throw e;
   }
 }
 
-// to run this test flow, make sure the account has enough PRV to stake & some 10000 of this token; both are version 1
+async function TestCreateAndSendConvertTx() {
+  let fee = 100;
+  let info = "";
+  console.log("Will convert all PRV");
+  let paymentInfosParam = [];
+
+  // create and send PRV
+  try {
+    let res = await accountSender.createAndSendConvertTx({
+      transfer: { prvPayments: paymentInfosParam, fee, info },
+      extra: { isEncryptMessage: true },
+    });
+    // console.log("Send tx succesfully with TxID: ", res.Response.txId);
+    // return res.Response.txId;
+  } catch (e) {
+    console.log("Error when send PRV: ", e);
+    throw e;
+  }
+}
+
+// to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   // sequential execution of tests; the wait might still be too short
   try {
     let txh;
-    await TestGetBalance();
+    await GetUnspentCoinV1();
+    await TestCreateAndSendConvertTx();
     return;
     await TestGetAllPrivacyTokenBalance();
     txh = await TestCreateAndSendConversion();
@@ -628,7 +648,7 @@ async function MainRoutine() {
 }
 MainRoutine();
 
-// to run this test flow, make sure the account has about 2.5mil PRV, 120k of each of FIRST and SECOND token; all version 2
+// to run this test flow, make sure the Account has about 2.5mil PRV, 120k of each of FIRST and SECOND token; all version 2
 async function PDERoutine() {
   console.log("BEGIN PDE TEST");
   try {
