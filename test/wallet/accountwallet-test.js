@@ -1,6 +1,6 @@
 const {
   Wallet,
-  Transactor: AccountWallet,
+  Account: AccountWallet,
   types,
   constants,
   utils,
@@ -21,7 +21,9 @@ const { base58CheckEncode: checkEncode } = utils;
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
-const rpcCoinService = "http://51.161.119.66:9001"; //dev-test-coin-service
+const rpcClient = "http://139.162.55.124:8334";
+const rpcCoinService = "http://51.161.119.66:9009"; //dev-test-coin-service
+const privacyVersion = "2";
 
 let wallet;
 let senderPrivateKeyStr;
@@ -34,19 +36,22 @@ let receiverPaymentAddrStr2;
 let tokenID, secondTokenID;
 async function setup() {
   await init();
-  tokenID = "";
+  tokenID = "c575c9a7f0706db902fb83dcad85be2f5488e1ac3bc382cb1f3cbffebf814fef";
   secondTokenID =
     "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
   // await sleep(10000);
   wallet = new Wallet();
-  wallet.setProvider("http://139.162.55.124:8334");
+  wallet.setProvider(rpcClient);
   wallet.setRpcHTTPCoinServiceClient(rpcCoinService);
-  wallet.setPrivacyVersion("1");
-    senderPrivateKeyStr =
-      "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
+  wallet.setPrivacyVersion(privacyVersion);
   // senderPrivateKeyStr =
-  //   "112t8rnqawFcfb4TCLwvSMgza64EuC4HMPUnwrqG1wn1UFpyyuCBcGPMcuT7vxfFCehzpj3jexavU33qUUJcdSyz321b27JFZFj6smyNMmGc";
+  //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
+  senderPrivateKeyStr =
+    "112t8rnqawFcfb4TCLwvSMgza64EuC4HMPUnwrqG1wn1UFpyyuCBcGPMcuT7vxfFCehzpj3jexavU33qUUJcdSyz321b27JFZFj6smyNMmGc";
   accountSender = new AccountWallet(Wallet);
+  accountSender.setRPCCoinServices(rpcCoinService);
+  accountSender.setPrivacyVersion(privacyVersion);
+  accountSender.setRPCClient(rpcClient);
   await accountSender.setKey(senderPrivateKeyStr);
   senderPaymentAddressStr = accountSender.key.base58CheckSerialize(
     PaymentAddressType
@@ -144,16 +149,14 @@ async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 10;
   let info = "INFOFO";
-  let amountTransfer = 1000000000; // in nano PRV
+  let amountTransfer = 10000; // in nano PRV
   console.log("Will Transfer: ", amountTransfer);
-
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
     PaymentAddress: receiverPaymentAddrStr,
     Amount: amountTransfer,
     Message: "ABC",
   };
-
   // create and send PRV
   try {
     let res = await accountSender.createAndSendNativeToken({
@@ -292,10 +295,8 @@ async function TestCreateAndSendPrivacyTokenInit() {
 
 async function TestCreateAndSendPrivacyTokenTransfer() {
   await setup();
-
   let paymentInfos = [];
-  let amountTransfer = 44;
-
+  let amountTransfer = 69;
   // prepare token param for tx custom token init
   let tokenPaymentInfo = [
     {
@@ -304,10 +305,8 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
       Message: "Transfer ptoken",
     },
   ];
-
   let feePRV = 10;
   let hasPrivacy = true;
-
   try {
     let res = await accountSender.createAndSendPrivacyToken({
       transfer: {
@@ -318,7 +317,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
         info: "SOME INFO WHEN TRANSFERRING TOKEN",
       },
     });
-    console.log("Send tx succesfully with TxID: ", res.Response.txId);
+    console.log("Send tx succesfully with TxID: ", res);
     return res.Response.txId;
   } catch (e) {
     console.log("Error when transferring ptoken: ", e);
@@ -603,9 +602,11 @@ async function MainRoutine() {
   // sequential execution of tests; the wait might still be too short
   try {
     let txh;
-    await GetUnspentCoinV1();
-    await TestCreateAndSendConvertTx();
+    // return await TestCreateAndSendNativeToken();
+    await TestCreateAndSendPrivacyTokenTransfer();
     return;
+    // await GetUnspentCoinV1();
+    // await TestCreateAndSendConvertTx();
     await TestGetAllPrivacyTokenBalance();
     txh = await TestCreateAndSendConversion();
     await accountSender.waitTx(txh, 5);
