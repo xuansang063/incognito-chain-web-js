@@ -307,6 +307,8 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   ];
   let feePRV = 10;
   let hasPrivacy = true;
+  await accountSender.resetProgressTx();
+  return;
   try {
     let res = await accountSender.createAndSendPrivacyToken({
       transfer: {
