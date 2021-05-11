@@ -149,7 +149,7 @@ async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 10;
   let info = "INFOFO";
-  let amountTransfer = 10000; // in nano PRV
+  let amountTransfer = "69"; // in nano PRV
   console.log("Will Transfer: ", amountTransfer);
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -308,7 +308,6 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
   let feePRV = 10;
   let hasPrivacy = true;
   await accountSender.resetProgressTx();
-  return;
   try {
     let res = await accountSender.createAndSendPrivacyToken({
       transfer: {
@@ -604,8 +603,8 @@ async function MainRoutine() {
   // sequential execution of tests; the wait might still be too short
   try {
     let txh;
-    // return await TestCreateAndSendNativeToken();
-    await TestCreateAndSendPrivacyTokenTransfer();
+    await TestCreateAndSendNativeToken();
+    // await TestCreateAndSendPrivacyTokenTransfer();
     return;
     // await GetUnspentCoinV1();
     // await TestCreateAndSendConvertTx();
