@@ -36,7 +36,7 @@ let receiverPaymentAddrStr2;
 let tokenID, secondTokenID;
 async function setup() {
   await init();
-  tokenID = "c575c9a7f0706db902fb83dcad85be2f5488e1ac3bc382cb1f3cbffebf814fef";
+  tokenID = "";
   secondTokenID =
     "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
   // await sleep(10000);
@@ -47,7 +47,7 @@ async function setup() {
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rnqawFcfb4TCLwvSMgza64EuC4HMPUnwrqG1wn1UFpyyuCBcGPMcuT7vxfFCehzpj3jexavU33qUUJcdSyz321b27JFZFj6smyNMmGc";
+    "112t8rnXoBXrThDTACHx2rbEq7nBgrzcZhVZV4fvNEcGJetQ13spZRMuW5ncvsKA1KvtkauZuK2jV8pxEZLpiuHtKX3FkKv2uC5ZeRC8L6we";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
@@ -603,9 +603,9 @@ async function MainRoutine() {
   // sequential execution of tests; the wait might still be too short
   try {
     let txh;
-    await TestCreateAndSendNativeToken();
+    return await TestGetBalance();
+    // await TestCreateAndSendNativeToken();
     // await TestCreateAndSendPrivacyTokenTransfer();
-    return;
     // await GetUnspentCoinV1();
     // await TestCreateAndSendConvertTx();
     await TestGetAllPrivacyTokenBalance();
