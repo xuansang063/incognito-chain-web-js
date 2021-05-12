@@ -7,12 +7,8 @@ const {
   init,
 } = require("../../");
 const { KeyWallet, RpcClient } = types;
-const {
-  PaymentAddressType,
-  PRVIDSTR,
-  ENCODE_VERSION,
-  PrivacyVersion,
-} = constants;
+const { PaymentAddressType, PRVIDSTR, ENCODE_VERSION, PrivacyVersion } =
+  constants;
 const { base58CheckEncode: checkEncode } = utils;
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
@@ -47,15 +43,14 @@ async function setup() {
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rnXoBXrThDTACHx2rbEq7nBgrzcZhVZV4fvNEcGJetQ13spZRMuW5ncvsKA1KvtkauZuK2jV8pxEZLpiuHtKX3FkKv2uC5ZeRC8L6we";
+    "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKhzbNJkxpJU6";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
   accountSender.setRPCClient(rpcClient);
   await accountSender.setKey(senderPrivateKeyStr);
-  senderPaymentAddressStr = accountSender.key.base58CheckSerialize(
-    PaymentAddressType
-  );
+  senderPaymentAddressStr =
+    accountSender.key.base58CheckSerialize(PaymentAddressType);
   // await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
   receiverPaymentAddrStr =
     "12shR6fDe7ZcprYn6rjLwiLcL7oJRiek66ozzYu3B3rBxYXkqJeZYj6ZWeYy4qR4UHgaztdGYQ9TgHEueRXN7VExNRGB5t4auo3jTgXVBiLJmnTL5LzqmTXezhwmQvyrRjCbED5xVWf4ETHbRCSP";
@@ -147,9 +142,9 @@ async function TestStakerStatus() {
 }
 async function TestCreateAndSendNativeToken() {
   await setup();
-  let fee = 10;
+  let fee = 100;
   let info = "INFOFO";
-  let amountTransfer = "69"; // in nano PRV
+  let amountTransfer = 1e9; // in nano PRV
   console.log("Will Transfer: ", amountTransfer);
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -161,7 +156,7 @@ async function TestCreateAndSendNativeToken() {
   try {
     let res = await accountSender.createAndSendNativeToken({
       transfer: { prvPayments: paymentInfosParam, fee, info },
-      extra: { isEncryptMessage: true },
+      extra: { isEncryptMessage: true, txType: 0 },
     });
     console.log("Send tx succesfully with TxID: ", res.Response.txId);
     return res.Response.txId;
@@ -603,8 +598,8 @@ async function MainRoutine() {
   // sequential execution of tests; the wait might still be too short
   try {
     let txh;
-    return await TestGetBalance();
-    // await TestCreateAndSendNativeToken();
+    // return await TestGetBalance();
+    await TestCreateAndSendNativeToken();
     // await TestCreateAndSendPrivacyTokenTransfer();
     // await GetUnspentCoinV1();
     // await TestCreateAndSendConvertTx();

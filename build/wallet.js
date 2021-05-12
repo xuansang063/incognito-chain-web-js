@@ -174,7 +174,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-var alphabetIdx0 = "1";
+var alphabetIdx0 = '1';
 var b58_map = new Uint8Array(256);
 var base = 58;
 var FACTOR = Math.log(base) / Math.log(256); // log(BASE) / log(256), rounded up
@@ -183,8 +183,8 @@ var iFACTOR = Math.log(256) / Math.log(base);
 b58_map = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 1, 2, 3, 4, 5, 6, 7, 8, 255, 255, 255, 255, 255, 255, 255, 9, 10, 11, 12, 13, 14, 15, 16, 255, 17, 18, 19, 20, 21, 255, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 255, 255, 255, 255, 255, 255, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 255, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255];
 
 function encode(source) {
-  if (!safe_buffer__WEBPACK_IMPORTED_MODULE_0__["Buffer"].isBuffer(source)) throw new TypeError("Expected Buffer");
-  if (source.length === 0) return ""; // Skip & count leading zeroes.
+  if (!safe_buffer__WEBPACK_IMPORTED_MODULE_0__["Buffer"].isBuffer(source)) throw new TypeError('Expected Buffer');
+  if (source.length === 0) return ''; // Skip & count leading zeroes.
 
   var zeroes = 0;
   var length = 0;
@@ -211,7 +211,7 @@ function encode(source) {
       carry = carry / base >>> 0;
     }
 
-    if (carry !== 0) throw new Error("Non-zero carry");
+    if (carry !== 0) throw new Error('Non-zero carry');
     length = i;
     pbegin++;
   } // Skip leading zeroes in base58 result.
@@ -261,11 +261,11 @@ Object.defineProperty(Array.prototype, "equals", {
 });
 
 function decodeUnsafe(source) {
-  if (typeof source !== "string") throw new TypeError("Expected String");
+  if (typeof source !== 'string') throw new TypeError('Expected String');
   if (source.length === 0) return safe_buffer__WEBPACK_IMPORTED_MODULE_0__["Buffer"].alloc(0);
   var psz = 0; // Skip leading spaces.
 
-  if (source[psz] === " ") return; // Skip and count leading '1's.
+  if (source[psz] === ' ') return; // Skip and count leading '1's.
 
   var zeroes = 0;
   var length = 0;
@@ -293,13 +293,13 @@ function decodeUnsafe(source) {
       carry = carry / 256 >>> 0;
     }
 
-    if (carry !== 0) throw new Error("Non-zero carry");
+    if (carry !== 0) throw new Error('Non-zero carry');
     length = i;
     psz++;
   } // Skip trailing spaces.
 
 
-  if (source[psz] === " ") return; // Skip leading zeroes in b256.
+  if (source[psz] === ' ') return; // Skip leading zeroes in b256.
 
   var it = size - length;
 
@@ -321,45 +321,52 @@ function decodeUnsafe(source) {
 function decode(string) {
   var buffer = decodeUnsafe(string);
   if (buffer) return buffer;
-  throw new Error("Non-base" + base + " character");
+  throw new Error('Non-base' + base + ' character');
 }
+
+;
 
 function checkEncode(bytearrays, version) {
   var useLegacyEncoding = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
   var res = new Uint8Array(bytearrays.length + 5);
 
   if (!(Number(version) === version) || !(Number(version) < 256) || !(Number(version) >= 0)) {
-    throw new Error("CheckEncode: Wrong version!");
+    throw new Error('CheckEncode: Wrong version!');
   }
 
   res[0] = version;
   res.set(bytearrays, 1);
   res.set(checkSumFirst4Bytes(res.slice(0, 1 + bytearrays.length), useLegacyEncoding), 1 + bytearrays.length);
-  return encode(new safe_buffer__WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(res));
+  return encode(safe_buffer__WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(res));
 }
+
+;
 
 function checkDecode(string) {
   var dCode = new Uint8Array(decode(string));
-  var checkSum = checkSumFirst4Bytes(dCode.slice(0, dCode.length - 4));
+  var checkSum = checkSumFirst4Bytes(dCode.slice(0, dCode.length - 4), false);
   var last4Bytes = dCode.slice(dCode.length - 4, dCode.length);
 
   if (!checkSum.equals(last4Bytes)) {
     // accept checksum from both encodings
-    checkSum = checkSumFirst4Bytes(dCode.slice(0, dCode.length - 4), false);
+    checkSum = checkSumFirst4Bytes(dCode.slice(0, dCode.length - 4), true);
 
     if (!checkSum.equals(last4Bytes)) {
       throw new Error("CheckDecode: Wrong checksum!");
     }
   }
 
+  ;
   return {
     version: dCode[0],
     bytesDecoded: dCode.slice(1, dCode.length - 4)
   };
 }
 
+;
+
 function checkSumFirst4Bytes(data) {
-  var useLegacyEncoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  var useLegacyEncoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   var res;
 
   if (useLegacyEncoding) {
@@ -1711,6 +1718,7 @@ var KeyWallet = /*#__PURE__*/function () {
   }, {
     key: "serialize",
     value: function serialize(keyType) {
+      var useLegacyEncoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       // Write fields to buffer in order
       var keyBytes;
 
@@ -1777,14 +1785,19 @@ var KeyWallet = /*#__PURE__*/function () {
       } // Append key bytes to the standard sha3 checksum
 
 
-      return Object(_utils__WEBPACK_IMPORTED_MODULE_2__["addChecksumToBytes"])(keyBytes);
+      var checksum = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(keyBytes, useLegacyEncoding);
+      var res = new Uint8Array(keyBytes.length + 4);
+      res.set(keyBytes, 0);
+      res.set(checksum, keyBytes.length);
+      return res;
     }
   }, {
     key: "base58CheckSerialize",
     value: function base58CheckSerialize(keyType) {
-      var serializedKey = this.serialize(keyType);
-      var result = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(serializedKey, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"], true);
-      return result;
+      var useLegacyEncoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var serializedKey = this.serialize(keyType, useLegacyEncoding); // do not use legacy encoding
+
+      return Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(serializedKey, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"], useLegacyEncoding);
     }
   }, {
     key: "hexSerialize",
@@ -1800,7 +1813,8 @@ var KeyWallet = /*#__PURE__*/function () {
   }, {
     key: "getPublicKeyCheckEncode",
     value: function getPublicKeyCheckEncode() {
-      return Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(this.KeySet.PaymentAddress.Pk, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"]);
+      var useLegacyEncoding = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      return Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(this.KeySet.PaymentAddress.Pk, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"], useLegacyEncoding);
     }
   }, {
     key: "getMiningSeedKey",
@@ -1873,11 +1887,16 @@ var KeyWallet = /*#__PURE__*/function () {
       } // validate checksum
 
 
-      var cs1 = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(bytes.slice(0, bytes.length - 4));
+      var cs1 = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(bytes.slice(0, bytes.length - 4), false);
       var cs2 = bytes.slice(bytes.length - 4);
 
       if (!cs1.equals(cs2)) {
-        throw error("Checksum wrong!!!");
+        // accept checksum from both encodings
+        var checkSum = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(bytes.slice(0, bytes.length - 4), true);
+
+        if (!checkSum.equals(cs2)) {
+          throw new Error("Key deserialize: Wrong checksum!");
+        }
       }
 
       return key;
@@ -1885,6 +1904,7 @@ var KeyWallet = /*#__PURE__*/function () {
   }, {
     key: "base58CheckDeserialize",
     value: function base58CheckDeserialize(str) {
+      var useLegacyEncoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var bytes;
 
       try {
@@ -1893,44 +1913,48 @@ var KeyWallet = /*#__PURE__*/function () {
         throw e;
       }
 
-      return KeyWallet.deserialize(bytes);
+      return KeyWallet.deserialize(bytes, useLegacyEncoding);
     }
   }, {
     key: "getKeySetFromPrivateKeyStr",
     value: function () {
       var _getKeySetFromPrivateKeyStr = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(privateKeyStr) {
-        var kw, paymentAddressStr;
+        var useLegacyEncoding,
+            kw,
+            paymentAddressStr,
+            _args3 = arguments;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.prev = 0;
-                kw = KeyWallet.base58CheckDeserialize(privateKeyStr);
-                _context3.next = 7;
+                useLegacyEncoding = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : false;
+                _context3.prev = 1;
+                kw = KeyWallet.base58CheckDeserialize(privateKeyStr, useLegacyEncoding);
+                _context3.next = 8;
                 break;
 
-              case 4:
-                _context3.prev = 4;
-                _context3.t0 = _context3["catch"](0);
+              case 5:
+                _context3.prev = 5;
+                _context3.t0 = _context3["catch"](1);
                 throw _context3.t0;
 
-              case 7:
-                _context3.next = 9;
+              case 8:
+                _context3.next = 10;
                 return kw.KeySet.importFromPrivateKey(kw.KeySet.PrivateKey);
 
-              case 9:
-                paymentAddressStr = kw.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"]);
+              case 10:
+                paymentAddressStr = kw.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"], useLegacyEncoding);
                 return _context3.abrupt("return", {
                   PaymentAddress: paymentAddressStr,
                   ShardID: Object(_common_common__WEBPACK_IMPORTED_MODULE_3__["getShardIDFromLastByte"])(kw.KeySet.PaymentAddress.Pk[kw.KeySet.PaymentAddress.Pk.length - 1])
                 });
 
-              case 11:
+              case 12:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[0, 4]]);
+        }, _callee3, null, [[1, 5]]);
       }));
 
       function getKeySetFromPrivateKeyStr(_x2) {
@@ -2213,12 +2237,11 @@ function validateMnemonic(mnemonic) {
 /*!***************************!*\
   !*** ./lib/core/utils.js ***!
   \***************************/
-/*! exports provided: addChecksumToBytes, toPRV, toNanoPRV, encryptMessageOutCoin, decryptMessageOutCoin, getBurningAddress */
+/*! exports provided: toPRV, toNanoPRV, encryptMessageOutCoin, decryptMessageOutCoin, getBurningAddress */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addChecksumToBytes", function() { return addChecksumToBytes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toPRV", function() { return toPRV; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toNanoPRV", function() { return toNanoPRV; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "encryptMessageOutCoin", function() { return encryptMessageOutCoin; });
@@ -2240,20 +2263,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-
-function addChecksumToBytes(data) {
-  var checksum = Object(_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkSumFirst4Bytes"])(data);
-  var res = new Uint8Array(data.length + 4);
-  res.set(data, 0);
-  res.set(checksum, data.length);
-  return res;
-}
 /**
  *
  * @param {{paymentAddressStr: string (B58checkencode), amount: number, Message: "" }} paramPaymentInfos
  * return paramPaymentInfos with Message that was encrypted by transmissionKey and base64 encoded
  */
-
 
 function encryptMessageOutCoin(_x) {
   return _encryptMessageOutCoin.apply(this, arguments);
@@ -3778,16 +3792,15 @@ var Account = /*#__PURE__*/function () {
                 _context13.prev = 1;
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenId", tokenId).required().string();
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("coins", coins).required().array();
-                console.log("GET SPENDING COINS", coins.length, tokenId);
 
                 if (coins) {
-                  _context13.next = 7;
+                  _context13.next = 6;
                   break;
                 }
 
                 return _context13.abrupt("return");
 
-              case 7:
+              case 6:
                 task = coins.map(function (item) {
                   return {
                     keyImage: item.KeyImage,
@@ -3815,11 +3828,10 @@ var Account = /*#__PURE__*/function () {
                               spendingCoins.push(item);
                             }
 
-                            console.log("spendingCoins", spendingCoins.length);
-                            _context12.next = 9;
+                            _context12.next = 8;
                             return _this.setAccountStorage(key, spendingCoins);
 
-                          case 9:
+                          case 8:
                           case "end":
                             return _context12.stop();
                         }
@@ -3831,24 +3843,24 @@ var Account = /*#__PURE__*/function () {
                     return _ref7.apply(this, arguments);
                   };
                 }());
-                _context13.next = 10;
+                _context13.next = 9;
                 return Promise.all(task);
 
-              case 10:
-                _context13.next = 15;
+              case 9:
+                _context13.next = 14;
                 break;
 
-              case 12:
-                _context13.prev = 12;
+              case 11:
+                _context13.prev = 11;
                 _context13.t0 = _context13["catch"](1);
                 throw _context13.t0;
 
-              case 15:
+              case 14:
               case "end":
                 return _context13.stop();
             }
           }
-        }, _callee13, null, [[1, 12]]);
+        }, _callee13, null, [[1, 11]]);
       }));
 
       function setSpendingCoinsStorage() {
@@ -5662,18 +5674,21 @@ var Account = /*#__PURE__*/function () {
               case 0:
                 tokenId = _ref11.tokenId, total = _ref11.total;
                 _context28.prev = 1;
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenId", tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("total", total).required().number();
                 otaKey = this.getOTAKey();
+                console.log("otaKey", otaKey);
                 version = this.privacyVersion;
                 listOutputsCoins = [];
-                _context28.next = 7;
+                _context28.next = 10;
                 return this.getTotalCoinsStorage(tokenId);
 
-              case 7:
+              case 10:
                 oldTotal = _context28.sent;
                 key = this.getKeyParamOfCoins(otaKey);
 
                 if (!(total > LIMIT_COINS)) {
-                  _context28.next = 19;
+                  _context28.next = 22;
                   break;
                 }
 
@@ -5700,20 +5715,20 @@ var Account = /*#__PURE__*/function () {
                   }));
                 }
 
-                _context28.next = 15;
+                _context28.next = 18;
                 return Promise.all(task);
 
-              case 15:
+              case 18:
                 result = _context28.sent;
                 listOutputsCoins = result.reduce(function (prev, curr, index) {
                   var result = [].concat(_toConsumableArray(prev), _toConsumableArray(curr));
                   return result;
                 }, []);
-                _context28.next = 22;
+                _context28.next = 25;
                 break;
 
-              case 19:
-                _context28.next = 21;
+              case 22:
+                _context28.next = 24;
                 return this.rpcCoinService.apiGetListOutputCoins({
                   key: key,
                   limit: total,
@@ -5722,24 +5737,25 @@ var Account = /*#__PURE__*/function () {
                   version: version
                 });
 
-              case 21:
+              case 24:
                 listOutputsCoins = _context28.sent;
 
-              case 22:
+              case 25:
+                this.coinsStorage.totalCoinsSize = listOutputsCoins.length;
                 listOutputsCoins = lodash_uniqBy__WEBPACK_IMPORTED_MODULE_3___default()(listOutputsCoins, "PublicKey");
                 return _context28.abrupt("return", listOutputsCoins);
 
-              case 26:
-                _context28.prev = 26;
+              case 30:
+                _context28.prev = 30;
                 _context28.t0 = _context28["catch"](1);
                 throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_14__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_14__["ErrorObject"].GetOutputCoinsErr, _context28.t0.message || "Can not get output coins when get unspent token ".concat(tokenId));
 
-              case 29:
+              case 33:
               case "end":
                 return _context28.stop();
             }
           }
-        }, _callee28, this, [[1, 26]]);
+        }, _callee28, this, [[1, 30]]);
       }));
 
       function getListOutputCoinsV2(_x39) {
@@ -5919,12 +5935,8 @@ var Account = /*#__PURE__*/function () {
                   return JSON.parse(coin);
                 }));
                 result = result.map(function (coin) {
-                  var keyImage = coin.KeyImage;
-                  var decodeKeyImage = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_6__["checkDecode"])(keyImage).bytesDecoded;
-                  var keyImageBase64 = Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_13__["base64Encode"])(decodeKeyImage);
                   return _objectSpread(_objectSpread({}, coin), {}, {
-                    CoinCommitment: coin === null || coin === void 0 ? void 0 : coin.Commitment,
-                    KeyImageBase64: keyImageBase64
+                    CoinCommitment: coin === null || coin === void 0 ? void 0 : coin.Commitment
                   });
                 });
                 return _context32.abrupt("return", result || []);
@@ -5953,7 +5965,7 @@ var Account = /*#__PURE__*/function () {
     value: function getKeyImagesBase64Encode(_ref15) {
       var coinsDecrypted = _ref15.coinsDecrypted;
       return coinsDecrypted.map(function (coin) {
-        return coin.KeyImageBase64;
+        return coin.KeyImage;
       });
     }
   }, {
@@ -6279,7 +6291,7 @@ var Account = /*#__PURE__*/function () {
                 return this.measureAsyncFn(this.rpcCoinService.apiCheckKeyImages, "timeCheckStatusListUnspentCoinsFromLocal.timeCheckKeyImages", {
                   keyImages: keyImages,
                   shardId: shardId
-                });
+                }, this.rpcCoinService);
 
               case 16:
                 keyImagesStatus = _context38.sent;
@@ -6687,7 +6699,7 @@ var Account = /*#__PURE__*/function () {
                 }
 
                 if (!(calcTotal > 0)) {
-                  _context45.next = 30;
+                  _context45.next = 29;
                   break;
                 }
 
@@ -6700,35 +6712,34 @@ var Account = /*#__PURE__*/function () {
 
               case 20:
                 listOutputsCoins = _context45.sent;
-                this.coinsStorage.totalCoinsSize = listOutputsCoins.length;
                 shardId = this.getShardId();
-                _context45.next = 25;
+                _context45.next = 24;
                 return this.checkKeyImages({
                   listOutputsCoins: listOutputsCoins,
                   shardId: shardId,
                   tokenId: tokenId
                 });
 
-              case 25:
+              case 24:
                 listUnspentCoinsFiltered = _context45.sent;
-                _context45.next = 28;
+                _context45.next = 27;
                 return this.measureAsyncFn(this.setListUnspentCoinsStorage, "timeSetListUnspentCoinsStorage", {
                   value: listUnspentCoinsFiltered,
                   tokenId: tokenId
                 });
 
-              case 28:
-                _context45.next = 30;
+              case 27:
+                _context45.next = 29;
                 return this.measureAsyncFn(this.setTotalCoinsStorage, "timeSetTotalCoinsStorage", {
                   value: listOutputsCoins.length !== calcTotal ? oldTotal : total,
                   tokenId: tokenId
                 });
 
-              case 30:
-                _context45.next = 32;
+              case 29:
+                _context45.next = 31;
                 return this.getListUnspentCoinsStorage(tokenId);
 
-              case 32:
+              case 31:
                 listUnspentCoinsMerged = _context45.sent;
 
                 if (!this.coinUTXOs) {
@@ -6737,16 +6748,16 @@ var Account = /*#__PURE__*/function () {
 
                 this.coinUTXOs[tokenId] = listUnspentCoinsMerged.length; // tracking
 
-                _context45.next = 37;
+                _context45.next = 36;
                 return this.setCoinsStorage({
                   value: this.coinsStorage,
                   tokenId: tokenId
                 });
 
-              case 37:
+              case 36:
                 return _context45.abrupt("return", listUnspentCoinsMerged);
 
-              case 38:
+              case 37:
               case "end":
                 return _context45.stop();
             }
@@ -6833,7 +6844,12 @@ var Account = /*#__PURE__*/function () {
 
               case 9:
                 result = _context47.sent;
-                console.log("result", result);
+
+                if (!result) {
+                  _context47.next = 13;
+                  break;
+                }
+
                 _context47.next = 13;
                 return this.setAccountStorage(otaKey, true);
 
@@ -6945,19 +6961,16 @@ var Account = /*#__PURE__*/function () {
 
               case 9:
                 spendingCoinsStorage = _context49.sent;
-                console.log("spendingCoinsStorage", spendingCoinsStorage.length);
                 coins = coins.filter(function (item) {
                   return !(spendingCoinsStorage !== null && spendingCoinsStorage !== void 0 && spendingCoinsStorage.find(function (coin) {
                     return (coin === null || coin === void 0 ? void 0 : coin.KeyImage) === (item === null || item === void 0 ? void 0 : item.KeyImage);
                   }));
                 });
-                console.log("coins after filter by storage", coins.length);
-                _context49.next = 15;
+                _context49.next = 13;
                 return this.rpcCoinService.apiGetSpendingCoinInMemPool();
 
-              case 15:
+              case 13:
                 spendingCoins = _context49.sent;
-                console.log("spendingCoins in mempool", spendingCoins.length);
 
                 if (!!spendingCoins) {
                   coins = coins.filter(function (coin) {
@@ -6965,29 +6978,28 @@ var Account = /*#__PURE__*/function () {
                   });
                 }
 
-                console.log("coins after filter by mempool", coins.length);
-                _context49.next = 24;
+                _context49.next = 20;
                 break;
 
-              case 21:
-                _context49.prev = 21;
+              case 17:
+                _context49.prev = 17;
                 _context49.t0 = _context49["catch"](6);
                 throw _context49.t0;
 
-              case 24:
+              case 20:
                 return _context49.abrupt("return", coins || []);
 
-              case 27:
-                _context49.prev = 27;
+              case 23:
+                _context49.prev = 23;
                 _context49.t1 = _context49["catch"](2);
                 throw _context49.t1;
 
-              case 30:
+              case 26:
               case "end":
                 return _context49.stop();
             }
           }
-        }, _callee49, this, [[2, 27], [6, 21]]);
+        }, _callee49, this, [[2, 23], [6, 17]]);
       }));
 
       function getSpendingCoins() {
@@ -7463,10 +7475,11 @@ function _transact2() {
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("metadata", metadata).object();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenParams", tokenParams).object();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("txType", txType).required().number();
-            _context3.next = 11;
+            console.log(20);
+            _context3.next = 12;
             return this.updateProgressTx(20, "Preparing Your Payments");
 
-          case 11:
+          case 12:
             info = Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["base64Encode"])(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["stringToBytes"])(info));
             receiverPaymentAddrStr = new Array(prvPayments.length);
             totalAmountTransfer = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
@@ -7477,12 +7490,13 @@ function _transact2() {
               prvPayments[i].Amount = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(prvPayments[i].Amount).toString();
             }
 
-            _context3.next = 17;
+            console.log(30);
+            _context3.next = 19;
             return this.updateProgressTx(30, "Selecting Coins");
 
-          case 17:
-            _context3.prev = 17;
-            _context3.next = 20;
+          case 19:
+            _context3.prev = 19;
+            _context3.next = 22;
             return Object(_account_utils__WEBPACK_IMPORTED_MODULE_8__["prepareInputForTxV2"])({
               amountTransfer: totalAmountTransfer,
               fee: fee,
@@ -7490,29 +7504,30 @@ function _transact2() {
               tokenID: _lib_core__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]
             });
 
-          case 20:
+          case 22:
             inputForTx = _context3.sent;
-            _context3.next = 26;
+            _context3.next = 28;
             break;
 
-          case 23:
-            _context3.prev = 23;
-            _context3.t0 = _context3["catch"](17);
+          case 25:
+            _context3.prev = 25;
+            _context3.t0 = _context3["catch"](19);
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].InitNormalTxErr, "Error while preparing inputs", _context3.t0);
 
-          case 26:
+          case 28:
             if (!(inputForTx.inputCoinStrs.length > _account_constants__WEBPACK_IMPORTED_MODULE_7__["MAX_INPUT_PER_TX"])) {
-              _context3.next = 28;
+              _context3.next = 30;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].TxSizeExceedErr);
 
-          case 28:
-            _context3.next = 30;
+          case 30:
+            console.log(40);
+            _context3.next = 33;
             return this.updateProgressTx(40, "Packing Parameters");
 
-          case 30:
+          case 33:
             txParams = Object(_account_utils__WEBPACK_IMPORTED_MODULE_8__["newParamTxV2"])(this.key, prvPayments, inputForTx.inputCoinStrs, fee, null, metadata, info, inputForTx.coinsForRing); // handle token transfer
 
             tokenReceiverPaymentAddrStr = [];
@@ -7521,12 +7536,13 @@ function _transact2() {
               inputCoinStrs: [],
               coinsForRing: {}
             };
-            _context3.next = 36;
+            console.log(50);
+            _context3.next = 40;
             return this.updateProgressTx(50, "Adding Token Info");
 
-          case 36:
+          case 40:
             if (!tokenPayments) {
-              _context3.next = 59;
+              _context3.next = 65;
               break;
             }
 
@@ -7534,13 +7550,13 @@ function _transact2() {
             isTransfer = Boolean(tokenID);
 
             if (isInit || isTransfer) {
-              _context3.next = 41;
+              _context3.next = 45;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].InitNormalTxErr, "Invalid Token parameters");
 
-          case 41:
+          case 45:
             tokenReceiverPaymentAddrStr = new Array(tokenPayments.length);
 
             for (_i = 0; _i < tokenPayments.length; _i++) {
@@ -7549,17 +7565,18 @@ function _transact2() {
               tokenPayments[_i].Amount = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(tokenPayments[_i].Amount).toString();
             }
 
-            _context3.next = 45;
+            console.log(60);
+            _context3.next = 50;
             return this.updateProgressTx(60, "Selecting Token Coins");
 
-          case 45:
+          case 50:
             if (!isTransfer) {
-              _context3.next = 55;
+              _context3.next = 60;
               break;
             }
 
-            _context3.prev = 46;
-            _context3.next = 49;
+            _context3.prev = 51;
+            _context3.next = 54;
             return Object(_account_utils__WEBPACK_IMPORTED_MODULE_8__["prepareInputForTxV2"])({
               amountTransfer: totalAmountTokenTransfer,
               fee: 0,
@@ -7567,90 +7584,93 @@ function _transact2() {
               account: this
             });
 
-          case 49:
+          case 54:
             inputForToken = _context3.sent;
-            _context3.next = 55;
+            _context3.next = 60;
             break;
 
-          case 52:
-            _context3.prev = 52;
-            _context3.t1 = _context3["catch"](46);
+          case 57:
+            _context3.prev = 57;
+            _context3.t1 = _context3["catch"](51);
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].InitNormalTxErr, "Error while preparing inputs ".concat(_context3.t1));
 
-          case 55:
-            _context3.next = 57;
+          case 60:
+            console.log(70);
+            _context3.next = 63;
             return this.updateProgressTx(70, "Decorating Parameters");
 
-          case 57:
+          case 63:
             tokenParams = Object(_account_utils__WEBPACK_IMPORTED_MODULE_8__["newTokenParamV2"])(tokenPayments, inputForToken.inputCoinStrs, tokenID, inputForToken.coinsForRing, tokenParams || {});
             txParams.TokenParams = tokenParams;
 
-          case 59:
+          case 65:
             txParamsJson = JSON.stringify(txParams);
-            _context3.next = 62;
+            console.log(80);
+            _context3.next = 69;
             return this.updateProgressTx(80, "Signing Transaction");
 
-          case 62:
-            _context3.next = 64;
+          case 69:
+            _context3.next = 71;
             return this.rpc.getNodeTime();
 
-          case 64:
+          case 71:
             theirTime = _context3.sent;
-            _context3.next = 67;
+            _context3.next = 74;
             return _lib_wasm__WEBPACK_IMPORTED_MODULE_5__["wasm"].createTransaction(txParamsJson, theirTime);
 
-          case 67:
+          case 74:
             wasmResult = _context3.sent;
             _JSON$parse = JSON.parse(wasmResult), b58EncodedTx = _JSON$parse.b58EncodedTx, hash = _JSON$parse.hash, outputs = _JSON$parse.outputs;
 
             if (!(!!hash && typeof txHandler === "function")) {
-              _context3.next = 72;
+              _context3.next = 79;
               break;
             }
 
-            _context3.next = 72;
+            _context3.next = 79;
             return txHandler(hash);
 
-          case 72:
+          case 79:
             if (!(b58EncodedTx === null || b58EncodedTx === "")) {
-              _context3.next = 74;
+              _context3.next = 81;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-          case 74:
+          case 81:
             tempBuf = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_6__["checkDecode"])(b58EncodedTx).bytesDecoded;
             theString = String.fromCharCode.apply(null, tempBuf);
             txObj = JSON.parse(theString);
             txObj.Encoded = b58EncodedTx;
-            _context3.next = 80;
+            console.log(90);
+            _context3.next = 88;
             return this.updateProgressTx(90, "Submitting Transaction");
 
-          case 80:
-            _context3.prev = 80;
-            _context3.next = 83;
+          case 88:
+            _context3.prev = 88;
+            _context3.next = 91;
             return this.send(b58EncodedTx, Boolean(tokenPayments));
 
-          case 83:
+          case 91:
             response = _context3.sent;
-            _context3.next = 89;
+            _context3.next = 97;
             break;
 
-          case 86:
-            _context3.prev = 86;
-            _context3.t2 = _context3["catch"](80);
+          case 94:
+            _context3.prev = 94;
+            _context3.t2 = _context3["catch"](88);
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context3.t2);
 
-          case 89:
+          case 97:
             if (response.TokenID && response.TokenID.length > 0) {
               tokenID = response.TokenID;
             }
 
-            _context3.next = 92;
+            _context3.next = 100;
             return this.updateProgressTx(95, "Saving Records");
 
-          case 92:
+          case 100:
             taskSpendingCoins = [];
 
             if (!!inputForTx.inputCoinStrs) {
@@ -7667,10 +7687,10 @@ function _transact2() {
               }));
             }
 
-            _context3.next = 97;
+            _context3.next = 105;
             return Promise.all(taskSpendingCoins);
 
-          case 97:
+          case 105:
             return _context3.abrupt("return", {
               response: response,
               tx: txObj,
@@ -7688,12 +7708,12 @@ function _transact2() {
               txType: txType
             });
 
-          case 98:
+          case 106:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, this, [[17, 23], [46, 52], [80, 86]]);
+    }, _callee3, this, [[19, 25], [51, 57], [88, 94]]);
   }));
   return _transact2.apply(this, arguments);
 }
@@ -12507,10 +12527,10 @@ var parseResponse = /*#__PURE__*/function () {
           case 0:
             params = _args.length > 2 && _args[2] !== undefined ? _args[2] : [];
             data = {
-              "jsonrpc": "1.0",
-              "method": method,
-              "params": params,
-              "id": 1
+              jsonrpc: "1.0",
+              method: method,
+              params: params,
+              id: 1
             };
             _context.prev = 2;
             _context.next = 5;
@@ -12586,15 +12606,15 @@ var RpcClient = function RpcClient(url, user, password) {
               toHeight = _args2.length > 4 && _args2[4] !== undefined ? _args2[4] : 0;
               submitted = _args2.length > 5 && _args2[5] !== undefined ? _args2[5] : true;
               data = {
-                "jsonrpc": "1.0",
-                "method": submitted ? "listoutputcoinsfromcache" : "listoutputcoins",
-                "params": [0, toHeight, [{
-                  "PaymentAddress": paymentAdrr,
-                  "ReadonlyKey": viewingKey,
-                  "OTASecretKey": otaKey // "StartHeight": toHeight
+                jsonrpc: "1.0",
+                method: submitted ? "listoutputcoinsfromcache" : "listoutputcoins",
+                params: [0, toHeight, [{
+                  PaymentAddress: paymentAdrr,
+                  ReadonlyKey: viewingKey,
+                  OTASecretKey: otaKey // "StartHeight": toHeight
 
                 }]],
-                "id": 1
+                id: 1
               };
 
               if (tokenID != null) {
@@ -12689,10 +12709,10 @@ var RpcClient = function RpcClient(url, user, password) {
             case 0:
               tokenID = _args3.length > 2 && _args3[2] !== undefined ? _args3[2] : null;
               data = {
-                "jsonrpc": "1.0",
-                "method": "hasserialnumbers",
-                "params": [paymentAddr, serialNumberStrs],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "hasserialnumbers",
+                params: [paymentAddr, serialNumberStrs],
+                id: 1
               };
 
               if (tokenID != null) {
@@ -12759,10 +12779,10 @@ var RpcClient = function RpcClient(url, user, password) {
             case 0:
               tokenID = _args4.length > 2 && _args4[2] !== undefined ? _args4[2] : null;
               data = {
-                "jsonrpc": "1.0",
-                "method": "hassnderivators",
-                "params": [paymentAddr, snds],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "hassnderivators",
+                params: [paymentAddr, snds],
+                id: 1
               };
 
               if (tokenID != null) {
@@ -12830,10 +12850,10 @@ var RpcClient = function RpcClient(url, user, password) {
             case 0:
               tokenID = _args5.length > 2 && _args5[2] !== undefined ? _args5[2] : null;
               data = {
-                "jsonrpc": "1.0",
-                "method": "randomcommitments",
-                "params": [paymentAddr, inputCoinStrs],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "randomcommitments",
+                params: [paymentAddr, inputCoinStrs],
+                id: 1
               };
 
               if (tokenID != null) {
@@ -12908,10 +12928,10 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context6.prev = _context6.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "sendtransaction",
-                "params": [serializedTxJson],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "sendtransaction",
+                params: [serializedTxJson],
+                id: 1
               };
               _context6.prev = 1;
               _context6.next = 4;
@@ -12977,10 +12997,10 @@ var RpcClient = function RpcClient(url, user, password) {
               serializedTxJson = Object(_common_base58__WEBPACK_IMPORTED_MODULE_1__["checkEncode"])(txBytes, _common_constants__WEBPACK_IMPORTED_MODULE_3__["ENCODE_VERSION"]); //
 
               data = {
-                "jsonrpc": "1.0",
-                "method": "sendrawcustomtokentransaction",
-                "params": [serializedTxJson],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "sendrawcustomtokentransaction",
+                params: [serializedTxJson],
+                id: 1
               };
               _context7.prev = 5;
               _context7.next = 8;
@@ -13038,10 +13058,10 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context8.prev = _context8.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "sendrawprivacycustomtokentransaction",
-                "params": [serializedTxJson],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "sendrawprivacycustomtokentransaction",
+                params: [serializedTxJson],
+                id: 1
               };
               _context8.prev = 1;
               _context8.next = 4;
@@ -13098,10 +13118,10 @@ var RpcClient = function RpcClient(url, user, password) {
         switch (_context9.prev = _context9.next) {
           case 0:
             data = {
-              "jsonrpc": "1.0",
-              "method": "listcustomtoken",
-              "params": [],
-              "id": 1
+              jsonrpc: "1.0",
+              method: "listcustomtoken",
+              params: [],
+              id: 1
             };
             _context9.prev = 1;
             _context9.next = 4;
@@ -13153,10 +13173,10 @@ var RpcClient = function RpcClient(url, user, password) {
         switch (_context10.prev = _context10.next) {
           case 0:
             data = {
-              "jsonrpc": "1.0",
-              "method": "listprivacycustomtoken",
-              "params": [],
-              "id": 1
+              jsonrpc: "1.0",
+              method: "listprivacycustomtoken",
+              params: [],
+              id: 1
             };
             _context10.prev = 1;
             _context10.next = 4;
@@ -13219,10 +13239,10 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context11.prev = _context11.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "listunspentcustomtoken",
-                "params": [paymentAddrSerialize, tokenIDStr],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "listunspentcustomtoken",
+                params: [paymentAddrSerialize, tokenIDStr],
+                id: 1
               };
               _context11.prev = 1;
               _context11.next = 4;
@@ -13295,9 +13315,9 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context13.prev = _context13.next) {
             case 0:
               data = {
-                "method": "gettransactionbyhash",
-                "params": [txHashStr],
-                "id": 1
+                method: "gettransactionbyhash",
+                params: [txHashStr],
+                id: 1
               };
               _context13.prev = 1;
               _context13.next = 4;
@@ -13362,10 +13382,10 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context14.prev = _context14.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "getstakingamount",
-                "params": [type],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "getstakingamount",
+                params: [type],
+                id: 1
               };
               _context14.prev = 1;
               _context14.next = 4;
@@ -13422,10 +13442,10 @@ var RpcClient = function RpcClient(url, user, password) {
         switch (_context15.prev = _context15.next) {
           case 0:
             data = {
-              "jsonrpc": "1.0",
-              "method": "getactiveshards",
-              "params": [],
-              "id": 1
+              jsonrpc: "1.0",
+              method: "getactiveshards",
+              params: [],
+              id: 1
             };
             _context15.prev = 1;
             _context15.next = 4;
@@ -13477,10 +13497,10 @@ var RpcClient = function RpcClient(url, user, password) {
         switch (_context16.prev = _context16.next) {
           case 0:
             data = {
-              "jsonrpc": "1.0",
-              "method": "getmaxshardsnumber",
-              "params": [],
-              "id": 1
+              jsonrpc: "1.0",
+              method: "getmaxshardsnumber",
+              params: [],
+              id: 1
             };
             _context16.prev = 1;
             _context16.next = 4;
@@ -13533,10 +13553,10 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context17.prev = _context17.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "hashtoidenticon",
-                "params": hashStrs,
-                "id": 1
+                jsonrpc: "1.0",
+                method: "hashtoidenticon",
+                params: hashStrs,
+                id: 1
               };
               _context17.prev = 1;
               _context17.next = 4;
@@ -13594,10 +13614,10 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context18.prev = _context18.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "getrewardamount",
-                "params": [paymentAddrStr],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "getrewardamount",
+                params: [paymentAddrStr],
+                id: 1
               };
               _context18.prev = 1;
               _context18.next = 4;
@@ -13654,10 +13674,10 @@ var RpcClient = function RpcClient(url, user, password) {
         switch (_context19.prev = _context19.next) {
           case 0:
             data = {
-              "jsonrpc": "1.0",
-              "method": "getbeaconbeststate",
-              "params": [],
-              "id": 1
+              jsonrpc: "1.0",
+              method: "getbeaconbeststate",
+              params: [],
+              id: 1
             };
             _context19.prev = 1;
             _context19.next = 4;
@@ -13710,10 +13730,10 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context20.prev = _context20.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "getpublickeyrole",
-                "params": [publicKey],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "getpublickeyrole",
+                params: [publicKey],
+                id: 1
               };
               _context20.prev = 1;
               _context20.next = 4;
@@ -13771,12 +13791,12 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context21.prev = _context21.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "getpdestate",
-                "params": [{
-                  "BeaconHeight": beaconHeight
+                jsonrpc: "1.0",
+                method: "getpdestate",
+                params: [{
+                  BeaconHeight: beaconHeight
                 }],
-                "id": 1
+                id: 1
               };
               _context21.prev = 1;
               _context21.next = 4;
@@ -13834,11 +13854,11 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context22.prev = _context22.next) {
             case 0:
               data = {
-                "id": 1,
-                "jsonrpc": "1.0",
-                "method": "getpdetradestatus",
-                "params": [{
-                  "TxRequestIDStr": txId
+                id: 1,
+                jsonrpc: "1.0",
+                method: "getpdetradestatus",
+                params: [{
+                  TxRequestIDStr: txId
                 }]
               };
               _context22.prev = 1;
@@ -13897,11 +13917,11 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context23.prev = _context23.next) {
             case 0:
               data = {
-                "id": 1,
-                "jsonrpc": "1.0",
-                "method": "getpdecontributionstatus",
-                "params": [{
-                  "ContributionPairID": pairId
+                id: 1,
+                jsonrpc: "1.0",
+                method: "getpdecontributionstatus",
+                params: [{
+                  ContributionPairID: pairId
                 }]
               };
               _context23.prev = 1;
@@ -13960,11 +13980,11 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context24.prev = _context24.next) {
             case 0:
               data = {
-                "id": 1,
-                "jsonrpc": "1.0",
-                "method": "getpdecontributionstatusv2",
-                "params": [{
-                  "ContributionPairID": pairId
+                id: 1,
+                jsonrpc: "1.0",
+                method: "getpdecontributionstatusv2",
+                params: [{
+                  ContributionPairID: pairId
                 }]
               };
               _context24.prev = 1;
@@ -14023,11 +14043,11 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context25.prev = _context25.next) {
             case 0:
               data = {
-                "id": 1,
-                "jsonrpc": "1.0",
-                "method": "getpdewithdrawalstatus",
-                "params": [{
-                  "TxRequestIDStr": txId
+                id: 1,
+                jsonrpc: "1.0",
+                method: "getpdewithdrawalstatus",
+                params: [{
+                  TxRequestIDStr: txId
                 }]
               };
               _context25.prev = 1;
@@ -14083,7 +14103,7 @@ var RpcClient = function RpcClient(url, user, password) {
       while (1) {
         switch (_context26.prev = _context26.next) {
           case 0:
-            return _context26.abrupt("return", parseResponse(_this.rpcHttpService, 'getblockchaininfo'));
+            return _context26.abrupt("return", parseResponse(_this.rpcHttpService, "getblockchaininfo"));
 
           case 1:
           case "end":
@@ -14098,7 +14118,7 @@ var RpcClient = function RpcClient(url, user, password) {
       while (1) {
         switch (_context27.prev = _context27.next) {
           case 0:
-            return _context27.abrupt("return", parseResponse(_this.rpcHttpService, 'listrewardamount'));
+            return _context27.abrupt("return", parseResponse(_this.rpcHttpService, "listrewardamount"));
 
           case 1:
           case "end":
@@ -14113,7 +14133,7 @@ var RpcClient = function RpcClient(url, user, password) {
       while (1) {
         switch (_context28.prev = _context28.next) {
           case 0:
-            return _context28.abrupt("return", parseResponse(_this.rpcHttpService, 'getbeaconbeststatedetail'));
+            return _context28.abrupt("return", parseResponse(_this.rpcHttpService, "getbeaconbeststatedetail"));
 
           case 1:
           case "end":
@@ -14134,7 +14154,7 @@ var RpcClient = function RpcClient(url, user, password) {
 
           case 2:
             data = _context29.sent;
-            return _context29.abrupt("return", data.BestBlocks['-1'].Height);
+            return _context29.abrupt("return", data.BestBlocks["-1"].Height);
 
           case 4:
           case "end":
@@ -14223,13 +14243,13 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context31.prev = _context31.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "gettransactionbyreceiver",
-                "params": [{
-                  "PaymentAddress": paymentAdrr,
-                  "ReadonlyKey": viewingKey
+                jsonrpc: "1.0",
+                method: "gettransactionbyreceiver",
+                params: [{
+                  PaymentAddress: paymentAdrr,
+                  ReadonlyKey: viewingKey
                 }],
-                "id": 1
+                id: 1
               };
               _context31.prev = 1;
               _context31.next = 4;
@@ -14288,10 +14308,10 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context32.prev = _context32.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "getlistprivacycustomtokenbalance",
-                "params": [privateKey],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "getlistprivacycustomtokenbalance",
+                params: [privateKey],
+                id: 1
               };
               _context32.prev = 1;
               _context32.next = 4;
@@ -14350,10 +14370,10 @@ var RpcClient = function RpcClient(url, user, password) {
           case 0:
             beaconHeight = _args33.length > 0 && _args33[0] !== undefined ? _args33[0] : 0;
             data = {
-              "jsonrpc": "1.0",
-              "method": "getburningaddress",
-              "params": [beaconHeight],
-              "id": 1
+              jsonrpc: "1.0",
+              method: "getburningaddress",
+              params: [beaconHeight],
+              id: 1
             };
             _context33.prev = 2;
             _context33.next = 5;
@@ -14403,7 +14423,7 @@ var RpcClient = function RpcClient(url, user, password) {
         switch (_context34.prev = _context34.next) {
           case 0:
             _context34.next = 2;
-            return parseResponse(_this.rpcHttpService, 'getnetworkinfo', "");
+            return parseResponse(_this.rpcHttpService, "getnetworkinfo", "");
 
           case 2:
             data = _context34.sent;
@@ -14453,20 +14473,20 @@ var RpcClient = function RpcClient(url, user, password) {
               }
 
               data = {
-                "jsonrpc": "1.0",
-                "method": method,
-                "params": [privateKey, null, 5, -1, {
-                  "TokenID": tokenID,
-                  "TokenName": "",
-                  "TokenSymbol": "",
-                  "TokenTxType": 1,
-                  "TokenAmount": amount,
-                  "TokenReceivers": receivers,
-                  "RemoteAddress": toEthAddress.length == 40 ? toEthAddress : toEthAddress.slice(2),
-                  "Privacy": true,
-                  "TokenFee": 0
+                jsonrpc: "1.0",
+                method: method,
+                params: [privateKey, null, 5, -1, {
+                  TokenID: tokenID,
+                  TokenName: "",
+                  TokenSymbol: "",
+                  TokenTxType: 1,
+                  TokenAmount: amount,
+                  TokenReceivers: receivers,
+                  RemoteAddress: toEthAddress.length == 40 ? toEthAddress : toEthAddress.slice(2),
+                  Privacy: true,
+                  TokenFee: 0
                 }, "", 0],
-                "id": 1
+                id: 1
               };
               _context35.prev = 13;
               _context35.next = 16;
@@ -14533,10 +14553,10 @@ var RpcClient = function RpcClient(url, user, password) {
               }
 
               data = {
-                "jsonrpc": "1.0",
-                "method": method,
-                "params": [txId],
-                "id": 1
+                jsonrpc: "1.0",
+                method: method,
+                params: [txId],
+                id: 1
               };
               _context36.prev = 4;
               _context36.next = 7;
@@ -14589,6 +14609,7 @@ var RpcClient = function RpcClient(url, user, password) {
       var tokenID,
           data,
           response,
+          result,
           _args37 = arguments;
       return regeneratorRuntime.wrap(function _callee37$(_context37) {
         while (1) {
@@ -14596,10 +14617,10 @@ var RpcClient = function RpcClient(url, user, password) {
             case 0:
               tokenID = _args37.length > 2 && _args37[2] !== undefined ? _args37[2] : null;
               data = {
-                "jsonrpc": "1.0",
-                "method": "randomcommitmentsandpublickeys",
-                "params": [paymentAddr, numOfCoinsToGet],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "randomcommitmentsandpublickeys",
+                params: [paymentAddr, numOfCoinsToGet],
+                id: 1
               };
 
               if (tokenID != null) {
@@ -14612,44 +14633,47 @@ var RpcClient = function RpcClient(url, user, password) {
 
             case 6:
               response = _context37.sent;
-              _context37.next = 12;
+              console.log("res", response, response.data.Result);
+              _context37.next = 13;
               break;
 
-            case 9:
-              _context37.prev = 9;
+            case 10:
+              _context37.prev = 10;
               _context37.t0 = _context37["catch"](3);
               throw _context37.t0;
 
-            case 12:
+            case 13:
               if (!(response.status !== 200)) {
-                _context37.next = 16;
+                _context37.next = 17;
                 break;
               }
 
               throw new Error("Can't request API random commitments");
 
-            case 16:
+            case 17:
               if (!response.data.Error) {
-                _context37.next = 18;
+                _context37.next = 19;
                 break;
               }
 
               throw response.data.Error;
 
-            case 18:
-              return _context37.abrupt("return", {
+            case 19:
+              result = {
                 Indexes: response.data.Result.CommitmentIndices,
                 Commitments: response.data.Result.Commitments,
                 PublicKeys: response.data.Result.PublicKeys,
                 AssetTags: response.data.Result.AssetTags
-              });
+              };
+              console.log("RESULT", result);
+              return _context37.abrupt("return", result);
 
-            case 19:
+            case 22:
             case "end":
               return _context37.stop();
           }
         }
-      }, _callee37, null, [[3, 9]]);
+      }, _callee37, null, [[3, 10]]);
     }));
 
     return function (_x35, _x36) {
@@ -14665,15 +14689,15 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context38.prev = _context38.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "createandsendtxwithissuingethreq",
-                "params": [privateKey, null, 5, -1, {
-                  "IncTokenID": tokenID,
-                  "BlockHash": ethBlockHash,
-                  "ProofStrs": ethDepositProof,
-                  "TxIndex": txIndex
+                jsonrpc: "1.0",
+                method: "createandsendtxwithissuingethreq",
+                params: [privateKey, null, 5, -1, {
+                  IncTokenID: tokenID,
+                  BlockHash: ethBlockHash,
+                  ProofStrs: ethDepositProof,
+                  TxIndex: txIndex
                 }],
-                "id": 1
+                id: 1
               };
               _context38.prev = 1;
               _context38.next = 4;
@@ -14729,10 +14753,10 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context39.prev = _context39.next) {
             case 0:
               data = {
-                "jsonrpc": "1.0",
-                "method": "submitkey",
-                "params": [sk],
-                "id": 1
+                jsonrpc: "1.0",
+                method: "submitkey",
+                params: [sk],
+                id: 1
               };
               _context39.prev = 1;
               _context39.next = 4;
@@ -14788,9 +14812,9 @@ var RpcClient = function RpcClient(url, user, password) {
           switch (_context40.prev = _context40.next) {
             case 0:
               data = {
-                "method": "retrieveblock",
-                "params": [bh, "1"],
-                "id": 1
+                method: "retrieveblock",
+                params: [bh, "1"],
+                id: 1
               };
               _context40.prev = 1;
               _context40.next = 4;
@@ -14866,13 +14890,61 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
 
 var RpcHTTPCoinServiceClient = /*#__PURE__*/function () {
   function RpcHTTPCoinServiceClient(url) {
+    var _this = this;
+
     _classCallCheck(this, RpcHTTPCoinServiceClient);
+
+    _defineProperty(this, "apiGetKeyInfo", function (_ref) {
+      var key = _ref.key,
+          version = _ref.version;
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("key", key).required().string();
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("version", version).required().string();
+      return _this.http.get("getkeyinfo?key=".concat(key, "&version=").concat(version));
+    });
+
+    _defineProperty(this, "apiCheckKeyImages", function (_ref2) {
+      var keyImages = _ref2.keyImages,
+          shardId = _ref2.shardId;
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("keyImages", keyImages).required().array();
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shardID", shardId).required().number();
+      var payload = {
+        KeyImages: keyImages,
+        ShardID: shardId
+      };
+      return _this.http.post("checkkeyimages", payload);
+    });
+
+    _defineProperty(this, "apiGetSpendingCoinInMemPool", function () {
+      return _this.http.get("getcoinspending").then(function (res) {
+        return res || [];
+      });
+    });
+
+    _defineProperty(this, "apiSubmitOTAKey", function () {
+      var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          otaKey = _ref3.otaKey,
+          shardID = _ref3.shardID,
+          _ref3$beaconHeight = _ref3.beaconHeight,
+          beaconHeight = _ref3$beaconHeight === void 0 ? 0 : _ref3$beaconHeight;
+
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("otaKey", otaKey).required().string();
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shardID", shardID).required().number();
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("beaconHeight", beaconHeight).number();
+      var payload = {
+        OTAKey: otaKey,
+        ShardID: shardID,
+        BeaconHeight: beaconHeight
+      };
+      return _this.http.post("submitotakey", payload);
+    });
 
     this.http = Object(_http_axios__WEBPACK_IMPORTED_MODULE_2__["default"])({
       baseURL: url
@@ -14904,54 +14976,6 @@ var RpcHTTPCoinServiceClient = /*#__PURE__*/function () {
 
         return allOutputCoinStrs || [];
       });
-    }
-  }, {
-    key: "apiGetKeyInfo",
-    value: function apiGetKeyInfo(_ref) {
-      var key = _ref.key,
-          version = _ref.version;
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("key", key).required().string();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("version", version).required().string();
-      return this.http.get("getkeyinfo?key=".concat(key, "&version=").concat(version));
-    }
-  }, {
-    key: "apiCheckKeyImages",
-    value: function apiCheckKeyImages(_ref2) {
-      var keyImages = _ref2.keyImages,
-          shardId = _ref2.shardId;
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("keyImages", keyImages).required().array();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shardID", shardID).required().number();
-      var payload = {
-        KeyImages: keyImages,
-        ShardID: shardId
-      };
-      return this.http.post("checkkeyimages", payload);
-    }
-  }, {
-    key: "apiGetSpendingCoinInMemPool",
-    value: function apiGetSpendingCoinInMemPool() {
-      return this.http.get("getcoinspending").then(function (res) {
-        return res || [];
-      });
-    }
-  }, {
-    key: "apiSubmitOTAKey",
-    value: function apiSubmitOTAKey() {
-      var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          otaKey = _ref3.otaKey,
-          shardID = _ref3.shardID,
-          _ref3$beaconHeight = _ref3.beaconHeight,
-          beaconHeight = _ref3$beaconHeight === void 0 ? 0 : _ref3$beaconHeight;
-
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("otaKey", otaKey).required().string();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shardID", shardID).required().number();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("beaconHeight", beaconHeight).number();
-      var payload = {
-        OTAKey: otaKey,
-        ShardID: shardID,
-        BeaconHeight: beaconHeight
-      };
-      return this.http.post("submitotakey", payload);
     }
   }]);
 
