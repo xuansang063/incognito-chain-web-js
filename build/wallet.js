@@ -8064,11 +8064,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_tx_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/tx/constants */ "./lib/tx/constants.js");
 /* harmony import */ var _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/common/errorhandler */ "./lib/common/errorhandler.js");
 /* harmony import */ var _lib_privacy_utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @lib/privacy/utils */ "./lib/privacy/utils.js");
-/* harmony import */ var _lib_common_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @lib/common/common */ "./lib/common/common.js");
-/* harmony import */ var _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @lib/services/coinChooser */ "./lib/services/coinChooser.js");
-/* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
-/* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_lib_wasm__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @lib/services/coinChooser */ "./lib/services/coinChooser.js");
+/* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
+/* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_lib_wasm__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var _lib_common_base58__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @lib/common/base58 */ "./lib/common/base58.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -8192,8 +8192,6 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
         i,
         shardID,
         cc,
-        limit,
-        version,
         res,
         _args2 = arguments;
 
@@ -8202,11 +8200,11 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             _ref3 = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}, amountTransfer = _ref3.amountTransfer, fee = _ref3.fee, _ref3$tokenID = _ref3.tokenID, tokenID = _ref3$tokenID === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"] : _ref3$tokenID, account = _ref3.account, _ref3$numOfOtherPks = _ref3.numOfOtherPks, numOfOtherPks = _ref3$numOfOtherPks === void 0 ? 7 : _ref3$numOfOtherPks;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("tokenID", tokenID).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("fee", fee).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("amountTransfer", amountTransfer).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("numOfOtherPks", numOfOtherPks).number();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("account", account).required();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("fee", fee).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("amountTransfer", amountTransfer).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("numOfOtherPks", numOfOtherPks).number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("account", account).required();
             _context2.next = 8;
             return account.getSpendingCoins(tokenID);
 
@@ -8235,7 +8233,7 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
 
           case 18:
             amountTransfer = amountTransfer.add(feeBN);
-            respChooseBestCoin = _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_9__["defaultCoinChooser"].coinsToSpend(unspentCoinExceptSpendingCoin, amountTransfer);
+            respChooseBestCoin = _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_8__["defaultCoinChooser"].coinsToSpend(unspentCoinExceptSpendingCoin, amountTransfer);
             inputCoinsToSpent = respChooseBestCoin.resultInputCoins;
 
             if (!(inputCoinsToSpent.length === 0 && amountTransfer.cmp(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0)) !== 0)) {
@@ -8258,49 +8256,63 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
             _context2.prev = 27;
 
             if (!(numOfOtherPks > 0)) {
-              _context2.next = 36;
+              _context2.next = 35;
               break;
             }
 
-            limit = inputCoinsToSpent.length * numOfOtherPks;
-            version = account.privacyVersion;
-            _context2.next = 33;
-            return account.rpcCoinService.apiGetRandomCommitments({
-              tokenID: tokenID,
-              shardID: shardID,
-              version: version,
-              limit: limit
-            });
+            _context2.next = 31;
+            return _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_8__["defaultCoinChooser"].coinsForRing(account.rpc, shardID, inputCoinsToSpent.length * numOfOtherPks, tokenID);
 
-          case 33:
+          case 31:
             cc = _context2.sent;
-            cc.Indexes = cc.CommitmentIndices;
-            cc.AssetTags = cc.AssetTags || []; // cc.Indexes = inputCoinsToSpent.map((coin) => coin.Index);
+            cc.Commitments = cc.Commitments.map(function (item) {
+              var base58 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_11__["checkDecode"])(item).bytesDecoded;
+              console.log("base58", base58);
+              var result = Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_7__["base64Encode"])(base58);
+              console.log("result", result);
+              return result;
+            });
+            cc.PublicKeys = cc.PublicKeys.map(function (item) {
+              var base58 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_11__["checkDecode"])(item).bytesDecoded;
+              console.log("base58", base58);
+              var result = Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_7__["base64Encode"])(base58);
+              console.log("result", result);
+              return result;
+            });
+            console.log("cc", cc); // const limit = inputCoinsToSpent.length * numOfOtherPks;
+            // const version = account.privacyVersion;
+            // cc = await account.rpcCoinService.apiGetRandomCommitments({
+            //   tokenID,
+            //   shardID,
+            //   version,
+            //   limit,
+            // });
+            // cc.Indexes = cc.CommitmentIndices;
+            // cc.AssetTags = cc.AssetTags || [];
 
-          case 36:
-            _context2.next = 41;
+          case 35:
+            _context2.next = 40;
             break;
 
-          case 38:
-            _context2.prev = 38;
+          case 37:
+            _context2.prev = 37;
             _context2.t0 = _context2["catch"](27);
             throw _context2.t0;
 
-          case 41:
+          case 40:
             res = {
-              // PaymentAddress: paymentAddrSerialize,
               inputCoinStrs: inputCoinsToSpent,
               totalValueInput: totalValueInput,
               coinsForRing: cc
             };
             return _context2.abrupt("return", res);
 
-          case 43:
+          case 42:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[27, 38]]);
+    }, _callee2, null, [[27, 37]]);
   }));
 
   return function prepareInputForTxV2() {
@@ -8402,7 +8414,7 @@ var estimateTxSize = /*#__PURE__*/function () {
               TokenParams: tokenParams
             };
             _context4.next = 3;
-            return _lib_wasm__WEBPACK_IMPORTED_MODULE_10__["wasm"].estimateTxSize(JSON.stringify(params));
+            return _lib_wasm__WEBPACK_IMPORTED_MODULE_9__["wasm"].estimateTxSize(JSON.stringify(params));
 
           case 3:
             sz = _context4.sent;
