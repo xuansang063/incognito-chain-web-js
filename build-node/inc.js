@@ -1578,9 +1578,9 @@ var MenmonicWordLen = 12;
 var PercentFeeToReplaceTx = 10;
 var MaxSizeInfoCoin = 255;
 var PrivacyVersion = {
-  both: "-1",
-  ver1: "1",
-  ver2: "2"
+  both: -1,
+  ver1: 1,
+  ver2: 2
 };
 
 
@@ -3297,7 +3297,7 @@ var Account = /*#__PURE__*/function () {
     this.coinUTXOs = {};
     this.rpc = w.RpcClient ? new _lib_rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_25__["RpcClient"](w.RpcClient) : null;
     this.rpcCoinService = w.RpcCoinService ? new _lib_rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_19__["RpcHTTPCoinServiceClient"](w.RpcCoinService) : null;
-    this.privacyVersion = w.PrivacyVersion || "";
+    this.privacyVersion = w.PrivacyVersion || -1;
     this.keyInfo = {};
     this.allKeyInfoV1 = {};
     this.coinsStorage = null;
@@ -3407,7 +3407,7 @@ var Account = /*#__PURE__*/function () {
   }, {
     key: "setPrivacyVersion",
     value: function setPrivacyVersion(privacyVersion) {
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("privacyVersion", privacyVersion).required().string();
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("privacyVersion", privacyVersion).required().number();
       this.privacyVersion = privacyVersion;
     }
   }, {
@@ -6034,25 +6034,23 @@ var Account = /*#__PURE__*/function () {
                 keyInfo = this.keyInfo;
                 version = this.privacyVersion;
                 otaKey = this.getOTAKey();
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.version, version).required().string();
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.otaKey, otaKey).required().string();
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.rpcCoinService, this.rpcCoinService).required();
 
                 if (!lodash_isEmpty__WEBPACK_IMPORTED_MODULE_1___default()(keyInfo)) {
-                  _context31.next = 12;
+                  _context31.next = 10;
                   break;
                 }
 
-                _context31.next = 11;
+                _context31.next = 8;
                 return this.rpcCoinService.apiGetKeyInfo({
                   key: otaKey,
                   version: version
                 });
 
-              case 11:
+              case 8:
                 keyInfo = _context31.sent;
+                console.log("key info", keyInfo);
 
-              case 12:
+              case 10:
                 total = 0;
 
                 if (keyInfo && keyInfo.coinindex && keyInfo.coinindex[tokenId]) {
@@ -6063,17 +6061,17 @@ var Account = /*#__PURE__*/function () {
                   total: total
                 });
 
-              case 17:
-                _context31.prev = 17;
+              case 15:
+                _context31.prev = 15;
                 _context31.t0 = _context31["catch"](0);
                 throw _context31.t0;
 
-              case 20:
+              case 18:
               case "end":
                 return _context31.stop();
             }
           }
-        }, _callee31, this, [[0, 17]]);
+        }, _callee31, this, [[0, 15]]);
       }));
 
       function getKeyInfo(_x42) {
@@ -6807,6 +6805,7 @@ var Account = /*#__PURE__*/function () {
             switch (_context45.prev = _context45.next) {
               case 0:
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
+                console.log("bbbbb");
 
                 if (!this.coinsStorage) {
                   this.coinsStorage = {
@@ -6849,24 +6848,25 @@ var Account = /*#__PURE__*/function () {
                   };
                 }
 
-                _context45.next = 4;
+                _context45.next = 5;
                 return this.measureAsyncFn(this.getKeyInfo, "timeGetKeyInfo", tokenId);
 
-              case 4:
+              case 5:
                 keyInfo = _context45.sent;
+                console.log("cccc");
                 listOutputsCoins = [];
                 total = keyInfo.total;
                 this.coinsStorage.newTotalCoinsFromKeyInfo = total;
-                _context45.next = 10;
+                _context45.next = 12;
                 return this.getTotalCoinsStorage(tokenId);
 
-              case 10:
+              case 12:
                 oldTotal = _context45.sent;
                 this.coinsStorage.oldTotalCoinsFromKeyInfo = oldTotal;
-                _context45.next = 14;
+                _context45.next = 16;
                 return this.checkStatusListUnspentCoinsStorage(tokenId);
 
-              case 14:
+              case 16:
                 calcTotal = 0;
 
                 if (total !== oldTotal) {
@@ -6874,47 +6874,47 @@ var Account = /*#__PURE__*/function () {
                 }
 
                 if (!(calcTotal > 0)) {
-                  _context45.next = 29;
+                  _context45.next = 31;
                   break;
                 }
 
                 this.coinsStorage.calcTotalCoinsDiff = calcTotal;
-                _context45.next = 20;
+                _context45.next = 22;
                 return this.measureAsyncFn(this.getListOutputsCoins, "timeGetListOutputsCoins", {
                   total: calcTotal,
                   tokenId: tokenId
                 });
 
-              case 20:
+              case 22:
                 listOutputsCoins = _context45.sent;
                 shardId = this.getShardId();
-                _context45.next = 24;
+                _context45.next = 26;
                 return this.checkKeyImages({
                   listOutputsCoins: listOutputsCoins,
                   shardId: shardId,
                   tokenId: tokenId
                 });
 
-              case 24:
+              case 26:
                 listUnspentCoinsFiltered = _context45.sent;
-                _context45.next = 27;
+                _context45.next = 29;
                 return this.measureAsyncFn(this.setListUnspentCoinsStorage, "timeSetListUnspentCoinsStorage", {
                   value: listUnspentCoinsFiltered,
                   tokenId: tokenId
                 });
 
-              case 27:
-                _context45.next = 29;
+              case 29:
+                _context45.next = 31;
                 return this.measureAsyncFn(this.setTotalCoinsStorage, "timeSetTotalCoinsStorage", {
                   value: listOutputsCoins.length !== calcTotal ? oldTotal : total,
                   tokenId: tokenId
                 });
 
-              case 29:
-                _context45.next = 31;
+              case 31:
+                _context45.next = 33;
                 return this.getListUnspentCoinsStorage(tokenId);
 
-              case 31:
+              case 33:
                 listUnspentCoinsMerged = _context45.sent;
 
                 if (!this.coinUTXOs) {
@@ -6923,16 +6923,16 @@ var Account = /*#__PURE__*/function () {
 
                 this.coinUTXOs[tokenId] = listUnspentCoinsMerged.length; // tracking
 
-                _context45.next = 36;
+                _context45.next = 38;
                 return this.setCoinsStorage({
                   value: this.coinsStorage,
                   tokenId: tokenId
                 });
 
-              case 36:
+              case 38:
                 return _context45.abrupt("return", listUnspentCoinsMerged);
 
-              case 37:
+              case 39:
               case "end":
                 return _context45.stop();
             }
@@ -7064,8 +7064,8 @@ var Account = /*#__PURE__*/function () {
                 _context48.prev = 0;
                 tokenId = tokenID || _lib_core_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"];
                 version = this.privacyVersion;
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.privacyVersion, version).required().string();
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.privacyVersion, version).required().number();
                 _context48.next = 7;
                 return this.submitOTAKey();
 
@@ -7125,26 +7125,28 @@ var Account = /*#__PURE__*/function () {
                 tokenId = _args49.length > 0 && _args49[0] !== undefined ? _args49[0] : _lib_core_constants__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"];
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
                 _context49.prev = 2;
-                _context49.next = 5;
+                console.log("aaaa");
+                _context49.next = 6;
                 return this.getUnspentCoins(tokenId);
 
-              case 5:
+              case 6:
                 coins = _context49.sent;
-                _context49.prev = 6;
-                _context49.next = 9;
+                console.log("COINS", coins.length);
+                _context49.prev = 8;
+                _context49.next = 11;
                 return this.getSpendingCoinsStorageByTokenId(tokenId);
 
-              case 9:
+              case 11:
                 spendingCoinsStorage = _context49.sent;
                 coins = coins.filter(function (item) {
                   return !(spendingCoinsStorage !== null && spendingCoinsStorage !== void 0 && spendingCoinsStorage.find(function (coin) {
                     return (coin === null || coin === void 0 ? void 0 : coin.KeyImage) === (item === null || item === void 0 ? void 0 : item.KeyImage);
                   }));
                 });
-                _context49.next = 13;
+                _context49.next = 15;
                 return this.rpcCoinService.apiGetSpendingCoinInMemPool();
 
-              case 13:
+              case 15:
                 spendingCoins = _context49.sent;
 
                 if (!!spendingCoins) {
@@ -7153,28 +7155,28 @@ var Account = /*#__PURE__*/function () {
                   });
                 }
 
-                _context49.next = 20;
+                _context49.next = 22;
                 break;
 
-              case 17:
-                _context49.prev = 17;
-                _context49.t0 = _context49["catch"](6);
+              case 19:
+                _context49.prev = 19;
+                _context49.t0 = _context49["catch"](8);
                 throw _context49.t0;
 
-              case 20:
+              case 22:
                 return _context49.abrupt("return", coins || []);
 
-              case 23:
-                _context49.prev = 23;
+              case 25:
+                _context49.prev = 25;
                 _context49.t1 = _context49["catch"](2);
                 throw _context49.t1;
 
-              case 26:
+              case 28:
               case "end":
                 return _context49.stop();
             }
           }
-        }, _callee49, this, [[2, 23], [6, 17]]);
+        }, _callee49, this, [[2, 25], [8, 19]]);
       }));
 
       function getSpendingCoins() {
@@ -7233,9 +7235,7 @@ var Account = /*#__PURE__*/function () {
   return Account;
 }();
 
-Object.assign(Account.prototype, _lib_module_Account_account_transactor__WEBPACK_IMPORTED_MODULE_22__["default"]);
-Object.assign(Account.prototype, _lib_module_Account_account_history__WEBPACK_IMPORTED_MODULE_23__["default"]);
-Object.assign(Account.prototype, _lib_module_Account_account_progress__WEBPACK_IMPORTED_MODULE_24__["default"]);
+Object.assign(Account.prototype, _lib_module_Account_account_transactor__WEBPACK_IMPORTED_MODULE_22__["default"], _lib_module_Account_account_history__WEBPACK_IMPORTED_MODULE_23__["default"], _lib_module_Account_account_progress__WEBPACK_IMPORTED_MODULE_24__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (Account);
 
 /***/ }),
@@ -7789,62 +7789,63 @@ function _transact2() {
 
           case 71:
             theirTime = _context3.sent;
-            _context3.next = 74;
+            console.log(theirTime, txParamsJson);
+            _context3.next = 75;
             return _lib_wasm__WEBPACK_IMPORTED_MODULE_5__["wasm"].createTransaction(txParamsJson, theirTime);
 
-          case 74:
+          case 75:
             wasmResult = _context3.sent;
             _JSON$parse = JSON.parse(wasmResult), b58EncodedTx = _JSON$parse.b58EncodedTx, hash = _JSON$parse.hash, outputs = _JSON$parse.outputs;
 
             if (!(!!hash && typeof txHandler === "function")) {
-              _context3.next = 79;
+              _context3.next = 80;
               break;
             }
 
-            _context3.next = 79;
+            _context3.next = 80;
             return txHandler(hash);
 
-          case 79:
+          case 80:
             if (!(b58EncodedTx === null || b58EncodedTx === "")) {
-              _context3.next = 81;
+              _context3.next = 82;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].InitNormalTxErr, "Can not init transaction tranfering PRV");
 
-          case 81:
+          case 82:
             tempBuf = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_6__["checkDecode"])(b58EncodedTx).bytesDecoded;
             theString = String.fromCharCode.apply(null, tempBuf);
             txObj = JSON.parse(theString);
             txObj.Encoded = b58EncodedTx;
             console.log(90);
-            _context3.next = 88;
+            _context3.next = 89;
             return this.updateProgressTx(90, "Submitting Transaction");
 
-          case 88:
-            _context3.prev = 88;
-            _context3.next = 91;
+          case 89:
+            _context3.prev = 89;
+            _context3.next = 92;
             return this.send(b58EncodedTx, Boolean(tokenPayments));
 
-          case 91:
+          case 92:
             response = _context3.sent;
-            _context3.next = 97;
+            _context3.next = 98;
             break;
 
-          case 94:
-            _context3.prev = 94;
-            _context3.t2 = _context3["catch"](88);
+          case 95:
+            _context3.prev = 95;
+            _context3.t2 = _context3["catch"](89);
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context3.t2);
 
-          case 97:
+          case 98:
             if (response.TokenID && response.TokenID.length > 0) {
               tokenID = response.TokenID;
             }
 
-            _context3.next = 100;
+            _context3.next = 101;
             return this.updateProgressTx(95, "Saving Records");
 
-          case 100:
+          case 101:
             taskSpendingCoins = [];
 
             if (!!inputForTx.inputCoinStrs) {
@@ -7861,10 +7862,10 @@ function _transact2() {
               }));
             }
 
-            _context3.next = 105;
+            _context3.next = 106;
             return Promise.all(taskSpendingCoins);
 
-          case 105:
+          case 106:
             return _context3.abrupt("return", {
               response: response,
               tx: txObj,
@@ -7882,12 +7883,12 @@ function _transact2() {
               txType: txType
             });
 
-          case 106:
+          case 107:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, this, [[19, 25], [51, 57], [88, 94]]);
+    }, _callee3, this, [[19, 25], [51, 57], [89, 95]]);
   }));
   return _transact2.apply(this, arguments);
 }
@@ -8241,9 +8242,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @lib/services/coinChooser */ "./lib/services/coinChooser.js");
 /* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
 /* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_lib_wasm__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -8363,6 +8366,8 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
         i,
         shardID,
         cc,
+        limit,
+        version,
         res,
         _args2 = arguments;
 
@@ -8370,18 +8375,23 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _ref3 = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}, amountTransfer = _ref3.amountTransfer, fee = _ref3.fee, _ref3$tokenID = _ref3.tokenID, tokenID = _ref3$tokenID === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"] : _ref3$tokenID, account = _ref3.account, _ref3$numOfOtherPks = _ref3.numOfOtherPks, numOfOtherPks = _ref3$numOfOtherPks === void 0 ? 20 : _ref3$numOfOtherPks;
-            _context2.next = 3;
+            _ref3 = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}, amountTransfer = _ref3.amountTransfer, fee = _ref3.fee, _ref3$tokenID = _ref3.tokenID, tokenID = _ref3$tokenID === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"] : _ref3$tokenID, account = _ref3.account, _ref3$numOfOtherPks = _ref3.numOfOtherPks, numOfOtherPks = _ref3$numOfOtherPks === void 0 ? 7 : _ref3$numOfOtherPks;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("fee", fee).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("amountTransfer", amountTransfer).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("numOfOtherPks", numOfOtherPks).number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("account", account).required();
+            _context2.next = 8;
             return account.getSpendingCoins(tokenID);
 
-          case 3:
+          case 8:
             unspentCoinExceptSpendingCoin = _context2.sent;
             console.log("unspentCoinExceptSpendingCoin", unspentCoinExceptSpendingCoin.length); // total amount transfer and fee
 
             feeBN = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(fee);
 
             if (!(amountTransfer < 0)) {
-              _context2.next = 13;
+              _context2.next = 18;
               break;
             }
 
@@ -8394,22 +8404,22 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
 
             inputCoinsToSpent = unspentCoinExceptSpendingCoin.slice(0, arrayEnd);
             amountTransfer = feeBN;
-            _context2.next = 18;
+            _context2.next = 23;
             break;
 
-          case 13:
+          case 18:
             amountTransfer = amountTransfer.add(feeBN);
             respChooseBestCoin = _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_9__["defaultCoinChooser"].coinsToSpend(unspentCoinExceptSpendingCoin, amountTransfer);
             inputCoinsToSpent = respChooseBestCoin.resultInputCoins;
 
             if (!(inputCoinsToSpent.length === 0 && amountTransfer.cmp(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0)) !== 0)) {
-              _context2.next = 18;
+              _context2.next = 23;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].NotEnoughCoinError, "Not enough coin to spend");
 
-          case 18:
+          case 23:
             totalValueInput = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
 
             for (i = 0; i < inputCoinsToSpent.length; i++) {
@@ -8417,32 +8427,40 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
               inputCoinsToSpent[i].Info = "";
             }
 
-            shardID = Object(_lib_common_common__WEBPACK_IMPORTED_MODULE_8__["getShardIDFromLastByte"])(account.key.KeySet.PaymentAddress.Pk[account.key.KeySet.PaymentAddress.Pk.length - 1]);
+            shardID = account.getShardId();
             cc = null;
-            _context2.prev = 22;
+            _context2.prev = 27;
 
             if (!(numOfOtherPks > 0)) {
-              _context2.next = 27;
+              _context2.next = 36;
               break;
             }
 
-            _context2.next = 26;
-            return _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_9__["defaultCoinChooser"].coinsForRing(account.rpc, shardID, numOfOtherPks, tokenID);
-
-          case 26:
-            cc = _context2.sent;
-
-          case 27:
+            limit = inputCoinsToSpent.length * numOfOtherPks;
+            version = account.privacyVersion;
             _context2.next = 33;
-            break;
-
-          case 29:
-            _context2.prev = 29;
-            _context2.t0 = _context2["catch"](22);
-            console.error("Error while preparing input parameters", _context2.t0);
-            throw _context2.t0;
+            return account.rpcCoinService.apiGetRandomCommitments({
+              tokenID: tokenID,
+              shardID: shardID,
+              version: version,
+              limit: limit
+            });
 
           case 33:
+            cc = _context2.sent;
+            cc.Indexes = cc.CommitmentIndices;
+            cc.AssetTags = cc.AssetTags || []; // cc.Indexes = inputCoinsToSpent.map((coin) => coin.Index);
+
+          case 36:
+            _context2.next = 41;
+            break;
+
+          case 38:
+            _context2.prev = 38;
+            _context2.t0 = _context2["catch"](27);
+            throw _context2.t0;
+
+          case 41:
             res = {
               // PaymentAddress: paymentAddrSerialize,
               inputCoinStrs: inputCoinsToSpent,
@@ -8451,12 +8469,12 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
             };
             return _context2.abrupt("return", res);
 
-          case 35:
+          case 43:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[22, 29]]);
+    }, _callee2, null, [[27, 38]]);
   }));
 
   return function prepareInputForTxV2() {
@@ -11652,32 +11670,31 @@ var RpcClient = function RpcClient(url, user, password) {
 
             case 6:
               response = _context37.sent;
-              console.log("res", response, response.data.Result);
-              _context37.next = 13;
+              _context37.next = 12;
               break;
 
-            case 10:
-              _context37.prev = 10;
+            case 9:
+              _context37.prev = 9;
               _context37.t0 = _context37["catch"](3);
               throw _context37.t0;
 
-            case 13:
+            case 12:
               if (!(response.status !== 200)) {
-                _context37.next = 17;
+                _context37.next = 16;
                 break;
               }
 
               throw new Error("Can't request API random commitments");
 
-            case 17:
+            case 16:
               if (!response.data.Error) {
-                _context37.next = 19;
+                _context37.next = 18;
                 break;
               }
 
               throw response.data.Error;
 
-            case 19:
+            case 18:
               result = {
                 Indexes: response.data.Result.CommitmentIndices,
                 Commitments: response.data.Result.Commitments,
@@ -11687,12 +11704,12 @@ var RpcClient = function RpcClient(url, user, password) {
               console.log("RESULT", result);
               return _context37.abrupt("return", result);
 
-            case 22:
+            case 21:
             case "end":
               return _context37.stop();
           }
         }
-      }, _callee37, null, [[3, 10]]);
+      }, _callee37, null, [[3, 9]]);
     }));
 
     return function (_x35, _x36) {
@@ -11905,101 +11922,109 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _http_axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../http/axios */ "./lib/http/axios.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 
 
-var RpcHTTPCoinServiceClient = /*#__PURE__*/function () {
-  function RpcHTTPCoinServiceClient(url) {
-    var _this = this;
+var RpcHTTPCoinServiceClient = function RpcHTTPCoinServiceClient(url) {
+  var _this = this;
 
-    _classCallCheck(this, RpcHTTPCoinServiceClient);
+  _classCallCheck(this, RpcHTTPCoinServiceClient);
 
-    _defineProperty(this, "apiGetKeyInfo", function (_ref) {
-      var key = _ref.key,
-          version = _ref.version;
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("key", key).required().string();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("version", version).required().string();
-      return _this.http.get("getkeyinfo?key=".concat(key, "&version=").concat(version));
+  _defineProperty(this, "apiGetListOutputCoins", function (payload) {
+    var key = payload.key,
+        offset = payload.offset,
+        limit = payload.limit,
+        _payload$tokenId = payload.tokenId,
+        tokenId = _payload$tokenId === void 0 ? _core__WEBPACK_IMPORTED_MODULE_1__["PRVIDSTR"] : _payload$tokenId,
+        version = payload.version;
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("key", key).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("offset", offset).number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("limit", limit).number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenId", tokenId).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("version", version).required().number();
+    var params = "getcoins?".concat(key, "&limit=").concat(limit, "&offset=").concat(offset, "&tokenid=").concat(tokenId, "&version=").concat(version);
+    return _this.http.get(params).then(function (response) {
+      var outputs = (response === null || response === void 0 ? void 0 : response.Outputs) || {};
+      var allOutputCoinStrs;
+
+      if (outputs) {
+        allOutputCoinStrs = outputs[Object.keys(outputs)[0]];
+      }
+
+      return allOutputCoinStrs || [];
     });
+  });
 
-    _defineProperty(this, "apiCheckKeyImages", function (_ref2) {
-      var keyImages = _ref2.keyImages,
-          shardId = _ref2.shardId;
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("keyImages", keyImages).required().array();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shardID", shardId).required().number();
-      var payload = {
-        KeyImages: keyImages,
-        ShardID: shardId
-      };
-      return _this.http.post("checkkeyimages", payload);
+  _defineProperty(this, "apiGetKeyInfo", function (_ref) {
+    var key = _ref.key,
+        version = _ref.version;
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("key", key).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("version", version).required().number();
+    return _this.http.get("getkeyinfo?key=".concat(key, "&version=").concat(version));
+  });
+
+  _defineProperty(this, "apiCheckKeyImages", function (_ref2) {
+    var keyImages = _ref2.keyImages,
+        shardId = _ref2.shardId;
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("keyImages", keyImages).required().array();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shardID", shardId).required().number();
+    var payload = {
+      KeyImages: keyImages,
+      ShardID: shardId
+    };
+    return _this.http.post("checkkeyimages", payload);
+  });
+
+  _defineProperty(this, "apiGetSpendingCoinInMemPool", function () {
+    return _this.http.get("getcoinspending").then(function (res) {
+      return res || [];
     });
+  });
 
-    _defineProperty(this, "apiGetSpendingCoinInMemPool", function () {
-      return _this.http.get("getcoinspending").then(function (res) {
-        return res || [];
-      });
-    });
+  _defineProperty(this, "apiSubmitOTAKey", function () {
+    var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        otaKey = _ref3.otaKey,
+        shardID = _ref3.shardID,
+        _ref3$beaconHeight = _ref3.beaconHeight,
+        beaconHeight = _ref3$beaconHeight === void 0 ? 0 : _ref3$beaconHeight;
 
-    _defineProperty(this, "apiSubmitOTAKey", function () {
-      var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          otaKey = _ref3.otaKey,
-          shardID = _ref3.shardID,
-          _ref3$beaconHeight = _ref3.beaconHeight,
-          beaconHeight = _ref3$beaconHeight === void 0 ? 0 : _ref3$beaconHeight;
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("otaKey", otaKey).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shardID", shardID).required().number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("beaconHeight", beaconHeight).number();
+    var payload = {
+      OTAKey: otaKey,
+      ShardID: shardID,
+      BeaconHeight: beaconHeight
+    };
+    return _this.http.post("submitotakey", payload);
+  });
 
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("otaKey", otaKey).required().string();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shardID", shardID).required().number();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("beaconHeight", beaconHeight).number();
-      var payload = {
-        OTAKey: otaKey,
-        ShardID: shardID,
-        BeaconHeight: beaconHeight
-      };
-      return _this.http.post("submitotakey", payload);
-    });
+  _defineProperty(this, "apiGetRandomCommitments", function (_ref4) {
+    var version = _ref4.version,
+        shardID = _ref4.shardID,
+        tokenID = _ref4.tokenID,
+        limit = _ref4.limit;
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("version", version).required().number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shardID", shardID).required().number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenID", tokenID).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("limit", limit).required().number();
+    var payload = {
+      TokenID: tokenID,
+      ShardID: shardID,
+      Version: version,
+      Limit: limit
+    };
+    console.log(payload);
+    return _this.http.post("getrandomcommitments", payload);
+  });
 
-    this.http = Object(_http_axios__WEBPACK_IMPORTED_MODULE_2__["default"])({
-      baseURL: url
-    });
-  }
-
-  _createClass(RpcHTTPCoinServiceClient, [{
-    key: "apiGetListOutputCoins",
-    value: function apiGetListOutputCoins(payload) {
-      var key = payload.key,
-          offset = payload.offset,
-          limit = payload.limit,
-          _payload$tokenId = payload.tokenId,
-          tokenId = _payload$tokenId === void 0 ? _core__WEBPACK_IMPORTED_MODULE_1__["PRVIDSTR"] : _payload$tokenId,
-          version = payload.version;
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("key", key).required().string();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("offset", offset).number();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("limit", limit).number();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenId", tokenId).required().string();
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("version", version).required().string();
-      var params = "getcoins?".concat(key, "&limit=").concat(limit, "&offset=").concat(offset, "&tokenid=").concat(tokenId, "&version=").concat(version);
-      return this.http.get(params).then(function (response) {
-        var outputs = (response === null || response === void 0 ? void 0 : response.Outputs) || {};
-        var allOutputCoinStrs;
-
-        if (outputs) {
-          allOutputCoinStrs = outputs[Object.keys(outputs)[0]];
-        }
-
-        return allOutputCoinStrs || [];
-      });
-    }
-  }]);
-
-  return RpcHTTPCoinServiceClient;
-}();
+  this.http = Object(_http_axios__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    baseURL: url
+  });
+};
 
 
 

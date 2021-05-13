@@ -19,7 +19,7 @@ const { base58CheckEncode: checkEncode } = utils;
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
 const rpcClient = "http://139.162.55.124:8334";
 const rpcCoinService = "http://51.161.119.66:9009"; //dev-test-coin-service
-const privacyVersion = "2";
+const privacyVersion = 2;
 
 let wallet;
 let senderPrivateKeyStr;
@@ -43,7 +43,7 @@ async function setup() {
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKhzbNJkxpJU6";
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
@@ -142,9 +142,9 @@ async function TestStakerStatus() {
 }
 async function TestCreateAndSendNativeToken() {
   await setup();
-  let fee = 100;
+  let fee = 10;
   let info = "INFOFO";
-  let amountTransfer = 1e9; // in nano PRV
+  let amountTransfer = 1; // in nano PRV
   console.log("Will Transfer: ", amountTransfer);
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -599,7 +599,7 @@ async function MainRoutine() {
   try {
     let txh;
     // return await TestGetBalance();
-    await TestCreateAndSendNativeToken();
+    return await TestCreateAndSendNativeToken();
     // await TestCreateAndSendPrivacyTokenTransfer();
     // await GetUnspentCoinV1();
     // await TestCreateAndSendConvertTx();
