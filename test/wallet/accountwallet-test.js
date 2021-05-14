@@ -43,7 +43,7 @@ async function setup() {
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
+    "112t8rniZP5hk9X3RjCFx9CXyoxmJFcqM6sNM7Yknng6D4jS3vwTxcQ6hPZ3h3mZHx2JDNxfGxmwjiHN3A34gktcMhgXUwh8EXpo7NCxiuxJ";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
@@ -590,6 +590,15 @@ async function TestCreateAndSendConvertTx() {
     throw e;
   }
 }
+async function ConvertAllToken() {
+  await setup();
+  try {
+    accountSender.useCoinsService = true;
+    await accountSender.convertAllToken();
+  } catch (e) {
+    throw e;
+  }
+}
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
@@ -598,8 +607,8 @@ async function MainRoutine() {
   // sequential execution of tests; the wait might still be too short
   try {
     let txh;
-    // return await TestGetBalance();
-    return await TestCreateAndSendNativeToken();
+    await ConvertAllToken()
+    return;
     // await TestCreateAndSendPrivacyTokenTransfer();
     // await GetUnspentCoinV1();
     // await TestCreateAndSendConvertTx();
