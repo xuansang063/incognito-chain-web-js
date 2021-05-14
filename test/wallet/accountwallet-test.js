@@ -40,10 +40,10 @@ async function setup() {
   wallet.setProvider(rpcClient);
   wallet.setRpcHTTPCoinServiceClient(rpcCoinService);
   wallet.setPrivacyVersion(privacyVersion);
-  // senderPrivateKeyStr =
-  //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rniZP5hk9X3RjCFx9CXyoxmJFcqM6sNM7Yknng6D4jS3vwTxcQ6hPZ3h3mZHx2JDNxfGxmwjiHN3A34gktcMhgXUwh8EXpo7NCxiuxJ";
+    "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
+  // senderPrivateKeyStr =
+  //   "112t8rns2sxbuHFAAhtMksGhK9S1mFcyiGpKypzJuXJSmHZE8d4SqM3XNSy6i9QacqTeVmrneuEmNzF1kcwAvvf6d137PVJun1qnsxKr1gW6";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
@@ -61,7 +61,8 @@ async function TestGetBalance() {
   await setup();
   // create and send PRV
   try {
-    let balance = await accountSender.getBalance(tokenID);
+    console.log(accountSender.getOTAKey());
+    let balance = await accountSender.getBalance();
     console.log("balance: ", balance.toString());
   } catch (e) {
     console.log("Error when get balance: ", e);
@@ -142,9 +143,9 @@ async function TestStakerStatus() {
 }
 async function TestCreateAndSendNativeToken() {
   await setup();
-  let fee = 10;
+  let fee = 100;
   let info = "INFOFO";
-  let amountTransfer = 1; // in nano PRV
+  let amountTransfer = 1e9; // in nano PRV
   console.log("Will Transfer: ", amountTransfer);
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -488,34 +489,35 @@ async function TestCustomContribution(
     throw e;
   }
 }
-async function TestCustomTradeRequest(
-  tokenIDToSellStr,
-  tokenIDToBuyStr,
-  sellAmount,
-  minAcceptableAmount
-) {
+async function TestCustomTradeRequest() {
+  // tokenIDToSellStr,
+  // tokenIDToBuyStr,
+  // sellAmount,
+  // minAcceptableAmount
   await setup();
-
-  let feePRV = 50;
-  // let sellAmount = 300;
+  let fee = 100;
+  let tradingFee = 1000;
+  let sellAmount = 1e9;
+  let minAcceptableAmount = 100;
   // let tokenIDToSellStr = tokenID;
   // let tokenIDToBuyStr = null;
-  // let minAcceptableAmount = 2900;
-  let tradingFee = 50;
-
   // create and send staking tx
+  const tokenIDToBuy =
+    "b49af494a0703d9bd7366dfc29ec2c270efd4c3fb210a91081b419a4e356e22e";
+  const tokenIDToSell =
+    "0000000000000000000000000000000000000000000000000000000000000004";
   try {
-    let res = await accountSender.createAndSendNativeTokenTradeRequestTx({
-      transfer: { feePRV },
+    let res = await accountSender.createAndSendTradeRequestTx({
+      transfer: { fee },
       extra: {
-        tokenIDToBuy: tokenIDToBuyStr,
+        tokenIDToBuy,
         sellAmount,
         minAcceptableAmount,
         tradingFee,
-        tokenIDToSell: tokenIDToSellStr,
+        tokenIDToSell,
       },
     });
-    return res.Response.txId;
+    return res;
     console.log("RESPONSE: ", res);
   } catch (e) {
     console.log("Error when trading native token: ", e);
@@ -606,9 +608,14 @@ async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   // sequential execution of tests; the wait might still be too short
   try {
+    // return await ConvertAllToken();
+    return await TestGetBalance();
     let txh;
-    await ConvertAllToken()
+    txh = await TestCustomTradeRequest(null, tokenID, 10000, 800);
+    console.log(txh);
     return;
+    // return await TestGetBalance();
+    // return await TestCreateAndSendNativeToken();
     // await TestCreateAndSendPrivacyTokenTransfer();
     // await GetUnspentCoinV1();
     // await TestCreateAndSendConvertTx();
