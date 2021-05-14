@@ -7,12 +7,8 @@ const {
   init,
 } = require("../../");
 const { KeyWallet, RpcClient } = types;
-const {
-  PaymentAddressType,
-  PRVIDSTR,
-  ENCODE_VERSION,
-  PrivacyVersion,
-} = constants;
+const { PaymentAddressType, PRVIDSTR, ENCODE_VERSION, PrivacyVersion } =
+  constants;
 const { base58CheckEncode: checkEncode } = utils;
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
@@ -23,7 +19,7 @@ const { base58CheckEncode: checkEncode } = utils;
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
 const rpcClient = "http://139.162.55.124:8334";
 const rpcCoinService = "http://51.161.119.66:9009"; //dev-test-coin-service
-const privacyVersion = "2";
+const privacyVersion = 2;
 
 let wallet;
 let senderPrivateKeyStr;
@@ -36,7 +32,7 @@ let receiverPaymentAddrStr2;
 let tokenID, secondTokenID;
 async function setup() {
   await init();
-  tokenID = "c575c9a7f0706db902fb83dcad85be2f5488e1ac3bc382cb1f3cbffebf814fef";
+  tokenID = "";
   secondTokenID =
     "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
   // await sleep(10000);
@@ -47,15 +43,14 @@ async function setup() {
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rnqawFcfb4TCLwvSMgza64EuC4HMPUnwrqG1wn1UFpyyuCBcGPMcuT7vxfFCehzpj3jexavU33qUUJcdSyz321b27JFZFj6smyNMmGc";
+    "112t8rniZP5hk9X3RjCFx9CXyoxmJFcqM6sNM7Yknng6D4jS3vwTxcQ6hPZ3h3mZHx2JDNxfGxmwjiHN3A34gktcMhgXUwh8EXpo7NCxiuxJ";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
   accountSender.setRPCClient(rpcClient);
   await accountSender.setKey(senderPrivateKeyStr);
-  senderPaymentAddressStr = accountSender.key.base58CheckSerialize(
-    PaymentAddressType
-  );
+  senderPaymentAddressStr =
+    accountSender.key.base58CheckSerialize(PaymentAddressType);
   // await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
   receiverPaymentAddrStr =
     "12shR6fDe7ZcprYn6rjLwiLcL7oJRiek66ozzYu3B3rBxYXkqJeZYj6ZWeYy4qR4UHgaztdGYQ9TgHEueRXN7VExNRGB5t4auo3jTgXVBiLJmnTL5LzqmTXezhwmQvyrRjCbED5xVWf4ETHbRCSP";
@@ -149,7 +144,7 @@ async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 10;
   let info = "INFOFO";
-  let amountTransfer = "69"; // in nano PRV
+  let amountTransfer = 1; // in nano PRV
   console.log("Will Transfer: ", amountTransfer);
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -161,7 +156,7 @@ async function TestCreateAndSendNativeToken() {
   try {
     let res = await accountSender.createAndSendNativeToken({
       transfer: { prvPayments: paymentInfosParam, fee, info },
-      extra: { isEncryptMessage: true },
+      extra: { isEncryptMessage: true, txType: 0 },
     });
     console.log("Send tx succesfully with TxID: ", res.Response.txId);
     return res.Response.txId;
@@ -595,6 +590,15 @@ async function TestCreateAndSendConvertTx() {
     throw e;
   }
 }
+async function ConvertAllToken() {
+  await setup();
+  try {
+    accountSender.useCoinsService = true;
+    await accountSender.convertAllToken();
+  } catch (e) {
+    throw e;
+  }
+}
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
@@ -603,9 +607,9 @@ async function MainRoutine() {
   // sequential execution of tests; the wait might still be too short
   try {
     let txh;
-    await TestCreateAndSendNativeToken();
-    // await TestCreateAndSendPrivacyTokenTransfer();
+    await ConvertAllToken()
     return;
+    // await TestCreateAndSendPrivacyTokenTransfer();
     // await GetUnspentCoinV1();
     // await TestCreateAndSendConvertTx();
     await TestGetAllPrivacyTokenBalance();
