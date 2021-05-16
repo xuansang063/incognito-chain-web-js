@@ -41,7 +41,7 @@ async function setup() {
   wallet.setRpcHTTPCoinServiceClient(rpcCoinService);
   wallet.setPrivacyVersion(privacyVersion);
   senderPrivateKeyStr =
-    "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
+    "112t8rnYTc4aAM4wy5h7oWKs1RAusVHmVG9M2tFKYWhjLndnfHnKDd193sjkiiR2aN5NWc1XM1ryxFv67NjAdRHHEnAosPy2UY8NepVMbHHB";
   // senderPrivateKeyStr =
   //   "112t8rns2sxbuHFAAhtMksGhK9S1mFcyiGpKypzJuXJSmHZE8d4SqM3XNSy6i9QacqTeVmrneuEmNzF1kcwAvvf6d137PVJun1qnsxKr1gW6";
   accountSender = new AccountWallet(Wallet);
@@ -608,8 +608,8 @@ async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   // sequential execution of tests; the wait might still be too short
   try {
-    // return await ConvertAllToken();
-    return await TestGetBalance();
+    return await ConvertAllToken();
+    // return await TestGetBalance();
     let txh;
     txh = await TestCustomTradeRequest(null, tokenID, 10000, 800);
     console.log(txh);
