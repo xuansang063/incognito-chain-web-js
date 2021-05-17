@@ -37,13 +37,10 @@ async function setup() {
     "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
   // await sleep(10000);
   wallet = new Wallet();
-  wallet.setProvider(rpcClient);
-  wallet.setRpcHTTPCoinServiceClient(rpcCoinService);
-  wallet.setPrivacyVersion(privacyVersion);
-  senderPrivateKeyStr =
-    "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   // senderPrivateKeyStr =
-  //   "112t8rns2sxbuHFAAhtMksGhK9S1mFcyiGpKypzJuXJSmHZE8d4SqM3XNSy6i9QacqTeVmrneuEmNzF1kcwAvvf6d137PVJun1qnsxKr1gW6";
+  //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
+  senderPrivateKeyStr =
+    "112t8rns2sxbuHFAAhtMksGhK9S1mFcyiGpKypzJuXJSmHZE8d4SqM3XNSy6i9QacqTeVmrneuEmNzF1kcwAvvf6d137PVJun1qnsxKr1gW6";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
@@ -61,7 +58,8 @@ async function TestGetBalance() {
   await setup();
   // create and send PRV
   try {
-    console.log(accountSender.getOTAKey());
+    const key = await accountSender.getDeserializeInformation();
+    console.log("key", key);
     let balance = await accountSender.getBalance();
     console.log("balance: ", balance.toString());
   } catch (e) {
@@ -609,12 +607,12 @@ async function MainRoutine() {
   // sequential execution of tests; the wait might still be too short
   try {
     // return await ConvertAllToken();
-    return await TestGetBalance();
-    let txh;
-    txh = await TestCustomTradeRequest(null, tokenID, 10000, 800);
-    console.log(txh);
-    return;
     // return await TestGetBalance();
+    // let txh;
+    // txh = await TestCustomTradeRequest(null, tokenID, 10000, 800);
+    // console.log(txh);
+    // return;
+    return await TestGetBalance();
     // return await TestCreateAndSendNativeToken();
     // await TestCreateAndSendPrivacyTokenTransfer();
     // await GetUnspentCoinV1();
