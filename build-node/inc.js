@@ -132,9 +132,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkEncode", function() { return checkEncode; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkDecode", function() { return checkDecode; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkSumFirst4Bytes", function() { return checkSumFirst4Bytes; });
-/* harmony import */ var safe_buffer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! safe-buffer */ "./node_modules/safe-buffer/index.js");
-/* harmony import */ var safe_buffer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(safe_buffer__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../privacy/utils */ "./lib/privacy/utils.js");
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var safe_buffer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! safe-buffer */ "./node_modules/safe-buffer/index.js");
+/* harmony import */ var safe_buffer__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(safe_buffer__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../privacy/utils */ "./lib/privacy/utils.js");
+
 
 
 var alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
@@ -147,7 +149,7 @@ var iFACTOR = Math.log(256) / Math.log(base);
 b58_map = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 1, 2, 3, 4, 5, 6, 7, 8, 255, 255, 255, 255, 255, 255, 255, 9, 10, 11, 12, 13, 14, 15, 16, 255, 17, 18, 19, 20, 21, 255, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 255, 255, 255, 255, 255, 255, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 255, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255];
 
 function encode(source) {
-  if (!safe_buffer__WEBPACK_IMPORTED_MODULE_0__["Buffer"].isBuffer(source)) throw new TypeError("Expected Buffer");
+  if (!safe_buffer__WEBPACK_IMPORTED_MODULE_1__["Buffer"].isBuffer(source)) throw new TypeError("Expected Buffer");
   if (source.length === 0) return ""; // Skip & count leading zeroes.
 
   var zeroes = 0;
@@ -226,7 +228,7 @@ Object.defineProperty(Array.prototype, "equals", {
 
 function decodeUnsafe(source) {
   if (typeof source !== "string") throw new TypeError("Expected String");
-  if (source.length === 0) return safe_buffer__WEBPACK_IMPORTED_MODULE_0__["Buffer"].alloc(0);
+  if (source.length === 0) return safe_buffer__WEBPACK_IMPORTED_MODULE_1__["Buffer"].alloc(0);
   var psz = 0; // Skip leading spaces.
 
   if (source[psz] === " ") return; // Skip and count leading '1's.
@@ -271,7 +273,7 @@ function decodeUnsafe(source) {
     it++;
   }
 
-  var vch = safe_buffer__WEBPACK_IMPORTED_MODULE_0__["Buffer"].allocUnsafe(zeroes + (size - it));
+  var vch = safe_buffer__WEBPACK_IMPORTED_MODULE_1__["Buffer"].allocUnsafe(zeroes + (size - it));
   vch.fill(0x00, 0, zeroes);
   var j = zeroes;
 
@@ -291,6 +293,9 @@ function decode(string) {
 function checkEncode(bytearrays) {
   var version = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
   var useLegacyEncoding = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("bytearrays", bytearrays).required();
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("version", version).required().number();
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("useLegacyEncoding", useLegacyEncoding).required()["boolean"]();
   var res = new Uint8Array(bytearrays.length + 5);
 
   if (!(Number(version) === version) || !(Number(version) < 256) || !(Number(version) >= 0)) {
@@ -300,7 +305,7 @@ function checkEncode(bytearrays) {
   res[0] = version;
   res.set(bytearrays, 1);
   res.set(checkSumFirst4Bytes(res.slice(0, 1 + bytearrays.length), useLegacyEncoding), 1 + bytearrays.length);
-  return encode(safe_buffer__WEBPACK_IMPORTED_MODULE_0__["Buffer"].from(res));
+  return encode(safe_buffer__WEBPACK_IMPORTED_MODULE_1__["Buffer"].from(res));
 }
 
 function checkDecode(string) {
@@ -324,13 +329,15 @@ function checkDecode(string) {
 }
 
 function checkSumFirst4Bytes(data) {
-  var useLegacyEncoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var useLegacyEncoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("data", data).required();
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("useLegacyEncoding", useLegacyEncoding)["boolean"]();
   var res;
 
   if (useLegacyEncoding) {
-    res = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["hashSha3BytesToBytes"])(data);
+    res = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["hashSha3BytesToBytes"])(data);
   } else {
-    res = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["sha256"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["sha256"])(data));
+    res = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["sha256"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_2__["sha256"])(data));
   }
 
   res = res.slice(0, 4);
@@ -1607,6 +1614,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../privacy/utils */ "./lib/privacy/utils.js");
 /* harmony import */ var hdkey__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! hdkey */ "./node_modules/hdkey/lib/hdkey.js");
 /* harmony import */ var hdkey__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(hdkey__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -1616,6 +1624,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -1680,7 +1689,6 @@ var KeyWallet = /*#__PURE__*/function () {
   }, {
     key: "serialize",
     value: function serialize(keyType) {
-      var useLegacyEncoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       // Write fields to buffer in order
       var keyBytes;
 
@@ -1747,7 +1755,7 @@ var KeyWallet = /*#__PURE__*/function () {
       } // Append key bytes to the standard sha3 checksum
 
 
-      var checksum = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(keyBytes, useLegacyEncoding);
+      var checksum = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(keyBytes);
       var res = new Uint8Array(keyBytes.length + 4);
       res.set(keyBytes, 0);
       res.set(checksum, keyBytes.length);
@@ -1756,10 +1764,9 @@ var KeyWallet = /*#__PURE__*/function () {
   }, {
     key: "base58CheckSerialize",
     value: function base58CheckSerialize(keyType) {
-      var useLegacyEncoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var serializedKey = this.serialize(keyType, useLegacyEncoding); // do not use legacy encoding
+      var serializedKey = this.serialize(keyType); // do not use legacy encoding
 
-      return Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(serializedKey, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"], useLegacyEncoding);
+      return Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(serializedKey, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"]);
     }
   }, {
     key: "hexSerialize",
@@ -1775,8 +1782,7 @@ var KeyWallet = /*#__PURE__*/function () {
   }, {
     key: "getPublicKeyCheckEncode",
     value: function getPublicKeyCheckEncode() {
-      var useLegacyEncoding = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      return Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(this.KeySet.PaymentAddress.Pk, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"], useLegacyEncoding);
+      return Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(this.KeySet.PaymentAddress.Pk, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"]);
     }
   }, {
     key: "getMiningSeedKey",
@@ -1866,7 +1872,7 @@ var KeyWallet = /*#__PURE__*/function () {
   }, {
     key: "base58CheckDeserialize",
     value: function base58CheckDeserialize(str) {
-      var useLegacyEncoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("str", str).required().string();
       var bytes;
 
       try {
@@ -1875,23 +1881,20 @@ var KeyWallet = /*#__PURE__*/function () {
         throw e;
       }
 
-      return KeyWallet.deserialize(bytes, useLegacyEncoding);
+      return KeyWallet.deserialize(bytes);
     }
   }, {
     key: "getKeySetFromPrivateKeyStr",
     value: function () {
       var _getKeySetFromPrivateKeyStr = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(privateKeyStr) {
-        var useLegacyEncoding,
-            kw,
-            paymentAddressStr,
-            _args3 = arguments;
+        var kw, paymentAddressStr;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                useLegacyEncoding = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : false;
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("privateKeyStr", privateKeyStr).required().string();
                 _context3.prev = 1;
-                kw = KeyWallet.base58CheckDeserialize(privateKeyStr, useLegacyEncoding);
+                kw = KeyWallet.base58CheckDeserialize(privateKeyStr);
                 _context3.next = 8;
                 break;
 
@@ -1905,7 +1908,7 @@ var KeyWallet = /*#__PURE__*/function () {
                 return kw.KeySet.importFromPrivateKey(kw.KeySet.PrivateKey);
 
               case 10:
-                paymentAddressStr = kw.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"], useLegacyEncoding);
+                paymentAddressStr = kw.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"]);
                 return _context3.abrupt("return", {
                   PaymentAddress: paymentAddressStr,
                   ShardID: Object(_common_common__WEBPACK_IMPORTED_MODULE_3__["getShardIDFromLastByte"])(kw.KeySet.PaymentAddress.Pk[kw.KeySet.PaymentAddress.Pk.length - 1])
@@ -3568,7 +3571,8 @@ var Account = /*#__PURE__*/function () {
   }, {
     key: "getKeyStorageByTokenId",
     value: function getKeyStorageByTokenId(tokenId) {
-      var readonlyKey = this.getReadonlyKey();
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
+      var readonlyKey = this.getOTAKey();
       var prefix = this.getPrefixKeyStorage();
       return "".concat(prefix).concat(readonlyKey, "-").concat(this.name, "-").concat(tokenId);
     }
@@ -3672,7 +3676,7 @@ var Account = /*#__PURE__*/function () {
                 _context6.prev = 1;
 
                 if (!this.storage) {
-                  _context6.next = 10;
+                  _context6.next = 14;
                   break;
                 }
 
@@ -3682,25 +3686,29 @@ var Account = /*#__PURE__*/function () {
 
               case 6:
                 oldListUnspentCoins = _context6.sent;
-                listUnspentCoins = !oldListUnspentCoins || oldListUnspentCoins.length === 0 ? value : lodash_uniqBy__WEBPACK_IMPORTED_MODULE_3___default()([].concat(_toConsumableArray(oldListUnspentCoins), _toConsumableArray(value)), "SNDerivator");
-                _context6.next = 10;
+                console.log("LIST UNSPENT COINS CHANGE");
+                console.log("oldListUnspentCoins", oldListUnspentCoins.length);
+                listUnspentCoins = !oldListUnspentCoins || oldListUnspentCoins.length === 0 ? value : lodash_uniqBy__WEBPACK_IMPORTED_MODULE_3___default()([].concat(_toConsumableArray(oldListUnspentCoins), _toConsumableArray(value)), "KeyImage");
+                console.log("listUnspentCoins", listUnspentCoins.length);
+                console.log("LIST UNSPENT COINS CHANGE");
+                _context6.next = 14;
                 return this.setAccountStorage(key, listUnspentCoins);
 
-              case 10:
-                _context6.next = 15;
+              case 14:
+                _context6.next = 19;
                 break;
 
-              case 12:
-                _context6.prev = 12;
+              case 16:
+                _context6.prev = 16;
                 _context6.t0 = _context6["catch"](1);
                 throw _context6.t0;
 
-              case 15:
+              case 19:
               case "end":
                 return _context6.stop();
             }
           }
-        }, _callee6, this, [[1, 12]]);
+        }, _callee6, this, [[1, 16]]);
       }));
 
       function setListUnspentCoinsStorage(_x7) {
@@ -3719,35 +3727,36 @@ var Account = /*#__PURE__*/function () {
             switch (_context7.prev = _context7.next) {
               case 0:
                 _context7.prev = 0;
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenId", tokenId).required().string();
 
                 if (!this.storage) {
-                  _context7.next = 7;
+                  _context7.next = 8;
                   break;
                 }
 
                 key = this.getKeyTotalCoinsStorageByTokenId(tokenId);
-                _context7.next = 5;
+                _context7.next = 6;
                 return this.getAccountStorage(key);
 
-              case 5:
+              case 6:
                 total = _context7.sent;
                 return _context7.abrupt("return", total || 0);
 
-              case 7:
-                _context7.next = 12;
+              case 8:
+                _context7.next = 13;
                 break;
 
-              case 9:
-                _context7.prev = 9;
+              case 10:
+                _context7.prev = 10;
                 _context7.t0 = _context7["catch"](0);
                 throw _context7.t0;
 
-              case 12:
+              case 13:
               case "end":
                 return _context7.stop();
             }
           }
-        }, _callee7, this, [[0, 9]]);
+        }, _callee7, this, [[0, 10]]);
       }));
 
       function getTotalCoinsStorage(_x8) {
@@ -4255,7 +4264,7 @@ var Account = /*#__PURE__*/function () {
               case 6:
                 oldListUnspentCoins = _context17.sent;
                 newListSpentCoins = (oldListUnspentCoins === null || oldListUnspentCoins === void 0 ? void 0 : oldListUnspentCoins.length) === 0 ? _toConsumableArray(spentCoins) : lodash_uniqBy__WEBPACK_IMPORTED_MODULE_3___default()([].concat(_toConsumableArray(oldListUnspentCoins), _toConsumableArray(spentCoins)), function (item) {
-                  return item === null || item === void 0 ? void 0 : item.SNDerivator;
+                  return item === null || item === void 0 ? void 0 : item.KeyImage;
                 });
                 _context17.next = 10;
                 return this.setAccountStorage(keyStorage, newListSpentCoins);
@@ -5578,7 +5587,8 @@ var Account = /*#__PURE__*/function () {
                   PublicKeyCheckEncode: this.key.getPublicKeyCheckEncode(),
                   ValidatorKey: Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_6__["checkEncode"])(miningSeedKey, _lib_common_constants__WEBPACK_IMPORTED_MODULE_8__["ENCODE_VERSION"]),
                   BLSPublicKey: blsPublicKey,
-                  PublicKeyBytes: this.key.KeySet.PaymentAddress.Pk.toString()
+                  PublicKeyBytes: this.key.KeySet.PaymentAddress.Pk.toString(),
+                  OTAKey: this.getOTAKey()
                 };
                 deserializedAccounts[privateKey] = information;
                 return _context25.abrupt("return", information);
@@ -5846,7 +5856,7 @@ var Account = /*#__PURE__*/function () {
                 listOutputsCoins = _context27.sent;
 
               case 19:
-                listOutputsCoins = lodash_uniqBy__WEBPACK_IMPORTED_MODULE_3___default()(listOutputsCoins, "SNDerivator");
+                listOutputsCoins = lodash_uniqBy__WEBPACK_IMPORTED_MODULE_3___default()(listOutputsCoins, "KeyImage");
                 return _context27.abrupt("return", listOutputsCoins);
 
               case 23:
@@ -6481,25 +6491,26 @@ var Account = /*#__PURE__*/function () {
             switch (_context38.prev = _context38.next) {
               case 0:
                 _context38.prev = 0;
-                _context38.next = 3;
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenId", tokenId).required().string();
+                _context38.next = 4;
                 return this.getTotalCoinsStorage(tokenId);
 
-              case 3:
+              case 4:
                 total = _context38.sent;
                 this.coinsStorage.checkStatusListUnspentCoinsFromStorage.oldTotalFromKeyInfo = total;
 
                 if (!(total === 0)) {
-                  _context38.next = 7;
+                  _context38.next = 8;
                   break;
                 }
 
                 return _context38.abrupt("return");
 
-              case 7:
-                _context38.next = 9;
+              case 8:
+                _context38.next = 10;
                 return this.getListUnspentCoinsStorage(tokenId);
 
-              case 9:
+              case 10:
                 coins = _context38.sent;
                 this.coinsStorage.checkStatusListUnspentCoinsFromStorage.oldTotalListUnspentCoinsSize = coins.length;
                 keyImages = this.getKeyImagesBase64Encode({
@@ -6507,18 +6518,18 @@ var Account = /*#__PURE__*/function () {
                 });
 
                 if (!(keyImages.length !== 0)) {
-                  _context38.next = 26;
+                  _context38.next = 28;
                   break;
                 }
 
                 shardId = this.getShardId();
-                _context38.next = 16;
+                _context38.next = 17;
                 return this.measureAsyncFn(this.rpcCoinService.apiCheckKeyImages, "timeCheckStatusListUnspentCoinsFromLocal.timeCheckKeyImages", {
                   keyImages: keyImages,
                   shardId: shardId
                 }, this.rpcCoinService);
 
-              case 16:
+              case 17:
                 keyImagesStatus = _context38.sent;
                 unspentCoins = coins === null || coins === void 0 ? void 0 : coins.filter(function (coin, index) {
                   return !keyImagesStatus[index];
@@ -6526,37 +6537,38 @@ var Account = /*#__PURE__*/function () {
                 spentCoins = coins === null || coins === void 0 ? void 0 : coins.filter(function (coin, index) {
                   return keyImagesStatus[index];
                 });
+                console.log("unspentCoins", unspentCoins.length, "spentCoins", spentCoins.length);
                 this.coinsStorage.checkStatusListUnspentCoinsFromStorage.sizeListSNStatus = keyImagesStatus.length;
                 this.coinsStorage.checkStatusListUnspentCoinsFromStorage.spentSize = spentCoins.length;
                 this.coinsStorage.checkStatusListUnspentCoinsFromStorage.unspentSize = unspentCoins.length;
-                _context38.next = 24;
+                _context38.next = 26;
                 return this.measureAsyncFn(this.updateListUnspentCoinsStorage, "timeCheckStatusListUnspentCoinsFromLocal.timeUpdateListUnspentCoinsFromLocal", {
                   listUnspentCoins: unspentCoins,
                   tokenId: tokenId
                 });
 
-              case 24:
-                _context38.next = 26;
+              case 26:
+                _context38.next = 28;
                 return this.measureAsyncFn(this.storeListSpentCoins, "timeCheckStatusListUnspentCoinsFromLocal.timeStoreListSpentCoins", {
                   spentCoins: spentCoins,
                   tokenId: tokenId
                 });
 
-              case 26:
-                _context38.next = 31;
+              case 28:
+                _context38.next = 33;
                 break;
 
-              case 28:
-                _context38.prev = 28;
+              case 30:
+                _context38.prev = 30;
                 _context38.t0 = _context38["catch"](0);
                 throw _context38.t0;
 
-              case 31:
+              case 33:
               case "end":
                 return _context38.stop();
             }
           }
-        }, _callee38, this, [[0, 28]]);
+        }, _callee38, this, [[0, 30]]);
       }));
 
       function checkStatusListUnspentCoinsStorage(_x51) {
@@ -6937,7 +6949,8 @@ var Account = /*#__PURE__*/function () {
                     },
                     timeSetListUnspentCoinsStorage: 0,
                     timeSetTotalCoinsStorage: 0,
-                    totalTimeGetUnspentCoins: 0
+                    totalTimeGetUnspentCoins: 0,
+                    tokenId: tokenId
                   };
                 }
 
@@ -16099,7 +16112,9 @@ var Wallet = /*#__PURE__*/function () {
     key: "getCreatedAccounts",
     value: function () {
       var _getCreatedAccounts = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-        var deserialize,
+        var _ref,
+            _ref$deserialize,
+            deserialize,
             createdAccounts,
             _iterator,
             _step,
@@ -16119,25 +16134,26 @@ var Wallet = /*#__PURE__*/function () {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                deserialize = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : true;
+                _ref = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : {}, _ref$deserialize = _ref.deserialize, deserialize = _ref$deserialize === void 0 ? true : _ref$deserialize;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("deserialize", deserialize)["boolean"]();
                 createdAccounts = [];
                 _iterator = _createForOfIteratorHelper(this.MasterAccount.child);
-                _context5.prev = 3;
+                _context5.prev = 4;
 
                 _iterator.s();
 
-              case 5:
+              case 6:
                 if ((_step = _iterator.n()).done) {
-                  _context5.next = 16;
+                  _context5.next = 17;
                   break;
                 }
 
                 _account = _step.value;
                 id = Object(_common_common__WEBPACK_IMPORTED_MODULE_10__["getChildIdFromChildNumberArray"])(_account.key.ChildNumber);
-                _context5.next = 10;
+                _context5.next = 11;
                 return this.createAccountWithId(id);
 
-              case 10:
+              case 11:
                 newAccount = _context5.sent;
                 newPrivateKey = newAccount.key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_7__["PriKeyType"]);
                 oldPrivateKey = _account.key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_7__["PriKeyType"]);
@@ -16146,86 +16162,86 @@ var Wallet = /*#__PURE__*/function () {
                   createdAccounts.push(_account);
                 }
 
-              case 14:
-                _context5.next = 5;
+              case 15:
+                _context5.next = 6;
                 break;
 
-              case 16:
-                _context5.next = 21;
+              case 17:
+                _context5.next = 22;
                 break;
 
-              case 18:
-                _context5.prev = 18;
-                _context5.t0 = _context5["catch"](3);
+              case 19:
+                _context5.prev = 19;
+                _context5.t0 = _context5["catch"](4);
 
                 _iterator.e(_context5.t0);
 
-              case 21:
-                _context5.prev = 21;
+              case 22:
+                _context5.prev = 22;
 
                 _iterator.f();
 
-                return _context5.finish(21);
+                return _context5.finish(22);
 
-              case 24:
+              case 25:
                 if (!deserialize) {
-                  _context5.next = 46;
+                  _context5.next = 47;
                   break;
                 }
 
                 deserializeCreatedAccounts = [];
                 _iterator2 = _createForOfIteratorHelper(createdAccounts);
-                _context5.prev = 27;
+                _context5.prev = 28;
 
                 _iterator2.s();
 
-              case 29:
+              case 30:
                 if ((_step2 = _iterator2.n()).done) {
-                  _context5.next = 37;
+                  _context5.next = 38;
                   break;
                 }
 
                 account = _step2.value;
-                _context5.next = 33;
+                _context5.next = 34;
                 return account.getDeserializeInformation();
 
-              case 33:
+              case 34:
                 info = _context5.sent;
                 deserializeCreatedAccounts.push(info);
 
-              case 35:
-                _context5.next = 29;
+              case 36:
+                _context5.next = 30;
                 break;
 
-              case 37:
-                _context5.next = 42;
+              case 38:
+                _context5.next = 43;
                 break;
 
-              case 39:
-                _context5.prev = 39;
-                _context5.t1 = _context5["catch"](27);
+              case 40:
+                _context5.prev = 40;
+                _context5.t1 = _context5["catch"](28);
 
                 _iterator2.e(_context5.t1);
 
-              case 42:
-                _context5.prev = 42;
+              case 43:
+                _context5.prev = 43;
 
                 _iterator2.f();
 
-                return _context5.finish(42);
-
-              case 45:
-                createdAccounts = deserializeCreatedAccounts;
+                return _context5.finish(43);
 
               case 46:
-                return _context5.abrupt("return", createdAccounts);
+                createdAccounts = deserializeCreatedAccounts;
 
               case 47:
+                return _context5.abrupt("return", createdAccounts);
+
+              case 48:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, this, [[3, 18, 21, 24], [27, 39, 42, 45]]);
+        }, _callee5, this, [[4, 19, 22, 25], [28, 40, 43, 46]]);
       }));
 
       function getCreatedAccounts() {
@@ -17259,21 +17275,6 @@ var Wallet = /*#__PURE__*/function () {
         throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_16__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_16__["ErrorObject"].DeleteWalletErr, e.message || "Can not remove item in storage");
       }
     }
-  }, {
-    key: "setProvider",
-    value: function setProvider(url, user, password) {
-      Wallet.RpcClient = new _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_4__["RpcClient"](url, user, password);
-    }
-  }, {
-    key: "setRpcHTTPCoinServiceClient",
-    value: function setRpcHTTPCoinServiceClient(url) {
-      Wallet.RpcCoinService = new _rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_21__["RpcHTTPCoinServiceClient"](url);
-    }
-  }, {
-    key: "setPrivacyVersion",
-    value: function setPrivacyVersion(version) {
-      Wallet.PrivacyVersion = version;
-    }
   }], [{
     key: "setPrivacyUtilRandomBytesFunc",
     value: function setPrivacyUtilRandomBytesFunc(randomBytesFunc) {
@@ -17291,56 +17292,17 @@ var Wallet = /*#__PURE__*/function () {
   return Wallet;
 }();
 
-_defineProperty(Wallet, "RpcClient", void 0);
-
 _defineProperty(Wallet, "RandomBytesFunc", null);
 
-_defineProperty(Wallet, "ProgressTx", 0);
-
-_defineProperty(Wallet, "updateProgressTx", /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee26(progress) {
-    return regeneratorRuntime.wrap(function _callee26$(_context26) {
-      while (1) {
-        switch (_context26.prev = _context26.next) {
-          case 0:
-            Wallet.ProgressTx = progress;
-            _context26.next = 3;
-            return Wallet.sleep(100);
-
-          case 3:
-          case "end":
-            return _context26.stop();
-        }
-      }
-    }, _callee26);
-  }));
-
-  return function (_x32) {
-    return _ref.apply(this, arguments);
-  };
-}());
-
-_defineProperty(Wallet, "resetProgressTx", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee27() {
-  return regeneratorRuntime.wrap(function _callee27$(_context27) {
-    while (1) {
-      switch (_context27.prev = _context27.next) {
-        case 0:
-          _context27.next = 2;
-          return Wallet.updateProgressTx(0);
-
-        case 2:
-        case "end":
-          return _context27.stop();
-      }
-    }
-  }, _callee27);
-})));
+_defineProperty(Wallet, "RpcClient", void 0);
 
 _defineProperty(Wallet, "Debug", "");
 
 _defineProperty(Wallet, "RpcCoinService", void 0);
 
 _defineProperty(Wallet, "PrivacyVersion", _core_constants__WEBPACK_IMPORTED_MODULE_22__["PrivacyVersion"].ver2);
+
+_defineProperty(Wallet, "UseLegacyEncoding", true);
 
 var DefaultStorage = /*#__PURE__*/function () {
   function DefaultStorage() {
