@@ -1,3 +1,4 @@
+const esArrayIterator = require("core-js/modules/es.array.iterator");
 const {
   Wallet,
   Account: AccountWallet,
@@ -46,6 +47,7 @@ async function setup() {
   accountSender.setPrivacyVersion(privacyVersion);
   accountSender.setRPCClient(rpcClient);
   await accountSender.setKey(senderPrivateKeyStr);
+  console.log(accountSender.getOTAKey())
   senderPaymentAddressStr =
     accountSender.key.base58CheckSerialize(PaymentAddressType);
   // await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
@@ -89,15 +91,14 @@ async function TestGetRewardAmount() {
 }
 async function TestCreateAndSendRewardAmountTx() {
   await setup();
-
-  let fee = 10;
+  let fee = 100;
   let response;
   try {
     response = await accountSender.createAndSendWithdrawRewardTx({
       transfer: { fee },
     });
     console.log("Response createAndSendWithdrawRewardTx: ", response);
-    return response.Response.txId;
+    return response.txId;
   } catch (e) {
     console.log(e);
     throw e;
@@ -143,7 +144,7 @@ async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 100;
   let info = "INFOFO";
-  let amountTransfer = 1e9; // in nano PRV
+  let amountTransfer = 100; // in nano PRV
   console.log("Will Transfer: ", amountTransfer);
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -157,8 +158,8 @@ async function TestCreateAndSendNativeToken() {
       transfer: { prvPayments: paymentInfosParam, fee, info },
       extra: { isEncryptMessage: true, txType: 0 },
     });
-    console.log("Send tx succesfully with TxID: ", res.Response.txId);
-    return res.Response.txId;
+    console.log("Send tx succesfully with TxID: ", res.response.txId);
+    return res;
   } catch (e) {
     console.log("Error when send PRV: ", e);
     throw e;
@@ -290,27 +291,28 @@ async function TestCreateAndSendPrivacyTokenInit() {
 async function TestCreateAndSendPrivacyTokenTransfer() {
   await setup();
   let paymentInfos = [];
-  let amountTransfer = 69;
   // prepare token param for tx custom token init
   let tokenPaymentInfo = [
     {
-      PaymentAddress: receiverPaymentAddrStr,
-      Amount: amountTransfer,
-      Message: "Transfer ptoken",
+      PaymentAddress:
+        "12srF3RdAc5f93XbxY1YPLgVhKEYqKnQFhYDkpWxSLtcX9eeQxv8mW2MddEYaTVDprkeMChRmqGU8cuevozm4XY5HuaaEdjkEFvGChHSJjTQJL8syraSGAtKi8QVXipT7p5JhnCvJYPhbF6jQknz",
+      Amount: 100,
+      Message: "Transfer 100 nano ptoken",
     },
   ];
-  let feePRV = 10;
+  let feePRV = 100;
   let hasPrivacy = true;
   await accountSender.resetProgressTx();
   try {
     let res = await accountSender.createAndSendPrivacyToken({
       transfer: {
-        tokenID,
-        prvPayments: paymentInfos,
+        tokenID:
+          "f89631735938d5fb762017538279cb78f2831b1aa668e87b3c69d33403a9f785",
         tokenPayments: tokenPaymentInfo,
         fee: feePRV,
         info: "SOME INFO WHEN TRANSFERRING TOKEN",
       },
+      extra: { txType: 0 },
     });
     console.log("Send tx succesfully with TxID: ", res);
     return res.Response.txId;
@@ -359,56 +361,27 @@ async function TestMultipleSendPrivacyToken() {
   }
 }
 async function TestCreateAndSendStakingTx() {
-  await setup();
-
-  let param = {
-    type: 0,
-  };
-  let fee = 30;
-  let candidatePaymentAddress = senderPaymentAddressStr;
-  // let candidateMiningSeedKey = "12VH5z8JCn9B8SyHvB3aYP4ZGr1Wf9Rywx2ZSBe3eQneADzJ3bL";
-  let rewardReceiverPaymentAddress = senderPaymentAddressStr;
-  let autoReStaking = true;
-
-  let candidateMiningSeedKey = checkEncode(
-    accountSender.key.getMiningSeedKey(),
-    ENCODE_VERSION
-  );
-
-  // create and send staking tx
+  let fee = 100;
   try {
     let response = await accountSender.createAndSendStakingTx({
       transfer: { fee },
-      extra: {
-        candidatePaymentAddress,
-        candidateMiningSeedKey,
-        rewardReceiverPaymentAddress,
-        autoReStaking,
-        stakingType: param.type,
-      },
     });
-    return response.Response.txId;
+    console.log(response);
+    return response.response.txId;
   } catch (e) {
     console.log("Error when staking: ", e);
     throw e;
   }
 }
 async function TestCreateAndSendStopAutoStakingTx() {
-  await setup();
-  let fee = 5;
-  let candidatePaymentAddress = senderPaymentAddressStr;
-  let candidateMiningSeedKey = checkEncode(
-    accountSender.key.getMiningSeedKey(),
-    ENCODE_VERSION
-  );
-
   // create and send staking tx
   try {
     let response = await accountSender.createAndSendStopAutoStakingTx({
-      transfer: { fee },
-      extra: { candidatePaymentAddress, candidateMiningSeedKey },
+      transfer: { fee: 100 },
+      extra: {},
     });
-    return response.Response.txId;
+    console.log("res", response);
+    return response.txId;
   } catch (e) {
     console.log("Error when staking: ", e);
     throw e;
@@ -605,16 +578,26 @@ async function ConvertAllToken() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   // sequential execution of tests; the wait might still be too short
+  await setup();
   try {
+    await TestCreateAndSendRewardAmountTx();
     // return await ConvertAllToken();
     // return await TestGetBalance();
     // let txh;
     // txh = await TestCustomTradeRequest(null, tokenID, 10000, 800);
     // console.log(txh);
     // return;
-    return await TestGetBalance();
-    // return await TestCreateAndSendNativeToken();
-    // await TestCreateAndSendPrivacyTokenTransfer();
+    // return await TestGetBalance();
+    //  await TestCreateAndSendNativeToken();
+    //  await TestCreateAndSendNativeToken();
+    //  await TestCreateAndSendNativeToken();
+    // await setup();
+    // const result = await accountSender.getPDeState();
+    // console.log("result", result);
+    // return;
+    // await TestCreateAndSendStakingTx();
+    return;
+    return await TestCreateAndSendPrivacyTokenTransfer();
     // await GetUnspentCoinV1();
     // await TestCreateAndSendConvertTx();
     await TestGetAllPrivacyTokenBalance();
