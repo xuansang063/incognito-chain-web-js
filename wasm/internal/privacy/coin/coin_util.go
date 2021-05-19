@@ -1,13 +1,15 @@
 package coin
 
 import (
+	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"incognito-chain/common"
 	"incognito-chain/common/base58"
+	"incognito-chain/key/wallet"
 	"incognito-chain/privacy/key"
 	"incognito-chain/privacy/operation"
-	"incognito-chain/key/wallet"
 )
 
 const (
@@ -104,11 +106,6 @@ func CreatePaymentInfosFromPlainCoinsAndAddress(c []PlainCoin, paymentAddress ke
 	return paymentInfos
 }
 
-func NewCoinFromAmountAndReceiver(amount uint64, receiver key.PaymentAddress) (*CoinV2, error) {
-	paymentInfo := key.InitPaymentInfo(receiver, amount, []byte{})
-	return NewCoinFromPaymentInfo(paymentInfo)
-}
-
 func NewCoinFromAmountAndTxRandomBytes(amount uint64, publicKey *operation.Point, txRandom *TxRandom, info []byte) *CoinV2 {
 	c := new(CoinV2).Init()
 	c.SetPublicKey(publicKey)
@@ -121,11 +118,42 @@ func NewCoinFromAmountAndTxRandomBytes(amount uint64, publicKey *operation.Point
 	return c
 }
 
-func NewCoinFromPaymentInfo(info *key.PaymentInfo) (*CoinV2, error) {
+type SenderSeal struct {
+	r             operation.Scalar
+	txRandomIndex uint32
+}
+
+func (s SenderSeal) GetR() *operation.Scalar { return &s.r }
+func (s SenderSeal) GetIndex() uint32       { return s.txRandomIndex }
+func (s SenderSeal) MarshalJSON() ([]byte, error) {
+	var res []byte = append(s.r.ToBytesS(), common.Uint32ToBytes(s.txRandomIndex)...)
+	return json.Marshal(hex.EncodeToString(res))
+}
+func (s *SenderSeal) UnmarshalJSON(src []byte) error {
+	var temp string
+	json.Unmarshal(src, &temp)
+	raw, err := hex.DecodeString(temp)
+	if err != nil {
+		return err
+	}
+	if len(raw) == operation.Ed25519KeySize+4 {
+		sc := &operation.Scalar{}
+		sc.FromBytesS(raw[:operation.Ed25519KeySize])
+		ind, _ := common.BytesToUint32(raw[operation.Ed25519KeySize:])
+		*s = SenderSeal{
+			r:             *sc,
+			txRandomIndex: ind,
+		}
+		return nil
+	}
+	return errors.New("Error unmarshalling sender seal : unexpected length")
+}
+
+func NewCoinFromPaymentInfo(info *key.PaymentInfo) (*CoinV2, *SenderSeal, error) {
 	receiverPublicKey, err := new(operation.Point).FromBytesS(info.PaymentAddress.Pk)
 	if err != nil {
 		errStr := fmt.Sprintf("Cannot parse outputCoinV2 from PaymentInfo when parseByte PublicKey, error %v ", err)
-		return nil, errors.New(errStr)
+		return nil, nil, errors.New(errStr)
 	}
 	receiverPublicKeyBytes := receiverPublicKey.ToBytesS()
 	targetShardID := common.GetShardIDFromLastByte(receiverPublicKeyBytes[len(receiverPublicKeyBytes)-1])
@@ -134,7 +162,7 @@ func NewCoinFromPaymentInfo(info *key.PaymentInfo) (*CoinV2, error) {
 	// Amount, Randomness, SharedRandom are transparency until we call concealData
 	c.SetAmount(new(operation.Scalar).FromUint64(info.Amount))
 	c.SetRandomness(operation.RandomScalar())
-	c.SetSharedRandom(operation.RandomScalar()) // shared randomness for creating one-time-address
+	c.SetSharedRandom(operation.RandomScalar())        // shared randomness for creating one-time-address
 	c.SetSharedConcealRandom(operation.RandomScalar()) //shared randomness for concealing amount and blinding asset tag
 	c.SetInfo(info.Message)
 	c.SetCommitment(operation.PedCom.CommitAtIndex(c.GetAmount(), c.GetRandomness(), operation.PedersenValueIndex))
@@ -146,7 +174,7 @@ func NewCoinFromPaymentInfo(info *key.PaymentInfo) (*CoinV2, error) {
 			panic("Something is wrong with info.paymentAddress.pk, burning address should be a valid point")
 		}
 		c.SetPublicKey(publicKey)
-		return c, nil
+		return c, nil, nil
 	}
 
 	// Increase index until have the right shardID
@@ -165,7 +193,7 @@ func NewCoinFromPaymentInfo(info *key.PaymentInfo) (*CoinV2, error) {
 
 		currentShardID, err := c.GetShardID()
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		if currentShardID == targetShardID {
 			otaRandomPoint := new(operation.Point).ScalarMultBase(c.GetSharedRandom())
@@ -174,7 +202,11 @@ func NewCoinFromPaymentInfo(info *key.PaymentInfo) (*CoinV2, error) {
 			break
 		}
 	}
-	return c, nil
+	seal := SenderSeal{
+		r:             *c.GetSharedRandom(),
+		txRandomIndex: index,
+	}
+	return c, &seal, nil
 }
 
 func CoinV2ArrayToCoinArray(coinArray []*CoinV2) []Coin {
@@ -185,31 +217,22 @@ func CoinV2ArrayToCoinArray(coinArray []*CoinV2) []Coin {
 	return res
 }
 
-func NewOTAFromReceiver( receiver key.PaymentAddress) (*operation.Point, *TxRandom, error) {
-	paymentInfo := key.InitPaymentInfo(receiver, 0, []byte{})
-	coin, err := NewCoinFromPaymentInfo(paymentInfo)
-	if err != nil {
-		return nil, nil, err
-	}
-	return coin.GetPublicKey(), coin.txRandom, nil
-}
-
 func ParseOTAInfoToString(pubKey *operation.Point, txRandom *TxRandom) (string, string) {
 	return base58.Base58Check{}.Encode(pubKey.ToBytesS(), common.ZeroByte), base58.Base58Check{}.Encode(txRandom.Bytes(), common.ZeroByte)
 }
 
-func ParseOTAInfoFromString (pubKeyStr, txRandomStr string) (*operation.Point, *TxRandom, error) {
+func ParseOTAInfoFromString(pubKeyStr, txRandomStr string) (*operation.Point, *TxRandom, error) {
 	publicKeyB, version, err := base58.Base58Check{}.Decode(pubKeyStr)
-	if err!= nil || version != common.ZeroByte {
+	if err != nil || version != common.ZeroByte {
 		return nil, nil, errors.New("ParseOTAInfoFromString Cannot decode base58check string")
 	}
-	pubKey, err :=  new(operation.Point).FromBytesS(publicKeyB)
+	pubKey, err := new(operation.Point).FromBytesS(publicKeyB)
 	if err != nil {
 		return nil, nil, errors.New("ParseOTAInfoFromString Cannot set Point from bytes")
 	}
 
-	txRandomB, version,  err := base58.Base58Check{}.Decode(txRandomStr)
-	if err != nil || version != common.ZeroByte{
+	txRandomB, version, err := base58.Base58Check{}.Decode(txRandomStr)
+	if err != nil || version != common.ZeroByte {
 		return nil, nil, errors.New("ParseOTAInfoFromString Cannot decode base58check string")
 	}
 	txRandom := new(TxRandom)

@@ -99,6 +99,7 @@ type CoinV1 = coin.CoinV1
 type CoinV2 = coin.CoinV2
 type CoinObject = coin.CoinObject
 type TxRandom = coin.TxRandom
+type SenderSeal = coin.SenderSeal
 
 type Proof = proof.Proof
 // type ProofV1 = zkp.PaymentProof
@@ -171,7 +172,7 @@ func IsScalarEqual(pa *Scalar, pb *Scalar) bool {
 	return operation.IsScalarEqual(pa,pb)
 }
 
-func NewCoinFromPaymentInfo(info *PaymentInfo) (*CoinV2, error) {
+func NewCoinFromPaymentInfo(info *PaymentInfo) (*CoinV2, *SenderSeal, error) {
 	return coin.NewCoinFromPaymentInfo(info)
 }
 
@@ -187,7 +188,7 @@ func ComputeAssetTagBlinder(sharedSecret *Point) (*Scalar,error){
 	return coin.ComputeAssetTagBlinder(sharedSecret)
 }
 
-func NewCoinCA(info *PaymentInfo, tokenID *common.Hash) (*CoinV2, *Point, error){
+func NewCoinCA(info *PaymentInfo, tokenID *common.Hash) (*CoinV2, *Point, *SenderSeal, error){
 	return coin.NewCoinCA(info, tokenID)
 }
 

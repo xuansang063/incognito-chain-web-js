@@ -4,6 +4,7 @@ import (
 	// "syscall/js"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"math"
 	"strconv"
 
@@ -23,6 +24,7 @@ type TxResult struct{
 	B58EncodedTx 	string `json:"b58EncodedTx"`
 	Hash 			string `json:"hash"`
 	Outputs 		[]CoinInter `json:"outputs,omitempty"`
+	SenderSeal 		*privacy.SenderSeal `json:"senderSeal,omitempty"`
 }
 
 func CreateTransaction(args string, num int64) (string, error){
@@ -42,9 +44,10 @@ func CreateTransaction(args string, num int64) (string, error){
 	var txJson []byte
 	var hash *common.Hash
 	var outputs []CoinInter
+	var senderSeal *privacy.SenderSeal
 	if params.TokenParams==nil{			
 		tx := &Tx{}
-		err = tx.InitASM(params, theirTime)
+		senderSeal, err = tx.InitASM(params, theirTime)
 
 		if err != nil {
 			println("Can not create tx: ", err.Error())
@@ -70,7 +73,7 @@ func CreateTransaction(args string, num int64) (string, error){
 		}
 	}else{
 		tx := &TxToken{}
-		err = tx.InitASM(params, theirTime)
+		senderSeal, err = tx.InitASM(params, theirTime)
 
 		if err != nil {
 			println("Can not create tx: ", err.Error())
@@ -106,7 +109,7 @@ func CreateTransaction(args string, num int64) (string, error){
 		}
 	}
 	encodedTx := b58.Encode(txJson, common.ZeroByte)
-	txResult := TxResult{B58EncodedTx: encodedTx, Hash: hash.String(), Outputs: outputs}
+	txResult := TxResult{B58EncodedTx: encodedTx, Hash: hash.String(), Outputs: outputs, SenderSeal: senderSeal}
 	jsonResult, _ := json.Marshal(txResult)
 
 	return string(jsonResult), nil
@@ -261,7 +264,7 @@ func CreateCoin(paramStr string) (string, error){
 	}
 	var c *privacy.CoinV2
 	if len(temp.TokenID)==0{
-		c, err = privacy.NewCoinFromPaymentInfo(pInf)
+		c, _, err = privacy.NewCoinFromPaymentInfo(pInf)
 		if err!=nil{
 			println(err.Error())
 			return "", err
@@ -269,7 +272,7 @@ func CreateCoin(paramStr string) (string, error){
 	}else{
 		var tokenID common.Hash
 		tokenID, _ = getTokenIDFromString(temp.TokenID)
-		c, _, err = privacy.NewCoinCA(pInf, &tokenID)
+		c, _, _, err = privacy.NewCoinCA(pInf, &tokenID)
 		if err!=nil{
 			println(err.Error())
 			return "", err
@@ -482,6 +485,33 @@ func EstimateTxSize(paramStr string) (int64, error){
 	size := estimateTxSizeAsBytes(temp)
 	result := int64(math.Ceil(float64(size) / 1024))
 	return result, nil
+}
+
+// VerifySentTx returns the index of the input coin that matches the r in parameters, or -1 if none
+func VerifySentTx(paramsJson string) (int64, error) {
+	raw := []byte(paramsJson)
+	var holder struct{
+		Tx json.RawMessage
+		SenderSeal privacy.SenderSeal
+		PaymentAddress privacy.PaymentAddress
+	}
+	err := json.Unmarshal(raw, &holder)
+	if err != nil {
+		println(fmt.Sprintf("Error : cannot unmarshal data : %v", err))
+		return -1, err
+	}
+	proof, err := extractTxProof(holder.Tx)
+	if err != nil {
+		println(err)
+		return -1, err
+	}
+	sentTxIndex, err := getSentCoinIndex(proof, holder.SenderSeal, holder.PaymentAddress)
+	return sentTxIndex, nil
+}
+
+// VerifyReceivedTx returns the index of the input coin that matches the OTA secret in parameters, or -1 if none
+func VerifyReceivedTx(paramsJson string) (int64, error) {
+	return -1, nil
 }
 
 // func ComputeTransactionHash(args string) (string, error){

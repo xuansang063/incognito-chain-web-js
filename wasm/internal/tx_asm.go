@@ -648,14 +648,19 @@ func generateMlsagRing(inputCoins []privacy.PlainCoin, inputIndexes []uint64, ou
 	return mlsag.NewRing(ring), indexes, commitmentToZero, nil
 }
 
-func (tx *Tx) proveAsm(params *InitParamsAsm) error {
+func (tx *Tx) proveAsm(params *InitParamsAsm) (*privacy.SenderSeal, error) {
 	var outputCoins []*privacy.CoinV2
 	var pInfos []*privacy.PaymentInfo
+	// currently support returning the 1st SenderSeal only
+	var senderSealToExport *privacy.SenderSeal = nil
 	for _, payInf := range params.PaymentInfo{
 		temp, _ := payInf.To()
-		c, err := privacy.NewCoinFromPaymentInfo(temp)
+		c, seal, err := privacy.NewCoinFromPaymentInfo(temp)
+		if senderSealToExport == nil {
+			senderSealToExport = seal
+		}
 		if err!=nil{
-			return err
+			return nil, err
 		}
 		outputCoins = append(outputCoins, c)
 		pInfos = append(pInfos, temp)
@@ -664,17 +669,17 @@ func (tx *Tx) proveAsm(params *InitParamsAsm) error {
 	var err error
 	tx.Proof, err = privacy.ProveV2(inputCoins, outputCoins, nil, false, pInfos)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if tx.Metadata != nil {
 		if err := tx.Metadata.Sign(&params.SenderSK, tx); err != nil {
-			return err
+			return nil, err
 		}
 	}
 
 	err = tx.sign(inputCoins, inputIndexes, outputCoins, params, tx.Hash()[:])
-	return err
+	return senderSealToExport, err
 }
 
 func (tx *Tx) sign(inp []privacy.PlainCoin, inputIndexes []uint64, out []*privacy.CoinV2, params *InitParamsAsm, hashedMessage []byte) error {
@@ -728,14 +733,14 @@ func (tx *Tx) sign(inp []privacy.PlainCoin, inputIndexes []uint64, out []*privac
 	return err
 }
 
-func (tx *Tx) InitASM(params *InitParamsAsm, theirTime int64) error {
+func (tx *Tx) InitASM(params *InitParamsAsm, theirTime int64) (*privacy.SenderSeal, error) {
 	gParams := params.GetGenericParams()
 	if gParams==nil{
-		return errors.Errorf("Invalid parameters")
+		return nil, errors.Errorf("Invalid parameters")
 	}
 	// Init tx and params (tx and params will be changed)
 	if err := tx.initializeTxAndParams(gParams, &params.PaymentInfo); err != nil {
-		return err
+		return nil, err
 	}
 	if theirTime>0{
 		tx.LockTime = theirTime
@@ -744,11 +749,7 @@ func (tx *Tx) InitASM(params *InitParamsAsm, theirTime int64) error {
 	// 	return err
 	// }
 
-	if err := tx.proveAsm(params); err != nil {
-		return err
-	}
-
-	return nil
+	return tx.proveAsm(params)
 }
 
 func (tx *Tx) initializeTxAndParams(params_compat *TxPrivacyInitParams, paymentsPtr *[]printedPaymentInfo) error {
