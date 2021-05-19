@@ -20,6 +20,7 @@ const { base58CheckEncode: checkEncode } = utils;
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
 const rpcClient = "http://139.162.55.124:8334";
 const rpcCoinService = "http://51.161.119.66:9009"; //dev-test-coin-service
+const rpcTxService = "http://51.161.119.66:8001"; //dev-test-coin-service
 const privacyVersion = 2;
 
 let wallet;
@@ -46,6 +47,7 @@ async function setup() {
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
   accountSender.setRPCClient(rpcClient);
+  accountSender.setRPCTxServices(rpcTxService);
   await accountSender.setKey(senderPrivateKeyStr);
   console.log(accountSender.getOTAKey());
   senderPaymentAddressStr =
@@ -142,7 +144,7 @@ async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 100;
   let info = "INFOFO";
-  let amountTransfer = 100; // in nano PRV
+  let amountTransfer = 69e3; // in nano PRV
   console.log("Will Transfer: ", amountTransfer);
   let paymentInfosParam = [];
   paymentInfosParam[0] = {
@@ -156,7 +158,7 @@ async function TestCreateAndSendNativeToken() {
       transfer: { prvPayments: paymentInfosParam, fee, info },
       extra: { isEncryptMessage: true, txType: 0 },
     });
-    console.log("Send tx succesfully with TxID: ", res.response.txId);
+    console.log("Send tx succesfully with TxID: ", res.txId);
     return res;
   } catch (e) {
     console.log("Error when send PRV: ", e);
@@ -578,6 +580,8 @@ async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   // sequential execution of tests; the wait might still be too short
   try {
+    return await TestCreateAndSendNativeToken();
+
     // return await TestGetBalance();
     // const info = await accountSender.getDeserializeInformation();
     // const result = await accountSender.createAndSendInitTokenTx({
