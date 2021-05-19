@@ -41,7 +41,7 @@ async function setup() {
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rniZP5hk9X3RjCFx9CXyoxmJFcqM6sNM7Yknng6D4jS3vwTxcQ6hPZ3h3mZHx2JDNxfGxmwjiHN3A34gktcMhgXUwh8EXpo7NCxiuxJ";
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
@@ -565,6 +565,7 @@ async function ConvertAllToken() {
   await setup();
   try {
     accountSender.useCoinsService = true;
+    accountSender.setPrivacyVersion(1);
     await accountSender.convertAllToken();
   } catch (e) {
     throw e;
@@ -576,7 +577,6 @@ async function ConvertAllToken() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   // sequential execution of tests; the wait might still be too short
-  await setup();
   try {
     // return await TestGetBalance();
     // const info = await accountSender.getDeserializeInformation();
