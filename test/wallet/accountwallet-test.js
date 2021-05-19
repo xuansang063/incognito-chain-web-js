@@ -579,23 +579,23 @@ async function MainRoutine() {
   await setup();
   try {
     // return await TestGetBalance();
-    const info = await accountSender.getDeserializeInformation();
-    const result = await accountSender.createAndSendInitTokenTx({
-      transfer: {
-        fee: 100,
-        info: "Init token doge coin",
-        tokenPayments: [
-          { Amount: "1000000000", PaymentAddress: info.PaymentAddress },
-        ],
-      },
-      extra: {
-        tokenName: "DOGE COIN",
-        tokenSymbol: "DOGE",
-      },
-    });
-    console.log("RESULT", result);
+    // const info = await accountSender.getDeserializeInformation();
+    // const result = await accountSender.createAndSendInitTokenTx({
+    //   transfer: {
+    //     fee: 100,
+    //     info: "Init token doge coin",
+    //     tokenPayments: [
+    //       { Amount: "1000000000", PaymentAddress: info.PaymentAddress },
+    //     ],
+    //   },
+    //   extra: {
+    //     tokenName: "DOGE COIN",
+    //     tokenSymbol: "DOGE",
+    //   },
+    // });
+    // console.log("RESULT", result);
     // await TestCreateAndSendRewardAmountTx();
-    // return await ConvertAllToken();
+    return await ConvertAllToken();
     // return await TestGetBalance();
     // let txh;
     // txh = await TestCustomTradeRequest(null, tokenID, 10000, 800);
