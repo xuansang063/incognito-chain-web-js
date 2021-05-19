@@ -41,13 +41,13 @@ async function setup() {
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rns2sxbuHFAAhtMksGhK9S1mFcyiGpKypzJuXJSmHZE8d4SqM3XNSy6i9QacqTeVmrneuEmNzF1kcwAvvf6d137PVJun1qnsxKr1gW6";
+    "112t8rniZP5hk9X3RjCFx9CXyoxmJFcqM6sNM7Yknng6D4jS3vwTxcQ6hPZ3h3mZHx2JDNxfGxmwjiHN3A34gktcMhgXUwh8EXpo7NCxiuxJ";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
   accountSender.setRPCClient(rpcClient);
   await accountSender.setKey(senderPrivateKeyStr);
-  console.log(accountSender.getOTAKey())
+  console.log(accountSender.getOTAKey());
   senderPaymentAddressStr =
     accountSender.key.base58CheckSerialize(PaymentAddressType);
   // await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
@@ -57,8 +57,6 @@ async function setup() {
     "12sm28usKxzw8HuwGiEojZZLWgvDinAkmZ3NvBNRQLuPrf5LXNLXVXiu4VBCMVDrDm97qjLrgFck3P36UTSWfqNX1PBP9PBD78Cpa95em8vcnjQrnwDNi8EdkdkSA6CWcs4oFatQYze7ETHAUBKH";
 }
 async function TestGetBalance() {
-  await setup();
-  // create and send PRV
   try {
     const key = await accountSender.getDeserializeInformation();
     console.log("key", key);
@@ -580,7 +578,23 @@ async function MainRoutine() {
   // sequential execution of tests; the wait might still be too short
   await setup();
   try {
-    await TestCreateAndSendRewardAmountTx();
+    // return await TestGetBalance();
+    const info = await accountSender.getDeserializeInformation();
+    const result = await accountSender.createAndSendInitTokenTx({
+      transfer: {
+        fee: 100,
+        info: "Init token doge coin",
+        tokenPayments: [
+          { Amount: "1000000000", PaymentAddress: info.PaymentAddress },
+        ],
+      },
+      extra: {
+        tokenName: "DOGE COIN",
+        tokenSymbol: "DOGE",
+      },
+    });
+    console.log("RESULT", result);
+    // await TestCreateAndSendRewardAmountTx();
     // return await ConvertAllToken();
     // return await TestGetBalance();
     // let txh;
@@ -588,7 +602,7 @@ async function MainRoutine() {
     // console.log(txh);
     // return;
     // return await TestGetBalance();
-    //  await TestCreateAndSendNativeToken();
+    //  return await TestCreateAndSendNativeToken();
     //  await TestCreateAndSendNativeToken();
     //  await TestCreateAndSendNativeToken();
     // await setup();
