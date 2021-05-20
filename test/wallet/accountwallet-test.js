@@ -62,7 +62,9 @@ async function TestGetBalance() {
   try {
     const key = await accountSender.getDeserializeInformation();
     console.log("key", key);
-    let balance = await accountSender.getBalance();
+    let balance = await accountSender.getBalance(
+      "d6efe5956aa521f5eeaf2f69cc6fbf9f21bfb3dcb7d0de90fa40913e6e630983"
+    );
     console.log("balance: ", balance.toString());
   } catch (e) {
     console.log("Error when get balance: ", e);
@@ -107,19 +109,23 @@ async function TestCreateAndSendRewardAmountTx() {
 async function TestBurningRequestTx() {
   await setup();
 
-  let fee = 20;
+  let fee = 100;
   // create and send burning request tx
   let response;
   try {
     response = await accountSender.createAndSendBurningRequestTx({
-      transfer: { fee, tokenID },
+      transfer: {
+        fee,
+        tokenID:
+          "d6efe5956aa521f5eeaf2f69cc6fbf9f21bfb3dcb7d0de90fa40913e6e630983",
+      },
       extra: {
         remoteAddress: "d5808Ba261c91d640a2D4149E8cdb3fD4512efe4",
-        burnAmount: 100,
+        burnAmount: 69000,
       },
     });
     console.log("Response createAndSendBurningRequestTx: ", response);
-    return response.Response.txId;
+    return response.txId;
   } catch (e) {
     // this tx specifically depends on bridge config, so we let it skip and review manually
     console.error(e);
@@ -578,9 +584,11 @@ async function ConvertAllToken() {
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
+  await setup();
   // sequential execution of tests; the wait might still be too short
   try {
-    return await TestCreateAndSendNativeToken();
+    return await TestBurningRequestTx();
+    // return await TestCreateAndSendNativeToken();
 
     // return await TestGetBalance();
     // const info = await accountSender.getDeserializeInformation();

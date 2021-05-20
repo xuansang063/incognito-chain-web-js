@@ -2678,7 +2678,8 @@ var TX_TYPE = {
   STAKE_VNODE: 3,
   UNSTAKE_VNODE: 4,
   WITHDRAW_REWARD_TX: 5,
-  INIT_TOKEN: 6
+  INIT_TOKEN: 6,
+  BURN_DECENTRALIZED: 7
 }; // todo: 0xkraken
 // NumUTXO must be 255
 // because tx zise is exceed 100kb with NumUTXO = 255
@@ -2693,7 +2694,11 @@ var BeaconStakingType = 1;
 var StakingAmount = 1750e9;
 var MAX_FEE_PER_TX = 100;
 var TX_STATUS = {
-  PROCESSING: -1
+  PROCESSING: -1,
+  TXSTATUS_UNKNOWN: 0,
+  TXSTATUS_FAILED: 1,
+  TXSTATUS_PENDING: 2,
+  TXSTATUS_SUCCESS: 3
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
   TxNormalType: TxNormalType,
@@ -2891,7 +2896,7 @@ function _getTxHistoryByTxID() {
             });
 
             if (!tx) {
-              _context2.next = 20;
+              _context2.next = 19;
               break;
             }
 
@@ -2902,14 +2907,13 @@ function _getTxHistoryByTxID() {
 
           case 15:
             status = _context2.sent;
-            console.log("status", status);
 
             if (!(Number.isFinite(status) && status >= 0)) {
-              _context2.next = 20;
+              _context2.next = 19;
               break;
             }
 
-            _context2.next = 20;
+            _context2.next = 19;
             return this.saveTxHistory({
               tx: _objectSpread(_objectSpread({}, tx), {}, {
                 status: status
@@ -2917,24 +2921,24 @@ function _getTxHistoryByTxID() {
               tokenId: tokenId
             });
 
-          case 20:
-            _context2.next = 25;
+          case 19:
+            _context2.next = 24;
             break;
 
-          case 22:
-            _context2.prev = 22;
+          case 21:
+            _context2.prev = 21;
             _context2.t1 = _context2["catch"](3);
             throw _context2.t1;
 
-          case 25:
+          case 24:
             return _context2.abrupt("return", tx);
 
-          case 26:
+          case 25:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, this, [[3, 22]]);
+    }, _callee2, this, [[3, 21]]);
   }));
   return _getTxHistoryByTxID.apply(this, arguments);
 }
@@ -3155,18 +3159,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
 /* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_lib_wasm__WEBPACK_IMPORTED_MODULE_17__);
 /* harmony import */ var _lib_rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @lib/rpcclient/rpchttpcoinservice */ "./lib/rpcclient/rpchttpcoinservice.js");
-/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
-/* harmony import */ var _account_constants__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./account.constants */ "./lib/module/Account/account.constants.js");
-/* harmony import */ var _lib_module_Account_account_transactor__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @lib/module/Account/account.transactor */ "./lib/module/Account/account.transactor.js");
-/* harmony import */ var _lib_module_Account_account_history__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @lib/module/Account/account.history */ "./lib/module/Account/account.history.js");
-/* harmony import */ var _lib_module_Account_account_progress__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @lib/module/Account/account.progress */ "./lib/module/Account/account.progress.js");
-/* harmony import */ var _lib_rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @lib/rpcclient/rpcclient */ "./lib/rpcclient/rpcclient.js");
-/* harmony import */ var _lib_module_Account_account_transactorConvert__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @lib/module/Account/account.transactorConvert */ "./lib/module/Account/account.transactorConvert.js");
-/* harmony import */ var _lib_module_Account_account_pDex__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @lib/module/Account/account.pDex */ "./lib/module/Account/account.pDex.js");
-/* harmony import */ var _lib_module_Account_account_node__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @lib/module/Account/account.node */ "./lib/module/Account/account.node.js");
-/* harmony import */ var _lib_module_Account_account_initToken__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @lib/module/Account/account.initToken */ "./lib/module/Account/account.initToken.js");
-/* harmony import */ var _lib_module_Account_account_configs__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @lib/module/Account/account.configs */ "./lib/module/Account/account.configs.js");
-/* harmony import */ var _lib_rpcclient_rpchttptxservice__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @lib/rpcclient/rpchttptxservice */ "./lib/rpcclient/rpchttptxservice.js");
+/* harmony import */ var _lib_rpcclient_rpchttptxservice__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @lib/rpcclient/rpchttptxservice */ "./lib/rpcclient/rpchttptxservice.js");
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var _account_constants__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var _lib_module_Account_account_transactor__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @lib/module/Account/account.transactor */ "./lib/module/Account/account.transactor.js");
+/* harmony import */ var _lib_module_Account_account_history__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @lib/module/Account/account.history */ "./lib/module/Account/account.history.js");
+/* harmony import */ var _lib_module_Account_account_progress__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @lib/module/Account/account.progress */ "./lib/module/Account/account.progress.js");
+/* harmony import */ var _lib_rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @lib/rpcclient/rpcclient */ "./lib/rpcclient/rpcclient.js");
+/* harmony import */ var _lib_module_Account_account_transactorConvert__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @lib/module/Account/account.transactorConvert */ "./lib/module/Account/account.transactorConvert.js");
+/* harmony import */ var _lib_module_Account_account_pDex__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @lib/module/Account/account.pDex */ "./lib/module/Account/account.pDex.js");
+/* harmony import */ var _lib_module_Account_account_node__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @lib/module/Account/account.node */ "./lib/module/Account/account.node.js");
+/* harmony import */ var _lib_module_Account_account_initToken__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @lib/module/Account/account.initToken */ "./lib/module/Account/account.initToken.js");
+/* harmony import */ var _lib_module_Account_account_configs__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @lib/module/Account/account.configs */ "./lib/module/Account/account.configs.js");
+/* harmony import */ var _lib_module_Account_account_unshield__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @lib/module/Account/account.unshield */ "./lib/module/Account/account.unshield.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -3196,6 +3201,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -3275,9 +3281,9 @@ var Account = /*#__PURE__*/function () {
     };
     this.storage = w.Storage ? w.Storage : _lib_services_storage__WEBPACK_IMPORTED_MODULE_5__["default"];
     this.coinUTXOs = {};
-    this.rpc = w.RpcClient ? new _lib_rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_24__["RpcClient"](w.RpcClient) : null;
+    this.rpc = w.RpcClient ? new _lib_rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_25__["RpcClient"](w.RpcClient) : null;
     this.rpcCoinService = w.RpcCoinService ? new _lib_rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_18__["RpcHTTPCoinServiceClient"](w.RpcCoinService) : null;
-    this.rpcTxService = w.RpcTxService ? new _lib_rpcclient_rpchttptxservice__WEBPACK_IMPORTED_MODULE_30__["RpcHTTPTxServiceClient"](w.RpcTxService) : null;
+    this.rpcTxService = w.RpcTxService ? new _lib_rpcclient_rpchttptxservice__WEBPACK_IMPORTED_MODULE_19__["RpcHTTPTxServiceClient"](w.RpcTxService) : null;
     this.privacyVersion = w.PrivacyVersion || -1;
     this.keyInfo = {};
     this.allKeyInfoV1 = {};
@@ -3296,7 +3302,7 @@ var Account = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"]("privateKey", privateKey).required(); // transactor needs private key to sign TXs. Read key in encoded or raw form
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("privateKey", privateKey).required(); // transactor needs private key to sign TXs. Read key in encoded or raw form
 
                 if (!(typeof privateKey == "string")) {
                   _context.next = 5;
@@ -3497,7 +3503,7 @@ var Account = /*#__PURE__*/function () {
   }, {
     key: "getKeyStorageByTokenId",
     value: function getKeyStorageByTokenId(tokenId) {
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"](VALIDATOR.tokenId, tokenId).required().string();
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
       var otaKey = this.getOTAKey();
       var prefix = this.getPrefixKeyStorage();
       return "".concat(tokenId, "-").concat(prefix, "-").concat(otaKey, "-").concat(this.name);
@@ -3653,7 +3659,7 @@ var Account = /*#__PURE__*/function () {
             switch (_context7.prev = _context7.next) {
               case 0:
                 _context7.prev = 0;
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"]("tokenId", tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenId", tokenId).required().string();
 
                 if (!this.storage) {
                   _context7.next = 8;
@@ -3954,8 +3960,8 @@ var Account = /*#__PURE__*/function () {
               case 0:
                 _ref6 = _args13.length > 0 && _args13[0] !== undefined ? _args13[0] : {}, coins = _ref6.coins, _ref6$tokenId = _ref6.tokenId, tokenId = _ref6$tokenId === void 0 ? _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PRVIDSTR"] : _ref6$tokenId;
                 _context13.prev = 1;
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"]("tokenId", tokenId).required().string();
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"]("coins", coins).required().array();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenId", tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("coins", coins).required().array();
 
                 if (coins) {
                   _context13.next = 6;
@@ -4519,7 +4525,7 @@ var Account = /*#__PURE__*/function () {
 
                 txType = txHistory.typeTx;
 
-                if (!(txType == _account_constants__WEBPACK_IMPORTED_MODULE_20__["TxNormalType"])) {
+                if (!(txType == _account_constants__WEBPACK_IMPORTED_MODULE_21__["TxNormalType"])) {
                   _context20.next = 19;
                   break;
                 }
@@ -4543,7 +4549,7 @@ var Account = /*#__PURE__*/function () {
                 break;
 
               case 19:
-                if (!(txType == _account_constants__WEBPACK_IMPORTED_MODULE_20__["TxCustomTokenPrivacyType"])) {
+                if (!(txType == _account_constants__WEBPACK_IMPORTED_MODULE_21__["TxCustomTokenPrivacyType"])) {
                   _context20.next = 31;
                   break;
                 }
@@ -4815,7 +4821,7 @@ var Account = /*#__PURE__*/function () {
                 if (response.txId) {
                   // tx.txId = response.txId
                   status = _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["SuccessTx"];
-                  response.typeTx = _account_constants__WEBPACK_IMPORTED_MODULE_20__["TxNormalType"];
+                  response.typeTx = _account_constants__WEBPACK_IMPORTED_MODULE_21__["TxNormalType"];
                   response.feeNativeToken = feeBN.toString();
                   response.lockTime = lockTime;
                   response.amountNativeToken = totalAmountTransfer.toString();
@@ -5219,7 +5225,7 @@ var Account = /*#__PURE__*/function () {
 
                 if (response.txId) {
                   status = _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["SuccessTx"];
-                  response.typeTx = _account_constants__WEBPACK_IMPORTED_MODULE_20__["TxCustomTokenPrivacyType"];
+                  response.typeTx = _account_constants__WEBPACK_IMPORTED_MODULE_21__["TxCustomTokenPrivacyType"];
                   response.feeNativeToken = feeNativeToken;
                   response.feePToken = feePToken;
                   response.lockTime = lockTime;
@@ -5441,12 +5447,12 @@ var Account = /*#__PURE__*/function () {
                   txHistoryInfo.setHistoryInfo(historyObj);
 
                   switch (tx.Type) {
-                    case _account_constants__WEBPACK_IMPORTED_MODULE_20__["TxNormalType"]:
+                    case _account_constants__WEBPACK_IMPORTED_MODULE_21__["TxNormalType"]:
                       {
                         this.txReceivedHistory.NormalTx.push(txHistoryInfo);
                       }
 
-                    case _account_constants__WEBPACK_IMPORTED_MODULE_20__["TxCustomTokenPrivacyType"]:
+                    case _account_constants__WEBPACK_IMPORTED_MODULE_21__["TxCustomTokenPrivacyType"]:
                       {
                         this.txReceivedHistory.PrivacyTokenTx.push(txHistoryInfo);
                       }
@@ -5838,8 +5844,8 @@ var Account = /*#__PURE__*/function () {
               case 0:
                 tokenId = _ref11.tokenId, total = _ref11.total;
                 _context28.prev = 1;
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"]("tokenId", tokenId).required().string();
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"]("total", total).required().number();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenId", tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("total", total).required().number();
                 otaKey = this.getOTAKey();
                 version = this.privacyVersion;
                 listOutputsCoins = [];
@@ -6018,7 +6024,7 @@ var Account = /*#__PURE__*/function () {
             switch (_context31.prev = _context31.next) {
               case 0:
                 _context31.prev = 0;
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"](VALIDATOR.tokenId, tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
                 keyInfo = this.keyInfo;
                 version = this.privacyVersion;
                 otaKey = this.getOTAKey();
@@ -6317,7 +6323,7 @@ var Account = /*#__PURE__*/function () {
     key: "measureAsyncFn",
     value: function () {
       var _measureAsyncFn = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee36(fn, key, args) {
-        var t, result, e;
+        var t, result, e, value;
         return regeneratorRuntime.wrap(function _callee36$(_context36) {
           while (1) {
             switch (_context36.prev = _context36.next) {
@@ -6337,10 +6343,11 @@ var Account = /*#__PURE__*/function () {
 
               case 5:
                 e = performance.now() - t;
-                lodash_set__WEBPACK_IMPORTED_MODULE_2___default()(this.coinsStorage, key, "".concat(e / 1000, "s"));
+                value = this.privacyVersion === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver1 ? this.coinsV1Storage : this.coinsStorage;
+                lodash_set__WEBPACK_IMPORTED_MODULE_2___default()(value, key, "".concat(e / 1000, "s"));
                 return _context36.abrupt("return", result);
 
-              case 8:
+              case 9:
               case "end":
                 return _context36.stop();
             }
@@ -6416,7 +6423,7 @@ var Account = /*#__PURE__*/function () {
             switch (_context38.prev = _context38.next) {
               case 0:
                 _context38.prev = 0;
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"]("tokenId", tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenId", tokenId).required().string();
                 _context38.next = 4;
                 return this.getTotalCoinsStorage(tokenId);
 
@@ -6546,18 +6553,29 @@ var Account = /*#__PURE__*/function () {
   }, {
     key: "getUnspentCoinsByTokenIdV1",
     value: function () {
-      var _getUnspentCoinsByTokenIdV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee40(_ref20) {
+      var _getUnspentCoinsByTokenIdV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee40() {
         var _this$coinsV1Storage;
 
-        var tokenId, total, _this$coinsV1Storage2, keyInfo, listOutputsCoins, shardId, listUnspentCoinsFiltered, _listUnspentCoinsFilt, balance, unspentCoinsFiltered;
+        var _ref20,
+            tokenId,
+            total,
+            _this$coinsV1Storage2,
+            keyInfo,
+            listOutputsCoins,
+            shardId,
+            listUnspentCoinsFiltered,
+            _listUnspentCoinsFilt,
+            balance,
+            unspentCoinsFiltered,
+            _args40 = arguments;
 
         return regeneratorRuntime.wrap(function _callee40$(_context40) {
           while (1) {
             switch (_context40.prev = _context40.next) {
               case 0:
-                tokenId = _ref20.tokenId, total = _ref20.total;
+                _ref20 = _args40.length > 0 && _args40[0] !== undefined ? _args40[0] : {}, tokenId = _ref20.tokenId, total = _ref20.total;
 
-                if (!Array.isArray((_this$coinsV1Storage = this.coinsV1Storage) === null || _this$coinsV1Storage === void 0 ? void 0 : _this$coinsV1Storage.unspentCoinV1)) {
+                if (lodash_isEmpty__WEBPACK_IMPORTED_MODULE_1___default()((_this$coinsV1Storage = this.coinsV1Storage) === null || _this$coinsV1Storage === void 0 ? void 0 : _this$coinsV1Storage.unspentCoinV1)) {
                   _context40.next = 3;
                   break;
                 }
@@ -6624,8 +6642,12 @@ var Account = /*#__PURE__*/function () {
                 console.debug("Unspent Coins V1: ", {
                   tokenId: tokenId,
                   balance: balance.toNumber(),
-                  total: unspentCoinsFiltered.length
+                  total: unspentCoinsFiltered.length,
+                  keyInfo: total,
+                  listOutputsCoins: listOutputsCoins.length,
+                  listUnspentCoinsFiltered: listUnspentCoinsFiltered.length
                 });
+                console.log("\n");
                 return _context40.abrupt("return", {
                   tokenId: tokenId,
                   unspentCoins: unspentCoinsFiltered,
@@ -6633,7 +6655,7 @@ var Account = /*#__PURE__*/function () {
                   total: unspentCoinsFiltered.length
                 });
 
-              case 19:
+              case 20:
               case "end":
                 return _context40.stop();
             }
@@ -6641,7 +6663,7 @@ var Account = /*#__PURE__*/function () {
         }, _callee40, this);
       }));
 
-      function getUnspentCoinsByTokenIdV1(_x52) {
+      function getUnspentCoinsByTokenIdV1() {
         return _getUnspentCoinsByTokenIdV.apply(this, arguments);
       }
 
@@ -6651,13 +6673,19 @@ var Account = /*#__PURE__*/function () {
     key: "getKeyListUnspentCoins",
     value: function () {
       var _getKeyListUnspentCoins = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee41() {
+        var viewkey;
         return regeneratorRuntime.wrap(function _callee41$(_context41) {
           while (1) {
             switch (_context41.prev = _context41.next) {
               case 0:
-                return _context41.abrupt("return", this.getPrefixKeyStorage() + "-".concat(TOTAL_UNSPENT_COINS, "-").concat(this.getReadonlyKey()));
+                _context41.next = 2;
+                return this.getReadonlyKey();
 
-              case 1:
+              case 2:
+                viewkey = _context41.sent;
+                return _context41.abrupt("return", this.getPrefixKeyStorage() + "-".concat(TOTAL_UNSPENT_COINS, "-").concat(viewkey));
+
+              case 4:
               case "end":
                 return _context41.stop();
             }
@@ -6683,30 +6711,47 @@ var Account = /*#__PURE__*/function () {
                 _context42.prev = 0;
 
                 if (!this.storage) {
-                  _context42.next = 6;
+                  _context42.next = 12;
                   break;
                 }
 
                 this.setPrivacyVersion(_lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver1);
-                key = this.getKeyListUnspentCoins();
-                _context42.next = 6;
+                _context42.next = 5;
+                return this.getKeyListUnspentCoins();
+
+              case 5:
+                key = _context42.sent;
+                _context42.next = 8;
                 return this.getAccountStorage(key);
 
-              case 6:
-                _context42.next = 11;
-                break;
-
               case 8:
-                _context42.prev = 8;
-                _context42.t0 = _context42["catch"](0);
-                console.debug("ERROR GET ACCOUNT STORAGE", _context42.t0 === null || _context42.t0 === void 0 ? void 0 : _context42.t0.message);
+                _context42.t0 = _context42.sent;
+
+                if (_context42.t0) {
+                  _context42.next = 11;
+                  break;
+                }
+
+                _context42.t0 = [];
 
               case 11:
+                return _context42.abrupt("return", _context42.t0);
+
+              case 12:
+                _context42.next = 17;
+                break;
+
+              case 14:
+                _context42.prev = 14;
+                _context42.t1 = _context42["catch"](0);
+                console.debug("ERROR GET ACCOUNT STORAGE", _context42.t1 === null || _context42.t1 === void 0 ? void 0 : _context42.t1.message);
+
+              case 17:
               case "end":
                 return _context42.stop();
             }
           }
-        }, _callee42, this, [[0, 8]]);
+        }, _callee42, this, [[0, 14]]);
       }));
 
       function getListUnspentCoinsV1() {
@@ -6725,36 +6770,49 @@ var Account = /*#__PURE__*/function () {
             switch (_context43.prev = _context43.next) {
               case 0:
                 value = _ref21.value;
-                _context43.prev = 1;
 
-                if (!this.storage) {
-                  _context43.next = 6;
+                if (!lodash_isEmpty__WEBPACK_IMPORTED_MODULE_1___default()(value)) {
+                  _context43.next = 3;
                   break;
                 }
 
-                key = this.getKeyListUnspentCoins();
-                _context43.next = 6;
+                return _context43.abrupt("return");
+
+              case 3:
+                _context43.prev = 3;
+
+                if (!this.storage) {
+                  _context43.next = 10;
+                  break;
+                }
+
+                _context43.next = 7;
+                return this.getKeyListUnspentCoins();
+
+              case 7:
+                key = _context43.sent;
+                _context43.next = 10;
                 return this.setAccountStorage(key, value);
 
-              case 6:
+              case 10:
                 this.coinsV1Storage.unspentCoinV1 = value;
-                _context43.next = 12;
+                _context43.next = 16;
                 break;
 
-              case 9:
-                _context43.prev = 9;
-                _context43.t0 = _context43["catch"](1);
+              case 13:
+                _context43.prev = 13;
+                _context43.t0 = _context43["catch"](3);
                 console.debug("ERROR GET ACCOUNT STORAGE", _context43.t0 === null || _context43.t0 === void 0 ? void 0 : _context43.t0.message);
 
-              case 12:
+              case 16:
               case "end":
                 return _context43.stop();
             }
           }
-        }, _callee43, this, [[1, 9]]);
+        }, _callee43, this, [[3, 13]]);
       }));
 
-      function setListUnspentCoinsV1(_x53) {
+      function setListUnspentCoinsV1(_x52) {
         return _setListUnspentCoinsV.apply(this, arguments);
       }
 
@@ -6766,49 +6824,83 @@ var Account = /*#__PURE__*/function () {
       var _getAllUnspentCoinsV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee44() {
         var _this4 = this;
 
-        var allKeyInfoV1, task, unspentCoinsV1;
+        var _ref22,
+            _ref22$forceGetCoins,
+            forceGetCoins,
+            unspentCoins,
+            allKeyInfoV1,
+            task,
+            unspentCoinsV1,
+            _args44 = arguments;
+
         return regeneratorRuntime.wrap(function _callee44$(_context44) {
           while (1) {
             switch (_context44.prev = _context44.next) {
               case 0:
-                /** Set privacy version */
+                _ref22 = _args44.length > 0 && _args44[0] !== undefined ? _args44[0] : {}, _ref22$forceGetCoins = _ref22.forceGetCoins, forceGetCoins = _ref22$forceGetCoins === void 0 ? true : _ref22$forceGetCoins;
+                _context44.next = 3;
+                return this.submitOTAKey();
+
+              case 3:
                 this.setPrivacyVersion(_lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver1);
 
-                if (lodash_isEmpty__WEBPACK_IMPORTED_MODULE_1___default()(this.coinsV1Storage.unspentCoinV1)) {
-                  _context44.next = 3;
+                if (!forceGetCoins) {
+                  _context44.next = 8;
                   break;
                 }
 
-                return _context44.abrupt("return", this.coinsV1Storage.unspentCoinV1);
+                this.coinsV1Storage = {
+                  unspentCoinV1: []
+                };
+                _context44.next = 14;
+                break;
 
-              case 3:
-                _context44.next = 5;
+              case 8:
+                _context44.next = 10;
+                return this.getListUnspentCoinsV1();
+
+              case 10:
+                unspentCoins = _context44.sent;
+                unspentCoins = unspentCoins.filter(function (coin) {
+                  return !!coin;
+                });
+
+                if (lodash_isEmpty__WEBPACK_IMPORTED_MODULE_1___default()(unspentCoins)) {
+                  _context44.next = 14;
+                  break;
+                }
+
+                return _context44.abrupt("return", unspentCoins);
+
+              case 14:
+                _context44.next = 16;
                 return this.measureAsyncFn(this.getAllKeyInfoV1, "timeGetAllKeyInfoV1");
 
-              case 5:
+              case 16:
                 allKeyInfoV1 = _context44.sent;
-
+                console.log("allKeyInfoV1: ", allKeyInfoV1);
                 /** Get All Unspent Coins By Token Id */
+
                 task = Object.keys(allKeyInfoV1).map(function (tokenId) {
                   return _this4.getUnspentCoinsByTokenIdV1({
                     tokenId: tokenId,
                     total: allKeyInfoV1[tokenId].total
                   });
                 });
-                _context44.next = 9;
+                _context44.next = 21;
                 return Promise.all(task);
 
-              case 9:
+              case 21:
                 unspentCoinsV1 = _context44.sent;
-                _context44.next = 12;
+                _context44.next = 24;
                 return this.measureAsyncFn(this.setListUnspentCoinsV1, "timeSetListUnspentCoinsV1", {
                   value: unspentCoinsV1
                 });
 
-              case 12:
+              case 24:
                 return _context44.abrupt("return", unspentCoinsV1);
 
-              case 13:
+              case 25:
               case "end":
                 return _context44.stop();
             }
@@ -6841,7 +6933,7 @@ var Account = /*#__PURE__*/function () {
             switch (_context45.prev = _context45.next) {
               case 0:
                 tokenId = _args45.length > 0 && _args45[0] !== undefined ? _args45[0] : _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PRVIDSTR"];
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"](VALIDATOR.tokenId, tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
 
                 if (!this.coinsStorage) {
                   this.coinsStorage = {
@@ -7099,8 +7191,8 @@ var Account = /*#__PURE__*/function () {
                 _context48.prev = 0;
                 tokenId = tokenID || _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PRVIDSTR"];
                 version = this.privacyVersion;
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"](VALIDATOR.tokenId, tokenId).required().string();
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"](VALIDATOR.privacyVersion, version).required().number();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.privacyVersion, version).required().number();
                 _context48.next = 7;
                 return this.submitOTAKey();
 
@@ -7138,7 +7230,7 @@ var Account = /*#__PURE__*/function () {
         }, _callee48, this, [[0, 16]]);
       }));
 
-      function getUnspentCoins(_x54) {
+      function getUnspentCoins(_x53) {
         return _getUnspentCoins.apply(this, arguments);
       }
 
@@ -7158,7 +7250,7 @@ var Account = /*#__PURE__*/function () {
             switch (_context49.prev = _context49.next) {
               case 0:
                 tokenId = _args49.length > 0 && _args49[0] !== undefined ? _args49[0] : _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PRVIDSTR"];
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_19__["default"](VALIDATOR.tokenId, tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
                 _context49.prev = 2;
                 _context49.next = 5;
                 return this.getUnspentCoins(tokenId);
@@ -7259,7 +7351,7 @@ var Account = /*#__PURE__*/function () {
         }, _callee50, this, [[1, 9]]);
       }));
 
-      function getBalance(_x55) {
+      function getBalance(_x54) {
         return _getBalance.apply(this, arguments);
       }
 
@@ -7270,7 +7362,7 @@ var Account = /*#__PURE__*/function () {
   return Account;
 }();
 
-Object.assign(Account.prototype, _lib_module_Account_account_transactor__WEBPACK_IMPORTED_MODULE_21__["default"], _lib_module_Account_account_history__WEBPACK_IMPORTED_MODULE_22__["default"], _lib_module_Account_account_progress__WEBPACK_IMPORTED_MODULE_23__["default"], _lib_module_Account_account_transactorConvert__WEBPACK_IMPORTED_MODULE_25__["default"], _lib_module_Account_account_pDex__WEBPACK_IMPORTED_MODULE_26__["default"], _lib_module_Account_account_node__WEBPACK_IMPORTED_MODULE_27__["default"], _lib_module_Account_account_initToken__WEBPACK_IMPORTED_MODULE_28__["default"], _lib_module_Account_account_configs__WEBPACK_IMPORTED_MODULE_29__["default"]);
+Object.assign(Account.prototype, _lib_module_Account_account_transactor__WEBPACK_IMPORTED_MODULE_22__["default"], _lib_module_Account_account_history__WEBPACK_IMPORTED_MODULE_23__["default"], _lib_module_Account_account_progress__WEBPACK_IMPORTED_MODULE_24__["default"], _lib_module_Account_account_transactorConvert__WEBPACK_IMPORTED_MODULE_26__["default"], _lib_module_Account_account_pDex__WEBPACK_IMPORTED_MODULE_27__["default"], _lib_module_Account_account_node__WEBPACK_IMPORTED_MODULE_28__["default"], _lib_module_Account_account_initToken__WEBPACK_IMPORTED_MODULE_29__["default"], _lib_module_Account_account_configs__WEBPACK_IMPORTED_MODULE_30__["default"], _lib_module_Account_account_unshield__WEBPACK_IMPORTED_MODULE_31__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (Account);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
@@ -8177,7 +8269,7 @@ function transact(_x2) {
 
 function _transact() {
   _transact = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_ref2) {
-    var _ref2$transfer, _ref2$transfer2, _ref2$transfer2$prvPa, prvPayments, _ref2$transfer2$token, tokenPayments, _ref2$transfer2$fee, fee, _ref2$transfer2$info, info, _ref2$transfer2$token2, tokenID, _ref2$transfer2$token3, tokenParams, _ref2$extra, _ref2$extra2, _ref2$extra2$metadata, metadata, _ref2$extra2$txHandle, txHandler, txType, receiverPaymentAddrStr, totalAmountTransfer, i, inputForTx, txParams, tokenReceiverPaymentAddrStr, totalAmountTokenTransfer, inputForToken, isInit, isTransfer, _i, txParamsJson, theirTime, wasmResult, _JSON$parse, b58EncodedTx, hash, outputs, tempBuf, theString, txObj, tx, pushRawTxToPubsub, response, taskSpendingCoins;
+    var _ref2$transfer, _ref2$transfer2, _ref2$transfer2$prvPa, prvPayments, _ref2$transfer2$token, tokenPayments, _ref2$transfer2$fee, fee, _ref2$transfer2$info, info, _ref2$transfer2$token2, tokenID, _ref2$transfer2$token3, tokenParams, _ref2$extra, _ref2$extra2, _ref2$extra2$metadata, metadata, _ref2$extra2$txHandle, txHandler, txType, receiverPaymentAddrStr, totalAmountTransfer, i, inputForTx, txParams, tokenReceiverPaymentAddrStr, totalAmountTokenTransfer, inputForToken, isInit, isTransfer, _i, txParamsJson, theirTime, wasmResult, _JSON$parse, b58EncodedTx, hash, outputs, tempBuf, theString, txObj, tx, response, taskSpendingCoins;
 
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
@@ -8393,54 +8485,28 @@ function _transact() {
           case 93:
             _context3.prev = 93;
             _context3.next = 96;
-            return this.rpcTxService.apiPushTx({
-              rawTx: b58EncodedTx
-            });
-
-          case 96:
-            pushRawTxToPubsub = _context3.sent;
-
-            if (pushRawTxToPubsub) {
-              _context3.next = 99;
-              break;
-            }
-
-            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].FailPushRawTxToPubsub, "Can not send transaction", e);
-
-          case 99:
-            _context3.next = 104;
-            break;
-
-          case 101:
-            _context3.prev = 101;
-            _context3.t2 = _context3["catch"](93);
-            throw _context3.t2;
-
-          case 104:
-            _context3.prev = 104;
-            _context3.next = 107;
             return this.send(b58EncodedTx, Boolean(tokenPayments));
 
-          case 107:
+          case 96:
             response = _context3.sent;
-            _context3.next = 113;
+            _context3.next = 102;
             break;
 
-          case 110:
-            _context3.prev = 110;
-            _context3.t3 = _context3["catch"](104);
-            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].SendTxErr, "Can not send transaction", _context3.t3);
+          case 99:
+            _context3.prev = 99;
+            _context3.t2 = _context3["catch"](93);
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].SendTxErr, "Can not send transaction", _context3.t2);
 
-          case 113:
+          case 102:
             if (!!response.TokenID) {
               tokenID = response.TokenID;
             }
 
-            _context3.next = 116;
+            _context3.next = 105;
             return this.updateProgressTx(95, "Saving Records");
 
-          case 116:
-            _context3.next = 118;
+          case 105:
+            _context3.next = 107;
             return this.saveTxHistory({
               tx: _objectSpread(_objectSpread({}, tx), {}, {
                 tokenID: tokenID,
@@ -8448,7 +8514,7 @@ function _transact() {
               })
             });
 
-          case 118:
+          case 107:
             taskSpendingCoins = [];
 
             if (!!inputForTx.inputCoinStrs) {
@@ -8465,19 +8531,19 @@ function _transact() {
               }));
             }
 
-            _context3.next = 123;
+            _context3.next = 112;
             return Promise.all(taskSpendingCoins);
 
-          case 123:
+          case 112:
             console.log("tx", tx.txId);
             return _context3.abrupt("return", tx);
 
-          case 125:
+          case 114:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, this, [[20, 26], [52, 58], [93, 101], [104, 110]]);
+    }, _callee3, this, [[20, 26], [52, 58], [93, 99]]);
   }));
   return _transact.apply(this, arguments);
 }
@@ -8592,19 +8658,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-function _transactConvert(_x) {
-  return _transactConvert2.apply(this, arguments);
+function transactConvert(_x) {
+  return _transactConvert.apply(this, arguments);
 }
 
-function _transactConvert2() {
-  _transactConvert2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
-    var _ref$transfer, _ref$transfer2, _ref$transfer2$fee, fee, _ref$transfer2$info, info, _ref$transfer2$tokenI, tokenID, _ref$transfer2$prvPay, prvPayments, tokenPayments, _ref$extra, _ref$extra2, _ref$extra2$numOfDefr, numOfDefragInputs, account, isTokenConvert, isDefrag, metadata, receiverPaymentAddrStr, totalAmountTransfer, inputForTx, _inputForTx, paramConvert, inputCoinsToSpent, txParams, tokenReceiverPaymentAddrStr, totalAmountTokenTransfer, _i, inputTokensSpent, theirTime, txParamsJson, wasmResult, _JSON$parse, b58EncodedTx, hash, outputs, tempBuf, theString, txObj, response;
+function _transactConvert() {
+  _transactConvert = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
+    var _ref$transfer, _ref$transfer2, _ref$transfer2$fee, fee, _ref$transfer2$info, info, _ref$transfer2$tokenI, tokenID, _ref$transfer2$prvPay, prvPayments, tokenPayments, _ref$extra, _ref$extra2, _ref$extra2$numOfDefr, numOfDefragInputs, account, isTokenConvert, isDefrag, metadata, receiverPaymentAddrStr, totalAmountTransfer, inputForTx, _inputForTx, paramConvert, inputCoinsToSpent, txParams, tokenReceiverPaymentAddrStr, totalAmountTokenTransfer, _i, inputTokensSpent, theirTime, txParamsJson, wasmResult, _JSON$parse, b58EncodedTx, hash, outputs, tempBuf, theString, txObj, response, _txParams$TokenParams, inputV1, inputV2;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _ref$transfer = _ref.transfer, _ref$transfer2 = _ref$transfer === void 0 ? {} : _ref$transfer, _ref$transfer2$fee = _ref$transfer2.fee, fee = _ref$transfer2$fee === void 0 ? 100 : _ref$transfer2$fee, _ref$transfer2$info = _ref$transfer2.info, info = _ref$transfer2$info === void 0 ? "" : _ref$transfer2$info, _ref$transfer2$tokenI = _ref$transfer2.tokenID, tokenID = _ref$transfer2$tokenI === void 0 ? null : _ref$transfer2$tokenI, _ref$transfer2$prvPay = _ref$transfer2.prvPayments, prvPayments = _ref$transfer2$prvPay === void 0 ? [] : _ref$transfer2$prvPay, tokenPayments = _ref$transfer2.tokenPayments, _ref$extra = _ref.extra, _ref$extra2 = _ref$extra === void 0 ? {} : _ref$extra, _ref$extra2$numOfDefr = _ref$extra2.numOfDefragInputs, numOfDefragInputs = _ref$extra2$numOfDefr === void 0 ? 0 : _ref$extra2$numOfDefr;
+            _ref$transfer = _ref.transfer, _ref$transfer2 = _ref$transfer === void 0 ? {} : _ref$transfer, _ref$transfer2$fee = _ref$transfer2.fee, fee = _ref$transfer2$fee === void 0 ? 100 : _ref$transfer2$fee, _ref$transfer2$info = _ref$transfer2.info, info = _ref$transfer2$info === void 0 ? "" : _ref$transfer2$info, _ref$transfer2$tokenI = _ref$transfer2.tokenID, tokenID = _ref$transfer2$tokenI === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"] : _ref$transfer2$tokenI, _ref$transfer2$prvPay = _ref$transfer2.prvPayments, prvPayments = _ref$transfer2$prvPay === void 0 ? [] : _ref$transfer2$prvPay, tokenPayments = _ref$transfer2.tokenPayments, _ref$extra = _ref.extra, _ref$extra2 = _ref$extra === void 0 ? {} : _ref$extra, _ref$extra2$numOfDefr = _ref$extra2.numOfDefragInputs, numOfDefragInputs = _ref$extra2$numOfDefr === void 0 ? 0 : _ref$extra2$numOfDefr;
+            tokenID = tokenID || _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"];
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("fee", fee).required().number();
 
             if (!lodash_isEmpty__WEBPACK_IMPORTED_MODULE_0___default()(info)) {
@@ -8613,7 +8680,7 @@ function _transactConvert2() {
             }
 
             account = this;
-            isTokenConvert = tokenID && tokenPayments;
+            isTokenConvert = tokenID !== _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"];
             isDefrag = numOfDefragInputs > 0;
             metadata = null;
             receiverPaymentAddrStr = new Array(prvPayments.length);
@@ -8625,14 +8692,14 @@ function _transactConvert2() {
             });
 
             if (!(isDefrag && isTokenConvert)) {
-              _context.next = 12;
+              _context.next = 13;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].SendTxErr, "Error: token defragment is not supported");
 
-          case 12:
-            _context.prev = 12;
+          case 13:
+            _context.prev = 13;
             paramConvert = {
               amountTransfer: -1,
               fee: fee,
@@ -8641,51 +8708,51 @@ function _transactConvert2() {
             };
 
             if (!isTokenConvert) {
-              _context.next = 20;
+              _context.next = 21;
               break;
             }
 
-            _context.next = 17;
+            _context.next = 18;
             return Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_6__["prepareInputForConvertTxV2"])(paramConvert);
 
-          case 17:
+          case 18:
             inputForTx = _context.sent;
-            _context.next = 26;
+            _context.next = 27;
             break;
 
-          case 20:
+          case 21:
             if (!isDefrag) {
-              _context.next = 23;
+              _context.next = 24;
               break;
             }
 
-            _context.next = 26;
+            _context.next = 27;
             break;
 
-          case 23:
-            _context.next = 25;
+          case 24:
+            _context.next = 26;
             return Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_6__["prepareInputForConvertTxV2"])(paramConvert);
-
-          case 25:
-            inputForTx = _context.sent;
 
           case 26:
+            inputForTx = _context.sent;
+
+          case 27:
             inputCoinsToSpent = (_inputForTx = inputForTx) === null || _inputForTx === void 0 ? void 0 : _inputForTx[isTokenConvert ? "inputCoinsForFee" : "inputCoinsToSpent"];
 
             if (!(inputCoinsToSpent.length === 0)) {
-              _context.next = 29;
+              _context.next = 30;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].EmptyUTXO, "Error: Dont have UTXO PRV v1");
 
-          case 29:
+          case 30:
             txParams = Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_6__["newParamTxV2"])(this.key, prvPayments, inputCoinsToSpent, fee, null, null, info, inputForTx.coinsForRing);
             tokenReceiverPaymentAddrStr = [];
             totalAmountTokenTransfer = new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(0);
 
             if (!isTokenConvert) {
-              _context.next = 39;
+              _context.next = 40;
               break;
             }
 
@@ -8700,81 +8767,96 @@ function _transactConvert2() {
             inputTokensSpent = inputForTx.inputCoinsToSpent;
 
             if (!(inputTokensSpent.length === 0)) {
-              _context.next = 38;
+              _context.next = 39;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].EmptyUTXO, "Error: Dont have UTXO pToken v1");
 
-          case 38:
+          case 39:
             txParams.TokenParams = Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_6__["newTokenParamV2"])(tokenPayments, inputTokensSpent, tokenID, null);
 
-          case 39:
-            _context.next = 41;
+          case 40:
+            _context.next = 42;
             return this.rpc.getNodeTime();
 
-          case 41:
+          case 42:
             theirTime = _context.sent;
             txParamsJson = JSON.stringify(txParams);
+            console.log('txParams: ', txParams);
 
             if (!isDefrag) {
-              _context.next = 49;
+              _context.next = 51;
               break;
             }
 
-            _context.next = 46;
+            _context.next = 48;
             return _lib_wasm__WEBPACK_IMPORTED_MODULE_7__["wasm"].createTransaction(txParamsJson, theirTime);
 
-          case 46:
+          case 48:
             wasmResult = _context.sent;
-            _context.next = 52;
+            _context.next = 54;
             break;
 
-          case 49:
-            _context.next = 51;
+          case 51:
+            _context.next = 53;
             return _lib_wasm__WEBPACK_IMPORTED_MODULE_7__["wasm"].createConvertTx(txParamsJson, theirTime);
 
-          case 51:
+          case 53:
             wasmResult = _context.sent;
 
-          case 52:
+          case 54:
             /** create raw tx success */
             _JSON$parse = JSON.parse(wasmResult), b58EncodedTx = _JSON$parse.b58EncodedTx, hash = _JSON$parse.hash, outputs = _JSON$parse.outputs;
 
             if (!(b58EncodedTx === null || b58EncodedTx === "")) {
-              _context.next = 55;
+              _context.next = 57;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].InitNormalTxErr, "Can not init transaction transferring PRV");
 
-          case 55:
+          case 57:
             tempBuf = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_8__["checkDecode"])(b58EncodedTx).bytesDecoded;
             theString = String.fromCharCode.apply(null, tempBuf);
             txObj = JSON.parse(theString);
             txObj.Encoded = b58EncodedTx;
-            _context.prev = 59;
-            _context.next = 62;
-            return this.send(b58EncodedTx, Boolean(tokenID && tokenPayments));
-
-          case 62:
-            response = _context.sent;
-            _context.next = 68;
-            break;
-
-          case 65:
-            _context.prev = 65;
-            _context.t0 = _context["catch"](59);
-            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context.t0);
-
-          case 68:
-            _context.next = 70;
+            _context.prev = 61;
+            inputV1 = isTokenConvert ? txParams === null || txParams === void 0 ? void 0 : (_txParams$TokenParams = txParams.TokenParams) === null || _txParams$TokenParams === void 0 ? void 0 : _txParams$TokenParams.InputCoins : txParams === null || txParams === void 0 ? void 0 : txParams.InputCoins;
+            _context.next = 65;
             return this.setSpendingCoinsV1ByTokenId({
               tokenId: tokenID,
-              value: inputForTx.inputCoinsToSpent
+              value: inputV1 || []
             });
 
-          case 70:
+          case 65:
+            if (!isTokenConvert) {
+              _context.next = 69;
+              break;
+            }
+
+            inputV2 = txParams === null || txParams === void 0 ? void 0 : txParams.InputCoins;
+            _context.next = 69;
+            return this.setSpendingCoinsStorage({
+              tokenId: _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"],
+              coins: inputV2
+            });
+
+          case 69:
+            _context.next = 71;
+            return this.send(b58EncodedTx, Boolean(tokenID && tokenPayments));
+
+          case 71:
+            response = _context.sent;
+            _context.next = 77;
+            break;
+
+          case 74:
+            _context.prev = 74;
+            _context.t0 = _context["catch"](61);
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].SendTxErr, "Can not send PRV transaction", _context.t0);
+
+          case 77:
             return _context.abrupt("return", {
               response: response,
               tx: txObj,
@@ -8792,19 +8874,19 @@ function _transactConvert2() {
               txType: "cv"
             });
 
-          case 73:
-            _context.prev = 73;
-            _context.t1 = _context["catch"](12);
+          case 80:
+            _context.prev = 80;
+            _context.t1 = _context["catch"](13);
             throw _context.t1;
 
-          case 76:
+          case 83:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[12, 73], [59, 65]]);
+    }, _callee, this, [[13, 80], [61, 74]]);
   }));
-  return _transactConvert2.apply(this, arguments);
+  return _transactConvert.apply(this, arguments);
 }
 
 function createAndSendConvertTx(_x2) {
@@ -8848,7 +8930,7 @@ function _createAndSendConvertTx() {
 
           case 11:
             _context2.next = 13;
-            return this._transactConvert({
+            return this.transactConvert({
               transfer: {
                 prvPayments: prvPayments,
                 fee: fee,
@@ -8888,7 +8970,7 @@ function createAndSendConvertPToken(_x3) {
 
 function _createAndSendConvertPToken() {
   _createAndSendConvertPToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_ref3) {
-    var _ref3$tokenID, tokenID, balance, fee, info, paymentInfo, tokenPaymentInfo, errors;
+    var _ref3$tokenID, tokenID, balance, errors, fee, info, paymentInfo, tokenPaymentInfo;
 
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
@@ -8896,20 +8978,20 @@ function _createAndSendConvertPToken() {
           case 0:
             _ref3$tokenID = _ref3.tokenID, tokenID = _ref3$tokenID === void 0 ? null : _ref3$tokenID, balance = _ref3.balance;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenID", tokenID).required().string();
+            errors = [];
 
             if (!(balance === 0)) {
-              _context3.next = 4;
+              _context3.next = 5;
               break;
             }
 
-            return _context3.abrupt("return");
+            return _context3.abrupt("return", errors);
 
-          case 4:
+          case 5:
             fee = 100;
             info = "";
             paymentInfo = [];
             tokenPaymentInfo = [];
-            errors = [];
             /** create and send convert pToken */
 
           case 9:
@@ -9058,17 +9140,14 @@ function _createAndSendConvertNativeToken() {
           case 0:
             tokenID = _ref4.tokenID, balance = _ref4.balance;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenID", tokenID).string();
+            errors = [];
 
             if (!(balance <= 100)) {
-              _context5.next = 4;
+              _context5.next = 5;
               break;
             }
 
-            return _context5.abrupt("return");
-
-          case 4:
-            errors = [];
-            /** Loop handle convert transaction */
+            return _context5.abrupt("return", errors);
 
           case 5:
             if (false) {}
@@ -9082,7 +9161,8 @@ function _createAndSendConvertNativeToken() {
               transfer: {
                 prvPayments: paymentInfosParam,
                 fee: fee,
-                info: info
+                info: info,
+                tokenID: tokenID
               },
               extra: {
                 isEncryptMessage: true
@@ -9170,7 +9250,7 @@ function _convertAllToken() {
               return coin.tokenId === _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"];
             });
             pTokenUnspent = unspentCoins.filter(function (coin) {
-              return coin.tokenId !== _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"];
+              return coin.tokenId !== _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"] && coin.balance > 100;
             });
             /** handle convert PRV */
 
@@ -9224,12 +9304,163 @@ function _convertAllToken() {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  _transactConvert: _transactConvert,
+  transactConvert: transactConvert,
   createAndSendConvertTx: createAndSendConvertTx,
   convertAllToken: convertAllToken,
   convertAllPToken: convertAllPToken,
   createAndSendConvertNativeToken: createAndSendConvertNativeToken,
   createAndSendConvertPToken: createAndSendConvertPToken
+});
+
+/***/ }),
+
+/***/ "./lib/module/Account/account.unshield.js":
+/*!************************************************!*\
+  !*** ./lib/module/Account/account.unshield.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/common/keySet */ "./lib/common/keySet.js");
+/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _account_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./account.constants */ "./lib/module/Account/account.constants.js");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+ // createAndSendBurningRequestTx create and send tx burning ptoken when withdraw
+// remoteAddress (string) is an ETH/BTC address which users want to receive ETH/BTC (without 0x)
+
+/** createAndSendBurningRequestTx
+ * @param {{PaymentAddress: string, Amount: string, Message: string }} prvPayments
+ * @param {number} fee
+ * @param {string} info
+ * @param {string} tokenID
+ * @param {object} metadata
+ * @param {boolean} burningType
+ * @param {boolean} isEncryptMessage
+ * @param {boolean} isEncryptMessageToken
+ * @param {number} burnAmount
+ * @param {string} remoteAddress
+ *
+ */
+
+function createAndSendBurningRequestTx(_x) {
+  return _createAndSendBurningRequestTx.apply(this, arguments);
+}
+
+function _createAndSendBurningRequestTx() {
+  _createAndSendBurningRequestTx = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
+    var _ref$transfer, fee, _ref$transfer$info, info, tokenID, _ref$extra, _ref$extra2, _ref$extra2$burningTy, burningType, _ref$extra2$isEncrypt, isEncryptMessageToken, burnAmount, remoteAddress, burningTokenID, burningAddress, tokenPayments, isEncodeOnly, emptyKeySet, addrForMd, burningReqMetadata, tx;
+
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _ref$transfer = _ref.transfer, fee = _ref$transfer.fee, _ref$transfer$info = _ref$transfer.info, info = _ref$transfer$info === void 0 ? "" : _ref$transfer$info, tokenID = _ref$transfer.tokenID, _ref$extra = _ref.extra, _ref$extra2 = _ref$extra === void 0 ? {} : _ref$extra, _ref$extra2$burningTy = _ref$extra2.burningType, burningType = _ref$extra2$burningTy === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_1__["BurningRequestMeta"] : _ref$extra2$burningTy, _ref$extra2$isEncrypt = _ref$extra2.isEncryptMessageToken, isEncryptMessageToken = _ref$extra2$isEncrypt === void 0 ? true : _ref$extra2$isEncrypt, burnAmount = _ref$extra2.burnAmount, remoteAddress = _ref$extra2.remoteAddress;
+            _context.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("fee", fee).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("info", info).string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("burningType", burningType).number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("disEncryptMessageToken", isEncryptMessageToken)["boolean"]();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("burnAmount", burnAmount).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("remoteAddress", remoteAddress).required().string();
+            burningTokenID = tokenID;
+
+            if (remoteAddress.startsWith("0x")) {
+              remoteAddress = remoteAddress.slice(2);
+            }
+
+            _context.next = 13;
+            return this.updateProgressTx(10, "Encrypting Message");
+
+          case 13:
+            _context.next = 15;
+            return Object(_lib_core__WEBPACK_IMPORTED_MODULE_1__["getBurningAddress"])(this.rpc);
+
+          case 15:
+            burningAddress = _context.sent;
+            tokenPayments = [{
+              PaymentAddress: burningAddress,
+              Amount: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(burnAmount).toString(),
+              Message: ""
+            }];
+            isEncodeOnly = !isEncryptMessageToken;
+            _context.next = 20;
+            return Object(_lib_core__WEBPACK_IMPORTED_MODULE_1__["encryptMessageOutCoin"])(tokenPayments, isEncodeOnly);
+
+          case 20:
+            tokenPayments = _context.sent;
+            // use an empty payment address
+            emptyKeySet = new _lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__["KeySet"]();
+            _context.next = 24;
+            return emptyKeySet.importFromPrivateKey(new Uint8Array(32));
+
+          case 24:
+            addrForMd = Object(_lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__["addressAsObject"])(emptyKeySet.PaymentAddress);
+            _context.next = 27;
+            return this.updateProgressTx(15, "Generating Metadata");
+
+          case 27:
+            // prepare meta data for tx
+            burningReqMetadata = {
+              BurnerAddress: addrForMd,
+              BurningAmount: burnAmount,
+              TokenID: burningTokenID,
+              RemoteAddress: remoteAddress,
+              Type: burningType
+            };
+            console.log("burningReqMetadata", burningReqMetadata);
+            _context.next = 31;
+            return this.transact({
+              transfer: {
+                prvPayments: [],
+                fee: fee,
+                info: info,
+                tokenID: burningTokenID,
+                tokenPayments: tokenPayments
+              },
+              extra: {
+                metadata: burningReqMetadata,
+                txType: _account_constants__WEBPACK_IMPORTED_MODULE_4__["TX_TYPE"].BURN_DECENTRALIZED
+              }
+            });
+
+          case 31:
+            tx = _context.sent;
+            _context.next = 34;
+            return this.updateProgressTx(100, "Completed");
+
+          case 34:
+            return _context.abrupt("return", tx);
+
+          case 37:
+            _context.prev = 37;
+            _context.t0 = _context["catch"](1);
+            throw _context.t0;
+
+          case 40:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this, [[1, 37]]);
+  }));
+  return _createAndSendBurningRequestTx.apply(this, arguments);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  createAndSendBurningRequestTx: createAndSendBurningRequestTx
 });
 
 /***/ }),
@@ -9852,7 +10083,7 @@ var prepareInputForConvertTxV2 = /*#__PURE__*/function () {
 
             account.setPrivacyVersion(_lib_core_constants__WEBPACK_IMPORTED_MODULE_13__["PrivacyVersion"].ver2);
             _context7.next = 22;
-            return account.getUnspentCoinsV2(_lib_core__WEBPACK_IMPORTED_MODULE_3__["PRVIDSTR"]);
+            return account.getSpendingCoins(_lib_core__WEBPACK_IMPORTED_MODULE_3__["PRVIDSTR"]);
 
           case 22:
             _context7.t0 = _context7.sent;
@@ -9866,7 +10097,7 @@ var prepareInputForConvertTxV2 = /*#__PURE__*/function () {
 
           case 25:
             unspentPRV_v2 = _context7.t0;
-            inputCoinsForFee = _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_9__["defaultCoinChooser"].coinsToSpend(unspentPRV_v2, new bn_js__WEBPACK_IMPORTED_MODULE_1___default.a(fee), _lib_core__WEBPACK_IMPORTED_MODULE_3__["PRVIDSTR"]).resultInputCoins;
+            inputCoinsForFee = _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_9__["defaultCoinChooser"].coinsToSpend(unspentPRV_v2, new bn_js__WEBPACK_IMPORTED_MODULE_1___default.a(fee)).resultInputCoins;
             account.setPrivacyVersion(_lib_core_constants__WEBPACK_IMPORTED_MODULE_13__["PrivacyVersion"].ver1);
             shardID = Object(_lib_common_common__WEBPACK_IMPORTED_MODULE_12__["getShardIDFromLastByte"])(account.key.KeySet.PaymentAddress.Pk[account.key.KeySet.PaymentAddress.Pk.length - 1]);
             _context7.next = 31;
