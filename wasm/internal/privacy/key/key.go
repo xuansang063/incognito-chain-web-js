@@ -66,17 +66,19 @@ func (k *OTAKey) MarshalJSON() ([]byte, error){
 	return json.Marshal(temp)
 }
 
-func UnmarshalJSON(b []byte, k *OTAKey) error{
+func (k *OTAKey) UnmarshalJSON(b []byte) error{
 	temp := struct{
 		Pk        PublicKey
 		OTASecret PrivateOTAKey
 	}{}
-	err := json.Unmarshal(b, temp)
+	err := json.Unmarshal(b, &temp)
 	if err!=nil{
 		return err
 	}
-	k.pk = temp.Pk
-	k.otaSecret = temp.OTASecret
+	*k = OTAKey {
+		pk: temp.Pk,
+		otaSecret: temp.OTASecret,
+	}
 	return nil
 }
 

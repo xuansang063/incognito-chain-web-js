@@ -58,38 +58,26 @@ const MAX_TRIES_OTA int = 50000
 
 func getReceivedCoinIndex(proof privacy.ProofV2, otaKey privacy.OTAKey) (int64, error) {
     otaSecret := otaKey.GetOTASecretKey()
-    if otaSecret == nil {
-        return -1, nil
+    publicSpend := otaKey.GetPublicSpend()
+    if otaSecret == nil || publicSpend == nil {
+        return -1, errors.New("Error: invalid OTA Key")
     }
-    publicSpend := otaKey.GetPublicSpend()   
     for currentCoinIndex, c := range proof.GetOutputCoins() {
         theCoin, ok := c.(*privacy.CoinV2)
         if !ok {
             continue
         }
         index := uint32(0)
-        Rpoint, _, _, err := theCoin.GetTxRandomDetail()
+        _, Rpoint, index, err := theCoin.GetTxRandomDetail()
         if err != nil {
-            return -1, nil
+            return -1, errors.New("Error: invalid TxRandom in coin")
         }
         rK := (&privacy.Point{}).ScalarMult(Rpoint, otaSecret)
-        for i := MAX_TRIES_OTA; i > 0; i-- {
-            index += 1
-            hash := privacy.HashToScalar(append(rK.ToBytesS(), common.Uint32ToBytes(index)...))
-            HrKG := (&privacy.Point{}).ScalarMultBase(hash)
-            recomputedPublicKey := (&privacy.Point{}).Add(HrKG, publicSpend)
-            temp := recomputedPublicKey.ToBytesS()
-            recomputedShardID := common.GetShardIDFromLastByte(temp[len(temp)-1])
-            shardID, err := theCoin.GetShardID()
-            if err != nil {
-                break
-            }
-            if shardID == recomputedShardID {
-                if privacy.IsPointEqual(theCoin.GetPublicKey(), recomputedPublicKey) {
-                    return int64(currentCoinIndex), nil
-                }
-                break
-            }
+        hash := privacy.HashToScalar(append(rK.ToBytesS(), common.Uint32ToBytes(index)...))
+        HrKG := (&privacy.Point{}).ScalarMultBase(hash)
+        recomputedPublicKey := (&privacy.Point{}).Add(HrKG, publicSpend)
+        if privacy.IsPointEqual(theCoin.GetPublicKey(), recomputedPublicKey) {
+            return int64(currentCoinIndex), nil
         }
     }
     return -1, nil

@@ -507,15 +507,15 @@ func VerifySentTx(paramsJson string) (int64, error) {
 		return -1, err
 	}
 	sentTxIndex, err := getSentCoinIndex(*proof, holder.SenderSeal, holder.PaymentAddress)
-	return sentTxIndex, nil
+	return sentTxIndex, err
 }
 
 // VerifyReceivedTx returns the index of the input coin that matches the OTA secret in parameters, or -1 if none
 func VerifyReceivedTx(paramsJson string) (int64, error) {
 	raw := []byte(paramsJson)
 	var holder struct {
-		Tx             json.RawMessage
-		OTAKey 		   privacy.OTAKey
+		Tx     json.RawMessage
+		OTAKey privacy.OTAKey
 	}
 	err := json.Unmarshal(raw, &holder)
 	if err != nil {
@@ -529,5 +529,5 @@ func VerifyReceivedTx(paramsJson string) (int64, error) {
 		return -1, err
 	}
 	recvTxIndex, err := getReceivedCoinIndex(*proof, holder.OTAKey)
-	return recvTxIndex, nil
+	return recvTxIndex, err
 }
