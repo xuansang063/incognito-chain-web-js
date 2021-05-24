@@ -2528,7 +2528,7 @@ var createAxiosInstance = function createAxiosInstance(_ref) {
 /*!********************!*\
   !*** ./lib/lib.js ***!
   \********************/
-/*! exports provided: SimpleWallet, Transactor, Wallet, constants, types, utils, init, Account */
+/*! exports provided: SimpleWallet, Transactor, Wallet, constants, types, utils, init, Account, StorageServices */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2571,6 +2571,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _module_Account__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./module/Account */ "./lib/module/Account/index.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Account", function() { return _module_Account__WEBPACK_IMPORTED_MODULE_20__["Account"]; });
 
+/* harmony import */ var _services_storage__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./services/storage */ "./lib/services/storage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StorageServices", function() { return _services_storage__WEBPACK_IMPORTED_MODULE_21__["default"]; });
+
 var _constants;
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2589,6 +2592,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 var webJsPath = "./";
+
 
 
 
@@ -2795,7 +2799,7 @@ function setRPCClient(url) {
 
 function setStorageServices(storage) {
   new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("Storage services", storage).required();
-  this.storage = storage || _lib_services_storage__WEBPACK_IMPORTED_MODULE_0__["default"];
+  this.storage = storage || new _lib_services_storage__WEBPACK_IMPORTED_MODULE_0__["default"]();
 }
 /**
  * setPrivacyVersion - Set privacy version
@@ -3168,13 +3172,113 @@ function _getTxHistory() {
   return _getTxHistory.apply(this, arguments);
 }
 
+function getTxsByReceiver() {
+  return _getTxsByReceiver.apply(this, arguments);
+}
+
+function _getTxsByReceiver() {
+  _getTxsByReceiver = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+    var _ref4,
+        _ref4$tokenID,
+        tokenID,
+        otaKey,
+        _yield$this$getOutput,
+        unspentCoins,
+        spentCoins,
+        txs,
+        oversize,
+        offset,
+        limit,
+        data,
+        _args4 = arguments;
+
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _ref4 = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : {}, _ref4$tokenID = _ref4.tokenID, tokenID = _ref4$tokenID === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] : _ref4$tokenID;
+            _context4.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenID", tokenID).required().string(); // new Validator("limit", limit).required().number();
+            // new Validator("offset", offset).required().number();
+
+            otaKey = this.getOTAKey();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("otaKey", otaKey).required().string();
+            _context4.next = 7;
+            return this.getOutputCoins(tokenID);
+
+          case 7:
+            _yield$this$getOutput = _context4.sent;
+            unspentCoins = _yield$this$getOutput.unspentCoins;
+            spentCoins = _yield$this$getOutput.spentCoins;
+            console.log("size output coins", unspentCoins.length, spentCoins.length);
+            txs = [];
+            oversize = false;
+            offset = 0;
+            limit = 10;
+
+          case 15:
+            if (oversize) {
+              _context4.next = 26;
+              break;
+            }
+
+            _context4.next = 18;
+            return this.rpcCoinService.apiGetTxsByReceiver({
+              limit: limit,
+              offset: offset,
+              otaKey: otaKey,
+              tokenID: tokenID
+            });
+
+          case 18:
+            _context4.t0 = _context4.sent;
+
+            if (_context4.t0) {
+              _context4.next = 21;
+              break;
+            }
+
+            _context4.t0 = [];
+
+          case 21:
+            data = _context4.t0;
+            txs = _toConsumableArray(txs).concat(_toConsumableArray(data));
+
+            if (data.length < limit) {
+              oversize = true;
+            } else {
+              offset = offset + limit;
+            }
+
+            _context4.next = 15;
+            break;
+
+          case 26:
+            return _context4.abrupt("return", txs);
+
+          case 29:
+            _context4.prev = 29;
+            _context4.t1 = _context4["catch"](1);
+            throw _context4.t1;
+
+          case 32:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this, [[1, 29]]);
+  }));
+  return _getTxsByReceiver.apply(this, arguments);
+}
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   getNormalTxHistory: getNormalTxHistory,
   getPrivacyTokenTxHistory: getPrivacyTokenTxHistory,
   saveTxHistory: saveTxHistory,
   getTxHistory: getTxHistory,
   getKeyTxHistoryByTokenId: getKeyTxHistoryByTokenId,
-  getTxHistoryByTxID: getTxHistoryByTxID
+  getTxHistoryByTxID: getTxHistoryByTxID,
+  getTxsByReceiver: getTxsByReceiver
 });
 
 /***/ }),
@@ -3347,8 +3451,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_module_Account_account_initToken__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @lib/module/Account/account.initToken */ "./lib/module/Account/account.initToken.js");
 /* harmony import */ var _lib_module_Account_account_configs__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @lib/module/Account/account.configs */ "./lib/module/Account/account.configs.js");
 /* harmony import */ var _lib_module_Account_account_unshield__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! @lib/module/Account/account.unshield */ "./lib/module/Account/account.unshield.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
+/* harmony import */ var _account_utils__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./account.utils */ "./lib/module/Account/account.utils.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -3367,6 +3470,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -3376,6 +3481,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -3454,7 +3560,7 @@ var Account = /*#__PURE__*/function () {
       CustomTokenTx: [],
       PrivacyTokenTx: []
     };
-    this.storage = w.Storage ? w.Storage : _lib_services_storage__WEBPACK_IMPORTED_MODULE_5__["default"];
+    this.storage = w.Storage ? w.Storage : new _lib_services_storage__WEBPACK_IMPORTED_MODULE_5__["default"]();
     this.coinUTXOs = {};
     this.rpc = w.RpcClient ? new _lib_rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_25__["RpcClient"](w.RpcClient) : null;
     this.rpcCoinService = w.RpcCoinService ? new _lib_rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_18__["RpcHTTPCoinServiceClient"](w.RpcCoinService) : null;
@@ -3603,30 +3709,34 @@ var Account = /*#__PURE__*/function () {
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.prev = 0;
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("key", key).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("value", value).required();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("storage", this.storage).required().object();
+                console.log("typeof", _typeof(this.storage.setItem), this.storage.getItem);
 
                 if (!this.storage) {
-                  _context3.next = 4;
+                  _context3.next = 8;
                   break;
                 }
 
-                _context3.next = 4;
+                _context3.next = 8;
                 return this.storage.setItem(key, typeof value !== "string" ? JSON.stringify(value) : value);
 
-              case 4:
-                _context3.next = 9;
+              case 8:
+                _context3.next = 13;
                 break;
 
-              case 6:
-                _context3.prev = 6;
+              case 10:
+                _context3.prev = 10;
                 _context3.t0 = _context3["catch"](0);
-                console.debug("ERROR SET ACCOUNT STORAGE", _context3.t0 === null || _context3.t0 === void 0 ? void 0 : _context3.t0.message);
+                throw _context3.t0;
 
-              case 9:
+              case 13:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[0, 6]]);
+        }, _callee3, this, [[0, 10]]);
       }));
 
       function setAccountStorage(_x3, _x4) {
@@ -4303,41 +4413,51 @@ var Account = /*#__PURE__*/function () {
     key: "getListSpentCoinsStorage",
     value: function () {
       var _getListSpentCoinsStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16(tokenId) {
-        var key, listUnspentCoins;
+        var key;
         return regeneratorRuntime.wrap(function _callee16$(_context16) {
           while (1) {
             switch (_context16.prev = _context16.next) {
               case 0:
                 _context16.prev = 0;
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenID", tokenId).required().string();
 
                 if (!this.storage) {
-                  _context16.next = 7;
+                  _context16.next = 10;
                   break;
                 }
 
-                key = this.getPrefixKeyStorage() + this.getKeyListSpentCoinsByTokenId(tokenId);
-                _context16.next = 5;
+                key = this.getKeyListSpentCoinsByTokenId(tokenId);
+                _context16.next = 6;
                 return this.getAccountStorage(key);
 
-              case 5:
-                listUnspentCoins = _context16.sent;
-                return _context16.abrupt("return", listUnspentCoins || []);
+              case 6:
+                _context16.t0 = _context16.sent;
 
-              case 7:
-                _context16.next = 12;
-                break;
+                if (_context16.t0) {
+                  _context16.next = 9;
+                  break;
+                }
+
+                _context16.t0 = [];
 
               case 9:
-                _context16.prev = 9;
-                _context16.t0 = _context16["catch"](0);
-                throw _context16.t0;
+                return _context16.abrupt("return", _context16.t0);
+
+              case 10:
+                _context16.next = 15;
+                break;
 
               case 12:
+                _context16.prev = 12;
+                _context16.t1 = _context16["catch"](0);
+                throw _context16.t1;
+
+              case 15:
               case "end":
                 return _context16.stop();
             }
           }
-        }, _callee16, this, [[0, 9]]);
+        }, _callee16, this, [[0, 12]]);
       }));
 
       function getListSpentCoinsStorage(_x16) {
@@ -4350,46 +4470,48 @@ var Account = /*#__PURE__*/function () {
     key: "setListSpentCoinsStorage",
     value: function () {
       var _setListSpentCoinsStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17(_ref9) {
-        var spentCoins, tokenId, keyStorage, oldListUnspentCoins, newListSpentCoins;
+        var spentCoins, tokenId, key, oldSpentCoins, value;
         return regeneratorRuntime.wrap(function _callee17$(_context17) {
           while (1) {
             switch (_context17.prev = _context17.next) {
               case 0:
                 spentCoins = _ref9.spentCoins, tokenId = _ref9.tokenId;
                 _context17.prev = 1;
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("spentCoins", spentCoins).required().array();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenId", tokenId).required().string();
 
                 if (!this.storage) {
-                  _context17.next = 10;
+                  _context17.next = 12;
                   break;
                 }
 
-                keyStorage = this.getKeyListSpentCoinsByTokenId(tokenId);
-                _context17.next = 6;
+                key = this.getKeyListSpentCoinsByTokenId(tokenId);
+                _context17.next = 8;
                 return this.getListSpentCoinsStorage(tokenId);
 
-              case 6:
-                oldListUnspentCoins = _context17.sent;
-                newListSpentCoins = (oldListUnspentCoins === null || oldListUnspentCoins === void 0 ? void 0 : oldListUnspentCoins.length) === 0 ? _toConsumableArray(spentCoins) : lodash_uniqBy__WEBPACK_IMPORTED_MODULE_3___default()([].concat(_toConsumableArray(oldListUnspentCoins), _toConsumableArray(spentCoins)), function (item) {
+              case 8:
+                oldSpentCoins = _context17.sent;
+                value = (oldSpentCoins === null || oldSpentCoins === void 0 ? void 0 : oldSpentCoins.length) === 0 ? _toConsumableArray(spentCoins) : lodash_uniqBy__WEBPACK_IMPORTED_MODULE_3___default()([].concat(_toConsumableArray(oldSpentCoins), _toConsumableArray(spentCoins)), function (item) {
                   return item === null || item === void 0 ? void 0 : item.KeyImage;
                 });
-                _context17.next = 10;
-                return this.setAccountStorage(keyStorage, newListSpentCoins);
-
-              case 10:
-                _context17.next = 15;
-                break;
+                _context17.next = 12;
+                return this.setAccountStorage(key, value);
 
               case 12:
-                _context17.prev = 12;
+                _context17.next = 17;
+                break;
+
+              case 14:
+                _context17.prev = 14;
                 _context17.t0 = _context17["catch"](1);
                 throw _context17.t0;
 
-              case 15:
+              case 17:
               case "end":
                 return _context17.stop();
             }
           }
-        }, _callee17, this, [[1, 12]]);
+        }, _callee17, this, [[1, 14]]);
       }));
 
       function setListSpentCoinsStorage(_x17) {
@@ -5896,7 +6018,7 @@ var Account = /*#__PURE__*/function () {
       var _getListOutputCoinsV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee27(_ref10) {
         var _this2 = this;
 
-        var tokenId, total, viewKey, version, key, listOutputsCoins, _this$getLimitOffSetL, times, remainder, task, result;
+        var tokenId, total, viewKey, version, key, listOutputsCoins, _pagination, times, remainder, task, result;
 
         return regeneratorRuntime.wrap(function _callee27$(_context27) {
           while (1) {
@@ -5914,7 +6036,7 @@ var Account = /*#__PURE__*/function () {
                   break;
                 }
 
-                _this$getLimitOffSetL = this.getLimitOffSetListOuputCoinsWhenBreakSizeLimit(total), times = _this$getLimitOffSetL.times, remainder = _this$getLimitOffSetL.remainder;
+                _pagination = Object(_account_utils__WEBPACK_IMPORTED_MODULE_32__["pagination"])(total), times = _pagination.times, remainder = _pagination.remainder;
                 task = _toConsumableArray(Array(times)).map(function (item, index) {
                   var limit = LIMIT_COINS;
                   var offset = index * LIMIT_COINS;
@@ -6011,7 +6133,7 @@ var Account = /*#__PURE__*/function () {
       var _getListOutputCoinsV2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee28(_ref11) {
         var _this3 = this;
 
-        var tokenId, total, otaKey, version, listOutputsCoins, oldTotal, key, _this$getLimitOffSetL2, times, remainder, task, result;
+        var tokenId, total, otaKey, version, listOutputsCoins, oldTotal, key, _pagination2, times, remainder, task, result;
 
         return regeneratorRuntime.wrap(function _callee28$(_context28) {
           while (1) {
@@ -6036,7 +6158,7 @@ var Account = /*#__PURE__*/function () {
                   break;
                 }
 
-                _this$getLimitOffSetL2 = this.getLimitOffSetListOuputCoinsWhenBreakSizeLimit(total), times = _this$getLimitOffSetL2.times, remainder = _this$getLimitOffSetL2.remainder;
+                _pagination2 = Object(_account_utils__WEBPACK_IMPORTED_MODULE_32__["pagination"])(total), times = _pagination2.times, remainder = _pagination2.remainder;
                 task = _toConsumableArray(Array(times)).map(function (item, index) {
                   var limit = LIMIT_COINS;
                   var offset = index * LIMIT_COINS + oldTotal;
@@ -6086,20 +6208,22 @@ var Account = /*#__PURE__*/function () {
 
               case 24:
                 this.coinsStorage.totalCoinsSize = listOutputsCoins.length;
+                console.log("listOutputsCoins", listOutputsCoins.length);
                 listOutputsCoins = lodash_uniqBy__WEBPACK_IMPORTED_MODULE_3___default()(listOutputsCoins, "PublicKey");
+                console.log("listOutputsCoins after", listOutputsCoins.length);
                 return _context28.abrupt("return", listOutputsCoins);
 
-              case 29:
-                _context28.prev = 29;
+              case 31:
+                _context28.prev = 31;
                 _context28.t0 = _context28["catch"](1);
                 throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_14__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_14__["ErrorObject"].GetOutputCoinsErr, _context28.t0.message || "Can not get output coins when get unspent token ".concat(tokenId));
 
-              case 32:
+              case 34:
               case "end":
                 return _context28.stop();
             }
           }
-        }, _callee28, this, [[1, 29]]);
+        }, _callee28, this, [[1, 31]]);
       }));
 
       function getListOutputCoinsV2(_x39) {
@@ -6158,20 +6282,22 @@ var Account = /*#__PURE__*/function () {
             switch (_context30.prev = _context30.next) {
               case 0:
                 tokenId = _ref13.tokenId, spentCoins = _ref13.spentCoins;
-                _context30.next = 3;
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("tokenId", tokenId).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"]("spentCoins", spentCoins).array().required();
+                _context30.next = 5;
                 return this.setListSpentCoinsStorage({
                   spentCoins: spentCoins === null || spentCoins === void 0 ? void 0 : spentCoins.map(function (item) {
                     return {
                       TxRandom: item.TxRandom,
                       KeyImage: item.KeyImage,
                       Value: item.Value,
-                      KeyImageBase64: item.keyImageBase64
+                      PublicKey: item.PublicKey
                     };
                   }),
                   tokenId: tokenId
                 });
 
-              case 3:
+              case 5:
               case "end":
                 return _context30.stop();
             }
@@ -6484,16 +6610,6 @@ var Account = /*#__PURE__*/function () {
 
       return checkKeyImages;
     }()
-  }, {
-    key: "getLimitOffSetListOuputCoinsWhenBreakSizeLimit",
-    value: function getLimitOffSetListOuputCoinsWhenBreakSizeLimit(size) {
-      var times = Math.floor(size / LIMIT_COINS);
-      var remainder = size % LIMIT_COINS;
-      return {
-        times: times,
-        remainder: remainder
-      };
-    }
   }, {
     key: "measureAsyncFn",
     value: function () {
@@ -7230,9 +7346,18 @@ var Account = /*#__PURE__*/function () {
                 });
 
               case 36:
+                _context45.t0 = console;
+                _context45.next = 39;
+                return this.getListSpentCoinsStorage(tokenId);
+
+              case 39:
+                _context45.t1 = _context45.sent;
+
+                _context45.t0.log.call(_context45.t0, "spent coisn wize", _context45.t1);
+
                 return _context45.abrupt("return", listUnspentCoinsMerged);
 
-              case 37:
+              case 42:
               case "end":
                 return _context45.stop();
             }
@@ -7354,72 +7479,98 @@ var Account = /*#__PURE__*/function () {
       return submitOTAKey;
     }()
   }, {
-    key: "getUnspentCoins",
+    key: "getOutputCoins",
     value: function () {
-      var _getUnspentCoins = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee48(tokenID) {
-        var tokenId, version, _this$getUnspentCoins, unspentCoins;
+      var _getOutputCoins = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee48(tokenID) {
+        var spentCoins, unspentCoins, tokenId, version, _yield$this$getUnspen, _unspentCoins;
 
         return regeneratorRuntime.wrap(function _callee48$(_context48) {
           while (1) {
             switch (_context48.prev = _context48.next) {
               case 0:
-                _context48.prev = 0;
+                spentCoins = [];
+                unspentCoins = [];
+                _context48.prev = 2;
                 tokenId = tokenID || _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PRVIDSTR"];
                 version = this.privacyVersion;
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.privacyVersion, version).required().number();
-                _context48.next = 7;
+                _context48.next = 9;
                 return this.submitOTAKey();
 
-              case 7:
+              case 9:
                 _context48.t0 = version;
-                _context48.next = _context48.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver1 ? 10 : _context48.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver2 ? 12 : 13;
+                _context48.next = _context48.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver1 ? 12 : _context48.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver2 ? 18 : 25;
                 break;
-
-              case 10:
-                _this$getUnspentCoins = this.getUnspentCoinsByTokenIdV1({
-                  tokenId: tokenId
-                }), unspentCoins = _this$getUnspentCoins.unspentCoins;
-                return _context48.abrupt("return", unspentCoins);
 
               case 12:
-                return _context48.abrupt("return", this.getUnspentCoinsV2(tokenId));
-
-              case 13:
-                return _context48.abrupt("return", null);
+                _context48.next = 14;
+                return this.getUnspentCoinsByTokenIdV1({
+                  tokenId: tokenId
+                });
 
               case 14:
-                _context48.next = 19;
+                _yield$this$getUnspen = _context48.sent;
+                _unspentCoins = _yield$this$getUnspen.unspentCoins;
+                unspentCoins = _toConsumableArray(unspentCoins);
+                return _context48.abrupt("break", 26);
+
+              case 18:
+                _context48.next = 20;
+                return this.getUnspentCoinsV2(tokenId);
+
+              case 20:
+                unspentCoins = _context48.sent;
+                _context48.next = 23;
+                return this.getListSpentCoinsStorage(tokenId);
+
+              case 23:
+                spentCoins = _context48.sent;
+                return _context48.abrupt("break", 26);
+
+              case 25:
+                return _context48.abrupt("break", 26);
+
+              case 26:
+                _context48.next = 31;
                 break;
 
-              case 16:
-                _context48.prev = 16;
-                _context48.t1 = _context48["catch"](0);
+              case 28:
+                _context48.prev = 28;
+                _context48.t1 = _context48["catch"](2);
                 throw _context48.t1;
 
-              case 19:
+              case 31:
+                return _context48.abrupt("return", {
+                  spentCoins: spentCoins,
+                  unspentCoins: unspentCoins
+                });
+
+              case 32:
               case "end":
                 return _context48.stop();
             }
           }
-        }, _callee48, this, [[0, 16]]);
+        }, _callee48, this, [[2, 28]]);
       }));
 
-      function getUnspentCoins(_x53) {
-        return _getUnspentCoins.apply(this, arguments);
+      function getOutputCoins(_x53) {
+        return _getOutputCoins.apply(this, arguments);
       }
 
-      return getUnspentCoins;
+      return getOutputCoins;
     }()
   }, {
     key: "getSpendingCoins",
     value: function () {
       var _getSpendingCoins = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee49() {
         var tokenId,
+            _yield$this$getOutput,
             coins,
             spendingCoinsStorage,
             spendingCoins,
             _args49 = arguments;
+
         return regeneratorRuntime.wrap(function _callee49$(_context49) {
           while (1) {
             switch (_context49.prev = _context49.next) {
@@ -7428,15 +7579,16 @@ var Account = /*#__PURE__*/function () {
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
                 _context49.prev = 2;
                 _context49.next = 5;
-                return this.getUnspentCoins(tokenId);
+                return this.getOutputCoins(tokenId);
 
               case 5:
-                coins = _context49.sent;
-                _context49.prev = 6;
-                _context49.next = 9;
+                _yield$this$getOutput = _context49.sent;
+                coins = _yield$this$getOutput.unspentCoins;
+                _context49.prev = 7;
+                _context49.next = 10;
                 return this.getSpendingCoinsStorageByTokenId(tokenId);
 
-              case 9:
+              case 10:
                 spendingCoinsStorage = _context49.sent;
                 coins = coins.filter(function (item) {
                   return !(spendingCoinsStorage !== null && spendingCoinsStorage !== void 0 && spendingCoinsStorage.find(function (coin) {
@@ -7444,10 +7596,10 @@ var Account = /*#__PURE__*/function () {
                   }));
                 });
                 console.log("spendingCoinsStorage size", spendingCoinsStorage.length);
-                _context49.next = 14;
+                _context49.next = 15;
                 return this.rpcCoinService.apiGetSpendingCoinInMemPool();
 
-              case 14:
+              case 15:
                 spendingCoins = _context49.sent;
                 console.log("spendingCoins from csv ", spendingCoins.length);
 
@@ -7457,28 +7609,28 @@ var Account = /*#__PURE__*/function () {
                   });
                 }
 
-                _context49.next = 22;
+                _context49.next = 23;
                 break;
 
-              case 19:
-                _context49.prev = 19;
-                _context49.t0 = _context49["catch"](6);
+              case 20:
+                _context49.prev = 20;
+                _context49.t0 = _context49["catch"](7);
                 throw _context49.t0;
 
-              case 22:
+              case 23:
                 return _context49.abrupt("return", coins || []);
 
-              case 25:
-                _context49.prev = 25;
+              case 26:
+                _context49.prev = 26;
                 _context49.t1 = _context49["catch"](2);
                 throw _context49.t1;
 
-              case 28:
+              case 29:
               case "end":
                 return _context49.stop();
             }
           }
-        }, _callee49, this, [[2, 25], [6, 19]]);
+        }, _callee49, this, [[2, 26], [7, 20]]);
       }));
 
       function getSpendingCoins() {
@@ -7491,7 +7643,8 @@ var Account = /*#__PURE__*/function () {
     key: "getBalance",
     value: function () {
       var _getBalance = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee50(tokenID) {
-        var accountBalance, tokenId, listUnspentCoins;
+        var accountBalance, tokenId, _yield$this$measureAs, listUnspentCoins;
+
         return regeneratorRuntime.wrap(function _callee50$(_context50) {
           while (1) {
             switch (_context50.prev = _context50.next) {
@@ -7500,30 +7653,31 @@ var Account = /*#__PURE__*/function () {
                 _context50.prev = 1;
                 tokenId = tokenID || _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PRVIDSTR"];
                 _context50.next = 5;
-                return this.measureAsyncFn(this.getUnspentCoins, "totalTimeGetUnspentCoins", tokenId);
+                return this.measureAsyncFn(this.getOutputCoins, "totalTimeGetUnspentCoins", tokenId);
 
               case 5:
-                listUnspentCoins = _context50.sent;
+                _yield$this$measureAs = _context50.sent;
+                listUnspentCoins = _yield$this$measureAs.unspentCoins;
                 accountBalance = (listUnspentCoins === null || listUnspentCoins === void 0 ? void 0 : listUnspentCoins.reduce(function (totalAmount, coin) {
                   return totalAmount.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(coin.Value));
                 }, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0))) || new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
-                _context50.next = 12;
+                _context50.next = 13;
                 break;
 
-              case 9:
-                _context50.prev = 9;
+              case 10:
+                _context50.prev = 10;
                 _context50.t0 = _context50["catch"](1);
                 throw _context50.t0;
 
-              case 12:
+              case 13:
                 return _context50.abrupt("return", accountBalance.toString());
 
-              case 13:
+              case 14:
               case "end":
                 return _context50.stop();
             }
           }
-        }, _callee50, this, [[1, 9]]);
+        }, _callee50, this, [[1, 10]]);
       }));
 
       function getBalance(_x54) {
@@ -8083,9 +8237,46 @@ function _getPDeState() {
   return _getPDeState.apply(this, arguments);
 }
 
+function getPDexHistories() {
+  return _getPDexHistories.apply(this, arguments);
+}
+
+function _getPDexHistories() {
+  _getPDexHistories = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    var _ref2,
+        offset,
+        limit,
+        otakey,
+        _args3 = arguments;
+
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _ref2 = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : {}, offset = _ref2.offset, limit = _ref2.limit;
+            otakey = this.getOTAKey();
+            offset = offset || 0;
+            limit = limit || 100000;
+            return _context3.abrupt("return", this.rpcCoinService.apiGetPDexHistories({
+              otakey: otakey,
+              offset: offset,
+              limit: limit
+            }));
+
+          case 5:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this);
+  }));
+  return _getPDexHistories.apply(this, arguments);
+}
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   createAndSendTradeRequestTx: createAndSendTradeRequestTx,
-  getPDeState: getPDeState
+  getPDeState: getPDeState,
+  getPDexHistories: getPDexHistories
 });
 
 /***/ }),
@@ -8227,12 +8418,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_common_base58__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/common/base58 */ "./lib/common/base58.js");
 /* harmony import */ var _account_constants__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./account.constants */ "./lib/module/Account/account.constants.js");
 /* harmony import */ var _account_utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./account.utils */ "./lib/module/Account/account.utils.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -8672,23 +8857,10 @@ function _transact() {
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_3__["ErrorObject"].SendTxErr, "Can not send transaction", _context3.t2);
 
           case 102:
-            if (!!response.TokenID) {
-              tokenID = response.TokenID;
-            }
-
-            _context3.next = 105;
+            _context3.next = 104;
             return this.updateProgressTx(95, "Saving Records");
 
-          case 105:
-            _context3.next = 107;
-            return this.saveTxHistory({
-              tx: _objectSpread(_objectSpread({}, tx), {}, {
-                tokenID: tokenID,
-                txId: response.txId || hash
-              })
-            });
-
-          case 107:
+          case 104:
             taskSpendingCoins = [];
 
             if (!!inputForTx.inputCoinStrs) {
@@ -8705,14 +8877,14 @@ function _transact() {
               }));
             }
 
-            _context3.next = 112;
+            _context3.next = 109;
             return Promise.all(taskSpendingCoins);
 
-          case 112:
+          case 109:
             console.log("tx", tx.txId);
             return _context3.abrupt("return", tx);
 
-          case 114:
+          case 111:
           case "end":
             return _context3.stop();
         }
@@ -8747,29 +8919,30 @@ function _send() {
 
           case 4:
             if (!isToken) {
-              _context4.next = 10;
+              _context4.next = 11;
               break;
             }
 
-            _context4.next = 7;
+            console.log("isToken", isToken);
+            _context4.next = 8;
             return this.rpc.sendRawTxCustomTokenPrivacy(encodedTx);
 
-          case 7:
+          case 8:
             response = _context4.sent;
-            _context4.next = 13;
+            _context4.next = 14;
             break;
 
-          case 10:
-            _context4.next = 12;
+          case 11:
+            _context4.next = 13;
             return this.rpc.sendRawTx(encodedTx);
 
-          case 12:
+          case 13:
             response = _context4.sent;
 
-          case 13:
+          case 14:
             return _context4.abrupt("return", response);
 
-          case 14:
+          case 15:
           case "end":
             return _context4.stop();
         }
@@ -9643,7 +9816,7 @@ function _createAndSendBurningRequestTx() {
 /*!*********************************************!*\
   !*** ./lib/module/Account/account.utils.js ***!
   \*********************************************/
-/*! exports provided: createCoin, prepareInputForConvertTxV2, prepareInputForTxV2, cloneInputCoinJsonArray, estimateFee, getEstimateFee, getEstimateFeeForPToken, estimateTxSize, getUnspentCoin, newParamTxV2, newTokenParamV2, sleep */
+/*! exports provided: createCoin, prepareInputForConvertTxV2, prepareInputForTxV2, cloneInputCoinJsonArray, estimateFee, getEstimateFee, getEstimateFeeForPToken, estimateTxSize, getUnspentCoin, newParamTxV2, newTokenParamV2, sleep, pagination */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9660,6 +9833,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newParamTxV2", function() { return newParamTxV2; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "newTokenParamV2", function() { return newTokenParamV2; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sleep", function() { return sleep; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pagination", function() { return pagination; });
 /* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/isEmpty */ "./node_modules/lodash/isEmpty.js");
 /* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_isEmpty__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
@@ -10386,6 +10560,20 @@ function _createCoin() {
     }, _callee9, null, [[3, 11]]);
   }));
   return _createCoin.apply(this, arguments);
+}
+
+var LIMIT = 1;
+
+function pagination(size, limited) {
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("size", size).required().number();
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("limited", limited).number();
+  var limit = limited || LIMIT;
+  var times = Math.floor(size / limit);
+  var remainder = size % limit;
+  return {
+    times: times,
+    remainder: remainder
+  };
 }
 
 
@@ -13556,6 +13744,36 @@ var RpcHTTPCoinServiceClient = function RpcHTTPCoinServiceClient(url) {
     return _this.http.get("getpdestate");
   });
 
+  _defineProperty(this, "apiGetPDexHistories", function () {
+    var _ref5 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        otakey = _ref5.otakey,
+        offset = _ref5.offset,
+        limit = _ref5.limit;
+
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("otakey", otakey).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("offset", offset).required().number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("limit", limit).required().number();
+    var params = ["gettradehistory", "?offset=".concat(offset), "&limit=".concat(limit), "&otakey=".concat(otakey)];
+    return _this.http.get(params.join(""));
+  });
+
+  _defineProperty(this, "apiGetTxsByReceiver", function () {
+    var _ref6 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        _ref6$tokenID = _ref6.tokenID,
+        tokenID = _ref6$tokenID === void 0 ? _core__WEBPACK_IMPORTED_MODULE_1__["PRVIDSTR"] : _ref6$tokenID,
+        otaKey = _ref6.otaKey,
+        _ref6$limit = _ref6.limit,
+        limit = _ref6$limit === void 0 ? 100 : _ref6$limit,
+        _ref6$offset = _ref6.offset,
+        offset = _ref6$offset === void 0 ? 0 : _ref6$offset;
+
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenID", tokenID).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("otaKey", otaKey).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("limit", limit).required().number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("offset", offset).required().number();
+    return _this.http.get("gettxsbyreceiver?tokenid=".concat(tokenID, "&limit=").concat(limit, "&offset=").concat(offset, "&otakey=").concat(otaKey));
+  });
+
   this.http = Object(_http_axios__WEBPACK_IMPORTED_MODULE_2__["default"])({
     baseURL: url
   });
@@ -13884,12 +14102,6 @@ Interface.ensureImplements = function (object) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -13905,22 +14117,20 @@ var StorageServices = /*#__PURE__*/function () {
   function StorageServices() {
     _classCallCheck(this, StorageServices);
 
-    this.rootStorage = {};
+    this.storage = {};
   }
 
   _createClass(StorageServices, [{
     key: "setItem",
     value: function () {
       var _setItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(key, value) {
-        var rootStorage;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                rootStorage = _objectSpread(_objectSpread({}, this.rootStorage), {}, _defineProperty({}, key, value));
-                this.rootStorage = _objectSpread({}, rootStorage);
+                this.storage[key] = value;
 
-              case 2:
+              case 1:
               case "end":
                 return _context.stop();
             }
@@ -13942,7 +14152,7 @@ var StorageServices = /*#__PURE__*/function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                return _context2.abrupt("return", this.rootStorage[key] || undefined);
+                return _context2.abrupt("return", this.storage[key] || undefined);
 
               case 1:
               case "end":
@@ -13962,16 +14172,13 @@ var StorageServices = /*#__PURE__*/function () {
     key: "removeItem",
     value: function () {
       var _removeItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(key) {
-        var rootStorage;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                rootStorage = _objectSpread({}, this.rootStorage);
-                delete rootStorage[key];
-                this.rootStorage = _objectSpread({}, rootStorage);
+                delete this.storage[key];
 
-              case 3:
+              case 1:
               case "end":
                 return _context3.stop();
             }
@@ -13990,7 +14197,7 @@ var StorageServices = /*#__PURE__*/function () {
   return StorageServices;
 }();
 
-/* harmony default export */ __webpack_exports__["default"] = (new StorageServices());
+/* harmony default export */ __webpack_exports__["default"] = (StorageServices);
 
 /***/ }),
 
@@ -15800,7 +16007,8 @@ function getMaxWithdrawAmount(_x, _x2, _x3, _x4, _x5, _x6) {
 
 function _getMaxWithdrawAmount() {
   _getMaxWithdrawAmount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(from, to, tokenObject, account, rpcClient, isPrivacyForPrivateToken) {
-    var id, name, symbol, tokenParamJson, totalpTokenAmount, unspentToken, i, isRatePToken, isGetTokenFee, fee, maxWithdrawAmount;
+    var id, name, symbol, tokenParamJson, totalpTokenAmount, _yield$account$getOut, unspentToken, i, isRatePToken, isGetTokenFee, fee, maxWithdrawAmount;
+
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -15839,87 +16047,88 @@ function _getMaxWithdrawAmount() {
             totalpTokenAmount = new bn(0);
             _context.prev = 8;
             _context.next = 11;
-            return account.getUnspentCoins(tokenParamJson.propertyID.toLowerCase());
+            return account.getOutputCoins(tokenParamJson.propertyID.toLowerCase());
 
           case 11:
-            unspentToken = _context.sent;
+            _yield$account$getOut = _context.sent;
+            unspentToken = _yield$account$getOut.unspentCoins;
             tokenParamJson.tokenInputs = unspentToken;
 
             for (i = 0; i < unspentToken.length; i++) {
               totalpTokenAmount = totalpTokenAmount.add(new bn(unspentToken[i].Value));
             }
 
-            _context.next = 19;
+            _context.next = 20;
             break;
 
-          case 16:
-            _context.prev = 16;
+          case 17:
+            _context.prev = 17;
             _context.t0 = _context["catch"](8);
             throw _context.t0;
 
-          case 19:
-            _context.prev = 19;
-            _context.next = 22;
+          case 20:
+            _context.prev = 20;
+            _context.next = 23;
             return rpcClient.isExchangeRatePToken(tokenParamJson.propertyID);
 
-          case 22:
+          case 23:
             isRatePToken = _context.sent;
-            _context.next = 28;
+            _context.next = 29;
             break;
 
-          case 25:
-            _context.prev = 25;
-            _context.t1 = _context["catch"](19);
+          case 26:
+            _context.prev = 26;
+            _context.t1 = _context["catch"](20);
             isRatePToken = false;
 
-          case 28:
+          case 29:
             isGetTokenFee = false;
 
             if (isRatePToken) {
               isGetTokenFee = true;
             }
 
-            _context.prev = 30;
-            _context.next = 33;
+            _context.prev = 31;
+            _context.next = 34;
             return getEstimateFee(from, to, 0, account, false, isPrivacyForPrivateToken, rpcClient, null, tokenParamJson, isGetTokenFee);
 
-          case 33:
+          case 34:
             fee = _context.sent;
-            _context.next = 52;
+            _context.next = 53;
             break;
 
-          case 36:
-            _context.prev = 36;
-            _context.t2 = _context["catch"](30);
+          case 37:
+            _context.prev = 37;
+            _context.t2 = _context["catch"](31);
 
             if (!isGetTokenFee) {
-              _context.next = 51;
+              _context.next = 52;
               break;
             }
 
             isGetTokenFee = false;
-            _context.prev = 40;
-            _context.next = 43;
+            _context.prev = 41;
+            _context.next = 44;
             return getEstimateFee(from, to, 0, account, false, isPrivacyForPrivateToken, rpcClient, null, tokenParamJson, isGetTokenFee);
 
-          case 43:
+          case 44:
             fee = _context.sent;
-            _context.next = 49;
+            _context.next = 50;
             break;
 
-          case 46:
-            _context.prev = 46;
-            _context.t3 = _context["catch"](40);
+          case 47:
+            _context.prev = 47;
+            _context.t3 = _context["catch"](41);
             throw _context.t3;
 
-          case 49:
-            _context.next = 52;
+          case 50:
+            _context.next = 53;
             break;
 
-          case 51:
+          case 52:
             throw _context.t2;
 
-          case 52:
+          case 53:
             maxWithdrawAmount = totalpTokenAmount;
 
             if (isGetTokenFee) {
@@ -15933,12 +16142,12 @@ function _getMaxWithdrawAmount() {
               isGetTokenFee: isGetTokenFee
             });
 
-          case 55:
+          case 56:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[8, 16], [19, 25], [30, 36], [40, 46]]);
+    }, _callee, null, [[8, 17], [20, 26], [31, 37], [41, 47]]);
   }));
   return _getMaxWithdrawAmount.apply(this, arguments);
 }

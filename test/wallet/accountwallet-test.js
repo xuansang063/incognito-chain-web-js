@@ -6,6 +6,7 @@ const {
   constants,
   utils,
   init,
+  StorageServices,
 } = require("../../");
 const { KeyWallet, RpcClient } = types;
 const { PaymentAddressType, PRVIDSTR, ENCODE_VERSION, PrivacyVersion } =
@@ -43,6 +44,7 @@ async function setup() {
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
     "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
+  // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
@@ -62,9 +64,7 @@ async function TestGetBalance() {
   try {
     const key = await accountSender.getDeserializeInformation();
     console.log("key", key);
-    let balance = await accountSender.getBalance(
-      "d6efe5956aa521f5eeaf2f69cc6fbf9f21bfb3dcb7d0de90fa40913e6e630983"
-    );
+    let balance = await accountSender.getBalance();
     console.log("balance: ", balance.toString());
   } catch (e) {
     console.log("Error when get balance: ", e);
@@ -150,11 +150,17 @@ async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 100;
   let info = "INFOFO";
-  let amountTransfer = 69e3; // in nano PRV
+  let amountTransfer = 12e3; // in nano PRV
   console.log("Will Transfer: ", amountTransfer);
   let paymentInfosParam = [];
+  let receverAccount = new AccountWallet(Wallet);
+  await receverAccount.setKey(
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+  );
+  const receverInfo = await receverAccount.getDeserializeInformation();
+  console.log(receverInfo);
   paymentInfosParam[0] = {
-    PaymentAddress: receiverPaymentAddrStr,
+    PaymentAddress: receverInfo.PaymentAddress,
     Amount: amountTransfer,
     Message: "ABC",
   };
@@ -580,6 +586,11 @@ async function ConvertAllToken() {
   }
 }
 
+async function TestGetTxsByReceiver() {
+  const txs = await accountSender.getTxsByReceiver({});
+  console.log("txs", txs.length);
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
@@ -587,11 +598,13 @@ async function MainRoutine() {
   await setup();
   // sequential execution of tests; the wait might still be too short
   try {
-    return await TestBurningRequestTx();
+    return await TestGetTxsByReceiver();
+
+    // return await TestBurningRequestTx();
     // return await TestCreateAndSendNativeToken();
 
     // return await TestGetBalance();
-    // const info = await accountSender.getDeserializeInformation();
+
     // const result = await accountSender.createAndSendInitTokenTx({
     //   transfer: {
     //     fee: 100,
