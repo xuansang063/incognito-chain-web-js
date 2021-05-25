@@ -63,7 +63,7 @@ async function setup() {
 async function TestGetBalance() {
   try {
     const account = await createAccountByPrivateKey(
-      "112t8rnbhcH4FBtrkR9qNLGHUMdM4Z8Sau1hpXif6xATpGWiMLUB1TYfbLkpdgoJ8sRKDDeyy7rPta8wVWySAGqH6SDrLi88NLgGw4Ca571c"
+      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
     );
     let balance = await account.getBalance();
     console.log("balance: ", balance.toString());
@@ -151,23 +151,25 @@ async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 100;
   let info = "INFOFO";
-  let amountTransfer = 69e2; // in nano PRV
-  console.log("Will Transfer: ", amountTransfer);
-  let paymentInfosParam = [];
-  let receverAccount = new AccountWallet(Wallet);
-  await receverAccount.setKey(
+  let amountTransfer = 6900; // in nano PRV
+  const account = await createAccountByPrivateKey(
     "112t8rnbhcH4FBtrkR9qNLGHUMdM4Z8Sau1hpXif6xATpGWiMLUB1TYfbLkpdgoJ8sRKDDeyy7rPta8wVWySAGqH6SDrLi88NLgGw4Ca571c"
   );
+  const receverAccount = await createAccountByPrivateKey(
+    "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+  );
+  let paymentInfosParam = [];
   const receverInfo = await receverAccount.getDeserializeInformation();
   console.log(receverInfo);
   paymentInfosParam[0] = {
-    PaymentAddress: receverInfo.PaymentAddress,
+    PaymentAddress:
+      "12smKh2tQ8CSqfXYKYXePDAxok9fb9xxxA6bszbtKGzd2ierpgz93kFfxiRxaSs4dFtUwghEoFW79YTJUyF6mXefiqtjWH2cBuNUSq5oGgG4aEeJj2UmeL9WhvikdsHr16KYpRxsKVGDzpWcG6Ku",
     Amount: amountTransfer,
     Message: "Send 6900 PRV",
   };
   // create and send PRV
   try {
-    let res = await accountSender.createAndSendNativeToken({
+    let res = await account.createAndSendNativeToken({
       transfer: { prvPayments: paymentInfosParam, fee, info },
       extra: { isEncryptMessage: true, txType: 0 },
     });
@@ -320,7 +322,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     let res = await accountSender.createAndSendPrivacyToken({
       transfer: {
         tokenID:
-          "f89631735938d5fb762017538279cb78f2831b1aa668e87b3c69d33403a9f785",
+          "d6efe5956aa521f5eeaf2f69cc6fbf9f21bfb3dcb7d0de90fa40913e6e630983",
         tokenPayments: tokenPaymentInfo,
         fee: feePRV,
         info: "SOME INFO WHEN TRANSFERRING TOKEN",
@@ -328,7 +330,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
       extra: { txType: 0 },
     });
     console.log("Send tx succesfully with TxID: ", res);
-    return res.Response.txId;
+    return res.txId;
   } catch (e) {
     console.log("Error when transferring ptoken: ", e);
     throw e;
@@ -601,7 +603,7 @@ async function createAccountByPrivateKey(privateKey) {
 
 async function TestGetTxsByReceiver() {
   const account = await createAccountByPrivateKey(
-    "112t8rnbhcH4FBtrkR9qNLGHUMdM4Z8Sau1hpXif6xATpGWiMLUB1TYfbLkpdgoJ8sRKDDeyy7rPta8wVWySAGqH6SDrLi88NLgGw4Ca571c"
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
   );
   const txs = await account.getTxsByReceiver({});
   console.log("txs", txs.length);
@@ -614,13 +616,14 @@ async function MainRoutine() {
   await setup();
   // sequential execution of tests; the wait might still be too short
   try {
+    // return await TestGetBalance();
+
     // return await TestCreateAndSendNativeToken();
+    // return await TestCreateAndSendPrivacyTokenTransfer();
     return await TestGetTxsByReceiver();
 
     // return await TestBurningRequestTx();
     // return await TestCreateAndSendNativeToken();
-
-    // return await TestGetBalance();
 
     // const result = await accountSender.createAndSendInitTokenTx({
     //   transfer: {
