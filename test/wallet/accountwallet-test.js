@@ -62,9 +62,10 @@ async function setup() {
 }
 async function TestGetBalance() {
   try {
-    const key = await accountSender.getDeserializeInformation();
-    console.log("key", key);
-    let balance = await accountSender.getBalance();
+    const account = await createAccountByPrivateKey(
+      "112t8rnbhcH4FBtrkR9qNLGHUMdM4Z8Sau1hpXif6xATpGWiMLUB1TYfbLkpdgoJ8sRKDDeyy7rPta8wVWySAGqH6SDrLi88NLgGw4Ca571c"
+    );
+    let balance = await account.getBalance();
     console.log("balance: ", balance.toString());
   } catch (e) {
     console.log("Error when get balance: ", e);
@@ -150,19 +151,19 @@ async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 100;
   let info = "INFOFO";
-  let amountTransfer = 12e3; // in nano PRV
+  let amountTransfer = 69e2; // in nano PRV
   console.log("Will Transfer: ", amountTransfer);
   let paymentInfosParam = [];
   let receverAccount = new AccountWallet(Wallet);
   await receverAccount.setKey(
-    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    "112t8rnbhcH4FBtrkR9qNLGHUMdM4Z8Sau1hpXif6xATpGWiMLUB1TYfbLkpdgoJ8sRKDDeyy7rPta8wVWySAGqH6SDrLi88NLgGw4Ca571c"
   );
   const receverInfo = await receverAccount.getDeserializeInformation();
   console.log(receverInfo);
   paymentInfosParam[0] = {
     PaymentAddress: receverInfo.PaymentAddress,
     Amount: amountTransfer,
-    Message: "ABC",
+    Message: "Send 6900 PRV",
   };
   // create and send PRV
   try {
@@ -586,8 +587,23 @@ async function ConvertAllToken() {
   }
 }
 
+async function createAccountByPrivateKey(privateKey) {
+  let account = new AccountWallet(Wallet);
+  account.setRPCCoinServices(rpcCoinService);
+  account.setPrivacyVersion(privacyVersion);
+  account.setRPCClient(rpcClient);
+  account.setRPCTxServices(rpcTxService);
+  await account.setKey(privateKey);
+  const receverInfo = await account.getDeserializeInformation();
+  console.log(receverInfo);
+  return account;
+}
+
 async function TestGetTxsByReceiver() {
-  const txs = await accountSender.getTxsByReceiver({});
+  const account = await createAccountByPrivateKey(
+    "112t8rnbhcH4FBtrkR9qNLGHUMdM4Z8Sau1hpXif6xATpGWiMLUB1TYfbLkpdgoJ8sRKDDeyy7rPta8wVWySAGqH6SDrLi88NLgGw4Ca571c"
+  );
+  const txs = await account.getTxsByReceiver({});
   console.log("txs", txs.length);
 }
 
@@ -598,6 +614,7 @@ async function MainRoutine() {
   await setup();
   // sequential execution of tests; the wait might still be too short
   try {
+    // return await TestCreateAndSendNativeToken();
     return await TestGetTxsByReceiver();
 
     // return await TestBurningRequestTx();
@@ -628,7 +645,7 @@ async function MainRoutine() {
     // return;
     // return await TestGetBalance();
     //  return await TestCreateAndSendNativeToken();
-    //  await TestCreateAndSendNativeToken();
+
     //  await TestCreateAndSendNativeToken();
     // await setup();
     // const result = await accountSender.getPDeState();
