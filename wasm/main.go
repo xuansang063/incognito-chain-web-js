@@ -43,6 +43,9 @@ func main() {
 	gobridge.RegisterCallback("hybridEncryptionASM", internal.HybridEncrypt)
 	gobridge.RegisterCallback("hybridDecryptionASM", internal.HybridDecrypt)
 	gobridge.RegisterCallback("estimateTxSize", internal.EstimateTxSize)
+
+	gobridge.RegisterCallback("verifySentTx", internal.VerifySentTx)
+	gobridge.RegisterCallback("verifyReceivedTx", internal.VerifyReceivedTx)
 	// not applicable
 	// gobridge.RegisterCallback("deriveSerialNumber", internal.DeriveSerialNumber)
 

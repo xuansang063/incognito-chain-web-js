@@ -399,39 +399,43 @@ func generateMlsagRingCA(inputCoins []privacy.PlainCoin, inputIndexes []uint64, 
 	return mlsag.NewRing(ring), indexes, lastTwoColumnsCommitmentToZero, nil
 }
 
-func (tx *Tx) proveCA(params_compat *TxPrivacyInitParams, params_token *TokenInnerParams) (bool, error) {
+func (tx *Tx) proveCA(params_compat *TxPrivacyInitParams, params_token *TokenInnerParams) (bool, *privacy.SenderSeal, error) {
 	var err error
 	var outputCoins 	[]*privacy.CoinV2
 	var sharedSecrets 	[]*privacy.Point
 	var numOfCoinsBurned uint = 0
 	var isBurning bool = false
 	var tid common.Hash = *params_compat.TokenID
+	var senderSealToExport *privacy.SenderSeal = nil
 	for _,inf := range params_compat.PaymentInfo{
-		c, ss, err := privacy.NewCoinCA(inf, &tid)
+		c, sharedSecret, seal, err := privacy.NewCoinCA(inf, &tid)
 		if err != nil {
-			return false, err
+			return false, nil, err
 		}
-		if ss==nil{
+		if senderSealToExport == nil {
+			senderSealToExport = seal
+		}
+		if sharedSecret==nil{
 			isBurning = true
 			numOfCoinsBurned += 1
 		}
-		sharedSecrets 	= append(sharedSecrets, ss)
+		sharedSecrets 	= append(sharedSecrets, sharedSecret)
 		outputCoins 	= append(outputCoins, c)
 	}
 	inputCoins, inputIndexes := params_token.GetInputCoins()
 	tx.Proof, err = privacy.ProveV2(inputCoins, outputCoins, sharedSecrets, true, params_compat.PaymentInfo)
 	if err != nil {
-		return false, err
+		return false, nil, err
 	}
 	if numOfCoinsBurned>1{
-		return false, errors.Errorf("output must not have more than 1 burned coin")
+		return false, nil, errors.Errorf("output must not have more than 1 burned coin")
 	}
 
 	
 	// jsb, _ := json.Marshal(tx)
 	// println("will sign CA on TX and hash", string(jsb), tx.Hash().String())
 	err = tx.signCA(inputCoins, inputIndexes, outputCoins, sharedSecrets, params_compat, params_token, tx.Hash()[:])
-	return isBurning, err
+	return isBurning, senderSealToExport, err
 }
 
 func (tx *Tx) signCA(inp []privacy.PlainCoin, inputIndexes []uint64, out []*privacy.CoinV2, outputSharedSecrets []*privacy.Point, params_compat *TxPrivacyInitParams, params_token *TokenInnerParams, hashedMessage []byte) error {
@@ -489,14 +493,14 @@ func (tx *Tx) signCA(inp []privacy.PlainCoin, inputIndexes []uint64, out []*priv
 }
 
 // this signs only on the hash of the data in it
-func (tx *Tx) proveToken(params *InitParamsAsm) (bool, error) {
+func (tx *Tx) proveToken(params *InitParamsAsm) (bool, *privacy.SenderSeal, error) {
 	temp := params.GetCompatTxTokenParams()
 	if temp==nil{
-		return false, errors.Errorf("Error parsing parameters")
+		return false, nil, errors.Errorf("Error parsing parameters")
 	}
 	tid, err := getTokenIDFromString(params.TokenParams.TokenID)
 	if err!=nil{
-		return false, errors.Errorf("Error parsing token id")
+		return false, nil, errors.Errorf("Error parsing token id")
 	}
 	// paying fee using pToken is not supported
 	feeToken := uint64(0)
@@ -504,18 +508,14 @@ func (tx *Tx) proveToken(params *InitParamsAsm) (bool, error) {
 
 	// Init tx and params (tx and params will be changed)
 	if err := tx.initializeTxAndParams(params_compat, &params.TokenParams.TokenPaymentInfo); err != nil {
-		return false, err
+		return false, nil, err
 	}
 	tx.Type = common.TxCustomTokenPrivacyType
 
-	isBurning, err := tx.proveCA(params_compat, params.TokenParams)
-	if err != nil {
-		return false, err
-	}
-	return isBurning, nil
+	return tx.proveCA(params_compat, params.TokenParams)
 }
 
-func (txToken *TxToken) initToken(txNormal *Tx, params *InitParamsAsm) error {
+func (txToken *TxToken) initToken(txNormal *Tx, params *InitParamsAsm) (*privacy.SenderSeal, error) {
 	if params.TokenParams.Type==CustomTokenInit && len(params.TokenParams.TokenName)>0 && len(params.TokenParams.TokenSymbol)>0{
 		txToken.TokenData.Type = CustomTokenInit
 		txToken.TokenData.PropertyName = params.TokenParams.TokenName
@@ -530,67 +530,15 @@ func (txToken *TxToken) initToken(txNormal *Tx, params *InitParamsAsm) error {
 
 	switch txToken.TokenData.Type {
 	case CustomTokenInit:
-		temp := txNormal
-		temp.Proof = new(privacy.ProofV2)
-		temp.Proof.Init()
-		params_compat := params.GetCompatTxTokenParams()
-		if params_compat==nil{
-			return errors.Errorf("Error parsing parameters")
-		}
-		// set output coins; hash everything but commitment; save the hash to compute the new token ID later
-		message := []byte{}
-		if len(params_compat.TokenParams.Receiver[0].Message) > 0 {
-			message = params_compat.TokenParams.Receiver[0].Message
-		}
-		tempPaymentInfo := &privacy.PaymentInfo{PaymentAddress: params_compat.TokenParams.Receiver[0].PaymentAddress, Amount: params_compat.TokenParams.Receiver[0].Amount, Message: message}
-		createdTokenCoin, errCoin := privacy.NewCoinFromPaymentInfo(tempPaymentInfo)
-		if errCoin != nil {
-			return errCoin
-		}
-		if err := temp.Proof.SetOutputCoins([]privacy.Coin{createdTokenCoin}); err != nil {
-			return err
-		}
-		// the coin was copied onto the proof
-		theCoinOnProof, ok := temp.Proof.GetOutputCoins()[0].(*privacy.CoinV2)
-		if !ok {
-			return errors.Errorf("Cannot create init-token TX - coin should have been ver2")
-		}
-		theCoinOnProof.SetCommitment(new(privacy.Point).Identity())
-		hashInitToken, err := txToken.TokenData.Hash()
-		if err != nil {
-			return err
-		}
-		temp.Sig = []byte{}
-		temp.SigPubKey = []byte{}
-
-		var plainTokenID *common.Hash
-		if params_compat.TokenParams.Mintable {
-			propertyID, err := getTokenIDFromString(params_compat.TokenParams.PropertyID)
-			if err != nil {
-				return err
-			}
-			plainTokenID = &propertyID
-		} else {
-			//NOTICE: @merman update PropertyID calculated from hash of tokendata and shardID
-			newHashInitToken := common.HashH(append(hashInitToken.GetBytes(), params_compat.shardID))
-			plainTokenID = &newHashInitToken		}
-
-		// set the unblinded asset tag
-		err = theCoinOnProof.SetPlainTokenID(plainTokenID)
-		if err != nil {
-			return err
-		}
-		txToken.TokenData.PropertyID = *plainTokenID
-		txToken.SetTxNormal(temp)
-		return nil
+		return nil, errors.Errorf("Error: TX type deprecated")
 	case CustomTokenTransfer:
 		propertyID, _ := common.TokenStringToHash(params.TokenParams.TokenID)
 		dbFacingTokenID := common.ConfidentialAssetID
 
-		isBurning, err := txNormal.proveToken(params)
+		isBurning, seal, err := txNormal.proveToken(params)
 		if err != nil {
 			println(err.Error())
-			return errors.Errorf("Prove Token failed - %v", err)
+			return nil, errors.Errorf("Prove Token failed - %v", err)
 		}
 		
 		// tokenID is already hidden in asset tags in coin, here we use the umbrella ID
@@ -601,9 +549,9 @@ func (txToken *TxToken) initToken(txNormal *Tx, params *InitParamsAsm) error {
 			txToken.TokenData.PropertyID = dbFacingTokenID
 		}
 		txToken.SetTxNormal(txNormal)
-		return nil
+		return seal, nil
 	default:
-		return errors.Errorf("can't handle this TokenTxType")
+		return nil, errors.Errorf("can't handle this TokenTxType")
 	}
 }
 
@@ -613,7 +561,7 @@ func (tx *Tx) provePRV(params *InitParamsAsm) ([]privacy.PlainCoin, []uint64, []
 	var pInfos []*privacy.PaymentInfo
 	for _, payInf := range params.PaymentInfo{
 		temp, _ := payInf.To()
-		c, err := privacy.NewCoinFromPaymentInfo(temp)
+		c, _, err := privacy.NewCoinFromPaymentInfo(temp)
 		if err!=nil{
 			return nil, nil, nil, err
 		}
@@ -645,41 +593,39 @@ func (txToken *TxToken) initPRV(feeTx * Tx, params *InitParamsAsm) ([]privacy.Pl
 	return inps, inputIndexes, outs, nil
 }
 
-func (txToken *TxToken) InitASM(params *InitParamsAsm, theirTime int64) error {
+func (txToken *TxToken) InitASM(params *InitParamsAsm, theirTime int64) (*privacy.SenderSeal, error) {
 	params_compat := params.GetCompatTxTokenParams()
 	if params_compat==nil{
-		return errors.Errorf("Error parsing parameters")
+		return nil, errors.Errorf("Error parsing parameters")
 	}
 	txPrivacyParams := NewTxParams(params_compat.SenderKey, params_compat.PaymentInfo, params_compat.InputCoin, params_compat.FeeNativeCoin, false, nil, params_compat.Metadata, params_compat.Info)
 	// Init tx and params (tx and params will be changed)
 	tx := new(Tx)
 	if err := tx.initializeTxAndParams(txPrivacyParams, &params.PaymentInfo); err != nil {
-		return err
+		return nil, err
 	}
 	if theirTime>0{
 		tx.LockTime = theirTime
 	}
 	inps, inputIndexes, outs, err := txToken.initPRV(tx, params)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	txn := makeTxToken(tx, nil, nil, nil)
 	// Init, prove and sign(CA) Token
-	if err := txToken.initToken(txn, params); err != nil {
-		return err
+	seal, err := txToken.initToken(txn, params)
+	if err != nil {
+		return nil, err
 	}
 	tdh, err := txToken.TokenData.Hash()
 	if err!=nil{
-		return err
+		return nil, err
 	}
 	message := common.HashH(append(tx.Hash()[:], tdh[:]...))
 	err = tx.sign(inps, inputIndexes, outs, params, message[:])
 	if err!=nil{
-		return err
+		return nil, err
 	}	
 	txToken.Tx = *tx
-	if err!=nil{
-		return err
-	}
-	return nil
+	return seal, err
 }

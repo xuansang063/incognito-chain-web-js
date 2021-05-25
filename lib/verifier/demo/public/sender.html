@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Incognito TX Verification </title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <h1> Incognito Transfer Verification </h1>
+    <form>
+      <div class="input-group mb-3">
+        <select class="form-select" aria-label="Role select" id="roleSelect" onchange="onChangeSelect()">
+          <option selected>Choose your role</option>
+          <option value="1">Sender</option>
+          <option value="2">Receiver</option>
+        </select>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="sealText" placeholder="Sender Seal" aria-label="Sender Seal" aria-describedby="basic-addon1">
+        <label for="sealText" id="sealLabel">Sender Seal</label>
+        <!-- <span class="input-group-text" id="basic-addon1">(bytes)</span> -->
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="txId" placeholder="Transaction ID" aria-label="Transaction ID" aria-describedby="basic-addon1">
+        <label for="txId" id="txIdLabel">Transaction ID</label>
+        <!-- <span class="input-group-text" id="basic-addon1">(hash)</span> -->
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="recvAddr" placeholder="Receiver Payment Address" aria-label="Receiver Payment Address" aria-describedby="basic-addon1">
+        <label for="recvAddr" id="recvAddrLabel">Receiver Payment Address</label>
+        <!-- <span class="input-group-text" id="basic-addon1">(address)</span> -->
+      </div>
+      <div class="input-group">
+          <button type="button" class="btn-lg btn-primary" onclick="onClickBtn()">Verify !</button>
+          <textarea class="form-control bg-light" aria-label="textarea" id="resultTextElem" readonly></textarea>
+      </div>
+    </form>
+  </div>
+</body>
+<script src="/wasm_exec.js"></script>
+<script src="/verifier.js"></script>
+<script type="text/javascript">
+  function onClickBtn() {
+    let val = document.getElementById('roleSelect').value;
+    if (val == 1) {
+      return verifySentTx(document.getElementById('sealText').value, document.getElementById('txId').value, document.getElementById('recvAddr').value).then(res => document.getElementById('resultTextElem').innerHTML = res)
+    } else if (val == 2) {
+      return verifyReceivedTx(document.getElementById('txId').value, document.getElementById('recvAddr').value).then(res => document.getElementById('resultTextElem').innerHTML = res)
+    } 
+  }
+
+  function onChangeSelect() {
+    let val = document.getElementById('roleSelect').value;
+    let sealTextElem = document.getElementById('sealText');
+    let lbl = document.getElementById('recvAddrLabel');
+    if (val == 1) {
+      sealTextElem.disabled = false;
+      lbl.innerText = 'Receiver Payment Address';
+    } else if (val == 2) {
+      sealTextElem.disabled = true;
+      lbl.innerText = 'Receiver OTA Secret';
+    }
+  }
+</script>
+</html>

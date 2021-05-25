@@ -23,7 +23,7 @@ describe('Basic Tests for Web-js module', async function() {
             await this.legacyTests.AccountWalletTestSetup(this.transactors[0]);
             await this.legacyTests.MainRoutine();
         });
-        it.skip('PDex flow', async function() {
+        it('PDex flow', async function() {
             await this.legacyTests.AccountWalletTestSetup(this.transactors[1]);
             await this.legacyTests.PDERoutine();
         });

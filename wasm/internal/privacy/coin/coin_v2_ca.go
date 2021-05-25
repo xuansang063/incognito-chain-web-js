@@ -95,11 +95,11 @@ func (coin *CoinV2) SetPlainTokenID(tokenID *common.Hash) error{
 }
 
 // for confidential asset only
-func NewCoinCA(info *key.PaymentInfo, tokenID *common.Hash) (*CoinV2, *operation.Point, error) {
+func NewCoinCA(info *key.PaymentInfo, tokenID *common.Hash) (*CoinV2, *operation.Point, *SenderSeal, error) {
 	receiverPublicKey, err := new(operation.Point).FromBytesS(info.PaymentAddress.Pk)
 	if err != nil {
 		errStr := fmt.Sprintf("Cannot parse outputCoinV2 from PaymentInfo when parseByte PublicKey, error %v ", err)
-		return nil, nil, errors.New(errStr)
+		return nil, nil, nil, errors.New(errStr)
 	}
 	receiverPublicKeyBytes := receiverPublicKey.ToBytesS()
 	targetShardID := common.GetShardIDFromLastByte(receiverPublicKeyBytes[len(receiverPublicKeyBytes)-1])
@@ -121,9 +121,9 @@ func NewCoinCA(info *key.PaymentInfo, tokenID *common.Hash) (*CoinV2, *operation
 		c.SetPublicKey(publicKey)
 		err = c.SetPlainTokenID(tokenID)
 		if err!=nil{
-			return nil, nil, err
+			return nil, nil, nil, err
 		}
-		return c, nil, nil
+		return c, nil, nil, nil
 	}
 
 	// Increase index until have the right shardID
@@ -144,7 +144,7 @@ func NewCoinCA(info *key.PaymentInfo, tokenID *common.Hash) (*CoinV2, *operation
 
 		currentShardID, err := c.GetShardID()
 		if err != nil {
-			return nil, nil, err
+			return nil, nil, nil, err
 		}
 		if currentShardID == targetShardID {
 			otaSharedRandomPoint := new(operation.Point).ScalarMultBase(c.GetSharedRandom())
@@ -154,7 +154,7 @@ func NewCoinCA(info *key.PaymentInfo, tokenID *common.Hash) (*CoinV2, *operation
 			rAsset := new(operation.Point).ScalarMult(publicOTA, c.GetSharedRandom())
 			blinder,_ := ComputeAssetTagBlinder(rAsset)
 			if tokenID == nil {
-				return nil, nil, errors.New("Cannot create coin without tokenID")
+				return nil, nil, nil, errors.New("Cannot create coin without tokenID")
 			}
 			assetTag := operation.HashToPoint(tokenID[:])
 			assetTag.Add(assetTag,new(operation.Point).ScalarMult(operation.PedCom.G[PedersenRandomnessIndex],blinder))
@@ -164,13 +164,16 @@ func NewCoinCA(info *key.PaymentInfo, tokenID *common.Hash) (*CoinV2, *operation
 			// fmt.Printf("Asset tag is %s\n", string(assetTag.MarshalText()))
 			com, err := c.ComputeCommitmentCA()
 			if err != nil{
-				return nil, nil, errors.New("Cannot compute commitment for confidential asset")
+				return nil, nil, nil, errors.New("Cannot compute commitment for confidential asset")
 			}
 			c.SetCommitment(com)
-			
-			return c, rAsset, nil
+			seal := SenderSeal {
+				r: *c.GetSharedRandom(),
+				txRandomIndex: index,
+			}
+			return c, rAsset, &seal, nil
 		}
 	}
 	// MAX_TRIES_OTA could be exceeded if the OS's RNG or the statedb is corrupted
-	return nil, nil, errors.New(fmt.Sprintf("Cannot create OTA after %d attempts", MAX_TRIES_OTA))
+	return nil, nil, nil, errors.New(fmt.Sprintf("Cannot create OTA after %d attempts", MAX_TRIES_OTA))
 }
