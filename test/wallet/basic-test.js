@@ -510,7 +510,7 @@ async function MainRoutine(){
         } else {
             console.warn('Tx was successfully created, but rejected !');
         }
-        await GetListReceivedTx();
+        // await GetListReceivedTx();
         await TestStakerStatus();
         txh = await TestSendMultiple();
         await accountSender.waitTx(txh, 5);

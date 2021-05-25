@@ -1,7 +1,6 @@
-const { Wallet, Transactor : AccountWallet, types, constants, utils } = require('../../');
+const { Wallet, Transactor : AccountWallet, types, constants, utils, wasm } = require('../../');
 const { KeyWallet } = types;
 const { base58CheckEncode : checkEncode, base64Encode, base64Decode } = utils;
-const { wasm } = require('../../lib/wasm');
 
 async function TestKeyWallet() {
   let privateKeyB64Encode = await wasm.generateKeyFromSeed(base64Encode([123]));
