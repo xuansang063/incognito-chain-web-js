@@ -65,7 +65,8 @@ async function setup() {
 async function TestGetBalance() {
   try {
     const account = await createAccountByPrivateKey(
-      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+      "112t8rnXtw6pWwowv88Ry4XxukFNLfbbY2PLh2ph38ixbCbZKwf9ZxVjd4s7jU3RSdKctC7gGZp9piy8nZoLqHwqDBWcsMHWsQg27S5WCdm4"
+      // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
     );
     let balance = await account.getBalance();
     console.log("balance: ", balance.toString());
@@ -155,10 +156,10 @@ async function TestCreateAndSendNativeToken() {
   let info = "INFOFO";
   let amountTransfer = 6900; // in nano PRV
   const account = await createAccountByPrivateKey(
-    "112t8rnbhcH4FBtrkR9qNLGHUMdM4Z8Sau1hpXif6xATpGWiMLUB1TYfbLkpdgoJ8sRKDDeyy7rPta8wVWySAGqH6SDrLi88NLgGw4Ca571c"
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
   );
   const receverAccount = await createAccountByPrivateKey(
-    "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+    "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
   );
   let paymentInfosParam = [];
   const receverInfo = await receverAccount.getDeserializeInformation();
@@ -626,11 +627,11 @@ async function MainRoutine() {
   await setup();
   // sequential execution of tests; the wait might still be too short
   try {
-    return await TestGetTxsHistory();
+    // return await TestGetTxsHistory();
     // return await TestGetBalance();
 
-    // return await TestCreateAndSendNativeToken();
-    // return await TestCreateAndSendPrivacyTokenTransfer();
+    return await TestCreateAndSendNativeToken();
+    return await TestCreateAndSendPrivacyTokenTransfer();
     // return await TestGetTxsByReceiver();
 
     // return await TestBurningRequestTx();
