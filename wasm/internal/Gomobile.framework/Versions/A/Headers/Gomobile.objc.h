@@ -213,7 +213,8 @@
 
 // skipped method Tx.HashWithoutMetadataSig with unsupported parameter or return types
 
-- (BOOL)initASM:(GomobileInitParamsAsm* _Nullable)params theirTime:(int64_t)theirTime error:(NSError* _Nullable* _Nullable)error;
+// skipped method Tx.InitASM with unsupported parameter or return types
+
 - (NSData* _Nullable)marshalJSON:(NSError* _Nullable* _Nullable)error;
 @end
 
@@ -249,6 +250,8 @@
 @property (nonatomic) NSString* _Nonnull hash;
 // skipped field TxResult.Outputs with unsupported type: []incognito-chain.CoinInter
 
+// skipped field TxResult.SenderSeal with unsupported type: *incognito-chain/privacy/coin.SenderSeal
+
 @end
 
 @interface GomobileTxToken : NSObject <goSeqRefInterface> {
@@ -264,7 +267,8 @@
 - (GomobileTx* _Nullable)getTxNormal;
 // skipped method TxToken.Hash with unsupported parameter or return types
 
-- (BOOL)initASM:(GomobileInitParamsAsm* _Nullable)params theirTime:(int64_t)theirTime error:(NSError* _Nullable* _Nullable)error;
+// skipped method TxToken.InitASM with unsupported parameter or return types
+
 - (BOOL)setTxNormal:(GomobileTx* _Nullable)inTx error:(NSError* _Nullable* _Nullable)error;
 @end
 
@@ -314,6 +318,7 @@ FOUNDATION_EXPORT const int64_t GomobileCustomTokenCrossShard;
 FOUNDATION_EXPORT const int64_t GomobileCustomTokenInit;
 FOUNDATION_EXPORT const int64_t GomobileCustomTokenTransfer;
 FOUNDATION_EXPORT const int64_t GomobileHashSize;
+FOUNDATION_EXPORT const long GomobileMAX_TRIES_OTA;
 FOUNDATION_EXPORT const int64_t GomobileMaxHashStringSize;
 FOUNDATION_EXPORT const int64_t GomobileMaxSizeByte;
 FOUNDATION_EXPORT NSString* _Nonnull const GomobileTxConversionType;
@@ -385,6 +390,16 @@ FOUNDATION_EXPORT NSString* _Nonnull GomobileScalarMultBase(NSString* _Nullable 
 
 
 FOUNDATION_EXPORT NSString* _Nonnull GomobileSignPoolWithdraw(NSString* _Nullable args, NSError* _Nullable* _Nullable error);
+
+/**
+ * VerifyReceivedTx returns the index of the input coin that matches the OTA secret in parameters, or -1 if none
+ */
+FOUNDATION_EXPORT BOOL GomobileVerifyReceivedTx(NSString* _Nullable paramsJson, int64_t* _Nullable ret0_, NSError* _Nullable* _Nullable error);
+
+/**
+ * VerifySentTx returns the index of the input coin that matches the r in parameters, or -1 if none
+ */
+FOUNDATION_EXPORT BOOL GomobileVerifySentTx(NSString* _Nullable paramsJson, int64_t* _Nullable ret0_, NSError* _Nullable* _Nullable error);
 
 /**
  * signEncode string, signPublicKeyEncode string, amount string, paymentAddress string

@@ -40,6 +40,8 @@ async function setup() {
     "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
   // await sleep(10000);
   wallet = new Wallet();
+  wallet = await wallet.init("pass", new StorageServices(), "Master", "Anon");
+  console.log("wallet name", wallet.Name);
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
@@ -609,6 +611,14 @@ async function TestGetTxsByReceiver() {
   console.log("txs", txs.length);
 }
 
+async function TestGetTxsHistory() {
+  const account = await createAccountByPrivateKey(
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+  );
+  const txs = await account.getTxsHistory({});
+  console.log("txs", txs);
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
@@ -616,11 +626,12 @@ async function MainRoutine() {
   await setup();
   // sequential execution of tests; the wait might still be too short
   try {
+    return await TestGetTxsHistory();
     // return await TestGetBalance();
 
     // return await TestCreateAndSendNativeToken();
     // return await TestCreateAndSendPrivacyTokenTransfer();
-    return await TestGetTxsByReceiver();
+    // return await TestGetTxsByReceiver();
 
     // return await TestBurningRequestTx();
     // return await TestCreateAndSendNativeToken();
