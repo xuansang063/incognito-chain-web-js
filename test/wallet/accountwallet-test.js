@@ -630,9 +630,9 @@ async function MainRoutine() {
     // return await TestGetTxsHistory();
     // return await TestGetBalance();
 
-    return await TestCreateAndSendNativeToken();
-    return await TestCreateAndSendPrivacyTokenTransfer();
-    // return await TestGetTxsByReceiver();
+    // return await TestCreateAndSendNativeToken();
+    // return await TestCreateAndSendPrivacyTokenTransfer();
+    return await TestGetTxsByReceiver();
 
     // return await TestBurningRequestTx();
     // return await TestCreateAndSendNativeToken();
