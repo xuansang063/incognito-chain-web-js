@@ -2815,8 +2815,7 @@ function _saveTxHistory() {
   _saveTxHistory = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
     var _ref,
         tx,
-        _ref$tokenId,
-        tokenId,
+        tokenID,
         key,
         txs,
         isExisted,
@@ -2827,28 +2826,29 @@ function _saveTxHistory() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _ref = _args.length > 0 && _args[0] !== undefined ? _args[0] : {}, tx = _ref.tx, _ref$tokenId = _ref.tokenId, tokenId = _ref$tokenId === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] : _ref$tokenId;
+            _ref = _args.length > 0 && _args[0] !== undefined ? _args[0] : {}, tx = _ref.tx;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tx", tx).required().object();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenId", tokenId).required().string();
-            _context.prev = 3;
-            key = this.getKeyTxHistoryByTokenId(tokenId);
-            _context.next = 7;
+            _context.prev = 2;
+            tokenID = tx.tokenID;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenID", tokenID).required().string();
+            key = this.getKeyTxHistoryByTokenId(tokenID);
+            _context.next = 8;
             return this.getAccountStorage(key);
 
-          case 7:
+          case 8:
             _context.t0 = _context.sent;
 
             if (_context.t0) {
-              _context.next = 10;
+              _context.next = 11;
               break;
             }
 
             _context.t0 = [];
 
-          case 10:
+          case 11:
             txs = _context.t0;
             console.log("txs", txs.length);
-            console.log("tokenId", tokenId);
+            console.log("tokenID", tokenID);
             isExisted = txs.find(function (i) {
               return i.txId === tx.txId;
             });
@@ -2861,24 +2861,24 @@ function _saveTxHistory() {
               createdAt: new Date().getTime()
             })].concat(_toConsumableArray(txs));
             console.log("newTxs", newTxs.length);
-            _context.next = 19;
+            _context.next = 20;
             return this.setAccountStorage(key, newTxs);
 
-          case 19:
-            _context.next = 24;
+          case 20:
+            _context.next = 25;
             break;
 
-          case 21:
-            _context.prev = 21;
-            _context.t1 = _context["catch"](3);
+          case 22:
+            _context.prev = 22;
+            _context.t1 = _context["catch"](2);
             throw _context.t1;
 
-          case 24:
+          case 25:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[3, 21]]);
+    }, _callee, this, [[2, 22]]);
   }));
   return _saveTxHistory.apply(this, arguments);
 }
@@ -2949,8 +2949,7 @@ function _getTxHistoryByTxID() {
             return this.saveTxHistory({
               tx: _objectSpread(_objectSpread({}, tx), {}, {
                 status: status
-              }),
-              tokenId: tokenId
+              })
             });
 
           case 19:
@@ -3551,7 +3550,11 @@ function _getTxsByReceiver() {
 
               return tx === null || tx === void 0 ? void 0 : (_tx$TxDetail = tx.TxDetail) === null || _tx$TxDetail === void 0 ? void 0 : _tx$TxDetail.Hash;
             });
-            txs = txs.map(function (tx) {
+            txs = txs.filter(function (txs) {
+              var _txs$TxDetail;
+
+              return !!(txs !== null && txs !== void 0 && (_txs$TxDetail = txs.TxDetail) !== null && _txs$TxDetail !== void 0 && _txs$TxDetail.Hash);
+            }).map(function (tx) {
               var _ref8 = (tx === null || tx === void 0 ? void 0 : tx.TxDetail) || {},
                   Hash = _ref8.Hash,
                   _ref8$ProofDetail = _ref8.ProofDetail;
@@ -7778,7 +7781,7 @@ var Account = /*#__PURE__*/function () {
               case 8:
                 _context46.prev = 8;
                 _context46.t0 = _context46["catch"](1);
-                throw _context46.t0;
+                console.log("error", _context46.t0);
 
               case 11:
                 return _context46.abrupt("return", !!submitted);
@@ -7814,7 +7817,7 @@ var Account = /*#__PURE__*/function () {
                 submitted = _context47.sent;
 
                 if (submitted) {
-                  _context47.next = 14;
+                  _context47.next = 13;
                   break;
                 }
 
@@ -7828,31 +7831,30 @@ var Account = /*#__PURE__*/function () {
 
               case 9:
                 result = _context47.sent;
-                console.log(result);
 
                 if (!result) {
-                  _context47.next = 14;
+                  _context47.next = 13;
                   break;
                 }
 
-                _context47.next = 14;
+                _context47.next = 13;
                 return this.setAccountStorage(otaKey, true);
 
-              case 14:
-                _context47.next = 19;
+              case 13:
+                _context47.next = 18;
                 break;
 
-              case 16:
-                _context47.prev = 16;
+              case 15:
+                _context47.prev = 15;
                 _context47.t0 = _context47["catch"](0);
-                throw _context47.t0;
+                console.log("Submit failed!");
 
-              case 19:
+              case 18:
               case "end":
                 return _context47.stop();
             }
           }
-        }, _callee47, this, [[0, 16]]);
+        }, _callee47, this, [[0, 15]]);
       }));
 
       function submitOTAKey() {
@@ -7865,7 +7867,7 @@ var Account = /*#__PURE__*/function () {
     key: "getOutputCoins",
     value: function () {
       var _getOutputCoins = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee48(tokenID) {
-        var spentCoins, unspentCoins, outputCoins, tokenId, version, _yield$this$getUnspen, _unspentCoins;
+        var spentCoins, unspentCoins, tokenId, version, _yield$this$getUnspen, _unspentCoins;
 
         return regeneratorRuntime.wrap(function _callee48$(_context48) {
           while (1) {
@@ -7873,70 +7875,66 @@ var Account = /*#__PURE__*/function () {
               case 0:
                 spentCoins = [];
                 unspentCoins = [];
-                outputCoins = [];
-                _context48.prev = 3;
+                _context48.prev = 2;
                 tokenId = tokenID || _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PRVIDSTR"];
                 version = this.privacyVersion;
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.tokenId, tokenId).required().string();
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.privacyVersion, version).required().number();
-                _context48.next = 10;
-                return this.submitOTAKey();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_20__["default"](VALIDATOR.privacyVersion, version).required().number(); // await this.submitOTAKey();
 
-              case 10:
                 _context48.t0 = version;
-                _context48.next = _context48.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver1 ? 13 : _context48.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver2 ? 19 : 26;
+                _context48.next = _context48.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver1 ? 10 : _context48.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver2 ? 16 : 23;
                 break;
 
-              case 13:
-                _context48.next = 15;
+              case 10:
+                _context48.next = 12;
                 return this.getUnspentCoinsByTokenIdV1({
                   tokenId: tokenId
                 });
 
-              case 15:
+              case 12:
                 _yield$this$getUnspen = _context48.sent;
                 _unspentCoins = _yield$this$getUnspen.unspentCoins;
                 unspentCoins = _toConsumableArray(unspentCoins);
-                return _context48.abrupt("break", 27);
+                return _context48.abrupt("break", 24);
 
-              case 19:
-                _context48.next = 21;
+              case 16:
+                _context48.next = 18;
                 return this.getUnspentCoinsV2(tokenId);
 
-              case 21:
+              case 18:
                 unspentCoins = _context48.sent;
-                _context48.next = 24;
+                _context48.next = 21;
                 return this.getListSpentCoinsStorage(tokenId);
 
-              case 24:
+              case 21:
                 spentCoins = _context48.sent;
-                return _context48.abrupt("break", 27);
+                return _context48.abrupt("break", 24);
 
-              case 26:
-                return _context48.abrupt("break", 27);
+              case 23:
+                return _context48.abrupt("break", 24);
 
-              case 27:
-                _context48.next = 32;
+              case 24:
+                _context48.next = 29;
                 break;
 
-              case 29:
-                _context48.prev = 29;
-                _context48.t1 = _context48["catch"](3);
+              case 26:
+                _context48.prev = 26;
+                _context48.t1 = _context48["catch"](2);
                 throw _context48.t1;
 
-              case 32:
+              case 29:
                 return _context48.abrupt("return", {
                   spentCoins: spentCoins,
                   unspentCoins: unspentCoins,
                   outputCoins: [].concat(_toConsumableArray(unspentCoins), _toConsumableArray(spentCoins))
                 });
 
-              case 33:
+              case 30:
               case "end":
                 return _context48.stop();
             }
           }
-        }, _callee48, this, [[3, 29]]);
+        }, _callee48, this, [[2, 26]]);
       }));
 
       function getOutputCoins(_x53) {
@@ -9411,6 +9409,7 @@ function _transact() {
             return this.updateProgressTx(90, "Submitting Transaction");
 
           case 90:
+            console.log("txObj", txObj);
             tx = {
               txId: hash,
               tx: txObj,
@@ -9430,10 +9429,10 @@ function _transact() {
               memo: memo,
               fee: fee
             };
-            console.log("tx", tx);
             _context.next = 94;
             return this.saveTxHistory({
-              tx: tx
+              tx: tx,
+              tokenId: tokenID
             });
 
           case 94:

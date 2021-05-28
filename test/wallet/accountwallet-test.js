@@ -69,7 +69,9 @@ async function TestGetBalance() {
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
       "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
     );
-    let balance = await account.getBalance();
+    let balance = await account.getBalance(
+      "0795495cb9eb84ae7bd8c8494420663b9a1642c7bbc99e57b04d536db9001d0e"
+    );
     console.log("balance: ", balance.toString());
   } catch (e) {
     console.log("Error when get balance: ", e);
@@ -157,7 +159,7 @@ async function TestCreateAndSendNativeToken() {
   let info = "INFOFO";
   let amountTransfer = 6900; // in nano PRV
   const account = await createAccountByPrivateKey(
-    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
   );
   const receverAccount = await createAccountByPrivateKey(
     "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
@@ -169,7 +171,7 @@ async function TestCreateAndSendNativeToken() {
     PaymentAddress:
       "12smKh2tQ8CSqfXYKYXePDAxok9fb9xxxA6bszbtKGzd2ierpgz93kFfxiRxaSs4dFtUwghEoFW79YTJUyF6mXefiqtjWH2cBuNUSq5oGgG4aEeJj2UmeL9WhvikdsHr16KYpRxsKVGDzpWcG6Ku",
     Amount: amountTransfer,
-    Message: "Send 6900 PRV",
+    Message: "Send 100nano PRV",
   };
   // create and send PRV
   try {
@@ -308,25 +310,26 @@ async function TestCreateAndSendPrivacyTokenInit() {
 }
 
 async function TestCreateAndSendPrivacyTokenTransfer() {
-  await setup();
   let paymentInfos = [];
   // prepare token param for tx custom token init
   let tokenPaymentInfo = [
     {
       PaymentAddress:
         "12srF3RdAc5f93XbxY1YPLgVhKEYqKnQFhYDkpWxSLtcX9eeQxv8mW2MddEYaTVDprkeMChRmqGU8cuevozm4XY5HuaaEdjkEFvGChHSJjTQJL8syraSGAtKi8QVXipT7p5JhnCvJYPhbF6jQknz",
-      Amount: 100,
-      Message: "Transfer 100 nano ptoken",
+      Amount: 1e9,
+      Message: "Transfer 1 nano ptoken",
     },
   ];
   let feePRV = 100;
   let hasPrivacy = true;
-  await accountSender.resetProgressTx();
+  const accountSender = await createAccountByPrivateKey(
+    "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
+  );
   try {
     let res = await accountSender.createAndSendPrivacyToken({
       transfer: {
         tokenID:
-          "d6efe5956aa521f5eeaf2f69cc6fbf9f21bfb3dcb7d0de90fa40913e6e630983",
+          "0795495cb9eb84ae7bd8c8494420663b9a1642c7bbc99e57b04d536db9001d0e",
         tokenPayments: tokenPaymentInfo,
         fee: feePRV,
         info: "SOME INFO WHEN TRANSFERRING TOKEN",
@@ -616,9 +619,12 @@ async function TestGetTxsByReceiver() {
 
 async function TestGetTxsHistory() {
   const account = await createAccountByPrivateKey(
-    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
   );
-  const txs = await account.getTxsHistory({});
+  const txs = await account.getTxsHistory({
+    tokenID: `0795495cb9eb84ae7bd8c8494420663b9a1642c7bbc99e57b04d536db9001d0e`,
+  });
   console.log("txs", txs);
 }
 
@@ -632,9 +638,9 @@ async function MainRoutine() {
     // return await TestGetTxsHistory();
     // return await TestGetBalance();
 
-    // return await TestCreateAndSendNativeToken();
-    // return await TestCreateAndSendPrivacyTokenTransfer();
-    return await TestGetTxsByReceiver();
+    return await TestCreateAndSendNativeToken();
+    return await TestCreateAndSendPrivacyTokenTransfer();
+    // return await TestGetTxsByReceiver();
 
     // return await TestBurningRequestTx();
     // return await TestCreateAndSendNativeToken();
