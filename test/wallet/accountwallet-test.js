@@ -22,6 +22,7 @@ const { base58CheckEncode: checkEncode } = utils;
 const rpcClient = "http://139.162.55.124:8334";
 const rpcCoinService = "http://51.161.119.66:9009"; //dev-test-coin-service
 const rpcTxService = "http://51.161.119.66:8001"; //dev-test-coin-service
+const rpcRequestService = "http://51.161.119.66:5000"; //dev-test-coin-service
 const privacyVersion = 2;
 
 let wallet;
@@ -52,6 +53,7 @@ async function setup() {
   accountSender.setPrivacyVersion(privacyVersion);
   accountSender.setRPCClient(rpcClient);
   accountSender.setRPCTxServices(rpcTxService);
+  accountSender.setRPCRequestServices(rpcRequestService);
   await accountSender.setKey(senderPrivateKeyStr);
   console.log(accountSender.getOTAKey());
   senderPaymentAddressStr =
@@ -65,13 +67,10 @@ async function setup() {
 async function TestGetBalance() {
   try {
     const account = await createAccountByPrivateKey(
-      // "112t8rnXtw6pWwowv88Ry4XxukFNLfbbY2PLh2ph38ixbCbZKwf9ZxVjd4s7jU3RSdKctC7gGZp9piy8nZoLqHwqDBWcsMHWsQg27S5WCdm4"
+      "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
-      "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
     );
-    let balance = await account.getBalance(
-      "0795495cb9eb84ae7bd8c8494420663b9a1642c7bbc99e57b04d536db9001d0e"
-    );
+    let balance = await account.getBalance();
     console.log("balance: ", balance.toString());
   } catch (e) {
     console.log("Error when get balance: ", e);
@@ -159,7 +158,7 @@ async function TestCreateAndSendNativeToken() {
   let info = "INFOFO";
   let amountTransfer = 6900; // in nano PRV
   const account = await createAccountByPrivateKey(
-    "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
   );
   const receverAccount = await createAccountByPrivateKey(
     "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
@@ -171,7 +170,7 @@ async function TestCreateAndSendNativeToken() {
     PaymentAddress:
       "12smKh2tQ8CSqfXYKYXePDAxok9fb9xxxA6bszbtKGzd2ierpgz93kFfxiRxaSs4dFtUwghEoFW79YTJUyF6mXefiqtjWH2cBuNUSq5oGgG4aEeJj2UmeL9WhvikdsHr16KYpRxsKVGDzpWcG6Ku",
     Amount: amountTransfer,
-    Message: "Send 100nano PRV",
+    Message: "Send 6900 PRV",
   };
   // create and send PRV
   try {
@@ -310,26 +309,25 @@ async function TestCreateAndSendPrivacyTokenInit() {
 }
 
 async function TestCreateAndSendPrivacyTokenTransfer() {
+  await setup();
   let paymentInfos = [];
   // prepare token param for tx custom token init
   let tokenPaymentInfo = [
     {
       PaymentAddress:
         "12srF3RdAc5f93XbxY1YPLgVhKEYqKnQFhYDkpWxSLtcX9eeQxv8mW2MddEYaTVDprkeMChRmqGU8cuevozm4XY5HuaaEdjkEFvGChHSJjTQJL8syraSGAtKi8QVXipT7p5JhnCvJYPhbF6jQknz",
-      Amount: 1e9,
-      Message: "Transfer 1 nano ptoken",
+      Amount: 100,
+      Message: "Transfer 100 nano ptoken",
     },
   ];
   let feePRV = 100;
   let hasPrivacy = true;
-  const accountSender = await createAccountByPrivateKey(
-    "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
-  );
+  await accountSender.resetProgressTx();
   try {
     let res = await accountSender.createAndSendPrivacyToken({
       transfer: {
         tokenID:
-          "0795495cb9eb84ae7bd8c8494420663b9a1642c7bbc99e57b04d536db9001d0e",
+          "d6efe5956aa521f5eeaf2f69cc6fbf9f21bfb3dcb7d0de90fa40913e6e630983",
         tokenPayments: tokenPaymentInfo,
         fee: feePRV,
         info: "SOME INFO WHEN TRANSFERRING TOKEN",
@@ -585,12 +583,15 @@ async function TestCreateAndSendConvertTx() {
     throw e;
   }
 }
-async function ConvertAllToken() {
+async function TestConvertTokensV1() {
   await setup();
   try {
+    // accountSender.setPrivacyVersion(2);
+    // let balance = await accountSender.getBalance();
+    // console.log("balance: ", balance.toString());
     accountSender.useCoinsService = true;
     accountSender.setPrivacyVersion(1);
-    await accountSender.convertAllToken();
+    await accountSender.convertTokensV1();
   } catch (e) {
     throw e;
   }
@@ -610,8 +611,7 @@ async function createAccountByPrivateKey(privateKey) {
 
 async function TestGetTxsByReceiver() {
   const account = await createAccountByPrivateKey(
-    // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
-    "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
   );
   const txs = await account.getTxsByReceiver({});
   console.log("txs", txs.length);
@@ -619,12 +619,9 @@ async function TestGetTxsByReceiver() {
 
 async function TestGetTxsHistory() {
   const account = await createAccountByPrivateKey(
-    // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
-    "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
+    "112t8rnXSvD6F3ftDYukxVbkYWegXHVtcw7dkegEHGEafnJi6164YZhsFuxMJLrjuQttCiQqzmbP4ifLvs63yTzygLKtzxkNG1At7f5dVsaD"
   );
-  const txs = await account.getTxsHistory({
-    tokenID: `0795495cb9eb84ae7bd8c8494420663b9a1642c7bbc99e57b04d536db9001d0e`,
-  });
+  const txs = await account.getTxsHistory({});
   console.log("txs", txs);
 }
 
@@ -632,15 +629,16 @@ async function TestGetTxsHistory() {
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
-  await setup();
+  // await setup();
+  return await TestConvertTokensV1();
   // sequential execution of tests; the wait might still be too short
   try {
     // return await TestGetTxsHistory();
     // return await TestGetBalance();
 
-    return await TestCreateAndSendNativeToken();
-    return await TestCreateAndSendPrivacyTokenTransfer();
-    // return await TestGetTxsByReceiver();
+    // return await TestCreateAndSendNativeToken();
+    // return await TestCreateAndSendPrivacyTokenTransfer();
+    return await TestGetTxsByReceiver();
 
     // return await TestBurningRequestTx();
     // return await TestCreateAndSendNativeToken();
@@ -660,7 +658,6 @@ async function MainRoutine() {
     // });
     // console.log("RESULT", result);
     // await TestCreateAndSendRewardAmountTx();
-    return await ConvertAllToken();
     // return await TestGetBalance();
     // let txh;
     // txh = await TestCustomTradeRequest(null, tokenID, 10000, 800);
