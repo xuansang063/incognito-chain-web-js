@@ -973,6 +973,11 @@ var ErrorObject = {
   GetStatusTransactionErr: {
     code: -5000,
     description: "Can not get status transaction"
+  },
+  // -6000 -> -6999: Coin services error
+  GetTxsByPubKeysFail: {
+    code: -6000,
+    description: "Get txs by pubkeys fail"
   }
 };
 
@@ -2868,7 +2873,7 @@ function setRPCRequestServices(url) {
 /*!*************************************************!*\
   !*** ./lib/module/Account/account.constants.js ***!
   \*************************************************/
-/*! exports provided: TX_TYPE, TX_TYPE_STR, MaxInputNumberForDefragment, MAX_INPUT_PER_TX, ShardStakingType, BeaconStakingType, StakingAmount, MAX_FEE_PER_TX, LIMIT, TX_STATUS, TX_STATUS_STR, AIRDROP_STATUS, TIME_COUNT_BALANCE, MAX_COUNT_BALANCE, default */
+/*! exports provided: TX_TYPE, TX_TYPE_STR, MaxInputNumberForDefragment, MAX_INPUT_PER_TX, ShardStakingType, BeaconStakingType, StakingAmount, MAX_FEE_PER_TX, LIMIT, TX_STATUS, TX_STATUS_STR, AIRDROP_STATUS, TIME_COUNT_BALANCE, MAX_COUNT_BALANCE, META_TYPE, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2887,6 +2892,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AIRDROP_STATUS", function() { return AIRDROP_STATUS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TIME_COUNT_BALANCE", function() { return TIME_COUNT_BALANCE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAX_COUNT_BALANCE", function() { return MAX_COUNT_BALANCE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "META_TYPE", function() { return META_TYPE; });
 var _TX_TYPE_STR, _TX_STATUS_STR;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -2941,7 +2947,29 @@ var AIRDROP_STATUS = {
   SUCCESS: 1
 };
 var TIME_COUNT_BALANCE = 20;
-var MAX_COUNT_BALANCE = 4;
+var MAX_COUNT_BALANCE = 6;
+var META_TYPE = {
+  63: "Staking",
+  127: "Stop Staking",
+  210: "Unstaking",
+  41: "Return Staking",
+  44: "Withdraw Reward Request",
+  45: "Withdraw Reward Response",
+  244: "Init Token Request",
+  245: "Init Token Response",
+  90: "Add Liquidity Request",
+  95: "Add Liquidity Response",
+  91: "Trade Request",
+  92: "Trade Response",
+  93: "Remove Liquidity Request",
+  94: "Remove Liquidity Response",
+  205: "Cross Trade Request",
+  206: "Cross Trade Response",
+  207: "Withdraw Fee Request",
+  208: "Withdraw Fee Response",
+  209: "Trading Fee Distribution",
+  204: "Add Liquidity Request"
+};
 /* harmony default export */ __webpack_exports__["default"] = ({
   TxNormalType: TxNormalType,
   TxSalaryType: TxSalaryType,
@@ -2986,7 +3014,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_differenceBy__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_differenceBy__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _account_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/common/errorhandler */ "./lib/common/errorhandler.js");
+/* harmony import */ var _lib_utils_json__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/utils/json */ "./lib/utils/json.js");
+/* harmony import */ var lodash_endsWith__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash/endsWith */ "./node_modules/lodash/endsWith.js");
+/* harmony import */ var lodash_endsWith__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash_endsWith__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _account_constants__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./account.constants */ "./lib/module/Account/account.constants.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3009,15 +3041,18 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -3026,6 +3061,104 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 var TX_HISTORY = "TX_HISTORY";
+
+function mappingTxDetail() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      tx = _ref.tx,
+      tokenID = _ref.tokenID;
+
+  try {
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tx", tx).required().object();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenID", tokenID).required().string();
+
+    if (!tx) {
+      return {};
+    }
+
+    var isPRV = tokenID === _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"];
+
+    var _ref2 = tx || {},
+        LockTime = _ref2.LockTime,
+        Fee = _ref2.Fee,
+        Metadata = _ref2.Metadata,
+        Hash = _ref2.Hash,
+        Info = _ref2.Info,
+        Type = _ref2.Type;
+
+    var metadata = Object(_lib_utils_json__WEBPACK_IMPORTED_MODULE_6__["isJsonString"])(Metadata) ? JSON.parse(Metadata) : {};
+    var metaType = metadata === null || metadata === void 0 ? void 0 : metadata.Type;
+    var TypeStr = "";
+
+    if (isPRV) {
+      switch (Type) {
+        case "cv":
+          TypeStr = "Convert PRV";
+          break;
+
+        case "n":
+          TypeStr = _account_constants__WEBPACK_IMPORTED_MODULE_8__["META_TYPE"][metaType] || "";
+          break;
+
+        default:
+          TypeStr = "Skip";
+          break;
+      }
+    } else {
+      switch (Type) {
+        case "tcv":
+          TypeStr = "Convert Token";
+          break;
+
+        case "tp":
+          TypeStr = _account_constants__WEBPACK_IMPORTED_MODULE_8__["META_TYPE"][metaType] || "";
+          break;
+
+        default:
+          TypeStr = "Skip";
+          break;
+      }
+    }
+
+    var result = {
+      LockTime: lodash_endsWith__WEBPACK_IMPORTED_MODULE_7___default()(LockTime, "Z") ? "".concat(LockTime, "Z") : LockTime,
+      Fee: Fee,
+      Metadata: Metadata,
+      Info: Info,
+      TxHash: Hash,
+      Type: Type,
+      // n: prv , tp: token, tcv: convert token, cv: convert prv
+      TypeStr: TypeStr
+    };
+    return result;
+  } catch (error) {
+    console.log("ERROR", error);
+    throw error;
+  }
+}
+
+function mappingTxs(_ref3) {
+  var txs = _ref3.txs;
+
+  try {
+    if (!txs || txs.length === 0) {
+      return [];
+    }
+
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("txs", txs).required().array();
+    console.log("TXS BEFORE MAPPING", txs.length);
+    var result = txs.filter(function (tx) {
+      return (tx === null || tx === void 0 ? void 0 : tx.TypeStr) !== "Skip";
+    }).map(function (tx) {
+      return (tx === null || tx === void 0 ? void 0 : tx.TypeStr) !== "" ? _objectSpread(_objectSpread({}, tx), {}, {
+        TxTypeStr: tx === null || tx === void 0 ? void 0 : tx.TypeStr
+      }) : tx;
+    });
+    console.log("TXS AFTER MAPPING", result.length);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
 
 function getNormalTxHistory() {
   return this.txHistory.NormalTx;
@@ -3049,7 +3182,7 @@ function saveTxHistory() {
 
 function _saveTxHistory() {
   _saveTxHistory = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var _ref5,
+    var _ref8,
         tx,
         tokenID,
         key,
@@ -3062,7 +3195,7 @@ function _saveTxHistory() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _ref5 = _args.length > 0 && _args[0] !== undefined ? _args[0] : {}, tx = _ref5.tx;
+            _ref8 = _args.length > 0 && _args[0] !== undefined ? _args[0] : {}, tx = _ref8.tx;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tx", tx).required().object();
             _context.prev = 2;
             tokenID = tx.tokenID;
@@ -3125,8 +3258,8 @@ function getTxHistoryByTxID() {
 
 function _getTxHistoryByTxID() {
   _getTxHistoryByTxID = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var _ref6,
-        _ref6$tokenId,
+    var _ref9,
+        _ref9$tokenId,
         tokenId,
         txId,
         tx,
@@ -3139,7 +3272,7 @@ function _getTxHistoryByTxID() {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _ref6 = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}, _ref6$tokenId = _ref6.tokenId, tokenId = _ref6$tokenId === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] : _ref6$tokenId, txId = _ref6.txId;
+            _ref9 = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}, _ref9$tokenId = _ref9.tokenId, tokenId = _ref9$tokenId === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] : _ref9$tokenId, txId = _ref9.txId;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenId", tokenId).required().string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("txId", txId).required().string();
             _context2.prev = 3;
@@ -3218,8 +3351,8 @@ function _getTxsTransactorFromStorage() {
   _getTxsTransactorFromStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
     var _this = this;
 
-    var _ref7,
-        _ref7$tokenID,
+    var _ref10,
+        _ref10$tokenID,
         tokenID,
         txsTransactor,
         key,
@@ -3231,7 +3364,7 @@ function _getTxsTransactorFromStorage() {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _ref7 = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : {}, _ref7$tokenID = _ref7.tokenID, tokenID = _ref7$tokenID === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] : _ref7$tokenID;
+            _ref10 = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : {}, _ref10$tokenID = _ref10.tokenID, tokenID = _ref10$tokenID === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] : _ref10$tokenID;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenID", tokenID).required().string();
             txsTransactor = [];
             _context3.prev = 3;
@@ -3263,7 +3396,7 @@ function _getTxsTransactorFromStorage() {
             task = [];
             console.log(_typeof(txs.filter), txs);
             task = txs.filter(function (tx) {
-              return tx.status !== _account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_STATUS"].TXSTATUS_SUCCESS;
+              return tx.status !== _account_constants__WEBPACK_IMPORTED_MODULE_8__["TX_STATUS"].TXSTATUS_SUCCESS;
             }).map(function (tx) {
               return _this.getTxHistoryByTxID({
                 tokenId: tokenID,
@@ -3315,14 +3448,16 @@ function getSetKeyImages(_x) {
 }
 
 function _getSetKeyImages() {
-  _getSetKeyImages = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_ref) {
+  _getSetKeyImages = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_ref4) {
+    var _this2 = this;
+
     var tokenID, setKeyImages, _yield$this$getOutput, spentCoins, keyImages, shardID, txs;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            tokenID = _ref.tokenID;
+            tokenID = _ref4.tokenID;
             setKeyImages = [];
             _context4.prev = 2;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenID", tokenID).required().string();
@@ -3333,7 +3468,7 @@ function _getSetKeyImages() {
             _yield$this$getOutput = _context4.sent;
             spentCoins = _yield$this$getOutput.spentCoins;
 
-            if (spentCoins) {
+            if (!(spentCoins.length === 0)) {
               _context4.next = 10;
               break;
             }
@@ -3344,49 +3479,43 @@ function _getSetKeyImages() {
             keyImages = spentCoins.map(function (coin) {
               return coin === null || coin === void 0 ? void 0 : coin.KeyImage;
             });
-            shardID = this.getShardId();
-            _context4.next = 14;
-            return this.rpcCoinService.apiGetTxsBySender({
-              shardID: shardID,
-              keyImages: keyImages
-            });
 
-          case 14:
-            txs = _context4.sent;
-
-            if (txs) {
-              _context4.next = 17;
+            if (!(keyImages.length === 0)) {
+              _context4.next = 13;
               break;
             }
 
             return _context4.abrupt("return", setKeyImages);
 
-          case 17:
+          case 13:
+            shardID = this.getShardId();
+            _context4.next = 16;
+            return this.rpcCoinService.apiGetTxsBySender({
+              shardID: shardID,
+              keyImages: keyImages
+            });
+
+          case 16:
+            txs = _context4.sent;
+
+            if (!(!txs || txs.length === 0)) {
+              _context4.next = 19;
+              break;
+            }
+
+            return _context4.abrupt("return", setKeyImages);
+
+          case 19:
             txs = txs.map(function (tx) {
               return tx === null || tx === void 0 ? void 0 : tx.TxDetail;
-            }).map(function (_ref8, index) {
-              var LockTime = _ref8.LockTime,
-                  Fee = _ref8.Fee,
-                  Metadata = _ref8.Metadata,
-                  IsInBlock = _ref8.IsInBlock,
-                  IsInMempool = _ref8.IsInMempool,
-                  Hash = _ref8.Hash,
-                  Info = _ref8.Info,
-                  Type = _ref8.Type;
-              var result = {
-                // LockTime,
-                Fee: Fee,
-                Metadata: Metadata,
-                // IsInBlock,
-                // IsInMempool,
-                // Info,
-                TxHash: Hash,
+            }).map(function (tx, index) {
+              return _objectSpread(_objectSpread({}, _this2.mappingTxDetail({
+                tx: tx,
+                tokenID: tokenID
+              })), {}, {
                 KeyImage: keyImages[index],
-                Value: spentCoins[index].Value,
-                Type: Type // n: prv , tp: token, tcv: convert
-
-              };
-              return result;
+                Value: spentCoins[index].Value
+              });
             }).map(function (tx) {
               var TxHash = tx.TxHash,
                   Value = tx.Value;
@@ -3402,23 +3531,23 @@ function _getSetKeyImages() {
                 foundTx.Amount = new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(foundTx.Amount).add(new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(Value));
               }
             });
-            _context4.next = 23;
+            _context4.next = 25;
             break;
 
-          case 20:
-            _context4.prev = 20;
+          case 22:
+            _context4.prev = 22;
             _context4.t0 = _context4["catch"](2);
             throw _context4.t0;
 
-          case 23:
+          case 25:
             return _context4.abrupt("return", setKeyImages);
 
-          case 24:
+          case 26:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, this, [[2, 20]]);
+    }, _callee4, this, [[2, 22]]);
   }));
   return _getSetKeyImages.apply(this, arguments);
 }
@@ -3428,14 +3557,16 @@ function getSetPublicKeys(_x2) {
 }
 
 function _getSetPublicKeys() {
-  _getSetPublicKeys = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(_ref2) {
-    var tokenID, setPublicKeys, _yield$this$getOutput2, outputCoins;
+  _getSetPublicKeys = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(_ref5) {
+    var _this3 = this;
+
+    var tokenID, setPublicKeys, _yield$this$getOutput2, outputCoins, pubKeys, txsByPubkey;
 
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            tokenID = _ref2.tokenID;
+            tokenID = _ref5.tokenID;
             setPublicKeys = [];
             _context5.prev = 2;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenID", tokenID).required().string();
@@ -3446,7 +3577,7 @@ function _getSetPublicKeys() {
             _yield$this$getOutput2 = _context5.sent;
             outputCoins = _yield$this$getOutput2.outputCoins;
 
-            if (outputCoins) {
+            if (!(outputCoins.length === 0)) {
               _context5.next = 10;
               break;
             }
@@ -3454,49 +3585,92 @@ function _getSetPublicKeys() {
             return _context5.abrupt("return", setPublicKeys);
 
           case 10:
-            outputCoins.map(function (coin) {
-              var TxHash = coin.TxHash,
-                  Value = coin.Value,
-                  PublicKey = coin.PublicKey;
+            pubKeys = outputCoins.map(function (coin) {
+              return coin.PublicKey;
+            });
+
+            if (!(pubKeys.length === 0 || !pubKeys)) {
+              _context5.next = 13;
+              break;
+            }
+
+            return _context5.abrupt("return", setPublicKeys);
+
+          case 13:
+            _context5.next = 15;
+            return this.rpcCoinService.apiGetTxsByPublicKey({
+              pubKeys: pubKeys
+            });
+
+          case 15:
+            txsByPubkey = _context5.sent;
+
+            if (!(txsByPubkey.length !== outputCoins.length)) {
+              _context5.next = 18;
+              break;
+            }
+
+            throw new Error(_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].GetTxsByPubKeysFail);
+
+          case 18:
+            if (!(txsByPubkey.length === 0 || !txsByPubkey)) {
+              _context5.next = 20;
+              break;
+            }
+
+            return _context5.abrupt("return", setPublicKeys);
+
+          case 20:
+            txsByPubkey.map(function (tx) {
+              return tx === null || tx === void 0 ? void 0 : tx.TxDetail;
+            }).map(function (tx, index) {
+              return _objectSpread(_objectSpread({}, _this3.mappingTxDetail({
+                tx: tx,
+                tokenID: tokenID
+              })), {}, {
+                PublicKey: pubKeys[index],
+                Value: outputCoins[index].Value
+              });
+            }).map(function (tx) {
+              var TxHash = tx.TxHash,
+                  Value = tx.Value;
               var indexTx = setPublicKeys.findIndex(function (tx) {
                 return (tx === null || tx === void 0 ? void 0 : tx.TxHash) === TxHash;
               });
 
               if (indexTx === -1) {
-                setPublicKeys.push({
-                  TxHash: TxHash,
-                  Amount: new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(Value).toString(),
-                  PublicKey: PublicKey
-                });
+                setPublicKeys.push(_objectSpread(_objectSpread({}, tx), {}, {
+                  Amount: new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(Value).toString()
+                }));
               } else {
                 setPublicKeys[indexTx].Amount = new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(foundTx.Amount).add(new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(Value)).toString();
               }
             });
-            _context5.next = 16;
+            _context5.next = 26;
             break;
 
-          case 13:
-            _context5.prev = 13;
+          case 23:
+            _context5.prev = 23;
             _context5.t0 = _context5["catch"](2);
             throw _context5.t0;
 
-          case 16:
+          case 26:
             return _context5.abrupt("return", setPublicKeys);
 
-          case 17:
+          case 27:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, this, [[2, 13]]);
+    }, _callee5, this, [[2, 23]]);
   }));
   return _getSetPublicKeys.apply(this, arguments);
 }
 
-function getTxsTransactor(_ref3) {
-  var keyImages = _ref3.keyImages,
-      publicKeys = _ref3.publicKeys,
-      tokenID = _ref3.tokenID;
+function getTxsTransactor(_ref6) {
+  var keyImages = _ref6.keyImages,
+      publicKeys = _ref6.publicKeys,
+      tokenID = _ref6.tokenID;
   var txsTransactor;
 
   try {
@@ -3508,18 +3682,22 @@ function getTxsTransactor(_ref3) {
       var Fee = tx.Fee,
           TxHash = tx.TxHash,
           _tx$Amount = tx.Amount,
-          AmountTxKeyImg = _tx$Amount === void 0 ? 0 : _tx$Amount;
+          AmountTxKeyImg = _tx$Amount === void 0 ? 0 : _tx$Amount,
+          Type = tx.Type;
       var txPubKey = publicKeys.find(function (tx) {
         return tx.TxHash === TxHash;
       });
       var _txPubKey$Amount = txPubKey.Amount,
           AmountTxPubKey = _txPubKey$Amount === void 0 ? 0 : _txPubKey$Amount;
-      var amount = new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(AmountTxKeyImg).sub(new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(AmountTxPubKey)).sub(new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(tokenID === _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] ? Fee : 0));
+      var amount = new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(AmountTxKeyImg).sub(new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(AmountTxPubKey)).sub(new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(Type === "n" ? Fee : 0));
       return _objectSpread(_objectSpread({}, tx), {}, {
         Amount: amount.toString(),
-        TxType: _account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE"].SEND,
-        TxTypeStr: _account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE_STR"][_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE"].SEND]
+        TxType: _account_constants__WEBPACK_IMPORTED_MODULE_8__["TX_TYPE"].SEND,
+        TxTypeStr: _account_constants__WEBPACK_IMPORTED_MODULE_8__["TX_TYPE_STR"][_account_constants__WEBPACK_IMPORTED_MODULE_8__["TX_TYPE"].SEND]
       });
+    });
+    txsTransactor = this.mappingTxs({
+      txs: txsTransactor
     });
   } catch (error) {
     throw error;
@@ -3528,10 +3706,10 @@ function getTxsTransactor(_ref3) {
   return txsTransactor;
 }
 
-function getTxsReceiver(_ref4) {
-  var keyImages = _ref4.keyImages,
-      publicKeys = _ref4.publicKeys,
-      tokenID = _ref4.tokenID;
+function getTxsReceiver(_ref7) {
+  var keyImages = _ref7.keyImages,
+      publicKeys = _ref7.publicKeys,
+      tokenID = _ref7.tokenID;
   var txsReceiver;
 
   try {
@@ -3540,9 +3718,12 @@ function getTxsReceiver(_ref4) {
     new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("publicKeys", publicKeys).required().array();
     txsReceiver = lodash_differenceBy__WEBPACK_IMPORTED_MODULE_3___default()(publicKeys, keyImages, "TxHash").map(function (tx) {
       return _objectSpread(_objectSpread({}, tx), {}, {
-        TxType: _account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE"].RECEIVE,
-        TxTypeStr: _account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE_STR"][_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE"].RECEIVE]
+        TxType: _account_constants__WEBPACK_IMPORTED_MODULE_8__["TX_TYPE"].RECEIVE,
+        TxTypeStr: _account_constants__WEBPACK_IMPORTED_MODULE_8__["TX_TYPE_STR"][_account_constants__WEBPACK_IMPORTED_MODULE_8__["TX_TYPE"].RECEIVE]
       });
+    });
+    txsReceiver = this.mappingTxs({
+      txs: txsReceiver
     });
   } catch (error) {
     throw error;
@@ -3557,8 +3738,8 @@ function getTxsHistory() {
 
 function _getTxsHistory() {
   _getTxsHistory = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var _ref9,
-        _ref9$tokenID,
+    var _ref11,
+        _ref11$tokenID,
         tokenID,
         result,
         task,
@@ -3574,7 +3755,7 @@ function _getTxsHistory() {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            _ref9 = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : {}, _ref9$tokenID = _ref9.tokenID, tokenID = _ref9$tokenID === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] : _ref9$tokenID;
+            _ref11 = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : {}, _ref11$tokenID = _ref11.tokenID, tokenID = _ref11$tokenID === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] : _ref11$tokenID;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenID", tokenID).required().string();
             result = {
               txsTransactor: [],
@@ -3603,16 +3784,14 @@ function _getTxsHistory() {
               keyImages: keyImages,
               publicKeys: publicKeys,
               tokenID: tokenID
-            });
-            console.log("\\n\ntxsTransactor", txsTransactor);
-            console.log("\\n\txsReceiver", txsReceiver); // let task = [
+            }); // let task = [
             //   this.getTxsTransactor({ tokenID }),
             //   this.getTxsByReceiver({ tokenID }),
             // ];
             // const [txsTransactor, txsReceiver] = await Promise.all(task);
-            // result.txsTransactor = txsTransactor || [];
-            // result.txsReceiver = txsReceiver || [];
 
+            result.txsTransactor = txsTransactor || [];
+            result.txsReceiver = txsReceiver || [];
             _context6.next = 20;
             break;
 
@@ -3640,8 +3819,8 @@ function getTransactorHistoriesByTokenID() {
 
 function _getTransactorHistoriesByTokenID() {
   _getTransactorHistoriesByTokenID = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    var _ref10,
-        _ref10$tokenId,
+    var _ref12,
+        _ref12$tokenId,
         tokenId,
         txs,
         key,
@@ -3651,7 +3830,7 @@ function _getTransactorHistoriesByTokenID() {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            _ref10 = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : {}, _ref10$tokenId = _ref10.tokenId, tokenId = _ref10$tokenId === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] : _ref10$tokenId;
+            _ref12 = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : {}, _ref12$tokenId = _ref12.tokenId, tokenId = _ref12$tokenId === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"] : _ref12$tokenId;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenId", tokenId).required().string();
             _context7.prev = 2;
             key = this.getKeyTxHistoryByTokenId(tokenId);
@@ -3703,7 +3882,9 @@ function _getTransactorHistoriesByTokenID() {
   getSetKeyImages: getSetKeyImages,
   getSetPublicKeys: getSetPublicKeys,
   getTxsTransactorFromStorage: getTxsTransactorFromStorage,
-  getTxsReceiver: getTxsReceiver
+  getTxsReceiver: getTxsReceiver,
+  mappingTxs: mappingTxs,
+  mappingTxDetail: mappingTxDetail
 });
 
 /***/ }),
@@ -9574,7 +9755,7 @@ function transactConvert(_x) {
 
 function _transactConvert() {
   _transactConvert = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
-    var _ref$transfer, _ref$transfer2, _ref$transfer2$fee, fee, _ref$transfer2$info, info, _ref$transfer2$tokenI, tokenID, _ref$transfer2$prvPay, prvPayments, tokenPayments, _ref$extra, _ref$extra2, _ref$extra2$numOfDefr, numOfDefragInputs, _ref$extra2$txType, txType, account, isTokenConvert, isDefrag, metadata, receiverPaymentAddrStr, totalAmountTransfer, inputForTx, _inputForTx, _inputForTx2, _txParams$TokenParams, paramConvert, inputCoins, inputTokenCoins, _inputForTx3, txParams, tokenReceiverPaymentAddrStr, totalAmountTokenTransfer, _i, theirTime, txParamsJson, wasmResult, _JSON$parse, b58EncodedTx, hash, outputs, tempBuf, theString, txObj, tx, inputV1, inputV2;
+    var _ref$transfer, _ref$transfer2, _ref$transfer2$fee, fee, _ref$transfer2$info, info, _ref$transfer2$tokenI, tokenID, _ref$transfer2$prvPay, prvPayments, tokenPayments, _ref$extra, _ref$extra2, _ref$extra2$numOfDefr, numOfDefragInputs, _ref$extra2$txType, txType, account, isTokenConvert, isDefrag, metadata, receiverPaymentAddrStr, totalAmountTransfer, inputForTx, _inputForTx, _inputForTx2, _txParams$TokenParams, paramConvert, inputCoins, inputTokenCoins, _inputForTx3, txParams, tokenReceiverPaymentAddrStr, totalAmountTokenTransfer, _i, theirTime, txParamsJson, wasmResult, _JSON$parse, b58EncodedTx, hash, outputs, tempBuf, theString, txObj, tx, inputV1, inputV2, pushRawTxToPubsub;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -9786,19 +9967,32 @@ function _transactConvert() {
 
             _context.prev = 73;
             _context.next = 76;
-            return Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_8__["sleep"])(2000);
+            return this.rpcTxService.apiPushTx({
+              rawTx: b58EncodedTx
+            });
 
           case 76:
-            _context.next = 81;
+            pushRawTxToPubsub = _context.sent;
+            console.log('pushRawTxToPubsub: ', pushRawTxToPubsub);
+
+            if (pushRawTxToPubsub) {
+              _context.next = 80;
+              break;
+            }
+
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_7__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_7__["ErrorObject"].FailPushRawTxToPubsub, "Can not send transaction");
+
+          case 80:
+            _context.next = 85;
             break;
 
-          case 78:
-            _context.prev = 78;
+          case 82:
+            _context.prev = 82;
             _context.t0 = _context["catch"](73);
             throw _context.t0;
 
-          case 81:
-            _context.next = 83;
+          case 85:
+            _context.next = 87;
             return this.saveTxHistory({
               tx: _objectSpread(_objectSpread({}, tx), {}, {
                 tokenID: tokenID,
@@ -9806,20 +10000,20 @@ function _transactConvert() {
               })
             });
 
-          case 83:
+          case 87:
             return _context.abrupt("return", tx);
 
-          case 86:
-            _context.prev = 86;
+          case 90:
+            _context.prev = 90;
             _context.t1 = _context["catch"](13);
             throw _context.t1;
 
-          case 89:
+          case 93:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[13, 86], [73, 78]]);
+    }, _callee, this, [[13, 90], [73, 82]]);
   }));
   return _transactConvert.apply(this, arguments);
 }
@@ -10701,7 +10895,8 @@ function _getUnspentCoinsByTokenIdV() {
         listOutputsCoins,
         shardId,
         listUnspentCoinsFiltered,
-        _listUnspentCoinsFilt,
+        unspentCoinExceptSpendingCoin,
+        _unspentCoinExceptSpe,
         balance,
         unspentCoinsFiltered,
         _args15 = arguments;
@@ -10770,7 +10965,16 @@ function _getUnspentCoinsByTokenIdV() {
             listUnspentCoinsFiltered = _context15.sent.filter(function (coin) {
               return coin.Version !== _lib_core_constants__WEBPACK_IMPORTED_MODULE_11__["PrivacyVersion"].ver2.toString();
             });
-            _listUnspentCoinsFilt = listUnspentCoinsFiltered === null || listUnspentCoinsFiltered === void 0 ? void 0 : listUnspentCoinsFiltered.reduce(function (prev, coin) {
+            _context15.next = 24;
+            return Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_8__["getUnspentCoinExceptSpendingCoinV1"])({
+              account: this,
+              tokenId: tokenId,
+              unspentCoins: listUnspentCoinsFiltered
+            });
+
+          case 24:
+            unspentCoinExceptSpendingCoin = _context15.sent;
+            _unspentCoinExceptSpe = unspentCoinExceptSpendingCoin === null || unspentCoinExceptSpendingCoin === void 0 ? void 0 : unspentCoinExceptSpendingCoin.reduce(function (prev, coin) {
               var balance = prev.balance,
                   unspentCoinsFiltered = prev.unspentCoinsFiltered;
               var amount = new bn_js__WEBPACK_IMPORTED_MODULE_6___default.a(coin.Value);
@@ -10786,7 +10990,7 @@ function _getUnspentCoinsByTokenIdV() {
             }, {
               balance: new bn_js__WEBPACK_IMPORTED_MODULE_6___default.a(0),
               unspentCoinsFiltered: []
-            }), balance = _listUnspentCoinsFilt.balance, unspentCoinsFiltered = _listUnspentCoinsFilt.unspentCoinsFiltered; // case PRV balance < 100
+            }), balance = _unspentCoinExceptSpe.balance, unspentCoinsFiltered = _unspentCoinExceptSpe.unspentCoinsFiltered; // case PRV balance < 100
 
             if (balance.toNumber() <= 100 && tokenId === _lib_core__WEBPACK_IMPORTED_MODULE_4__["PRVIDSTR"]) {
               balance = new bn_js__WEBPACK_IMPORTED_MODULE_6___default.a(0);
@@ -10802,7 +11006,7 @@ function _getUnspentCoinsByTokenIdV() {
               numberCoins: listOutputsCoins.length
             });
 
-          case 25:
+          case 28:
           case "end":
             return _context15.stop();
         }
@@ -11174,23 +11378,25 @@ function clearCacheBalanceV1() {
 }
 
 function _clearCacheBalanceV() {
-  _clearCacheBalanceV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {
-    var version, key, keyInfo, tokenIds, coinsIndex;
-    return regeneratorRuntime.wrap(function _callee21$(_context21) {
+  _clearCacheBalanceV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee22() {
+    var _this4 = this;
+
+    var version, key, keyInfo, tokenIds, coinsIndex, tasks;
+    return regeneratorRuntime.wrap(function _callee22$(_context22) {
       while (1) {
-        switch (_context21.prev = _context21.next) {
+        switch (_context22.prev = _context22.next) {
           case 0:
             this.setPrivacyVersion(_lib_core_constants__WEBPACK_IMPORTED_MODULE_11__["PrivacyVersion"].ver1);
             version = this.privacyVersion;
             key = this.getOTAKey();
-            _context21.next = 5;
+            _context22.next = 5;
             return this.rpcCoinService.apiGetKeyInfo({
               key: key,
               version: version
             });
 
           case 5:
-            keyInfo = _context21.sent;
+            keyInfo = _context22.sent;
             tokenIds = [];
             coinsIndex = keyInfo === null || keyInfo === void 0 ? void 0 : keyInfo.coinindex;
 
@@ -11198,12 +11404,43 @@ function _clearCacheBalanceV() {
               tokenIds = Object.keys(coinsIndex);
             }
 
-          case 9:
+            tasks = tokenIds.map( /*#__PURE__*/function () {
+              var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21(tokenId) {
+                var key;
+                return regeneratorRuntime.wrap(function _callee21$(_context21) {
+                  while (1) {
+                    switch (_context21.prev = _context21.next) {
+                      case 0:
+                        _context21.next = 2;
+                        return _this4.getKeyStorageSpendingCoinsV1({
+                          tokenId: tokenId
+                        });
+
+                      case 2:
+                        key = _context21.sent;
+                        return _context21.abrupt("return", _this4.clearAccountStorage(key));
+
+                      case 4:
+                      case "end":
+                        return _context21.stop();
+                    }
+                  }
+                }, _callee21);
+              }));
+
+              return function (_x11) {
+                return _ref14.apply(this, arguments);
+              };
+            }());
+            _context22.next = 12;
+            return Promise.all(tasks);
+
+          case 12:
           case "end":
-            return _context21.stop();
+            return _context22.stop();
         }
       }
-    }, _callee21, this);
+    }, _callee22, this);
   }));
   return _clearCacheBalanceV.apply(this, arguments);
 }
@@ -11234,7 +11471,8 @@ function _clearCacheBalanceV() {
   getUnspentCoinsV1: getUnspentCoinsV1,
   convertTokensV1: convertTokensV1,
   checkBalanceNativeTokenV2: checkBalanceNativeTokenV2,
-  waitingBalanceNativeTokenV2: waitingBalanceNativeTokenV2
+  waitingBalanceNativeTokenV2: waitingBalanceNativeTokenV2,
+  clearCacheBalanceV1: clearCacheBalanceV1
 });
 
 /***/ }),
@@ -11394,11 +11632,12 @@ function _createAndSendBurningRequestTx() {
 /*!*********************************************!*\
   !*** ./lib/module/Account/account.utils.js ***!
   \*********************************************/
-/*! exports provided: createCoin, prepareInputForConvertTxV2, prepareInputForTxV2, cloneInputCoinJsonArray, estimateFee, getEstimateFee, getEstimateFeeForPToken, estimateTxSize, getUnspentCoin, newParamTxV2, newTokenParamV2, sleep, pagination */
+/*! exports provided: getUnspentCoinExceptSpendingCoinV1, createCoin, prepareInputForConvertTxV2, prepareInputForTxV2, cloneInputCoinJsonArray, estimateFee, getEstimateFee, getEstimateFeeForPToken, estimateTxSize, getUnspentCoin, newParamTxV2, newTokenParamV2, sleep, pagination */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUnspentCoinExceptSpendingCoinV1", function() { return getUnspentCoinExceptSpendingCoinV1; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCoin", function() { return createCoin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "prepareInputForConvertTxV2", function() { return prepareInputForConvertTxV2; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "prepareInputForTxV2", function() { return prepareInputForTxV2; });
@@ -12032,7 +12271,7 @@ var prepareInputForConvertTxV2 = /*#__PURE__*/function () {
             inputCoinsToSpent = unspentCoinExceptSpendingCoin.slice(0, maxInputs);
             subUnspent = unspentCoinExceptSpendingCoin.slice(maxInputs, maxLength);
 
-            if (tokenID === _lib_core__WEBPACK_IMPORTED_MODULE_3__["PRVIDSTR"] && subUnspent.length <= 10) {
+            if (subUnspent.length <= 10) {
               inputCoinsToSpent = inputCoinsToSpent.concat(subUnspent);
             }
 
@@ -12042,7 +12281,7 @@ var prepareInputForConvertTxV2 = /*#__PURE__*/function () {
             }
 
             if (!isPToken) {
-              _context7.next = 35;
+              _context7.next = 34;
               break;
             }
 
@@ -12062,14 +12301,13 @@ var prepareInputForConvertTxV2 = /*#__PURE__*/function () {
 
           case 25:
             unspentPRV_v2 = _context7.t0;
-            console.debug('unspentPRV_v2: ', unspentPRV_v2);
             inputCoinsForFee = _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_9__["defaultCoinChooser"].coinsToSpend(unspentPRV_v2, new bn_js__WEBPACK_IMPORTED_MODULE_1___default.a(fee)).resultInputCoins;
             account.setPrivacyVersion(_lib_core_constants__WEBPACK_IMPORTED_MODULE_13__["PrivacyVersion"].ver1);
             shardID = Object(_lib_common_common__WEBPACK_IMPORTED_MODULE_12__["getShardIDFromLastByte"])(account.key.KeySet.PaymentAddress.Pk[account.key.KeySet.PaymentAddress.Pk.length - 1]);
-            _context7.next = 32;
+            _context7.next = 31;
             return _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_9__["defaultCoinChooser"].coinsForRing(account.rpc, shardID, inputCoinsForFee.length * 7, _lib_core__WEBPACK_IMPORTED_MODULE_3__["PRVIDSTR"]);
 
-          case 32:
+          case 31:
             coinsForRing = _context7.sent;
             coinsForRing.Commitments = coinsForRing.Commitments.map(function (item) {
               var base58 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_14__["checkDecode"])(item).bytesDecoded;
@@ -12080,7 +12318,13 @@ var prepareInputForConvertTxV2 = /*#__PURE__*/function () {
               return Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_8__["base64Encode"])(base58);
             });
 
-          case 35:
+          case 34:
+            console.debug('inputCoinsToSpent: ', {
+              unspentCoinExceptSpendingCoin: unspentCoinExceptSpendingCoin,
+              inputCoinsToSpent: inputCoinsToSpent,
+              inputCoinsForFee: inputCoinsForFee,
+              tokenID: tokenID
+            });
             return _context7.abrupt("return", {
               inputCoinsToSpent: inputCoinsToSpent,
               totalValueInput: totalValueInput,
@@ -15400,6 +15644,22 @@ var RpcHTTPCoinServiceClient = function RpcHTTPCoinServiceClient(_url) {
     };
     console.log("data", JSON.stringify(data));
     return _this.http.post("gettxsbysender", data);
+  });
+
+  _defineProperty(this, "apiGetTxsByPublicKey", function () {
+    var _ref8 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        _ref8$base = _ref8.base58,
+        base58 = _ref8$base === void 0 ? false : _ref8$base,
+        pubKeys = _ref8.pubKeys;
+
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("pubKeys", pubKeys).required().array();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("base58", base58)["boolean"]();
+    var data = {
+      Pubkeys: pubKeys,
+      Base58: base58
+    };
+    console.log("data", data);
+    return _this.http.post("gettxsbypubkey", data);
   });
 
   this.http = Object(_http_axios__WEBPACK_IMPORTED_MODULE_2__["default"])({
@@ -23686,7 +23946,7 @@ _defineProperty(Wallet, "UseLegacyEncoding", true);
 
 _defineProperty(Wallet, "PubsubService", "");
 
-_defineProperty(Wallet, "RpcRequestService", void 0);
+_defineProperty(Wallet, "RpcRequestService", "");
 
 var DefaultStorage = /*#__PURE__*/function () {
   function DefaultStorage() {

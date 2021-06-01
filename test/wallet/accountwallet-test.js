@@ -153,13 +153,16 @@ async function TestStakerStatus() {
 async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 100;
-  let info = "INFOFO";
-  let amountTransfer = 6900; // in nano PRV
+  let info = "SEND 69000 PRV";
+  let amountTransfer = 69000; // in nano PRV
   const account = await createAccountByPrivateKey(
-    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
   );
+  const accountSenderBalance = await account.getBalance();
+  console.log("accountSenderBalance", accountSenderBalance);
   const receverAccount = await createAccountByPrivateKey(
-    "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
+    // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
+    "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
   );
   let paymentInfosParam = [];
   const receverInfo = await receverAccount.getDeserializeInformation();
@@ -168,7 +171,7 @@ async function TestCreateAndSendNativeToken() {
     PaymentAddress:
       "12smKh2tQ8CSqfXYKYXePDAxok9fb9xxxA6bszbtKGzd2ierpgz93kFfxiRxaSs4dFtUwghEoFW79YTJUyF6mXefiqtjWH2cBuNUSq5oGgG4aEeJj2UmeL9WhvikdsHr16KYpRxsKVGDzpWcG6Ku",
     Amount: amountTransfer,
-    Message: "Send 6900 PRV",
+    Message: info,
   };
   // create and send PRV
   try {
@@ -618,7 +621,8 @@ async function TestGetTxsByReceiver() {
 
 async function TestGetTxsHistory() {
   const account = await createAccountByPrivateKey(
-    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
   );
   const txs = await account.getTxsHistory({});
   console.log("txs", txs);
@@ -632,10 +636,9 @@ async function MainRoutine() {
   // return await TestConvertTokensV1();
   // sequential execution of tests; the wait might still be too short
   try {
-    return await TestGetTxsHistory();
+    // return await TestGetTxsHistory();
     // return await TestGetBalance();
-
-    // return await TestCreateAndSendNativeToken();
+    return await TestCreateAndSendNativeToken();
     // return await TestCreateAndSendPrivacyTokenTransfer();
     return await TestGetTxsByReceiver();
 
