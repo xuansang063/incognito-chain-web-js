@@ -591,7 +591,8 @@ async function TestConvertTokensV1() {
     // console.log("balance: ", balance.toString());
     accountSender.useCoinsService = true;
     accountSender.setPrivacyVersion(1);
-    await accountSender.convertTokensV1();
+    // await accountSender.convertTokensV1();
+    await accountSender.clearCacheBalanceV1();
   } catch (e) {
     throw e;
   }
