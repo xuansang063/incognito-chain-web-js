@@ -42,7 +42,6 @@ async function setup() {
   // await sleep(10000);
   wallet = new Wallet();
   wallet = await wallet.init("pass", new StorageServices(), "Master", "Anon");
-  console.log("wallet name", wallet.Name);
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
@@ -55,7 +54,6 @@ async function setup() {
   accountSender.setRPCTxServices(rpcTxService);
   accountSender.setRPCRequestServices(rpcRequestService);
   await accountSender.setKey(senderPrivateKeyStr);
-  console.log(accountSender.getOTAKey());
   senderPaymentAddressStr =
     accountSender.key.base58CheckSerialize(PaymentAddressType);
   // await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
@@ -620,7 +618,7 @@ async function TestGetTxsByReceiver() {
 
 async function TestGetTxsHistory() {
   const account = await createAccountByPrivateKey(
-    "112t8rnXSvD6F3ftDYukxVbkYWegXHVtcw7dkegEHGEafnJi6164YZhsFuxMJLrjuQttCiQqzmbP4ifLvs63yTzygLKtzxkNG1At7f5dVsaD"
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
   );
   const txs = await account.getTxsHistory({});
   console.log("txs", txs);
@@ -630,11 +628,11 @@ async function TestGetTxsHistory() {
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
-  // await setup();
-  return await TestConvertTokensV1();
+  await setup();
+  // return await TestConvertTokensV1();
   // sequential execution of tests; the wait might still be too short
   try {
-    // return await TestGetTxsHistory();
+    return await TestGetTxsHistory();
     // return await TestGetBalance();
 
     // return await TestCreateAndSendNativeToken();
