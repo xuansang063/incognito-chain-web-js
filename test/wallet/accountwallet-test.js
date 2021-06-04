@@ -155,11 +155,12 @@ async function TestStakerStatus() {
 async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 100;
-  let info = "SEND 1 PRV";
-  let amountTransfer = 1e9; // in nano PRV
+  let info = "SEND 6900 nano PRV";
+  let amountTransfer = 6900; // in nano PRV
   const account = await createAccountByPrivateKey(
     // "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
-    "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
+    // "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
+    "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
   );
   console.log("OTA KEY sender", account.getOTAKey());
   const accountSenderBalance = await account.getBalance();
@@ -610,8 +611,7 @@ async function createAccountByPrivateKey(privateKey) {
   account.setRPCClient(rpcClient);
   account.setRPCTxServices(rpcTxService);
   await account.setKey(privateKey);
-  const receverInfo = await account.getDeserializeInformation();
-  console.log(receverInfo);
+  console.log("INFO", await account.getDeserializeInformation());
   return account;
 }
 
@@ -625,12 +625,15 @@ async function TestGetTxsByReceiver() {
 
 async function TestGetTxsHistory() {
   const account = await createAccountByPrivateKey(
-    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     // "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
+    // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
+    "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
   );
-  const txs = await account.getTxsHistory({});
-  console.log("txs", txs);
+  await account.getTxsHistory({});
+  let txs2 = await account.getTxsHistory({});
+  console.log("txs", txs2);
 }
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
@@ -641,8 +644,8 @@ async function MainRoutine() {
   // return await TestConvertTokensV1();
   // sequential execution of tests; the wait might still be too short
   try {
-    // return await TestGetTxsHistory();
-    return await TestGetBalance();
+    return await TestGetTxsHistory();
+    // return await TestGetBalance();
     // return await TestCreateAndSendNativeToken();
     // return await TestCreateAndSendPrivacyTokenTransfer();
     // return await TestGetTxsByReceiver();
