@@ -13,7 +13,7 @@
     "build:dev": "webpack --config webpack.config.js --mode development",
     "build:verifier": "./lib/verifier/build-wasm.sh && webpack --config verifier-webpack.config.js --mode development",
     "test": "yarn build:wasm; mocha \"test/**/*.spec.js\"",
-    "test-account": "yarn build:dev && node ./test/wallet/accountwallet-test"
+    "test-account": "clear && yarn build:dev && node ./test/wallet/accountwallet-test"
   },
   "repository": {
     "type": "git",

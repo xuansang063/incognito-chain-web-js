@@ -182,7 +182,7 @@ func (c *CoinV2) Decrypt(keySet *incognitokey.KeySet) (PlainCoin, error) {
 		}
 		c.SetKeyImage(keyImage)
 	}
-	// panic(fmt.Sprintf("%v %v %v", c.amount, c.mask, c.IsEncrypted()))
+
 	if !c.IsEncrypted() {
 		return c, nil
 	}

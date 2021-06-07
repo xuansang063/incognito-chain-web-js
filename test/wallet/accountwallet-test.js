@@ -6,6 +6,7 @@ const {
   constants,
   utils,
   init,
+  StorageServices,
 } = require("../../");
 const { KeyWallet, RpcClient } = types;
 const { PaymentAddressType, PRVIDSTR, ENCODE_VERSION, PrivacyVersion } =
@@ -20,6 +21,8 @@ const { base58CheckEncode: checkEncode } = utils;
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
 const rpcClient = "http://139.162.55.124:8334";
 const rpcCoinService = "http://51.161.119.66:9009"; //dev-test-coin-service
+const rpcTxService = "http://51.161.119.66:8001"; //dev-test-coin-service
+const rpcRequestService = "http://51.161.119.66:5000"; //dev-test-coin-service
 const privacyVersion = 2;
 
 let wallet;
@@ -38,16 +41,19 @@ async function setup() {
     "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
   // await sleep(10000);
   wallet = new Wallet();
+  wallet = await wallet.init("pass", new StorageServices(), "Master", "Anon");
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rniZP5hk9X3RjCFx9CXyoxmJFcqM6sNM7Yknng6D4jS3vwTxcQ6hPZ3h3mZHx2JDNxfGxmwjiHN3A34gktcMhgXUwh8EXpo7NCxiuxJ";
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
+  // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
   accountSender.setPrivacyVersion(privacyVersion);
   accountSender.setRPCClient(rpcClient);
+  accountSender.setRPCTxServices(rpcTxService);
+  accountSender.setRPCRequestServices(rpcRequestService);
   await accountSender.setKey(senderPrivateKeyStr);
-  console.log(accountSender.getOTAKey());
   senderPaymentAddressStr =
     accountSender.key.base58CheckSerialize(PaymentAddressType);
   // await accountSender.submitKeyAndSync([PRVIDSTR, tokenID, secondTokenID]);
@@ -58,9 +64,13 @@ async function setup() {
 }
 async function TestGetBalance() {
   try {
-    const key = await accountSender.getDeserializeInformation();
-    console.log("key", key);
-    let balance = await accountSender.getBalance();
+    const account = await createAccountByPrivateKey(
+      // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+      // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+      // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
+      "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
+    );
+    let balance = await account.getBalance();
     console.log("balance: ", balance.toString());
   } catch (e) {
     console.log("Error when get balance: ", e);
@@ -105,19 +115,23 @@ async function TestCreateAndSendRewardAmountTx() {
 async function TestBurningRequestTx() {
   await setup();
 
-  let fee = 20;
+  let fee = 100;
   // create and send burning request tx
   let response;
   try {
     response = await accountSender.createAndSendBurningRequestTx({
-      transfer: { fee, tokenID },
+      transfer: {
+        fee,
+        tokenID:
+          "d6efe5956aa521f5eeaf2f69cc6fbf9f21bfb3dcb7d0de90fa40913e6e630983",
+      },
       extra: {
         remoteAddress: "d5808Ba261c91d640a2D4149E8cdb3fD4512efe4",
-        burnAmount: 100,
+        burnAmount: 69000,
       },
     });
     console.log("Response createAndSendBurningRequestTx: ", response);
-    return response.Response.txId;
+    return response.txId;
   } catch (e) {
     // this tx specifically depends on bridge config, so we let it skip and review manually
     console.error(e);
@@ -141,22 +155,36 @@ async function TestStakerStatus() {
 async function TestCreateAndSendNativeToken() {
   await setup();
   let fee = 100;
-  let info = "INFOFO";
-  let amountTransfer = 100; // in nano PRV
-  console.log("Will Transfer: ", amountTransfer);
+  let info = "SEND 6900 nano PRV";
+  let amountTransfer = 6900; // in nano PRV
+  const account = await createAccountByPrivateKey(
+    // "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
+    // "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
+    "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
+  );
+  console.log("OTA KEY sender", account.getOTAKey());
+  const accountSenderBalance = await account.getBalance();
+  console.log("accountSenderBalance", accountSenderBalance);
+  const receverAccount = await createAccountByPrivateKey(
+    // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
+    "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
+  );
   let paymentInfosParam = [];
+  const receverInfo = await receverAccount.getDeserializeInformation();
+  console.log(receverInfo);
   paymentInfosParam[0] = {
-    PaymentAddress: receiverPaymentAddrStr,
+    PaymentAddress:
+      "12smKh2tQ8CSqfXYKYXePDAxok9fb9xxxA6bszbtKGzd2ierpgz93kFfxiRxaSs4dFtUwghEoFW79YTJUyF6mXefiqtjWH2cBuNUSq5oGgG4aEeJj2UmeL9WhvikdsHr16KYpRxsKVGDzpWcG6Ku",
     Amount: amountTransfer,
-    Message: "ABC",
+    Message: info,
   };
   // create and send PRV
   try {
-    let res = await accountSender.createAndSendNativeToken({
+    let res = await account.createAndSendNativeToken({
       transfer: { prvPayments: paymentInfosParam, fee, info },
       extra: { isEncryptMessage: true, txType: 0 },
     });
-    console.log("Send tx succesfully with TxID: ", res.response.txId);
+    console.log("Send tx succesfully with TxID: ", res.txId);
     return res;
   } catch (e) {
     console.log("Error when send PRV: ", e);
@@ -305,7 +333,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     let res = await accountSender.createAndSendPrivacyToken({
       transfer: {
         tokenID:
-          "f89631735938d5fb762017538279cb78f2831b1aa668e87b3c69d33403a9f785",
+          "d6efe5956aa521f5eeaf2f69cc6fbf9f21bfb3dcb7d0de90fa40913e6e630983",
         tokenPayments: tokenPaymentInfo,
         fee: feePRV,
         info: "SOME INFO WHEN TRANSFERRING TOKEN",
@@ -313,7 +341,7 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
       extra: { txType: 0 },
     });
     console.log("Send tx succesfully with TxID: ", res);
-    return res.Response.txId;
+    return res.txId;
   } catch (e) {
     console.log("Error when transferring ptoken: ", e);
     throw e;
@@ -561,41 +589,85 @@ async function TestCreateAndSendConvertTx() {
     throw e;
   }
 }
-async function ConvertAllToken() {
+async function TestConvertTokensV1() {
   await setup();
   try {
+    // accountSender.setPrivacyVersion(2);
+    // let balance = await accountSender.getBalance();
+    // console.log("balance: ", balance.toString());
     accountSender.useCoinsService = true;
-    await accountSender.convertAllToken();
+    accountSender.setPrivacyVersion(1);
+    // await accountSender.convertTokensV1();
+    await accountSender.clearCacheBalanceV1();
   } catch (e) {
     throw e;
   }
+}
+
+async function createAccountByPrivateKey(privateKey) {
+  let account = new AccountWallet(Wallet);
+  account.setRPCCoinServices(rpcCoinService);
+  account.setPrivacyVersion(privacyVersion);
+  account.setRPCClient(rpcClient);
+  account.setRPCTxServices(rpcTxService);
+  await account.setKey(privateKey);
+  console.log("INFO", await account.getDeserializeInformation());
+  return account;
+}
+
+async function TestGetTxsByReceiver() {
+  const account = await createAccountByPrivateKey(
+    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+  );
+  const txs = await account.getTxsByReceiver({});
+  console.log("txs", txs.length);
+}
+
+async function TestGetTxsHistory() {
+  const account = await createAccountByPrivateKey(
+    // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
+    // "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
+    // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
+    "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
+  );
+  await account.getTxsHistory({});
+  let txs2 = await account.getTxsHistory({});
+  console.log("txs", txs2);
 }
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
-  // sequential execution of tests; the wait might still be too short
   await setup();
+  // return await TestConvertTokensV1();
+  // sequential execution of tests; the wait might still be too short
   try {
+    return await TestGetTxsHistory();
     // return await TestGetBalance();
-    const info = await accountSender.getDeserializeInformation();
-    const result = await accountSender.createAndSendInitTokenTx({
-      transfer: {
-        fee: 100,
-        info: "Init token doge coin",
-        tokenPayments: [
-          { Amount: "1000000000", PaymentAddress: info.PaymentAddress },
-        ],
-      },
-      extra: {
-        tokenName: "DOGE COIN",
-        tokenSymbol: "DOGE",
-      },
-    });
-    console.log("RESULT", result);
+    // return await TestCreateAndSendNativeToken();
+    // return await TestCreateAndSendPrivacyTokenTransfer();
+    // return await TestGetTxsByReceiver();
+
+    // return await TestBurningRequestTx();
+    // return await TestCreateAndSendNativeToken();
+
+    // const result = await accountSender.createAndSendInitTokenTx({
+    //   transfer: {
+    //     fee: 100,
+    //     info: "Init token doge coin",
+    //     tokenPayments: [
+    //       { Amount: "1000000000", PaymentAddress: info.PaymentAddress },
+    //     ],
+    //   },
+    //   extra: {
+    //     tokenName: "DOGE COIN",
+    //     tokenSymbol: "DOGE",
+    //   },
+    // });
+    // console.log("RESULT", result);
     // await TestCreateAndSendRewardAmountTx();
-    // return await ConvertAllToken();
     // return await TestGetBalance();
     // let txh;
     // txh = await TestCustomTradeRequest(null, tokenID, 10000, 800);
@@ -603,7 +675,7 @@ async function MainRoutine() {
     // return;
     // return await TestGetBalance();
     //  return await TestCreateAndSendNativeToken();
-    //  await TestCreateAndSendNativeToken();
+
     //  await TestCreateAndSendNativeToken();
     // await setup();
     // const result = await accountSender.getPDeState();
