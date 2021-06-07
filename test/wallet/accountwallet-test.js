@@ -65,10 +65,10 @@ async function setup() {
 async function TestGetBalance() {
   try {
     const account = await createAccountByPrivateKey(
-      // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+      "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
       // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
-      "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
+      // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     );
     let balance = await account.getBalance();
     console.log("balance: ", balance.toString());
@@ -465,27 +465,86 @@ async function TestMakeFragments() {
 }
 /************************* DEX **************************/
 
-async function TestCustomContribution(
-  pdeContributionPairID,
-  contributingTokenID,
-  contributedAmount
-) {
-  await setup();
-  let fee = 50;
-  // let pdeContributionPairID = "123";
-  // let contributedAmount = 1000000;
-
+async function TestAddLiquidity() {
   try {
-    let response = await accountSender.createAndSendTxWithContribution({
-      transfer: { fee, tokenID: contributingTokenID },
-      extra: { pairID: pdeContributionPairID, contributedAmount },
+    const account = await createAccountByPrivateKey(
+      "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    );
+    const tokenID1 =
+      "0000000000000000000000000000000000000000000000000000000000000004";
+    const tokenID2 =
+      "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74";
+    const pairID = `pdepool-${tokenID2}-${tokenID1}-${account.getPaymentAddress()}`;
+    const contributedAmount = 100;
+    let response = await account.createAndSendTxWithContribution({
+      transfer: {
+        fee: 100,
+        info: "Add liquidity for token",
+        tokenID: tokenID2,
+      },
+      extra: { pairID, contributedAmount },
     });
-    return response.Response.txId;
+    console.log("response add liquidity", response);
   } catch (e) {
     console.log("Error when staking: ", e);
     throw e;
   }
 }
+
+async function TestWithdrawLiquidity() {
+  try {
+    const account = await createAccountByPrivateKey(
+      "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    );
+    const tokenID1 =
+      "0000000000000000000000000000000000000000000000000000000000000004";
+    const tokenID2 =
+      "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74";
+    const withdrawalShareAmt = 100;
+    let response = await account.createAndSendWithdrawContributionTx({
+      transfer: {
+        fee: 100,
+      },
+      extra: {
+        withdrawalToken1IDStr: tokenID1,
+        withdrawalToken2IDStr: tokenID2,
+        withdrawalShareAmt,
+      },
+    });
+    console.log("response withdraw liquidity", response);
+  } catch (e) {
+    console.log("Error when staking: ", e);
+    throw e;
+  }
+}
+
+async function TestWithdrawFeeLiquidity() {
+  try {
+    const account = await createAccountByPrivateKey(
+      "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+    );
+    const tokenID1 =
+      "0000000000000000000000000000000000000000000000000000000000000004";
+    const tokenID2 =
+      "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74";
+    const withdrawalFeeAmt = 100;
+    let response = await account.createAndSendWithdrawContributionFeeTx({
+      transfer: {
+        fee: 100,
+      },
+      extra: {
+        withdrawalToken1IDStr: tokenID1,
+        withdrawalToken2IDStr: tokenID2,
+        withdrawalFeeAmt,
+      },
+    });
+    console.log("response withdraw fee liquidity", response);
+  } catch (e) {
+    console.log("Error when staking: ", e);
+    throw e;
+  }
+}
+
 async function TestCustomTradeRequest() {
   // tokenIDToSellStr,
   // tokenIDToBuyStr,
@@ -644,7 +703,10 @@ async function MainRoutine() {
   // return await TestConvertTokensV1();
   // sequential execution of tests; the wait might still be too short
   try {
-    return await TestGetTxsHistory();
+    // return await TestAddLiquidity();
+    // return await TestWithdrawLiquidity();
+    return await TestWithdrawFeeLiquidity();
+    // return await TestGetTxsHistory();
     // return await TestGetBalance();
     // return await TestCreateAndSendNativeToken();
     // return await TestCreateAndSendPrivacyTokenTransfer();
