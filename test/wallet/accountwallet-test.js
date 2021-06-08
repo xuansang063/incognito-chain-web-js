@@ -690,9 +690,11 @@ async function TestGetTxsHistory() {
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
   );
-  await account.getTxsHistory({});
-  let txs2 = await account.getTxsHistory({});
-  console.log("txs", txs2);
+  const tokenID = `0000000000000000000000000000000000000000000000000000000000000004`;
+  const txs = await account.getTxsHistory({
+    tokenID,
+  });
+  console.log("txs", txs);
 }
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
@@ -705,8 +707,8 @@ async function MainRoutine() {
   try {
     // return await TestAddLiquidity();
     // return await TestWithdrawLiquidity();
-    return await TestWithdrawFeeLiquidity();
-    // return await TestGetTxsHistory();
+    // return await TestWithdrawFeeLiquidity();
+    return await TestGetTxsHistory();
     // return await TestGetBalance();
     // return await TestCreateAndSendNativeToken();
     // return await TestCreateAndSendPrivacyTokenTransfer();
