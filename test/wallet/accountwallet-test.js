@@ -70,8 +70,12 @@ async function TestGetBalance() {
       // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
       // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     );
-    let balance = await account.getBalance();
+    const tokenID =
+      "0000000000000000000000000000000000000000000000000000000000000004";
+    let balance = await account.getBalance(tokenID);
     console.log("balance: ", balance.toString());
+    let balance2 = await account.getBalance(tokenID);
+    console.log("balance2: ", balance2.toString());
   } catch (e) {
     console.log("Error when get balance: ", e);
   }
@@ -683,14 +687,17 @@ async function TestGetTxsByReceiver() {
 }
 
 async function TestGetTxsHistory() {
-  const account = await createAccountByPrivateKey(
+  let account = await createAccountByPrivateKey(
     // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     // "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
+    // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
     "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
   );
   const tokenID = `0000000000000000000000000000000000000000000000000000000000000004`;
+  const balance = await account.getBalance(tokenID);
+  console.log("balance", balance);
   const txs = await account.getTxsHistory({
     tokenID,
   });
