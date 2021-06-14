@@ -55,6 +55,14 @@ async function setup() {
   accountSender.setRPCClient(rpcClient);
   accountSender.setRPCTxServices(rpcTxService);
   accountSender.setRPCRequestServices(rpcRequestService);
+  const data = {
+    DeviceID: deviceID,
+  };
+  const authTokenDt = await Axios.post(`${rpcApiService}/auth/new-token`, data);
+  const authToken = authTokenDt.data.Result.Token;
+  console.log("authToken", authToken);
+  accountSender.setAuthToken(authToken);
+  accountSender.setRPCApiServices(rpcApiService, authToken);
   await accountSender.setKey(senderPrivateKeyStr);
   senderPaymentAddressStr =
     accountSender.key.base58CheckSerialize(PaymentAddressType);
