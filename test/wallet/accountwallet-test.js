@@ -1,3 +1,4 @@
+const { default: Axios } = require("axios");
 const esArrayIterator = require("core-js/modules/es.array.iterator");
 const {
   Wallet,
@@ -24,7 +25,8 @@ const rpcCoinService = "http://51.161.119.66:9009"; //dev-test-coin-service
 const rpcTxService = "http://51.161.119.66:8001"; //dev-test-coin-service
 const rpcRequestService = "http://51.161.119.66:5000"; //dev-test-coin-service
 const privacyVersion = 2;
-
+const rpcApiService = "https://privacyv2-api-service.incognito.org";
+const deviceID = "9AE4B404-3E61-495D-835A-05CEE34BE251";
 let wallet;
 let senderPrivateKeyStr;
 let senderKeyWallet;
@@ -673,6 +675,14 @@ async function createAccountByPrivateKey(privateKey) {
   account.setPrivacyVersion(privacyVersion);
   account.setRPCClient(rpcClient);
   account.setRPCTxServices(rpcTxService);
+  const data = {
+    DeviceID: deviceID,
+  };
+  const authTokenDt = await Axios.post(`${rpcApiService}/auth/new-token`, data);
+  const authToken = authTokenDt.data.Result.Token;
+  console.log("authToken", authToken);
+  account.setAuthToken(authToken);
+  account.setRPCApiServices(rpcApiService, authToken);
   await account.setKey(privateKey);
   console.log("INFO", await account.getDeserializeInformation());
   return account;
@@ -688,20 +698,39 @@ async function TestGetTxsByReceiver() {
 
 async function TestGetTxsHistory() {
   let account = await createAccountByPrivateKey(
+    "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
     // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     // "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
-    "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
+    // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
   );
-  const tokenID = `0000000000000000000000000000000000000000000000000000000000000004`;
+  const tokenID =
+    "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
+  // "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74"; //usdt
   const balance = await account.getBalance(tokenID);
   console.log("balance", balance);
   const txs = await account.getTxsHistory({
     tokenID,
+    isPToken: true,
   });
   console.log("txs", txs);
+}
+
+async function TestGetPTokenHistory() {
+  try {
+    const tokenID =
+      "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; //zil
+    const account = await createAccountByPrivateKey(
+      "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
+    );
+    console.log("account", JSON.stringify(account));
+    const history = await account.getPTokenHistory({ tokenID });
+    console.log("history", history);
+  } catch (error) {
+    console.log("error", error);
+  }
 }
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
@@ -712,6 +741,7 @@ async function MainRoutine() {
   // return await TestConvertTokensV1();
   // sequential execution of tests; the wait might still be too short
   try {
+    // return await TestGetPTokenHistory();
     // return await TestAddLiquidity();
     // return await TestWithdrawLiquidity();
     // return await TestWithdrawFeeLiquidity();
