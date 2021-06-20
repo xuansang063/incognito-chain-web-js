@@ -792,6 +792,8 @@ async function MainRoutine() {
   // return await TestConvertTokensV1();
   // sequential execution of tests; the wait might still be too short
   try {
+
+    return await TestGetBalance();
     //Liquidity
     await TestAddLiquidity();
     await delay(3000);
