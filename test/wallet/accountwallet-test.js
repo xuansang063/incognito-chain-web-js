@@ -6,6 +6,7 @@ const {
   utils,
   init,
   StorageServices,
+  getUnspentCoinExceptSpendingCoinV1
 } = require("../../");
 const { PaymentAddressType } = constants;
 
@@ -42,7 +43,7 @@ async function setup() {
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
+    "112t8rnZ9qPE7C6RbrK6Ygat1H94kEkYGSd84fAGiU396yQHu8CBHmV1DDHE947d7orfHnDtKA9WCffDk7NS5zUu5CMCUHK8nkRtrv4nw6uu";
   // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
@@ -69,7 +70,7 @@ async function setup() {
 async function TestGetBalance() {
   try {
     const account = await createAccountByPrivateKey(
-      "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
       // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
       // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
@@ -494,7 +495,12 @@ async function TestAddLiquidity() {
       "0000000000000000000000000000000000000000000000000000000000000004";
     const tokenID2 =
       "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74";
-    const pairID = `pdepool-${tokenID2}-${tokenID1}-${account.getPaymentAddress()}`;
+    const pairID = account.createPairId({
+      tokenID1,
+      tokenID2,
+      symbol1: 'PRV',
+      symbol2: 'ETH',
+    })
     const contributedAmount = 100;
     let response = await account.createAndSendTxWithContribution({
       transfer: {
@@ -784,17 +790,59 @@ async function TestInitToken() {
   console.log(result);
 }
 
+async function TestGetContributeHistories() {
+  await accountSender.getContributeHistoriesWithStorage({
+    offset: 0,
+    limit: 100
+  });
+}
+
+async function TestGetWithdrawLiquidityHistories() {
+  await accountSender.getLiquidityWithdrawHistoriesWithStorage({
+    offset: 0,
+    limit: 100
+  });
+}
+
+async function TestGetWithdrawFeeLiquidityHistories() {
+  await accountSender.getLiquidityWithdrawFeeHistoriesWithStorage({
+    offset: 0,
+    limit: 100
+  });
+}
+
+async function TestGetUnspentCoinsV1() {
+  const account = await createAccountByPrivateKey(
+    "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+  );
+  await account.getUnspentCoinsV1({ fromApi: true });
+}
+
+async function TestConvertCoinsV1() {
+  const account = await createAccountByPrivateKey(
+    "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+  );
+  await account.convertCoinsV1();
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  // return await TestConvertTokensV1();
+  await TestConvertCoinsV1();
+  return;
   // sequential execution of tests; the wait might still be too short
   try {
 
     return await TestGetBalance();
     //Liquidity
+    await TestGetContributeHistories();
+    await delay(3000);
+    await TestGetWithdrawLiquidityHistories();
+    await delay(3000);
+    await TestGetWithdrawFeeLiquidityHistories();
+    await delay(3000);
     await TestAddLiquidity();
     await delay(3000);
     await TestWithdrawLiquidity();
@@ -822,12 +870,20 @@ async function MainRoutine() {
 
     //Trade
     await TestCustomTradeRequest();
+    await delay(3000);
 
     //Unshield
     await TestBurningRequestTx();
+    await delay(3000);
 
     //Init token
     await TestInitToken();
+    await delay(3000);
+
+    //Convert
+    await TestGetUnspentCoinsV1();
+    await delay(3000);
+    await TestConvertCoinsV1();
 
     return;
 
