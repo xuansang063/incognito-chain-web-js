@@ -834,6 +834,8 @@ async function MainRoutine() {
   return;
   // sequential execution of tests; the wait might still be too short
   try {
+
+    return await TestGetBalance();
     //Liquidity
     await TestGetContributeHistories();
     await delay(3000);
