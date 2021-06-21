@@ -727,7 +727,8 @@ async function TestGetTxsByReceiver() {
 
 async function TestGetTxsHistory() {
   let account = await createAccountByPrivateKey(
-    "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
+    "112t8rnY4wGSgmY58SCFE8wcpe7batDrUMy1HCTda4ymyMgDWYJotNJzXN4EpgEv8G1u2Was92HeLvuu9DAxnwsfcjnZQooHHDDXwXdQ1htn"
+    // "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
     // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     // "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
@@ -737,7 +738,8 @@ async function TestGetTxsHistory() {
   );
   const tokenID =
     // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
-    "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74"; //usdt
+    // "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74"; //usdt
+    "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854"; //eth
   const balance = await account.getBalance({
     tokenID,
     version: privacyVersion,
@@ -749,11 +751,11 @@ async function TestGetTxsHistory() {
     version: privacyVersion,
   });
   console.log("TestGetTxsHistory-txs", txs);
-  const history = txs.txsPToken[0];
+  const history = txs.txsPToken.find((txp) => txp.id === 8);
   const tx = await account.handleGetPTokenHistoryById({ history });
   console.log("tx", tx);
-  const retryTx = await account.handleRetryExpiredShield({ history });
-  console.log("retryTx", retryTx);
+  // const retryTx = await account.handleRetryExpiredShield({ history });
+  // console.log("retryTx", retryTx);
 }
 
 async function TestGetPTokenHistory() {
@@ -834,8 +836,7 @@ async function MainRoutine() {
   return;
   // sequential execution of tests; the wait might still be too short
   try {
-
-    return await TestGetBalance();
+    return await TestGetTxsHistory();
     //Liquidity
     await TestGetContributeHistories();
     await delay(3000);
