@@ -6,7 +6,7 @@ const {
   utils,
   init,
   StorageServices,
-  getUnspentCoinExceptSpendingCoinV1
+  getUnspentCoinExceptSpendingCoinV1,
 } = require("../../");
 const { PaymentAddressType } = constants;
 
@@ -70,23 +70,29 @@ async function setup() {
 async function TestGetBalance() {
   try {
     const account = await createAccountByPrivateKey(
-      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+      "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhzVdTjbGdPQY"
+      // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
       // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
       // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     );
-    const tokenID =
+    const tokenID1 =
       "0000000000000000000000000000000000000000000000000000000000000004";
-    let balance = await account.getBalance({
-      tokenID,
+    const tokenID2 =
+      "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc";
+    const tokenIDs = [tokenID1, tokenID2];
+    await account.getKeyInfo({
       version: privacyVersion,
     });
-    console.log("balance: ", balance.toString());
-    let balance2 = await account.getBalance({
-      tokenID,
-      version: privacyVersion,
-    });
-    console.log("balance2: ", balance2.toString());
+    let task = tokenIDs.map((tokenID) =>
+      account.getBalance({
+        tokenID,
+        version: privacyVersion,
+      })
+    );
+    console.log("BALANCE", await Promise.all(task));
+    await delay(40 * 1000);
+    console.log("BALANCE AFTER CACHE", await Promise.all(task));
   } catch (e) {
     console.log("Error when get balance: ", e);
   }
@@ -498,9 +504,9 @@ async function TestAddLiquidity() {
     const pairID = account.createPairId({
       tokenID1,
       tokenID2,
-      symbol1: 'PRV',
-      symbol2: 'ETH',
-    })
+      symbol1: "PRV",
+      symbol2: "ETH",
+    });
     const contributedAmount = 100;
     let response = await account.createAndSendTxWithContribution({
       transfer: {
@@ -795,21 +801,21 @@ async function TestInitToken() {
 async function TestGetContributeHistories() {
   await accountSender.getContributeHistoriesWithStorage({
     offset: 0,
-    limit: 100
+    limit: 100,
   });
 }
 
 async function TestGetWithdrawLiquidityHistories() {
   await accountSender.getLiquidityWithdrawHistoriesWithStorage({
     offset: 0,
-    limit: 100
+    limit: 100,
   });
 }
 
 async function TestGetWithdrawFeeLiquidityHistories() {
   await accountSender.getLiquidityWithdrawFeeHistoriesWithStorage({
     offset: 0,
-    limit: 100
+    limit: 100,
   });
 }
 
@@ -832,6 +838,7 @@ async function TestConvertCoinsV1() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
+  return await TestGetBalance();
   await TestConvertCoinsV1();
   return;
   // sequential execution of tests; the wait might still be too short
