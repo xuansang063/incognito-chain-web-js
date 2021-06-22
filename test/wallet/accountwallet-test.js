@@ -821,7 +821,7 @@ async function TestGetWithdrawFeeLiquidityHistories() {
 
 async function TestGetUnspentCoinsV1() {
   const account = await createAccountByPrivateKey(
-    "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+    "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKoESjDGbF2J7"
   );
   await account.getUnspentCoinsV1({ fromApi: true });
 }
@@ -838,8 +838,8 @@ async function TestConvertCoinsV1() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestGetBalance();
-  await TestConvertCoinsV1();
+  // return await TestGetBalance();
+  await TestGetUnspentCoinsV1();
   return;
   // sequential execution of tests; the wait might still be too short
   try {
