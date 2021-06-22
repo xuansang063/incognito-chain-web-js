@@ -839,12 +839,14 @@ async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
   // return await TestGetBalance();
-  await TestGetUnspentCoinsV1();
-  return;
+  // await TestGetUnspentCoinsV1();
+  // return;
   // sequential execution of tests; the wait might still be too short
   try {
-    return await TestGetTxsHistory();
+    // return await TestGetTxsHistory();
     //Liquidity
+    await TestGetBalance();
+    await delay(3000);
     await TestGetContributeHistories();
     await delay(3000);
     await TestGetWithdrawLiquidityHistories();
