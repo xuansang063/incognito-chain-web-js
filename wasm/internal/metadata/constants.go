@@ -11,7 +11,7 @@ const (
 	IssuingETHRequestMeta  = 80
 	IssuingETHResponseMeta = 81
 
-	InitTokenRequestMeta  = 244
+	InitTokenRequestMeta = 244
 
 	ShardBlockReward             = 36
 	AcceptedBlockRewardInfoMeta  = 37
@@ -24,10 +24,11 @@ const (
 	WithDrawRewardRequestMeta    = 44
 	WithDrawRewardResponseMeta   = 45
 
-	//statking
+	//staking
 	ShardStakingMeta    = 63
 	StopAutoStakingMeta = 127
 	BeaconStakingMeta   = 64
+	UnStakingMeta       = 210
 
 	// Incognito -> Ethereum bridge
 	BeaconSwapConfirmMeta = 70
@@ -128,6 +129,7 @@ const (
 	AllShards  = -1
 	BeaconOnly = -2
 )
+
 //const (
 //	EthereumLightNodeProtocol = "http"
 //	EthereumLightNodePort     = "8545"
