@@ -31,6 +31,9 @@ let senderPaymentAddressStr;
 let receiverPaymentAddrStr;
 let receiverPaymentAddrStr2;
 
+const PRVID =
+  "0000000000000000000000000000000000000000000000000000000000000004";
+
 let tokenID, secondTokenID;
 async function setup() {
   await init();
@@ -70,7 +73,7 @@ async function setup() {
 async function TestGetBalance() {
   try {
     const account = await createAccountByPrivateKey(
-      "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhzVdTjbGdPQY"
+      "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKhzbNJkxpJU6"
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
       // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
@@ -706,21 +709,28 @@ function delay(ms) {
 }
 
 async function createAccountByPrivateKey(privateKey) {
-  let account = new AccountWallet(Wallet);
-  account.setRPCCoinServices(rpcCoinService);
-  account.setRPCClient(rpcClient);
-  account.setRPCTxServices(rpcTxService);
-  const data = {
-    DeviceID: deviceID,
-  };
-  const authTokenDt = await Axios.post(`${rpcApiService}/auth/new-token`, data);
-  const authToken = authTokenDt.data.Result.Token;
-  console.log("authToken", authToken);
-  account.setAuthToken(authToken);
-  account.setRPCApiServices(rpcApiService, authToken);
-  await account.setKey(privateKey);
-  console.log("INFO", await account.getDeserializeInformation());
-  return account;
+  try {
+    let account = new AccountWallet(Wallet);
+    account.setRPCCoinServices(rpcCoinService);
+    account.setRPCClient(rpcClient);
+    account.setRPCTxServices(rpcTxService);
+    const data = {
+      DeviceID: deviceID,
+    };
+    const authTokenDt = await Axios.post(
+      `${rpcApiService}/auth/new-token`,
+      data
+    );
+    const authToken = authTokenDt.data.Result.Token;
+    console.log("authToken", authToken);
+    account.setAuthToken(authToken);
+    account.setRPCApiServices(rpcApiService, authToken);
+    await account.setKey(privateKey);
+    console.log("INFO", await account.getDeserializeInformation());
+    return account;
+  } catch (error) {
+    console.log("ERROR CREATE ACCOUNT", privateKey, error);
+  }
 }
 
 async function TestGetTxsByReceiver() {
@@ -834,12 +844,37 @@ async function TestConvertCoinsV1() {
   await account.convertCoinsV1();
 }
 
+async function TestConsolidate() {
+  try {
+    console.log("AAAAAA");
+    const account = await createAccountByPrivateKey(
+      // "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKhzbNJkxpJU6"
+      // "112t8rne7fpTVvSgZcSgyFV23FYEv3sbRRJZzPscRcTo8DsdZwstgn6UyHbnKHmyLJrSkvF13fzkZ4e8YD5A2wg8jzUZx6Yscdr4NuUUQDAt"
+      // "112t8rnXoBXrThDTACHx2rbEq7nBgrzcZhVZV4fvNEcGJetQ13spZRMuW5ncvsKA1KvtkauZuK2jV8pxEZLpiuHtKX3FkKv2uC5ZeRC8L6we"
+      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+    );
+    const result = await account.consolidate({
+      transfer: {
+        tokenID: PRVID,
+      },
+      extra: {
+        version: privacyVersion,
+      },
+    });
+    console.log("RESULT", result);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  await TestGetUnspentCoinsV1();
+  console.log("aaaa");
+  // return await TestGetBalance();
+  await TestConsolidate();
   return;
   // return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
