@@ -33,8 +33,14 @@ async function TestGetKeySetFromPrivateKeyStr(){
 
   // let keyWallet = new(KeyWallet)
   let res = await KeyWallet.getKeySetFromPrivateKeyStr(privateKey);
-  console.log("res: ", res)
+  console.log("res: ", res);
 
+  // test payment address conversion
+  let paymentAddress = '12sttFKciCWyRbNsK1yD1mWEwZoeWi1JtWJZ7gKTbx5eB25U4FnrfkxgxbnZ8zDn2QNhhW44HBZJ1EnfwVBueR44D5ucWxGNpXZMawoCmv6G2cwKi4xkasuysu3WtpV5ZMSYgaJ1mwe9fqgVD9mh';
+  let oldPaymentAddress = KeyWallet.toLegacyPaymentAddress(paymentAddress);
+  // compare to fixed testcase's result
+  if (oldPaymentAddress != '12S3yvTvWUJfubx3whjYLv23NtaNSwQMGWWScSaAkf3uQg8xdZjPFD4fG8vGvXjpRgrRioS5zuyzZbkac44rjBfs7mEdgoL4pwKu87u') throw 'Failed Payment Address Conversion';
+  console.log("Payment Address of legacy format: ", oldPaymentAddress);
 }
 // TestGetKeySetFromPrivateKeyStr()
 
