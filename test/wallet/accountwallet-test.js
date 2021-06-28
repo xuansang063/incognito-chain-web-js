@@ -770,10 +770,15 @@ async function TestGetTxsHistory() {
     isPToken: true,
     version: privacyVersion,
   });
-  console.log("TestGetTxsHistory-txs", txs);
-  const history = txs.txsPToken.find((txp) => txp.id === 8);
-  const tx = await account.handleGetPTokenHistoryById({ history });
-  console.log("tx", tx);
+  console.log(txs.length);
+  console.log(
+    `\n\n`,
+    await account.getCoinsStorage({ tokenID, version: privacyVersion })
+  );
+  // console.log("TestGetTxsHistory-txs", txs);
+  // const history = txs.txsPToken.find((txp) => txp.id === 8);
+  // const tx = await account.handleGetPTokenHistoryById({ history });
+  // console.log("tx", tx);
   // const retryTx = await account.handleRetryExpiredShield({ history });
   // console.log("retryTx", retryTx);
 }
@@ -910,9 +915,10 @@ async function TestImportAccount() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
+  return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
-  return await TestGetBalance();
+  // return await TestGetBalance();
   // await TestConsolidate();
   return;
   // return await TestGetBalance();
