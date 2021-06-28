@@ -73,20 +73,22 @@ const ETH = "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
 async function TestGetBalance() {
   try {
     const account = await createAccountByPrivateKey(
-      "112t8rnXfbmjdsG5PCsSCa4o2ym9irftMfBp2eaRRQ1XMPzt2Wmoig88zmTA6cpByyyTPNHw6f3mJNsKeqpr3ok8n46nhRbgFjRPK3KpwHdy"
+      // "112t8rnXfbmjdsG5PCsSCa4o2ym9irftMfBp2eaRRQ1XMPzt2Wmoig88zmTA6cpByyyTPNHw6f3mJNsKeqpr3ok8n46nhRbgFjRPK3KpwHdy"
       // "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKhzbNJkxpJU6"
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
       // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
       // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
+      // "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKoESjDGbF2J7"
+      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
     );
     const tokenID1 =
       "0000000000000000000000000000000000000000000000000000000000000004";
     const tokenID2 =
       "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc";
     const tokenIDs = [
-      // tokenID1, tokenID2,
-      ETH,
+      tokenID1,
+      //  tokenID2, ETH
     ];
     await account.getKeyInfo({
       version: privacyVersion,
@@ -907,11 +909,11 @@ async function TestImportAccount() {
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
-  // await setup();
+  await setup();
   // return TestGetBurnerAddress();
-  return await TestImportAccount();
+  // return await TestImportAccount();
   return await TestGetBalance();
-  await TestConsolidate();
+  // await TestConsolidate();
   return;
   // return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
