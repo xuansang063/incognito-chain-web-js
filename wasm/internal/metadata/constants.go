@@ -97,6 +97,9 @@ const (
 	BurningForDepositToSCRequestMetaV2 = 242
 	BurningConfirmForDepositToSCMeta   = 97
 	BurningConfirmForDepositToSCMetaV2 = 243
+
+	// portal v4
+	PortalV4UnshieldRequestMeta = 262
 )
 
 var minerCreatedMetaTypes = []int{
