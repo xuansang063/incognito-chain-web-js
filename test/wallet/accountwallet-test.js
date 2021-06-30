@@ -82,6 +82,7 @@ async function TestGetBalance() {
       // "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKoESjDGbF2J7"
       "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
     );
+    await account.submitOTAKey();
     const tokenID1 =
       "0000000000000000000000000000000000000000000000000000000000000004";
     const tokenID2 =
