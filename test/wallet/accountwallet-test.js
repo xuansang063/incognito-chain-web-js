@@ -915,10 +915,10 @@ async function TestImportAccount() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestGetTxsHistory();
+  // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
-  // return await TestGetBalance();
+  return await TestGetBalance();
   // await TestConsolidate();
   return;
   // return await TestGetBalance();
