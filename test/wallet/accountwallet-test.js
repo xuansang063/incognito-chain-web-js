@@ -919,10 +919,9 @@ async function MainRoutine() {
   // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
-  return await TestGetBalance();
-  // await TestConsolidate();
-  return;
   // return await TestGetBalance();
+  // await TestConsolidate();
+  return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
   // return;
   // sequential execution of tests; the wait might still be too short
