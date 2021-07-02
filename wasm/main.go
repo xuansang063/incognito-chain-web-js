@@ -51,7 +51,6 @@ func main() {
 
 	// portal
 	gobridge.RegisterCallback("generateBTCMultisigAddress", internal.GenerateBTCMultisigAddress)
-	gobridge.RegisterCallback("initUnshieldPortalv4", internal.CreateTransaction)
 
 	println("WASM loading finished")
 	<-c

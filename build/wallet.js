@@ -2879,7 +2879,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_module_Account_features_Coins__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @lib/module/Account/features/Coins */ "./lib/module/Account/features/Coins/index.js");
 /* harmony import */ var _lib_module_Account_features_Storage__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @lib/module/Account/features/Storage */ "./lib/module/Account/features/Storage/index.js");
 /* harmony import */ var _lib_module_Account_features_Consolidate__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @lib/module/Account/features/Consolidate */ "./lib/module/Account/features/Consolidate/index.js");
-/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
+/* harmony import */ var _lib_module_Account_features_Portal__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @lib/module/Account/features/Portal */ "./lib/module/Account/features/Portal/index.js");
+/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -2901,6 +2902,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -3161,7 +3163,7 @@ var Account = /*#__PURE__*/function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                return _context3.abrupt("return", Object(_lib_core__WEBPACK_IMPORTED_MODULE_28__["getBurningAddress"])(this.rpc));
+                return _context3.abrupt("return", Object(_lib_core__WEBPACK_IMPORTED_MODULE_29__["getBurningAddress"])(this.rpc));
 
               case 1:
               case "end":
@@ -3187,7 +3189,7 @@ var Account = /*#__PURE__*/function () {
   return Account;
 }();
 
-Object.assign(Account.prototype, _lib_module_Account_features_Transactor__WEBPACK_IMPORTED_MODULE_11__["default"], _lib_module_Account_features_History__WEBPACK_IMPORTED_MODULE_12__["default"], _lib_module_Account_features_Trade__WEBPACK_IMPORTED_MODULE_14__["default"], _lib_module_Account_features_Node__WEBPACK_IMPORTED_MODULE_15__["default"], _lib_module_Account_features_InitToken__WEBPACK_IMPORTED_MODULE_16__["default"], _lib_module_Account_features_Configs__WEBPACK_IMPORTED_MODULE_17__["default"], _lib_module_Account_features_Unshield__WEBPACK_IMPORTED_MODULE_18__["default"], _lib_module_Account_features_Send__WEBPACK_IMPORTED_MODULE_19__["default"], _lib_module_Account_features_Provide__WEBPACK_IMPORTED_MODULE_20__["default"], _lib_module_Account_features_Liquidity__WEBPACK_IMPORTED_MODULE_21__["default"], _lib_module_Account_features_KeySet__WEBPACK_IMPORTED_MODULE_22__["default"], _lib_module_Account_features_Convert__WEBPACK_IMPORTED_MODULE_13__["default"], _lib_module_Account_features_Coins__WEBPACK_IMPORTED_MODULE_25__["default"], _lib_module_Account_features_CoinsV1__WEBPACK_IMPORTED_MODULE_23__["default"], _lib_module_Account_features_CoinsV2__WEBPACK_IMPORTED_MODULE_24__["default"], _lib_module_Account_features_Storage__WEBPACK_IMPORTED_MODULE_26__["default"], _lib_module_Account_features_Consolidate__WEBPACK_IMPORTED_MODULE_27__["default"]);
+Object.assign(Account.prototype, _lib_module_Account_features_Transactor__WEBPACK_IMPORTED_MODULE_11__["default"], _lib_module_Account_features_History__WEBPACK_IMPORTED_MODULE_12__["default"], _lib_module_Account_features_Trade__WEBPACK_IMPORTED_MODULE_14__["default"], _lib_module_Account_features_Node__WEBPACK_IMPORTED_MODULE_15__["default"], _lib_module_Account_features_InitToken__WEBPACK_IMPORTED_MODULE_16__["default"], _lib_module_Account_features_Configs__WEBPACK_IMPORTED_MODULE_17__["default"], _lib_module_Account_features_Unshield__WEBPACK_IMPORTED_MODULE_18__["default"], _lib_module_Account_features_Send__WEBPACK_IMPORTED_MODULE_19__["default"], _lib_module_Account_features_Provide__WEBPACK_IMPORTED_MODULE_20__["default"], _lib_module_Account_features_Liquidity__WEBPACK_IMPORTED_MODULE_21__["default"], _lib_module_Account_features_KeySet__WEBPACK_IMPORTED_MODULE_22__["default"], _lib_module_Account_features_Convert__WEBPACK_IMPORTED_MODULE_13__["default"], _lib_module_Account_features_Coins__WEBPACK_IMPORTED_MODULE_25__["default"], _lib_module_Account_features_CoinsV1__WEBPACK_IMPORTED_MODULE_23__["default"], _lib_module_Account_features_CoinsV2__WEBPACK_IMPORTED_MODULE_24__["default"], _lib_module_Account_features_Storage__WEBPACK_IMPORTED_MODULE_26__["default"], _lib_module_Account_features_Consolidate__WEBPACK_IMPORTED_MODULE_27__["default"], _lib_module_Account_features_Portal__WEBPACK_IMPORTED_MODULE_28__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (Account);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
@@ -14605,6 +14607,270 @@ function _createAndSendWithdrawRewardTx() {
 
 /***/ }),
 
+/***/ "./lib/module/Account/features/Portal/index.js":
+/*!*****************************************************!*\
+  !*** ./lib/module/Account/features/Portal/index.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _portal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./portal */ "./lib/module/Account/features/Portal/portal.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var portalPrototype = _objectSpread({}, _portal__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (portalPrototype);
+
+/***/ }),
+
+/***/ "./lib/module/Account/features/Portal/portal.js":
+/*!******************************************************!*\
+  !*** ./lib/module/Account/features/Portal/portal.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+function handleGetPortalMinShieldAmount(_x) {
+  return _handleGetPortalMinShieldAmount.apply(this, arguments);
+}
+
+function _handleGetPortalMinShieldAmount() {
+  _handleGetPortalMinShieldAmount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
+    var tokenID, result;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            tokenID = _ref.tokenID;
+            _context.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenID", tokenID).required().string();
+            _context.next = 5;
+            return this.rpcPortalService.apiGetMinShieldAmount(tokenID);
+
+          case 5:
+            result = _context.sent;
+
+            if (!result) {
+              _context.next = 8;
+              break;
+            }
+
+            return _context.abrupt("return", result.MinShieldAmt);
+
+          case 8:
+            _context.next = 13;
+            break;
+
+          case 10:
+            _context.prev = 10;
+            _context.t0 = _context["catch"](1);
+            console.log("HANDLE GET PORTAL MIN SHIELD AMOUNT FAILED", _context.t0);
+
+          case 13:
+            return _context.abrupt("return", null);
+
+          case 14:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this, [[1, 10]]);
+  }));
+  return _handleGetPortalMinShieldAmount.apply(this, arguments);
+}
+
+;
+
+function handleCheckPortalShieldingAddresssExisted(_x2) {
+  return _handleCheckPortalShieldingAddresssExisted.apply(this, arguments);
+}
+
+function _handleCheckPortalShieldingAddresssExisted() {
+  _handleCheckPortalShieldingAddresssExisted = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_ref2) {
+    var incAddress, shieldingAddress, result;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            incAddress = _ref2.incAddress, shieldingAddress = _ref2.shieldingAddress;
+            _context2.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shieldingAddress", shieldingAddress).required().string();
+            _context2.next = 6;
+            return this.rpcPortalService.apiCheckPortalShieldingAddresssExisted({
+              incAddress: incAddress,
+              shieldingAddress: shieldingAddress
+            });
+
+          case 6:
+            result = _context2.sent;
+
+            if (!result) {
+              _context2.next = 9;
+              break;
+            }
+
+            return _context2.abrupt("return", _objectSpread({}, result));
+
+          case 9:
+            _context2.next = 14;
+            break;
+
+          case 11:
+            _context2.prev = 11;
+            _context2.t0 = _context2["catch"](1);
+            console.log("HANDLE GET PORTAL SHIELDING ADDRESS EXISTED FAILED", _context2.t0);
+
+          case 14:
+            return _context2.abrupt("return", null);
+
+          case 15:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this, [[1, 11]]);
+  }));
+  return _handleCheckPortalShieldingAddresssExisted.apply(this, arguments);
+}
+
+;
+
+function handleAddPortalShieldingAddresss(_x3) {
+  return _handleAddPortalShieldingAddresss.apply(this, arguments);
+}
+
+function _handleAddPortalShieldingAddresss() {
+  _handleAddPortalShieldingAddresss = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_ref3) {
+    var incAddress, shieldingAddress, result;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            incAddress = _ref3.incAddress, shieldingAddress = _ref3.shieldingAddress;
+            _context3.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shieldingAddress", shieldingAddress).required().string();
+            _context3.next = 6;
+            return this.rpcPortalService.apiAddPortalShieldingAddresss({
+              incAddress: incAddress,
+              shieldingAddress: shieldingAddress
+            });
+
+          case 6:
+            result = _context3.sent;
+
+            if (!result) {
+              _context3.next = 9;
+              break;
+            }
+
+            return _context3.abrupt("return", _objectSpread({}, result));
+
+          case 9:
+            _context3.next = 14;
+            break;
+
+          case 11:
+            _context3.prev = 11;
+            _context3.t0 = _context3["catch"](1);
+            console.log("HANDLE ADD PORTAL SHIELDING ADDRESS FAILED", _context3.t0);
+
+          case 14:
+            return _context3.abrupt("return", null);
+
+          case 15:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this, [[1, 11]]);
+  }));
+  return _handleAddPortalShieldingAddresss.apply(this, arguments);
+}
+
+;
+
+function handleGetAverageUnshieldFee() {
+  return _handleGetAverageUnshieldFee.apply(this, arguments);
+}
+
+function _handleGetAverageUnshieldFee() {
+  _handleGetAverageUnshieldFee = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+    var result;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
+            _context4.next = 3;
+            return this.rpcPortalService.apiGetEstimateUnshieldFee();
+
+          case 3:
+            result = _context4.sent;
+
+            if (!result) {
+              _context4.next = 6;
+              break;
+            }
+
+            return _context4.abrupt("return", _objectSpread({}, result));
+
+          case 6:
+            _context4.next = 11;
+            break;
+
+          case 8:
+            _context4.prev = 8;
+            _context4.t0 = _context4["catch"](0);
+            console.log("HANDLE GET AVERAGE UNSHIELD FEE FAILED", _context4.t0);
+
+          case 11:
+            return _context4.abrupt("return", null);
+
+          case 12:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this, [[0, 8]]);
+  }));
+  return _handleGetAverageUnshieldFee.apply(this, arguments);
+}
+
+;
+/* harmony default export */ __webpack_exports__["default"] = ({
+  handleGetPortalMinShieldAmount: handleGetPortalMinShieldAmount,
+  handleCheckPortalShieldingAddresssExisted: handleCheckPortalShieldingAddresssExisted,
+  handleAddPortalShieldingAddresss: handleAddPortalShieldingAddresss,
+  handleGetAverageUnshieldFee: handleGetAverageUnshieldFee
+});
+
+/***/ }),
+
 /***/ "./lib/module/Account/features/Provide/index.js":
 /*!******************************************************!*\
   !*** ./lib/module/Account/features/Provide/index.js ***!
@@ -23183,13 +23449,17 @@ var RpcHTTPPortalServiceClient = function RpcHTTPPortalServiceClient(url) {
 
   _defineProperty(this, "apiGetMinShieldAmount", function (_ref) {
     var tokenID = _ref.tokenID;
-    return 10;
+    return {
+      MinShieldAmt: 10
+    };
   });
 
   _defineProperty(this, "apiCheckPortalShieldingAddresssExisted", function (_ref2) {
-    var shieldingAddress = _ref2.shieldingAddress;
+    var incAddress = _ref2.incAddress,
+        shieldingAddress = _ref2.shieldingAddress;
     new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shieldingAddress", shieldingAddress).required().string();
-    return _this.http.get("checkportalshieldingaddressexisted?incaddress=".concat(shieldingAddress));
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
+    return _this.http.get("checkportalshieldingaddressexisted?incaddress=".concat(incAddress, "&btcaddress=").concat(shieldingAddress));
   });
 
   _defineProperty(this, "apiAddPortalShieldingAddresss", function (_ref3) {
@@ -26133,7 +26403,8 @@ var methods = {
   'withdrawDexTx': null,
   'hybridEncryptionASM': null,
   'hybridDecryptionASM': null,
-  'estimateTxSize': null
+  'estimateTxSize': null,
+  'generateBTCMultisigAddress': null
 };
 
 var getProxy = function getProxy() {
