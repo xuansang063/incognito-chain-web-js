@@ -1,9 +1,9 @@
 package metadata
 
 import (
-	"strconv"
-
+	"encoding/json"
 	"incognito-chain/common"
+	"strconv"
 )
 
 // PDEFeeWithdrawalRequest - privacy dex withdrawal request
@@ -39,7 +39,6 @@ func NewPDEFeeWithdrawalRequest(
 	return pdeFeeWithdrawalRequest, nil
 }
 
-
 func (pc PDEFeeWithdrawalRequest) Hash() *common.Hash {
 	record := pc.MetadataBase.Hash().String()
 	record += pc.WithdrawerAddressStr
@@ -63,4 +62,23 @@ func (pc PDEFeeWithdrawalRequest) HashWithoutSig() *common.Hash {
 	// final hash
 	hash := common.HashH([]byte(record))
 	return &hash
+}
+
+func (pc *PDEFeeWithdrawalRequest) UnmarshalJSON(raw []byte) error {
+	var temp struct {
+		WithdrawerAddressStr  string
+		WithdrawalToken1IDStr string
+		WithdrawalToken2IDStr string
+		WithdrawalFeeAmt      uintMaybeString
+		MetadataBaseWithSignature
+	}
+	err := json.Unmarshal(raw, &temp)
+	*pc = PDEFeeWithdrawalRequest{
+		WithdrawerAddressStr:      temp.WithdrawerAddressStr,
+		WithdrawalToken1IDStr:     temp.WithdrawalToken1IDStr,
+		WithdrawalToken2IDStr:     temp.WithdrawalToken2IDStr,
+		WithdrawalFeeAmt:          uint64(temp.WithdrawalFeeAmt),
+		MetadataBaseWithSignature: temp.MetadataBaseWithSignature,
+	}
+	return err
 }

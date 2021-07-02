@@ -2,8 +2,8 @@ package metadata
 
 import (
 	"encoding/json"
-	"strconv"
 	"github.com/pkg/errors"
+	"strconv"
 )
 
 func CalculateSize(meta Metadata) uint64 {
@@ -16,7 +16,7 @@ func CalculateSize(meta Metadata) uint64 {
 
 func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 	var err error
-	if raw == nil || string(raw)=="null" {
+	if raw == nil || string(raw) == "null" {
 		return nil, nil
 	}
 
@@ -27,7 +27,7 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 	}
 	var md Metadata
 	typeFloat, ok := mtTemp["Type"].(float64)
-	if !ok{
+	if !ok {
 		return nil, errors.Errorf("Could not parse metadata with type: %v", mtTemp["Type"])
 	}
 	theType := int(typeFloat)
@@ -92,6 +92,8 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &BurningRequest{}
 	case BurningForDepositToSCRequestMetaV2:
 		md = &BurningRequest{}
+	case UnStakingMeta:
+		md = &UnStakingMetadata{}
 	default:
 		return nil, errors.Errorf("Could not parse metadata with type: %d", theType)
 	}
@@ -123,20 +125,20 @@ func HasBridgeInstructions(instructions [][]string) bool {
 }
 
 type uintMaybeString uint64
-func (u uintMaybeString) MarshalJSON() ([]byte, error){
+
+func (u uintMaybeString) MarshalJSON() ([]byte, error) {
 	return json.Marshal(u)
 }
-func (u *uintMaybeString) UnmarshalJSON(raw []byte) error{
+func (u *uintMaybeString) UnmarshalJSON(raw []byte) error {
 	var theNum uint64
 	err := json.Unmarshal(raw, &theNum)
-	if err!=nil{
+	if err != nil {
 		var theStr string
 		json.Unmarshal(raw, &theStr)
 		temp, err := strconv.ParseUint(theStr, 10, 64)
 		*u = uintMaybeString(temp)
 		return err
 	}
-	*u = uintMaybeString(theNum)	
+	*u = uintMaybeString(theNum)
 	return err
 }
-
