@@ -42,7 +42,12 @@ async function setup() {
     "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
   // await sleep(10000);
   wallet = new Wallet();
-  wallet = await wallet.init("pass", new StorageServices(), "Master", "Anon");
+  wallet = await wallet.init(
+    "password",
+    new StorageServices(),
+    "Master",
+    "Anon"
+  );
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
@@ -911,11 +916,40 @@ async function TestImportAccount() {
   }
 }
 
+async function TestLoadWallet() {
+  try {
+    let wallet = new Wallet();
+    const passphrase = "my_password";
+    const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
+    await wallet.import(
+      "romance suspect ostrich amount deer crane false concert present evidence atom short",
+      aesKey,
+      "Masterkey",
+      new StorageServices()
+    );
+    await wallet.save(aesKey, false);
+    wallet = await wallet.loadWallet({
+      password: passphrase,
+      aesKey,
+    });
+    console.log("wallet here", wallet);
+    const account = await wallet.createNewAccount("PHAT");
+    console.log("account", account.name);
+    console.log(
+      "LIST ACCOUNT",
+      wallet.MasterAccount.child.map((account) => account.name)
+    );
+  } catch (error) {
+    console.log("TestLoadWallet ERROR", error);
+  }
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
+  return await TestLoadWallet();
   // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
