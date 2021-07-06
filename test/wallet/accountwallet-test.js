@@ -7,6 +7,7 @@ const {
   init,
   StorageServices,
   getUnspentCoinExceptSpendingCoinV1,
+  newMnemonic,
 } = require("../../");
 const { PaymentAddressType } = constants;
 
@@ -921,6 +922,9 @@ async function TestLoadWallet() {
     let wallet = new Wallet();
     const passphrase = "my_password";
     const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
+    // const mnemonic = newMnemonic();
+    // console.log("mnemonic", mnemonic);
+    // return;
     await wallet.import(
       "romance suspect ostrich amount deer crane false concert present evidence atom short",
       aesKey,
@@ -928,17 +932,17 @@ async function TestLoadWallet() {
       new StorageServices()
     );
     await wallet.save(aesKey, false);
-    wallet = await wallet.loadWallet({
+    await wallet.loadWallet({
       password: passphrase,
       aesKey,
     });
-    console.log("wallet here", wallet);
     const account = await wallet.createNewAccount("PHAT");
     console.log("account", account.name);
     console.log(
       "LIST ACCOUNT",
       wallet.MasterAccount.child.map((account) => account.name)
     );
+    console.log(await wallet.getMeasureStorageValue());
   } catch (error) {
     console.log("TestLoadWallet ERROR", error);
   }
