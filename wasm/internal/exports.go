@@ -573,3 +573,8 @@ func AesDecrypt(args string) (string, error) {
 	}
 	return hex.EncodeToString(pt), nil
 }
+
+func SetShardCount(_ string, num int64) (string, error) {
+	common.MaxShardNumber = int(num)
+	return "", nil
+}
