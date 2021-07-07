@@ -391,6 +391,8 @@ FOUNDATION_EXPORT NSString* _Nonnull GomobileScalarMultBase(NSString* _Nullable 
 // skipped function ScalarToBytes with unsupported parameter or return types
 
 
+FOUNDATION_EXPORT NSString* _Nonnull GomobileSetShardCount(NSString* _Nullable p0, int64_t num, NSError* _Nullable* _Nullable error);
+
 // skipped function SignNoPrivacy with unsupported parameter or return types
 
 

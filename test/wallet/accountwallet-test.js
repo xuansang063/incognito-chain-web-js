@@ -145,7 +145,6 @@ async function TestCreateAndSendRewardAmountTx() {
     return response.txId;
   } catch (e) {
     console.log(e);
-    throw e;
   }
 }
 async function TestBurningRequestTx() {
@@ -170,7 +169,7 @@ async function TestBurningRequestTx() {
   } catch (e) {
     // this tx specifically depends on bridge config, so we let it skip and review manually
     console.error(e);
-    // throw e;
+    //
   }
 }
 async function TestStakerStatus() {
@@ -195,12 +194,12 @@ async function TestCreateAndSendNativeToken() {
   let info = "SEND 6900 nano PRV";
   let amountTransfer = 6900; // in nano PRV
   const account = await createAccountByPrivateKey(
-    "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
+    "112t8rnXXD3eyD8wfx7AXmpJHdpafDpHngsWUTJB42FbVzihAyDw1s2dZ56jeSc5ZYC3u1ekjTUjHQHTeR7b58Ru9KLqEgpm5mgcaivLC4Kz"
+    // "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
     // "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
     // "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
     // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
   );
-  console.log("OTA KEY sender", account.getOTAKey());
   const accountSenderBalance = await account.getBalance({
     tokenID,
     version,
@@ -229,7 +228,6 @@ async function TestCreateAndSendNativeToken() {
     return res;
   } catch (e) {
     console.log("Error when send PRV: ", e);
-    throw e;
   }
 }
 async function TestSendMultiple() {
@@ -254,7 +252,6 @@ async function TestSendMultiple() {
     return res.Response.txId;
   } catch (e) {
     console.log("error:", e);
-    throw e;
   }
 }
 async function TestCreateAndSendConversion() {
@@ -275,7 +272,6 @@ async function TestCreateAndSendConversion() {
     return res.Response.txId;
   } catch (e) {
     console.log("Error when send PRV: ", e);
-    throw e;
   }
 }
 async function TestCreateAndSendTokenConversion() {
@@ -306,7 +302,6 @@ async function TestCreateAndSendTokenConversion() {
     return res.Response.txId;
   } catch (e) {
     console.log("Error when send PRV: ", e);
-    throw e;
   }
 }
 
@@ -351,7 +346,6 @@ async function TestCreateAndSendPrivacyTokenInit() {
     };
   } catch (e) {
     console.log("Error when initing ptoken: ", e);
-    throw e;
   }
 }
 
@@ -385,7 +379,6 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     return res.txId;
   } catch (e) {
     console.log("Error when transferring ptoken: ", e);
-    throw e;
   }
 }
 
@@ -424,7 +417,6 @@ async function TestMultipleSendPrivacyToken() {
     return res.Response.txId;
   } catch (e) {
     console.log("Error when transferring ptoken: ", e);
-    throw e;
   }
 }
 async function TestCreateAndSendStakingTx() {
@@ -438,7 +430,6 @@ async function TestCreateAndSendStakingTx() {
     return response.txId;
   } catch (e) {
     console.log("Error when staking: ", e);
-    throw e;
   }
 }
 async function TestCreateAndSendStopAutoStakingTx() {
@@ -452,7 +443,6 @@ async function TestCreateAndSendStopAutoStakingTx() {
     return response.txId;
   } catch (e) {
     console.log("Error when staking: ", e);
-    throw e;
   }
 }
 async function TestDefragment() {
@@ -465,7 +455,6 @@ async function TestDefragment() {
     });
   } catch (e) {
     console.log(e);
-    throw e;
   }
 
   console.log("Response defragment: ", response);
@@ -534,7 +523,6 @@ async function TestAddLiquidity() {
     console.log("response add liquidity", response);
   } catch (e) {
     console.log("Error when staking: ", e);
-    throw e;
   }
 }
 
@@ -562,7 +550,6 @@ async function TestWithdrawLiquidity() {
     console.log("response withdraw liquidity", response);
   } catch (e) {
     console.log("Error when staking: ", e);
-    throw e;
   }
 }
 
@@ -590,7 +577,6 @@ async function TestWithdrawFeeLiquidity() {
     console.log("response withdraw fee liquidity", response);
   } catch (e) {
     console.log("Error when staking: ", e);
-    throw e;
   }
 }
 
@@ -632,7 +618,6 @@ async function TestCustomTradeRequest() {
     return res;
   } catch (e) {
     console.log("Error when trading native token: ", e);
-    throw e;
   }
 }
 
@@ -654,7 +639,6 @@ async function TestCreateAndSendPDEWithdrawTx() {
     return res.Response.txId;
   } catch (e) {
     console.log("Error when withdrawing pdex: ", e);
-    throw e;
   }
 }
 async function TestGetOutputCoins() {
@@ -669,9 +653,7 @@ async function GetListReceivedTx() {
   try {
     let receivedTxs = await accountSender.getReceivedTransaction();
     console.log(receivedTxs);
-  } catch (e) {
-    throw e;
-  }
+  } catch (e) {}
 }
 
 async function GetUnspentCoinV1() {
@@ -679,9 +661,7 @@ async function GetUnspentCoinV1() {
   try {
     accountSender.useCoinsService = true;
     await accountSender.getAllUnspentCoinsV1();
-  } catch (e) {
-    throw e;
-  }
+  } catch (e) {}
 }
 
 async function TestCreateAndSendConvertTx() {
@@ -700,7 +680,6 @@ async function TestCreateAndSendConvertTx() {
     // return res.Response.txId;
   } catch (e) {
     console.log("Error when send PRV: ", e);
-    throw e;
   }
 }
 async function TestConvertTokensV1() {
@@ -711,9 +690,7 @@ async function TestConvertTokensV1() {
     accountSender.useCoinsService = true;
     // await accountSender.convertTokensV1();
     await accountSender.clearCacheBalanceV1();
-  } catch (e) {
-    throw e;
-  }
+  } catch (e) {}
 }
 
 function delay(ms) {
@@ -826,24 +803,36 @@ async function TestInitToken() {
 }
 
 async function TestGetContributeHistories() {
-  await accountSender.getContributeHistoriesWithStorage({
-    offset: 0,
-    limit: 100,
-  });
+  try {
+    await accountSender.getContributeHistoriesWithStorage({
+      offset: 0,
+      limit: 100,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function TestGetWithdrawLiquidityHistories() {
-  await accountSender.getLiquidityWithdrawHistoriesWithStorage({
-    offset: 0,
-    limit: 100,
-  });
+  try {
+    await accountSender.getLiquidityWithdrawHistoriesWithStorage({
+      offset: 0,
+      limit: 100,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function TestGetWithdrawFeeLiquidityHistories() {
-  await accountSender.getLiquidityWithdrawFeeHistoriesWithStorage({
-    offset: 0,
-    limit: 100,
-  });
+  try {
+    await accountSender.getLiquidityWithdrawFeeHistoriesWithStorage({
+      offset: 0,
+      limit: 100,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function TestGetUnspentCoinsV1() {
@@ -966,11 +955,10 @@ async function TestLoadWallet() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestLoadWallet();
+  // return await TestLoadWallet();
   // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
-  return await TestGetBalance();
   // await TestConsolidate();
   // return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
@@ -1086,7 +1074,6 @@ async function MainRoutine() {
   } catch (e) {
     console.log("Test failed");
     console.error(e);
-    throw e;
   }
   console.log("END WEB WALLET TEST");
 }
@@ -1141,7 +1128,6 @@ async function PDERoutine() {
   } catch (e) {
     console.log("Test failed");
     console.error(e);
-    throw e;
   }
   console.log("END PDE TEST");
 }
@@ -1157,7 +1143,6 @@ async function DefragmentRoutine() {
   } catch (e) {
     console.log("Test failed");
     console.error(e);
-    throw e;
   }
   console.log("END DEFRAG TEST");
 }
