@@ -916,10 +916,15 @@ async function TestLoadWallet() {
     console.log("mnemonic", mnemonic);
     await wallet.import(
       "romance suspect ostrich amount deer crane false concert present evidence atom short",
-      aesKey,
+      passphrase,
       "Masterkey",
       new StorageServices()
     );
+    await wallet.save(passphrase, true);
+    await wallet.loadWallet({
+      password: passphrase,
+      aesKey,
+    });
     await wallet.save(aesKey, false);
     const prvKey =
       "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
@@ -940,6 +945,11 @@ async function TestLoadWallet() {
       aesKey,
     });
     console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
+    const listAccount = await wallet.listAccount();
+    listAccount.map((account) => console.log("account", account));
+    let listFollowingTokens = await a.getListFollowingTokens();
+    console.log("listFollowingTokens after add", listFollowingTokens);
+    console.log(await wallet.getMeasureStorageValue());
     return;
     const account = await wallet.createNewAccount("PHAT");
     // const prvKey =
