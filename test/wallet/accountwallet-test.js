@@ -7,6 +7,7 @@ const {
   init,
   StorageServices,
   getUnspentCoinExceptSpendingCoinV1,
+  newMnemonic,
 } = require("../../");
 const { PaymentAddressType } = constants;
 
@@ -42,7 +43,12 @@ async function setup() {
     "46107357c32ffbb04d063cf8a08749cba83546a67e299fb9ffcc2a9955df4736";
   // await sleep(10000);
   wallet = new Wallet();
-  wallet = await wallet.init("pass", new StorageServices(), "Master", "Anon");
+  wallet = await wallet.init(
+    "password",
+    new StorageServices(),
+    "Master",
+    "Anon"
+  );
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
@@ -91,9 +97,10 @@ async function TestGetBalance() {
       tokenID1,
       //  tokenID2, ETH
     ];
-    await account.getKeyInfo({
+    const keyInfo = await account.getKeyInfo({
       version: privacyVersion,
     });
+    console.log("keyinfo", keyInfo);
     let task = tokenIDs.map((tokenID) =>
       account.getBalance({
         tokenID,
@@ -911,17 +918,60 @@ async function TestImportAccount() {
   }
 }
 
+async function TestLoadWallet() {
+  try {
+    let wallet = new Wallet();
+    const passphrase = "my_password";
+    const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
+    const mnemonic = newMnemonic();
+    console.log("mnemonic", mnemonic);
+    await wallet.import(
+      "romance suspect ostrich amount deer crane false concert present evidence atom short",
+      aesKey,
+      "Masterkey",
+      new StorageServices()
+    );
+    const account = await wallet.createNewAccount("PHAT");
+    const prvKey =
+      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
+    const account2 = await wallet.importAccount(prvKey, "phat2");
+    console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
+    await wallet.removeAccount(prvKey);
+    console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
+    await wallet.save(aesKey, false);
+    await wallet.loadWallet({
+      password: passphrase,
+      aesKey,
+    });
+    // const account = await createAccountByPrivateKey(
+    //   "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+    // );
+    // console.log("account", account.name);
+    // await account.addListFollowingToken({
+    //   tokenIDs: ["123", "12345678", "1234567"],
+    // });
+    // let listFollowingTokens = await account.getListFollowingTokens();
+    // console.log("listFollowingTokens after add", listFollowingTokens);
+    // await account.removeFollowingToken({ tokenID: PRVID });
+    // await account.removeFollowingToken({ tokenID: "1234567" });
+    // listFollowingTokens = await account.getListFollowingTokens();
+    // console.log("listFollowingTokens after remove PRV", listFollowingTokens);
+  } catch (error) {
+    console.log("TestLoadWallet ERROR", error);
+  }
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
+  return await TestLoadWallet();
   // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   return await TestGetBalance();
   // await TestConsolidate();
-  return;
   // return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
   // return;

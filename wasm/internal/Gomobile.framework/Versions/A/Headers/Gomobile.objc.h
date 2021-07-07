@@ -310,6 +310,7 @@
 @property (nonatomic) NSData* _Nullable info;
 @end
 
+FOUNDATION_EXPORT const int64_t GomobileAES_BLOCK_SIZE;
 FOUNDATION_EXPORT const int64_t GomobileCustomTokenCrossShard;
 FOUNDATION_EXPORT const int64_t GomobileCustomTokenInit;
 FOUNDATION_EXPORT const int64_t GomobileCustomTokenTransfer;
@@ -330,6 +331,10 @@ FOUNDATION_EXPORT NSString* _Nonnull const GomobileTxTokenConversionType;
 // skipped variable PRVCoinID with unsupported type: incognito-chain/common.Hash
 
 @end
+
+FOUNDATION_EXPORT NSString* _Nonnull GomobileAesDecrypt(NSString* _Nullable args, NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT NSString* _Nonnull GomobileAesEncrypt(NSString* _Nullable args, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSString* _Nonnull GomobileCreateCoin(NSString* _Nullable paramStr, NSError* _Nullable* _Nullable error);
 
