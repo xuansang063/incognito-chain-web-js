@@ -920,9 +920,30 @@ async function TestLoadWallet() {
       "Masterkey",
       new StorageServices()
     );
-    const account = await wallet.createNewAccount("PHAT");
+    await wallet.save(aesKey, false);
     const prvKey =
       "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
+    await wallet.loadWallet({
+      password: passphrase,
+      aesKey,
+    });
+    let a = await wallet.importAccount(prvKey, "phat2");
+    a.setRPCCoinServices(rpcCoinService);
+    a.setRPCClient(rpcClient);
+    a.setRPCTxServices(rpcTxService);
+    await a.addListFollowingToken({
+      tokenIDs: ["123", "12345678", "1234567"],
+    });
+    await wallet.save(aesKey, false);
+    await wallet.loadWallet({
+      password: passphrase,
+      aesKey,
+    });
+    console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
+    return;
+    const account = await wallet.createNewAccount("PHAT");
+    // const prvKey =
+    //   "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
     const account2 = await wallet.importAccount(prvKey, "phat2");
     console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
     await wallet.removeAccount(prvKey);
@@ -955,7 +976,7 @@ async function TestLoadWallet() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  // return await TestLoadWallet();
+  return await TestLoadWallet();
   // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
