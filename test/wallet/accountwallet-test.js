@@ -923,34 +923,39 @@ async function TestLoadWallet() {
     let wallet = new Wallet();
     const passphrase = "my_password";
     const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
-    // const mnemonic = newMnemonic();
-    // console.log("mnemonic", mnemonic);
-    // return;
-    // await wallet.import(
-    //   "romance suspect ostrich amount deer crane false concert present evidence atom short",
-    //   aesKey,
-    //   "Masterkey",
-    //   new StorageServices()
-    // );
-    // await wallet.save(aesKey, false);
-    // await wallet.loadWallet({
-    //   password: passphrase,
-    //   aesKey,
-    // });
-    // const account = await wallet.createNewAccount("PHAT");
-    const account = await createAccountByPrivateKey(
-      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+    const mnemonic = newMnemonic();
+    console.log("mnemonic", mnemonic);
+    await wallet.import(
+      "romance suspect ostrich amount deer crane false concert present evidence atom short",
+      aesKey,
+      "Masterkey",
+      new StorageServices()
     );
-    console.log("account", account.name);
-    await account.addListFollowingToken({
-      tokenIDs: ["123", "12345678", "1234567"],
+    const account = await wallet.createNewAccount("PHAT");
+    const prvKey =
+      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
+    const account2 = await wallet.importAccount(prvKey, "phat2");
+    console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
+    await wallet.removeAccount(prvKey);
+    console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
+    await wallet.save(aesKey, false);
+    await wallet.loadWallet({
+      password: passphrase,
+      aesKey,
     });
-    let listFollowingTokens = await account.getListFollowingTokens();
-    console.log("listFollowingTokens after add", listFollowingTokens);
-    await account.removeFollowingToken({ tokenID: PRVID });
-    await account.removeFollowingToken({ tokenID: "1234567" });
-    listFollowingTokens = await account.getListFollowingTokens();
-    console.log("listFollowingTokens after remove PRV", listFollowingTokens);
+    // const account = await createAccountByPrivateKey(
+    //   "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+    // );
+    // console.log("account", account.name);
+    // await account.addListFollowingToken({
+    //   tokenIDs: ["123", "12345678", "1234567"],
+    // });
+    // let listFollowingTokens = await account.getListFollowingTokens();
+    // console.log("listFollowingTokens after add", listFollowingTokens);
+    // await account.removeFollowingToken({ tokenID: PRVID });
+    // await account.removeFollowingToken({ tokenID: "1234567" });
+    // listFollowingTokens = await account.getListFollowingTokens();
+    // console.log("listFollowingTokens after remove PRV", listFollowingTokens);
   } catch (error) {
     console.log("TestLoadWallet ERROR", error);
   }
@@ -961,13 +966,13 @@ async function TestLoadWallet() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  // return await TestLoadWallet();
+  return await TestLoadWallet();
   // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
-  // return await TestGetBalance();
-  // await TestConsolidate();
   return await TestGetBalance();
+  // await TestConsolidate();
+  // return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
   // return;
   // sequential execution of tests; the wait might still be too short
