@@ -48,6 +48,7 @@ func main() {
 	gobridge.RegisterCallback("verifyReceivedTx", internal.VerifyReceivedTx)
 	gobridge.RegisterCallback("aesEncrypt", internal.AesEncrypt)
 	gobridge.RegisterCallback("aesDecrypt", internal.AesDecrypt)
+	gobridge.RegisterCallback("setShardCount", internal.SetShardCount)
 	// not applicable
 	// gobridge.RegisterCallback("deriveSerialNumber", internal.DeriveSerialNumber)
 
