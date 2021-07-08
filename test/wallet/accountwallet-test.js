@@ -923,6 +923,10 @@ async function TestLoadWallet() {
       new StorageServices()
     );
     await wallet.save(aesKey, false);
+    await wallet.loadWallet({
+      password: passphrase,
+      aesKey,
+    });
     const a = await wallet.createNewAccount("phat1");
     console.log("account", a);
     console.log("listAccoun", await wallet.listAccount());
