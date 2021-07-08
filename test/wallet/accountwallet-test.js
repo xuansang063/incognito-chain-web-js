@@ -915,41 +915,41 @@ async function TestLoadWallet() {
     const mnemonic = newMnemonic();
     console.log("mnemonic", mnemonic);
     await wallet.import(
-      "romance suspect ostrich amount deer crane false concert present evidence atom short",
-      passphrase,
+      // "romance suspect ostrich amount deer crane false concert present evidence atom short",
+      // mnemonic,
+      "sunny easy talent undo alter giant music slam common glide judge misery",
+      aesKey,
       "Masterkey",
       new StorageServices()
     );
-    await wallet.save(passphrase, true);
-    await wallet.loadWallet({
-      password: passphrase,
-      aesKey,
-    });
     await wallet.save(aesKey, false);
-    const prvKey =
-      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
-    await wallet.loadWallet({
-      password: passphrase,
-      aesKey,
-    });
-    let a = await wallet.importAccount(prvKey, "phat2");
-    a.setRPCCoinServices(rpcCoinService);
-    a.setRPCClient(rpcClient);
-    a.setRPCTxServices(rpcTxService);
-    await a.addListFollowingToken({
-      tokenIDs: ["123", "12345678", "1234567"],
-    });
-    await wallet.save(aesKey, false);
-    await wallet.loadWallet({
-      password: passphrase,
-      aesKey,
-    });
-    console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
-    const listAccount = await wallet.listAccount();
-    listAccount.map((account) => console.log("account", account));
-    let listFollowingTokens = await a.getListFollowingTokens();
-    console.log("listFollowingTokens after add", listFollowingTokens);
-    console.log(await wallet.getMeasureStorageValue());
+    const a = await wallet.createNewAccount("phat1");
+    console.log("account", a);
+    console.log("listAccoun", await wallet.listAccount());
+    // const prvKey =
+    //   "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
+    // await wallet.loadWallet({
+    //   password: passphrase,
+    //   aesKey,
+    // });
+    // let a = await wallet.importAccount(prvKey, "phat2");
+    // a.setRPCCoinServices(rpcCoinService);
+    // a.setRPCClient(rpcClient);
+    // a.setRPCTxServices(rpcTxService);
+    // await a.addListFollowingToken({
+    //   tokenIDs: ["123", "12345678", "1234567"],
+    // });
+    // await wallet.save(aesKey, false);
+    // await wallet.loadWallet({
+    //   password: passphrase,
+    //   aesKey,
+    // });
+    // console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
+    // const listAccount = await wallet.listAccount();
+    // listAccount.map((account) => console.log("account", account));
+    // let listFollowingTokens = await a.getListFollowingTokens();
+    // console.log("listFollowingTokens after add", listFollowingTokens);
+    // console.log(await wallet.getMeasureStorageValue());
     return;
     const account = await wallet.createNewAccount("PHAT");
     // const prvKey =
