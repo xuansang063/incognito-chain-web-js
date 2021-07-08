@@ -927,9 +927,9 @@ async function TestLoadWallet() {
       password: passphrase,
       aesKey,
     });
-    const a = await wallet.createNewAccount("phat1");
-    console.log("account", a);
-    console.log("listAccoun", await wallet.listAccount());
+    await wallet.createNewAccount("phat1");
+    await wallet.createNewAccount("phat2");
+    console.log("listAccount", await wallet.listAccount());
     // const prvKey =
     //   "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
     // await wallet.loadWallet({
