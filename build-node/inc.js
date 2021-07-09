@@ -2695,25 +2695,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wallet__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./wallet */ "./lib/wallet.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Wallet", function() { return _wallet__WEBPACK_IMPORTED_MODULE_11__["Wallet"]; });
 
-/* harmony import */ var _portal_portal__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./portal/portal */ "./lib/portal/portal.js");
-/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./tx/utils */ "./lib/tx/utils.js");
-/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_tx_utils__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./privacy/ecdsa */ "./lib/privacy/ecdsa.js");
-/* harmony import */ var _privacy_bls__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./privacy/bls */ "./lib/privacy/bls.js");
-/* harmony import */ var _common_constants__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./common/constants */ "./lib/common/constants.js");
-/* harmony import */ var _common_errorhandler__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./common/errorhandler */ "./lib/common/errorhandler.js");
-/* harmony import */ var _common_committeekey__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./common/committeekey */ "./lib/common/committeekey.js");
-/* harmony import */ var _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./privacy/hybridEncryption */ "./lib/privacy/hybridEncryption.js");
-/* harmony import */ var _module_Account__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./module/Account */ "./lib/module/Account/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Account", function() { return _module_Account__WEBPACK_IMPORTED_MODULE_20__["Account"]; });
+/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./tx/utils */ "./lib/tx/utils.js");
+/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_tx_utils__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./privacy/ecdsa */ "./lib/privacy/ecdsa.js");
+/* harmony import */ var _privacy_bls__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./privacy/bls */ "./lib/privacy/bls.js");
+/* harmony import */ var _common_constants__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./common/constants */ "./lib/common/constants.js");
+/* harmony import */ var _common_errorhandler__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./common/errorhandler */ "./lib/common/errorhandler.js");
+/* harmony import */ var _common_committeekey__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./common/committeekey */ "./lib/common/committeekey.js");
+/* harmony import */ var _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./privacy/hybridEncryption */ "./lib/privacy/hybridEncryption.js");
+/* harmony import */ var _module_Account__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./module/Account */ "./lib/module/Account/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Account", function() { return _module_Account__WEBPACK_IMPORTED_MODULE_19__["Account"]; });
 
-/* harmony import */ var _services_storage__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./services/storage */ "./lib/services/storage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StorageServices", function() { return _services_storage__WEBPACK_IMPORTED_MODULE_21__["default"]; });
+/* harmony import */ var _services_storage__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./services/storage */ "./lib/services/storage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StorageServices", function() { return _services_storage__WEBPACK_IMPORTED_MODULE_20__["default"]; });
 
-/* harmony import */ var _tx_stateless__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./tx/stateless */ "./lib/tx/stateless.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Transactor", function() { return _tx_stateless__WEBPACK_IMPORTED_MODULE_22__["StatelessTransactor"]; });
+/* harmony import */ var _tx_stateless__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./tx/stateless */ "./lib/tx/stateless.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Transactor", function() { return _tx_stateless__WEBPACK_IMPORTED_MODULE_21__["StatelessTransactor"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "wasm", function() { return _tx_stateless__WEBPACK_IMPORTED_MODULE_22__["wasm"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "wasm", function() { return _tx_stateless__WEBPACK_IMPORTED_MODULE_21__["wasm"]; });
 
 var _constants;
 
@@ -2733,7 +2732,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 var webJsPath = "./";
-
 
 
 
@@ -2784,7 +2782,7 @@ var constants = (_constants = {
   CustomTokenTransfer: _tx_constants__WEBPACK_IMPORTED_MODULE_7__["CustomTokenTransfer"],
   CustomTokenInit: _tx_constants__WEBPACK_IMPORTED_MODULE_7__["CustomTokenInit"],
   PRVIDSTR: _core__WEBPACK_IMPORTED_MODULE_6__["PRVIDSTR"],
-  ENCODE_VERSION: _common_constants__WEBPACK_IMPORTED_MODULE_16__["ENCODE_VERSION"],
+  ENCODE_VERSION: _common_constants__WEBPACK_IMPORTED_MODULE_15__["ENCODE_VERSION"],
   FailedTx: _core__WEBPACK_IMPORTED_MODULE_6__["FailedTx"],
   SuccessTx: _core__WEBPACK_IMPORTED_MODULE_6__["SuccessTx"],
   ConfirmedTx: _core__WEBPACK_IMPORTED_MODULE_6__["ConfirmedTx"],
@@ -2806,22 +2804,22 @@ var utils = {
   base58CheckDeserialize: _core__WEBPACK_IMPORTED_MODULE_6__["KeyWallet"].base58CheckDeserialize,
   base64Encode: _privacy_utils__WEBPACK_IMPORTED_MODULE_5__["base64Encode"],
   base64Decode: _privacy_utils__WEBPACK_IMPORTED_MODULE_5__["base64Decode"],
-  getMaxWithdrawAmount: _tx_utils__WEBPACK_IMPORTED_MODULE_13__["getMaxWithdrawAmount"],
+  getMaxWithdrawAmount: _tx_utils__WEBPACK_IMPORTED_MODULE_12__["getMaxWithdrawAmount"],
   toNanoPRV: _core__WEBPACK_IMPORTED_MODULE_6__["toNanoPRV"],
   toPRV: _core__WEBPACK_IMPORTED_MODULE_6__["toPRV"],
   getShardIDFromLastByte: _common_common__WEBPACK_IMPORTED_MODULE_9__["getShardIDFromLastByte"],
-  generateECDSAKeyPair: _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_14__["generateECDSAKeyPair"],
-  generateBLSKeyPair: _privacy_bls__WEBPACK_IMPORTED_MODULE_15__["generateBLSKeyPair"],
+  generateECDSAKeyPair: _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_13__["generateECDSAKeyPair"],
+  generateBLSKeyPair: _privacy_bls__WEBPACK_IMPORTED_MODULE_14__["generateBLSKeyPair"],
   encryptMessageOutCoin: _core__WEBPACK_IMPORTED_MODULE_6__["encryptMessageOutCoin"],
   decryptMessageOutCoin: _core__WEBPACK_IMPORTED_MODULE_6__["decryptMessageOutCoin"],
   byteToHexString: _common_common__WEBPACK_IMPORTED_MODULE_9__["byteToHexString"],
   hexStringToByte: _common_common__WEBPACK_IMPORTED_MODULE_9__["hexStringToByte"],
-  generateBLSPubKeyB58CheckEncodeFromSeed: _common_committeekey__WEBPACK_IMPORTED_MODULE_18__["generateBLSPubKeyB58CheckEncodeFromSeed"],
-  generateCommitteeKeyFromHashPrivateKey: _common_committeekey__WEBPACK_IMPORTED_MODULE_18__["generateCommitteeKeyFromHashPrivateKey"],
+  generateBLSPubKeyB58CheckEncodeFromSeed: _common_committeekey__WEBPACK_IMPORTED_MODULE_17__["generateBLSPubKeyB58CheckEncodeFromSeed"],
+  generateCommitteeKeyFromHashPrivateKey: _common_committeekey__WEBPACK_IMPORTED_MODULE_17__["generateCommitteeKeyFromHashPrivateKey"],
   hashSha3BytesToBytes: _privacy_utils__WEBPACK_IMPORTED_MODULE_5__["hashSha3BytesToBytes"],
   convertHashToStr: _common_common__WEBPACK_IMPORTED_MODULE_9__["convertHashToStr"],
-  hybridEncryption: _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_19__["hybridEncryption"],
-  hybridDecryption: _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_19__["hybridDecryption"],
+  hybridEncryption: _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_18__["hybridEncryption"],
+  hybridDecryption: _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_18__["hybridDecryption"],
   bytesToString: _privacy_utils__WEBPACK_IMPORTED_MODULE_5__["bytesToString"],
   stringToBytes: _privacy_utils__WEBPACK_IMPORTED_MODULE_5__["stringToBytes"],
   coinsToBase64: coinsToBase64
@@ -2847,18 +2845,12 @@ var SimpleWallet = /*#__PURE__*/function () {
   _createClass(SimpleWallet, [{
     key: "NewTransactor",
     value: function NewTransactor(privateKey) {
-      var t = new _tx_stateless__WEBPACK_IMPORTED_MODULE_22__["StatelessTransactor"](this, this.rpc.rpcHttpService.url); // by default, Transactors of SimpleWallet does NOT connect to coin service, but normal node instead
+      var t = new _tx_stateless__WEBPACK_IMPORTED_MODULE_21__["StatelessTransactor"](this, this.rpc.rpcHttpService.url); // by default, Transactors of SimpleWallet does NOT connect to coin service, but normal node instead
 
       t.useCoinsService = false;
       return t.setKey(privateKey).then(function (_) {
         return t;
       });
-    }
-  }, {
-    key: "NewPortal",
-    value: function NewPortal(chainName) {
-      var portal = new _portal_portal__WEBPACK_IMPORTED_MODULE_12__["Portal"](chainName);
-      return portal;
     }
   }, {
     key: "setProvider",
@@ -2961,9 +2953,10 @@ var TX_TYPE = {
   WITHDRAW_LIQUIDITY_FEE: 12,
   CONSOLIDATE: 13,
   SHIELD: 99,
-  UNSHIELD: 100
+  UNSHIELD: 100,
+  UNSHIELDPORTAL: 101
 };
-var TX_TYPE_STR = (_TX_TYPE_STR = {}, _defineProperty(_TX_TYPE_STR, TX_TYPE.SEND, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.TRADE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.PROVIDE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.STAKE_VNODE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSTAKE_VNODE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.WITHDRAW_REWARD_TX, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.INIT_TOKEN, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.BURN, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.RECEIVE, "Receive"), _defineProperty(_TX_TYPE_STR, TX_TYPE.CONVERT, "Convert"), _defineProperty(_TX_TYPE_STR, TX_TYPE.SHIELD, "Shield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSHIELD, "Unshield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.CONSOLIDATE, "Consolidate"), _TX_TYPE_STR); // todo: 0xkraken
+var TX_TYPE_STR = (_TX_TYPE_STR = {}, _defineProperty(_TX_TYPE_STR, TX_TYPE.SEND, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.TRADE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.PROVIDE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.STAKE_VNODE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSTAKE_VNODE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.WITHDRAW_REWARD_TX, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.INIT_TOKEN, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.BURN, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.RECEIVE, "Receive"), _defineProperty(_TX_TYPE_STR, TX_TYPE.CONVERT, "Convert"), _defineProperty(_TX_TYPE_STR, TX_TYPE.SHIELD, "Shield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSHIELD, "Unshield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSHIELDPORTAL, "Unshield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.CONSOLIDATE, "Consolidate"), _TX_TYPE_STR); // todo: 0xkraken
 // NumUTXO must be 255
 // because tx zise is exceed 100kb with NumUTXO = 255
 
@@ -14810,49 +14803,23 @@ function _createAndSendWithdrawRewardTx() {
 
 /***/ }),
 
-/***/ "./lib/module/Account/features/Portal/index.js":
-/*!*****************************************************!*\
-  !*** ./lib/module/Account/features/Portal/index.js ***!
-  \*****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _portal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./portal */ "./lib/module/Account/features/Portal/portal.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-var portalPrototype = _objectSpread({}, _portal__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
-/* harmony default export */ __webpack_exports__["default"] = (portalPrototype);
-
-/***/ }),
-
-/***/ "./lib/module/Account/features/Portal/portal.js":
-/*!******************************************************!*\
-  !*** ./lib/module/Account/features/Portal/portal.js ***!
-  \******************************************************/
+/***/ "./lib/module/Account/features/Portal/api.js":
+/*!***************************************************!*\
+  !*** ./lib/module/Account/features/Portal/api.js ***!
+  \***************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+/* harmony import */ var _lib_privacy_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/privacy/utils */ "./lib/privacy/utils.js");
+/* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
 
 
 
@@ -14862,7 +14829,7 @@ function handleGetPortalMinShieldAmount(_x) {
 
 function _handleGetPortalMinShieldAmount() {
   _handleGetPortalMinShieldAmount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
-    var tokenID, result;
+    var tokenID, portalParams;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -14871,84 +14838,74 @@ function _handleGetPortalMinShieldAmount() {
             _context.prev = 1;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenID", tokenID).required().string();
             _context.next = 5;
-            return this.rpcPortalService.apiGetMinShieldAmount(tokenID);
+            return this.rpc.getPortalV4Params(0);
 
           case 5:
-            result = _context.sent;
+            portalParams = _context.sent;
 
-            if (!result) {
+            if (!(portalParams.MinShieldAmts[tokenID] >= 0)) {
               _context.next = 8;
               break;
             }
 
-            return _context.abrupt("return", result.MinShieldAmt);
+            return _context.abrupt("return", portalParams.MinShieldAmts[tokenID]);
 
           case 8:
-            _context.next = 13;
-            break;
+            throw new Error("Can not get min shield amount");
 
-          case 10:
-            _context.prev = 10;
+          case 11:
+            _context.prev = 11;
             _context.t0 = _context["catch"](1);
             console.log("HANDLE GET PORTAL MIN SHIELD AMOUNT FAILED", _context.t0);
+            throw _context.t0;
 
-          case 13:
-            return _context.abrupt("return", null);
-
-          case 14:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[1, 10]]);
+    }, _callee, this, [[1, 11]]);
   }));
   return _handleGetPortalMinShieldAmount.apply(this, arguments);
 }
 
 ;
 
-function handleCheckPortalShieldingAddresssExisted(_x2) {
-  return _handleCheckPortalShieldingAddresssExisted.apply(this, arguments);
+function handleGetPortalMinUnShieldAmount(_x2) {
+  return _handleGetPortalMinUnShieldAmount.apply(this, arguments);
 }
 
-function _handleCheckPortalShieldingAddresssExisted() {
-  _handleCheckPortalShieldingAddresssExisted = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_ref2) {
-    var incAddress, shieldingAddress, result;
+function _handleGetPortalMinUnShieldAmount() {
+  _handleGetPortalMinUnShieldAmount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_ref2) {
+    var tokenID, portalParams;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            incAddress = _ref2.incAddress, shieldingAddress = _ref2.shieldingAddress;
+            tokenID = _ref2.tokenID;
             _context2.prev = 1;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shieldingAddress", shieldingAddress).required().string();
-            _context2.next = 6;
-            return this.rpcPortalService.apiCheckPortalShieldingAddresssExisted({
-              incAddress: incAddress,
-              shieldingAddress: shieldingAddress
-            });
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenID", tokenID).required().string();
+            _context2.next = 5;
+            return this.rpc.getPortalV4Params(0);
 
-          case 6:
-            result = _context2.sent;
+          case 5:
+            portalParams = _context2.sent;
 
-            if (!result) {
-              _context2.next = 9;
+            if (!(portalParams.MinUnshieldAmts[tokenID] >= 0)) {
+              _context2.next = 8;
               break;
             }
 
-            return _context2.abrupt("return", _objectSpread({}, result));
+            return _context2.abrupt("return", portalParams.MinUnshieldAmts[tokenID]);
 
-          case 9:
-            _context2.next = 14;
-            break;
+          case 8:
+            throw new Error("Can not get min unshield amount");
 
           case 11:
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](1);
-            console.log("HANDLE GET PORTAL SHIELDING ADDRESS EXISTED FAILED", _context2.t0);
-
-          case 14:
-            return _context2.abrupt("return", null);
+            console.log("HANDLE GET PORTAL MIN UNSHIELD AMOUNT FAILED", _context2.t0);
+            throw _context2.t0;
 
           case 15:
           case "end":
@@ -14957,53 +14914,46 @@ function _handleCheckPortalShieldingAddresssExisted() {
       }
     }, _callee2, this, [[1, 11]]);
   }));
-  return _handleCheckPortalShieldingAddresssExisted.apply(this, arguments);
+  return _handleGetPortalMinUnShieldAmount.apply(this, arguments);
 }
 
 ;
 
-function handleAddPortalShieldingAddresss(_x3) {
-  return _handleAddPortalShieldingAddresss.apply(this, arguments);
+function handleCheckIsPortalToken(_x3) {
+  return _handleCheckIsPortalToken.apply(this, arguments);
 }
 
-function _handleAddPortalShieldingAddresss() {
-  _handleAddPortalShieldingAddresss = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_ref3) {
-    var incAddress, shieldingAddress, result;
+function _handleCheckIsPortalToken() {
+  _handleCheckIsPortalToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_ref3) {
+    var tokenID, portalParams;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            incAddress = _ref3.incAddress, shieldingAddress = _ref3.shieldingAddress;
+            tokenID = _ref3.tokenID;
             _context3.prev = 1;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shieldingAddress", shieldingAddress).required().string();
-            _context3.next = 6;
-            return this.rpcPortalService.apiAddPortalShieldingAddresss({
-              incAddress: incAddress,
-              shieldingAddress: shieldingAddress
-            });
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenID", tokenID).required().string();
+            _context3.next = 5;
+            return this.rpc.getPortalV4Params(0);
 
-          case 6:
-            result = _context3.sent;
+          case 5:
+            portalParams = _context3.sent;
 
-            if (!result) {
-              _context3.next = 9;
+            if (!portalParams.PortalV4TokenIDs.includes(tokenID)) {
+              _context3.next = 8;
               break;
             }
 
-            return _context3.abrupt("return", _objectSpread({}, result));
+            return _context3.abrupt("return", true);
 
-          case 9:
-            _context3.next = 14;
-            break;
+          case 8:
+            return _context3.abrupt("return", false);
 
           case 11:
             _context3.prev = 11;
             _context3.t0 = _context3["catch"](1);
-            console.log("HANDLE ADD PORTAL SHIELDING ADDRESS FAILED", _context3.t0);
-
-          case 14:
-            return _context3.abrupt("return", null);
+            console.log("HANDLE CHECK IS PORTAL TOKEN FAILED", _context3.t0);
+            throw _context3.t0;
 
           case 15:
           case "end":
@@ -15011,6 +14961,205 @@ function _handleAddPortalShieldingAddresss() {
         }
       }
     }, _callee3, this, [[1, 11]]);
+  }));
+  return _handleCheckIsPortalToken.apply(this, arguments);
+}
+
+;
+
+function handleGenerateShieldingAddress(_x4) {
+  return _handleGenerateShieldingAddress.apply(this, arguments);
+}
+
+function _handleGenerateShieldingAddress() {
+  _handleGenerateShieldingAddress = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_ref4) {
+    var tokenID, incAddress, chainName, portalParams, masterPubKeysEncoded, params, resp;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            tokenID = _ref4.tokenID, incAddress = _ref4.incAddress, chainName = _ref4.chainName;
+            _context4.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("chainName", chainName).required().inList(["testnet", "mainnet"]);
+            _context4.next = 7;
+            return this.rpc.getPortalV4Params(0);
+
+          case 7:
+            portalParams = _context4.sent;
+            console.log("portalParams.MasterPubKeys: ", portalParams.MasterPubKeys);
+            masterPubKeysEncoded = new Array();
+            portalParams.MasterPubKeys[tokenID].forEach(function (item, _index, _array) {
+              masterPubKeysEncoded.push(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["base64Encode"])(item));
+            });
+            params = {
+              MasterPubKeys: masterPubKeysEncoded,
+              NumSigsRequired: portalParams.NumRequiredSigs,
+              ChainName: chainName,
+              ChainCodeSeed: incAddress
+            };
+            _context4.next = 14;
+            return _lib_wasm__WEBPACK_IMPORTED_MODULE_2__["wasm"].generateBTCMultisigAddress(JSON.stringify(params));
+
+          case 14:
+            resp = _context4.sent;
+            return _context4.abrupt("return", String(resp));
+
+          case 18:
+            _context4.prev = 18;
+            _context4.t0 = _context4["catch"](1);
+            console.log("HANDLE GENERATE SHIELDING ADDRESS FAILED", _context4.t0);
+            throw _context4.t0;
+
+          case 22:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this, [[1, 18]]);
+  }));
+  return _handleGenerateShieldingAddress.apply(this, arguments);
+}
+
+;
+
+function handleGetMinShieldAmtAndGenerateShieldAddress(_x5) {
+  return _handleGetMinShieldAmtAndGenerateShieldAddress.apply(this, arguments);
+}
+
+function _handleGetMinShieldAmtAndGenerateShieldAddress() {
+  _handleGetMinShieldAmtAndGenerateShieldAddress = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(_ref5) {
+    var tokenID, incAddress, chainName, portalParams, masterPubKeysEncoded, params, resp;
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            tokenID = _ref5.tokenID, incAddress = _ref5.incAddress, chainName = _ref5.chainName;
+            _context5.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("chainName", chainName).required().string();
+            _context5.next = 7;
+            return this.rpc.getPortalV4Params(0);
+
+          case 7:
+            portalParams = _context5.sent;
+            masterPubKeysEncoded = portalParams.MasterPubKeys[tokenID];
+            params = {
+              MasterPubKeys: masterPubKeysEncoded,
+              NumSigsRequired: portalParams.NumRequiredSigs,
+              ChainName: chainName,
+              ChainCodeSeed: incAddress
+            };
+            _context5.next = 12;
+            return _lib_wasm__WEBPACK_IMPORTED_MODULE_2__["wasm"].generateBTCMultisigAddress(JSON.stringify(params));
+
+          case 12:
+            resp = _context5.sent;
+            return _context5.abrupt("return", {
+              minShieldAmt: portalParams.MinShieldAmts[tokenID],
+              shieldingAddress: String(resp)
+            });
+
+          case 16:
+            _context5.prev = 16;
+            _context5.t0 = _context5["catch"](1);
+            console.log("HANDLE GET MIN SHIELD AMOUNT AND GENERATE SHIELDING ADDRESS FAILED", _context5.t0);
+            throw _context5.t0;
+
+          case 20:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, this, [[1, 16]]);
+  }));
+  return _handleGetMinShieldAmtAndGenerateShieldAddress.apply(this, arguments);
+}
+
+;
+
+function handleCheckPortalShieldingAddresssExisted(_x6) {
+  return _handleCheckPortalShieldingAddresssExisted.apply(this, arguments);
+}
+
+function _handleCheckPortalShieldingAddresssExisted() {
+  _handleCheckPortalShieldingAddresssExisted = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(_ref6) {
+    var incAddress, shieldingAddress, result;
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            incAddress = _ref6.incAddress, shieldingAddress = _ref6.shieldingAddress;
+            _context6.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shieldingAddress", shieldingAddress).required().string();
+            _context6.next = 6;
+            return this.rpcPortalService.apiCheckPortalShieldingAddresssExisted({
+              incAddress: incAddress,
+              shieldingAddress: shieldingAddress
+            });
+
+          case 6:
+            result = _context6.sent;
+            return _context6.abrupt("return", !!result);
+
+          case 10:
+            _context6.prev = 10;
+            _context6.t0 = _context6["catch"](1);
+            console.log("HANDLE GET PORTAL SHIELDING ADDRESS EXISTED FAILED", _context6.t0);
+            throw _context6.t0;
+
+          case 14:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, this, [[1, 10]]);
+  }));
+  return _handleCheckPortalShieldingAddresssExisted.apply(this, arguments);
+}
+
+;
+
+function handleAddPortalShieldingAddresss(_x7) {
+  return _handleAddPortalShieldingAddresss.apply(this, arguments);
+}
+
+function _handleAddPortalShieldingAddresss() {
+  _handleAddPortalShieldingAddresss = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(_ref7) {
+    var incAddress, shieldingAddress, result;
+    return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            incAddress = _ref7.incAddress, shieldingAddress = _ref7.shieldingAddress;
+            _context7.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shieldingAddress", shieldingAddress).required().string();
+            _context7.next = 6;
+            return this.rpcPortalService.apiAddPortalShieldingAddresss({
+              incAddress: incAddress,
+              shieldingAddress: shieldingAddress
+            });
+
+          case 6:
+            result = _context7.sent;
+            return _context7.abrupt("return", !!result);
+
+          case 10:
+            _context7.prev = 10;
+            _context7.t0 = _context7["catch"](1);
+            console.log("HANDLE ADD PORTAL SHIELDING ADDRESS FAILED", _context7.t0);
+            throw _context7.t0;
+
+          case 14:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, this, [[1, 10]]);
   }));
   return _handleAddPortalShieldingAddresss.apply(this, arguments);
 }
@@ -15022,44 +15171,32 @@ function handleGetAverageUnshieldFee() {
 }
 
 function _handleGetAverageUnshieldFee() {
-  _handleGetAverageUnshieldFee = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var result;
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+  _handleGetAverageUnshieldFee = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
+    var resp;
+    return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context8.prev = _context8.next) {
           case 0:
-            _context4.prev = 0;
-            _context4.next = 3;
+            _context8.prev = 0;
+            _context8.next = 3;
             return this.rpcPortalService.apiGetEstimateUnshieldFee();
 
           case 3:
-            result = _context4.sent;
+            resp = _context8.sent;
+            return _context8.abrupt("return", resp * 10);
 
-            if (!result) {
-              _context4.next = 6;
-              break;
-            }
-
-            return _context4.abrupt("return", _objectSpread({}, result));
-
-          case 6:
-            _context4.next = 11;
-            break;
-
-          case 8:
-            _context4.prev = 8;
-            _context4.t0 = _context4["catch"](0);
-            console.log("HANDLE GET AVERAGE UNSHIELD FEE FAILED", _context4.t0);
+          case 7:
+            _context8.prev = 7;
+            _context8.t0 = _context8["catch"](0);
+            console.log("HANDLE GET AVERAGE UNSHIELD FEE FAILED", _context8.t0);
+            throw _context8.t0;
 
           case 11:
-            return _context4.abrupt("return", null);
-
-          case 12:
           case "end":
-            return _context4.stop();
+            return _context8.stop();
         }
       }
-    }, _callee4, this, [[0, 8]]);
+    }, _callee8, this, [[0, 7]]);
   }));
   return _handleGetAverageUnshieldFee.apply(this, arguments);
 }
@@ -15067,9 +15204,227 @@ function _handleGetAverageUnshieldFee() {
 ;
 /* harmony default export */ __webpack_exports__["default"] = ({
   handleGetPortalMinShieldAmount: handleGetPortalMinShieldAmount,
+  handleGetPortalMinUnShieldAmount: handleGetPortalMinUnShieldAmount,
+  handleCheckIsPortalToken: handleCheckIsPortalToken,
+  handleGenerateShieldingAddress: handleGenerateShieldingAddress,
+  handleGetMinShieldAmtAndGenerateShieldAddress: handleGetMinShieldAmtAndGenerateShieldAddress,
   handleCheckPortalShieldingAddresssExisted: handleCheckPortalShieldingAddresssExisted,
   handleAddPortalShieldingAddresss: handleAddPortalShieldingAddresss,
   handleGetAverageUnshieldFee: handleGetAverageUnshieldFee
+});
+
+/***/ }),
+
+/***/ "./lib/module/Account/features/Portal/index.js":
+/*!*****************************************************!*\
+  !*** ./lib/module/Account/features/Portal/index.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "./lib/module/Account/features/Portal/api.js");
+/* harmony import */ var _unshield__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./unshield */ "./lib/module/Account/features/Portal/unshield.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+var portalPrototype = _objectSpread(_objectSpread({}, _api__WEBPACK_IMPORTED_MODULE_0__["default"]), _unshield__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (portalPrototype);
+
+/***/ }),
+
+/***/ "./lib/module/Account/features/Portal/unshield.js":
+/*!********************************************************!*\
+  !*** ./lib/module/Account/features/Portal/unshield.js ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/common/keySet */ "./lib/common/keySet.js");
+/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+
+
+ // createAndSendUnshieldPortalV4RequestTx create and send tx burning ptoken when withdraw
+// remoteAddress (string) is an ETH/BTC address which users want to receive ETH/BTC (without 0x)
+
+/** createAndSendUnshieldPortalV4RequestTx
+ * @param {{paymentAddressStr: string, amount: number}} prvPayments
+ * @param {number} fee
+ * @param {string} info
+ * @param {string} tokenID
+ * @param {object} metadata
+ * @param {boolean} burningType
+ * @param {boolean} isEncryptMessageToken
+ * @param {number} unshieldAmount
+ * @param {string} remoteAddress
+ *
+ */
+
+function createAndSendUnshieldPortalV4RequestTx(_x) {
+  return _createAndSendUnshieldPortalV4RequestTx.apply(this, arguments);
+}
+
+function _createAndSendUnshieldPortalV4RequestTx() {
+  _createAndSendUnshieldPortalV4RequestTx = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
+    var _ref$transfer, fee, tokenID, _ref$transfer$info, info, _ref$transfer$prvPaym, prvPayments, _ref$extra, _ref$extra2, _ref$extra2$burningTy, burningType, _ref$extra2$isEncrypt, isEncryptMessageToken, unshieldAmount, remoteAddress, _ref$extra2$txHashHan, txHashHandler, version, burningTokenID, burningAddress, tokenPayments, isEncodeOnly, emptyKeySet, addrForMd, myAddressStr, pInf, newCoin, temp, portalUnshieldRequest, tx;
+
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _ref$transfer = _ref.transfer, fee = _ref$transfer.fee, tokenID = _ref$transfer.tokenID, _ref$transfer$info = _ref$transfer.info, info = _ref$transfer$info === void 0 ? "" : _ref$transfer$info, _ref$transfer$prvPaym = _ref$transfer.prvPayments, prvPayments = _ref$transfer$prvPaym === void 0 ? [] : _ref$transfer$prvPaym, _ref$extra = _ref.extra, _ref$extra2 = _ref$extra === void 0 ? {} : _ref$extra, _ref$extra2$burningTy = _ref$extra2.burningType, burningType = _ref$extra2$burningTy === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_1__["PortalV4UnshieldRequestMeta"] : _ref$extra2$burningTy, _ref$extra2$isEncrypt = _ref$extra2.isEncryptMessageToken, isEncryptMessageToken = _ref$extra2$isEncrypt === void 0 ? false : _ref$extra2$isEncrypt, unshieldAmount = _ref$extra2.unshieldAmount, remoteAddress = _ref$extra2.remoteAddress, _ref$extra2$txHashHan = _ref$extra2.txHashHandler, txHashHandler = _ref$extra2$txHashHan === void 0 ? null : _ref$extra2$txHashHan, version = _ref$extra2.version;
+            _context.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("createAndSendUnshieldPortalV4RequestTx-fee", fee).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("createAndSendUnshieldPortalV4RequestTx-info", info).string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("createAndSendUnshieldPortalV4RequestTx-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("createAndSendUnshieldPortalV4RequestTx-burningType", burningType).number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("createAndSendUnshieldPortalV4RequestTx-disEncryptMessageToken", isEncryptMessageToken)["boolean"]();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("createAndSendUnshieldPortalV4RequestTx-unshieldAmount", unshieldAmount).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("createAndSendUnshieldPortalV4RequestTx-remoteAddress", remoteAddress).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("createAndSendUnshieldPortalV4RequestTx-prvPayments", prvPayments).required().array();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("createAndSendUnshieldPortalV4RequestTx-version", version).required().number();
+            burningTokenID = tokenID;
+            _context.next = 14;
+            return this.updateProgressTx(10, "Encrypting Message");
+
+          case 14:
+            _context.next = 16;
+            return Object(_lib_core__WEBPACK_IMPORTED_MODULE_1__["getBurningAddress"])(this.rpc);
+
+          case 16:
+            burningAddress = _context.sent;
+            tokenPayments = [{
+              PaymentAddress: burningAddress,
+              Amount: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(unshieldAmount).toString(),
+              Message: ""
+            }];
+            prvPayments = prvPayments.map(function (payment) {
+              return {
+                PaymentAddress: payment === null || payment === void 0 ? void 0 : payment.paymentAddress,
+                Amount: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(payment === null || payment === void 0 ? void 0 : payment.amount).toString(),
+                Message: ""
+              };
+            });
+            isEncodeOnly = !isEncryptMessageToken;
+            _context.next = 22;
+            return Object(_lib_core__WEBPACK_IMPORTED_MODULE_1__["encryptMessageOutCoin"])(tokenPayments, isEncodeOnly);
+
+          case 22:
+            tokenPayments = _context.sent;
+            _context.next = 25;
+            return Object(_lib_core__WEBPACK_IMPORTED_MODULE_1__["encryptMessageOutCoin"])(prvPayments, isEncodeOnly);
+
+          case 25:
+            prvPayments = _context.sent;
+            // use an empty payment address
+            emptyKeySet = new _lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__["KeySet"]();
+            _context.next = 29;
+            return emptyKeySet.importFromPrivateKey(new Uint8Array(32));
+
+          case 29:
+            addrForMd = Object(_lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__["addressAsObject"])(emptyKeySet.PaymentAddress);
+            _context.next = 32;
+            return this.updateProgressTx(15, "Generating Metadata");
+
+          case 32:
+            myAddressStr = this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"]);
+            pInf = {
+              PaymentAddress: myAddressStr,
+              Amount: "0"
+            };
+            _context.prev = 34;
+            _context.next = 37;
+            return _lib_wasm__WEBPACK_IMPORTED_MODULE_5__["wasm"].createCoin(JSON.stringify({
+              PaymentInfo: pInf,
+              TokenID: null
+            }));
+
+          case 37:
+            temp = _context.sent;
+            newCoin = JSON.parse(temp);
+            _context.next = 44;
+            break;
+
+          case 41:
+            _context.prev = 41;
+            _context.t0 = _context["catch"](34);
+            throw _context.t0;
+
+          case 44:
+            // prepare meta data for tx
+            portalUnshieldRequest = {
+              OTAPubKeyStr: newCoin.PublicKey,
+              TxRandomStr: newCoin.TxRandom,
+              RemoteAddress: remoteAddress,
+              TokenID: tokenID,
+              UnshieldAmount: unshieldAmount,
+              Type: burningType
+            };
+            _context.next = 47;
+            return this.transact({
+              transfer: {
+                prvPayments: prvPayments,
+                fee: fee,
+                info: info,
+                tokenID: burningTokenID,
+                tokenPayments: tokenPayments
+              },
+              extra: {
+                metadata: portalUnshieldRequest,
+                txType: _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_4__["TX_TYPE"].UNSHIELDPORTAL,
+                txHashHandler: txHashHandler,
+                version: version
+              }
+            });
+
+          case 47:
+            tx = _context.sent;
+            _context.next = 50;
+            return this.updateProgressTx(100, "Completed");
+
+          case 50:
+            return _context.abrupt("return", tx);
+
+          case 53:
+            _context.prev = 53;
+            _context.t1 = _context["catch"](1);
+            throw _context.t1;
+
+          case 56:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this, [[1, 53], [34, 41]]);
+  }));
+  return _createAndSendUnshieldPortalV4RequestTx.apply(this, arguments);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  createAndSendUnshieldPortalV4RequestTx: createAndSendUnshieldPortalV4RequestTx
 });
 
 /***/ }),
@@ -16788,154 +17143,6 @@ function _createAndSendBurningRequestTx() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _account__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./account */ "./lib/module/Account/account.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Account", function() { return _account__WEBPACK_IMPORTED_MODULE_0__["default"]; });
-
-
-
-/***/ }),
-
-/***/ "./lib/portal/constants.js":
-/*!*********************************!*\
-  !*** ./lib/portal/constants.js ***!
-  \*********************************/
-/*! exports provided: PortalTokenIDs */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PortalTokenIDs", function() { return PortalTokenIDs; });
-var PortalTokenIDs = ["ef5947f70ead81a76a53c7c8b7317dd5245510c665d3a13921dc9a581188728b"];
-
-
-/***/ }),
-
-/***/ "./lib/portal/params.js":
-/*!******************************!*\
-  !*** ./lib/portal/params.js ***!
-  \******************************/
-/*! exports provided: PortalParams */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PortalParams", function() { return PortalParams; });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var PortalParams =
-/**
-* @param {string} chainName
-*/
-function PortalParams(chainName) {
-  _classCallCheck(this, PortalParams);
-
-  this.ChainName = chainName;
-
-  if (chainName === "mainnet") {
-    this.MasterPubKeys = new Array(7);
-    this.NumSigsRequired = 5;
-  } else if (chainName === "testnet") {
-    this.MasterPubKeys = new Array(4);
-    this.MasterPubKeys[0] = new Uint8Array([0x3, 0xb2, 0xd3, 0x16, 0x7d, 0x94, 0x9c, 0x25, 0x3, 0xe6, 0x9c, 0x9f, 0x29, 0x78, 0x7d, 0x9c, 0x8, 0x8d, 0x39, 0x17, 0x8d, 0xb4, 0x75, 0x40, 0x35, 0xf5, 0xae, 0x6a, 0xf0, 0x17, 0x12, 0x11, 0x0]);
-    this.MasterPubKeys[1] = new Uint8Array([0x3, 0x98, 0x7a, 0x87, 0xd1, 0x99, 0x13, 0xbd, 0xe3, 0xef, 0xf0, 0x55, 0x79, 0x2, 0xb4, 0x90, 0x57, 0xed, 0x1c, 0x9c, 0x8b, 0x32, 0xf9, 0x2, 0xbb, 0xbb, 0x85, 0x71, 0x3a, 0x99, 0x1f, 0xdc, 0x41]);
-    this.MasterPubKeys[2] = new Uint8Array([0x3, 0x73, 0x23, 0x5e, 0xb1, 0xc8, 0xf1, 0x84, 0xe7, 0x59, 0x17, 0x6c, 0xe3, 0x87, 0x37, 0xb7, 0x91, 0x19, 0x47, 0x1b, 0xba, 0x63, 0x56, 0xbc, 0xab, 0x8d, 0xcc, 0x14, 0x4b, 0x42, 0x99, 0x86, 0x1]);
-    this.MasterPubKeys[3] = new Uint8Array([0x3, 0x29, 0xe7, 0x59, 0x31, 0x89, 0xca, 0x7a, 0xf6, 0x1, 0xb6, 0x35, 0x67, 0x3d, 0xb1, 0x53, 0xd4, 0x19, 0xd7, 0x6, 0x19, 0x3, 0x2a, 0x32, 0x94, 0x57, 0x76, 0xb2, 0xb3, 0x80, 0x65, 0xe1, 0x5d]);
-    this.NumSigsRequired = 3;
-  } else {
-    throw "chainName has to be mainnet or testnet";
-  }
-};
-
-
-
-/***/ }),
-
-/***/ "./lib/portal/portal.js":
-/*!******************************!*\
-  !*** ./lib/portal/portal.js ***!
-  \******************************/
-/*! exports provided: Portal */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Portal", function() { return Portal; });
-/* harmony import */ var _params__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./params */ "./lib/portal/params.js");
-/* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../privacy/utils */ "./lib/privacy/utils.js");
-/* harmony import */ var _wasm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../wasm */ "./lib/wasm/index.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./lib/portal/constants.js");
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-
-
-
-var Portal = /*#__PURE__*/function () {
-  /**
-   * @param {string} chainName - testnet/mainnet
-   */
-  function Portal(chainName) {
-    _classCallCheck(this, Portal);
-
-    this.Params = new _params__WEBPACK_IMPORTED_MODULE_0__["PortalParams"](chainName);
-  }
-
-  _createClass(Portal, [{
-    key: "generateBTCMultisigAddress",
-    value: function () {
-      var _generateBTCMultisigAddress = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(paymentAddressStr) {
-        var masterPubKeysEncoded, params, resp;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                masterPubKeysEncoded = new Array();
-                this.Params.MasterPubKeys.forEach(function (item, _index, _array) {
-                  masterPubKeysEncoded.push(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["base64Encode"])(item));
-                });
-                params = {
-                  MasterPubKeys: masterPubKeysEncoded,
-                  NumSigsRequired: this.Params.NumSigsRequired,
-                  ChainName: this.Params.ChainName,
-                  ChainCodeSeed: paymentAddressStr
-                };
-                _context.next = 5;
-                return _wasm__WEBPACK_IMPORTED_MODULE_2__["wasm"].generateBTCMultisigAddress(JSON.stringify(params), paymentAddressStr);
-
-              case 5:
-                resp = _context.sent;
-                return _context.abrupt("return", String(resp));
-
-              case 7:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function generateBTCMultisigAddress(_x) {
-        return _generateBTCMultisigAddress.apply(this, arguments);
-      }
-
-      return generateBTCMultisigAddress;
-    }()
-  }], [{
-    key: "isPortalToken",
-    value: function isPortalToken(tokenID) {
-      return _constants__WEBPACK_IMPORTED_MODULE_3__["PortalTokenIDs"].includes(tokenID);
-    }
-  }]);
-
-  return Portal;
-}();
 
 
 
@@ -19967,6 +20174,66 @@ var RpcClient = function RpcClient(url, user, password) {
     };
   }());
 
+  _defineProperty(this, "getPortalV4Params", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee41() {
+    var beaconHeight,
+        data,
+        response,
+        _args41 = arguments;
+    return regeneratorRuntime.wrap(function _callee41$(_context41) {
+      while (1) {
+        switch (_context41.prev = _context41.next) {
+          case 0:
+            beaconHeight = _args41.length > 0 && _args41[0] !== undefined ? _args41[0] : 0;
+            data = {
+              jsonrpc: "1.0",
+              method: "getportalv4params",
+              params: [{
+                "BeaconHeight": beaconHeight.toString()
+              }],
+              id: 1
+            };
+            _context41.prev = 2;
+            _context41.next = 5;
+            return _this.rpcHttpService.postRequest(data);
+
+          case 5:
+            response = _context41.sent;
+            _context41.next = 11;
+            break;
+
+          case 8:
+            _context41.prev = 8;
+            _context41.t0 = _context41["catch"](2);
+            throw _context41.t0;
+
+          case 11:
+            if (!(response.status !== 200)) {
+              _context41.next = 15;
+              break;
+            }
+
+            throw new Error("Can't request API get portal v4 params");
+
+          case 15:
+            if (!response.data.Error) {
+              _context41.next = 17;
+              break;
+            }
+
+            throw response.data.Error;
+
+          case 17:
+            console.log("GET PORTAL PARAMS: ", response.data.Result);
+            return _context41.abrupt("return", response.data.Result);
+
+          case 19:
+          case "end":
+            return _context41.stop();
+        }
+      }
+    }, _callee41, null, [[2, 8]]);
+  })));
+
   this.rpcHttpService = new _rpchttpservice__WEBPACK_IMPORTED_MODULE_0__["RPCHttpService"](url, user, password); // function aliases
 
   this.listTokens = this.listPrivacyCustomTokens;
@@ -20495,24 +20762,17 @@ var RpcHTTPPortalServiceClient = function RpcHTTPPortalServiceClient(url) {
 
   _classCallCheck(this, RpcHTTPPortalServiceClient);
 
-  _defineProperty(this, "apiGetMinShieldAmount", function (_ref) {
-    var tokenID = _ref.tokenID;
-    return {
-      MinShieldAmt: 10
-    };
-  });
-
-  _defineProperty(this, "apiCheckPortalShieldingAddresssExisted", function (_ref2) {
-    var incAddress = _ref2.incAddress,
-        shieldingAddress = _ref2.shieldingAddress;
+  _defineProperty(this, "apiCheckPortalShieldingAddresssExisted", function (_ref) {
+    var incAddress = _ref.incAddress,
+        shieldingAddress = _ref.shieldingAddress;
     new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shieldingAddress", shieldingAddress).required().string();
     new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
     return _this.http.get("checkportalshieldingaddressexisted?incaddress=".concat(incAddress, "&btcaddress=").concat(shieldingAddress));
   });
 
-  _defineProperty(this, "apiAddPortalShieldingAddresss", function (_ref3) {
-    var incAddress = _ref3.incAddress,
-        shieldingAddress = _ref3.shieldingAddress;
+  _defineProperty(this, "apiAddPortalShieldingAddresss", function (_ref2) {
+    var incAddress = _ref2.incAddress,
+        shieldingAddress = _ref2.shieldingAddress;
     new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("shieldingAddress", shieldingAddress).required().string();
     new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("incAddress", incAddress).required().string();
     return _this.http.post("addportalshieldingaddress", {
@@ -20528,8 +20788,7 @@ var RpcHTTPPortalServiceClient = function RpcHTTPPortalServiceClient(url) {
   this.http = Object(_http_axios__WEBPACK_IMPORTED_MODULE_1__["default"])({
     baseURL: url
   });
-} //TODO:
-;
+};
 
 
 
@@ -27712,7 +27971,7 @@ var Validator = /*#__PURE__*/function () {
 /*!***********************!*\
   !*** ./lib/wallet.js ***!
   \***********************/
-/*! exports provided: Wallet, Account, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, PaymentAddressType, CustomTokenTransfer, CustomTokenInit, PRVIDSTR, ENCODE_VERSION, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, BurningPBSCRequestMeta, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDEPRVRequiredContributionRequestMeta, PDETradeRequestMeta, PDECrossPoolTradeRequestMeta, PDEWithdrawalRequestMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin, constants, coinChooser, newMnemonic, newSeed, validateMnemonic, RpcHTTPCoinServiceClient, PrivacyVersion, Validator, ACCOUNT_CONSTANT, TX_STATUS, ErrorObject, Portal */
+/*! exports provided: Wallet, Account, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, PaymentAddressType, CustomTokenTransfer, CustomTokenInit, PRVIDSTR, ENCODE_VERSION, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, BurningPBSCRequestMeta, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDEPRVRequiredContributionRequestMeta, PDETradeRequestMeta, PDECrossPoolTradeRequestMeta, PDEWithdrawalRequestMeta, PortalV4UnshieldRequestMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin, constants, coinChooser, newMnemonic, newSeed, validateMnemonic, RpcHTTPCoinServiceClient, PrivacyVersion, Validator, ACCOUNT_CONSTANT, TX_STATUS, ErrorObject */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27779,6 +28038,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDEWithdrawalRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PDEWithdrawalRequestMeta"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalV4UnshieldRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PortalV4UnshieldRequestMeta"]; });
+
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "encryptMessageOutCoin", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["encryptMessageOutCoin"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "decryptMessageOutCoin", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["decryptMessageOutCoin"]; });
@@ -27844,9 +28105,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wasm__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./wasm */ "./lib/wasm/index.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TX_STATUS", function() { return _module_Account_account_constants__WEBPACK_IMPORTED_MODULE_25__["TX_STATUS"]; });
 
-/* harmony import */ var _portal_portal__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./portal/portal */ "./lib/portal/portal.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Portal", function() { return _portal_portal__WEBPACK_IMPORTED_MODULE_27__["Portal"]; });
-
 
 
 
@@ -27880,7 +28138,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 

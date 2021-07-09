@@ -538,7 +538,7 @@ func VerifyReceivedTx(paramsJson string) (int64, error) {
 	return recvTxIndex, err
 }
 
-func GenerateBTCMultisigAddress(args string, _ int64) (string, error) {
+func GenerateBTCMultisigAddress(args string) (string, error) {
 	var params struct {
 		MasterPubKeys   [][]byte
 		NumSigsRequired int
