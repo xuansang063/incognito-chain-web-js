@@ -3004,7 +3004,11 @@ var META_TYPE = {
   207: "Withdraw Fee Request",
   208: "Withdraw Fee Response",
   209: "Trading Fee Distribution",
-  204: "Add Liquidity Request"
+  204: "Add Liquidity Request",
+  260: "Portal Shield Request",
+  261: "Portal Shield Response",
+  262: "Portal Unshield Request",
+  263: "Portal Unshield Response"
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
   TxNormalType: TxNormalType,
@@ -20223,10 +20227,9 @@ var RpcClient = function RpcClient(url, user, password) {
             throw response.data.Error;
 
           case 17:
-            console.log("GET PORTAL PARAMS: ", response.data.Result);
             return _context41.abrupt("return", response.data.Result);
 
-          case 19:
+          case 18:
           case "end":
             return _context41.stop();
         }
