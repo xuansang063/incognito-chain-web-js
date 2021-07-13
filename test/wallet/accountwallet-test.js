@@ -853,7 +853,7 @@ async function TestGetWithdrawFeeLiquidityHistories() {
 }
 
 async function TestGetUnspentCoinsByTokenIdV1() {
-  const tokenID = PRVID
+  const tokenID = PRVID;
   const account = await createAccountByPrivateKey(
     "113hagqt552h92LXY6dWPdBGS8pPdLQX5eFBLgsnzbEoU1nUTLGJkkyrTnWCz7XuURtSKzkUKFfKrMPmoNVPAbmryRbMxvNTst9cY5xqiPNN"
   );
@@ -939,14 +939,29 @@ async function TestLoadWallet() {
       "Masterkey",
       new StorageServices()
     );
+
+    await wallet.createNewAccount("phat1");
+    await wallet.createNewAccount("phat2");
+    console.log(
+      "listAccount",
+      (await wallet.listAccount()).map((account) => account.PrivateKey)
+    );
     await wallet.save(aesKey, false);
     await wallet.loadWallet({
       password: passphrase,
       aesKey,
     });
-    await wallet.createNewAccount("phat1");
-    await wallet.createNewAccount("phat2");
-    console.log("listAccount", await wallet.listAccount());
+    console.log(
+      "\n\nlistAccount",
+      (await wallet.listAccount()).map((account) => account.PrivateKey)
+    );
+    // await wallet.save(aesKey, false);
+    // await wallet.loadWallet({
+    //   password: passphrase,
+    //   aesKey,
+    // });
+    // console.log("listAccount", await wallet.listAccount());
+    return;
     // const prvKey =
     //   "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
     // await wallet.loadWallet({
@@ -1007,8 +1022,8 @@ async function TestLoadWallet() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  // return await TestLoadWallet();
-  return await TestGetTxsHistory();
+  return await TestLoadWallet();
+  // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
