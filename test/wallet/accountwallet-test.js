@@ -750,7 +750,7 @@ async function TestGetTxsHistory() {
     // "112t8rnX96d4eXEvmDwMv4qCCE6zjSsvaMttkUK7ygn9BdNtkFdjKY4PyLt2pvp64b5sPtU5wPFf3FvFhtt7GhdVvDRnte82zqqeYfPvqEdL"
     "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
   );
-  const version = 1;
+  const version = 2;
   const tokenID =
     "1e0b165a96d040f6e1b57a1d7efeb5001cd4803cc9ee43fca812ce085db26c7c";
   // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
@@ -773,6 +773,7 @@ async function TestGetTxsHistory() {
     isPToken: false,
     version: version,
   });
+  await account.clearTxsHistory(params);
   // console.log(
   //   `\n\n`,
   //   await account.getCoinsStorage({ tokenID, version: privacyVersion })
@@ -1022,8 +1023,8 @@ async function TestLoadWallet() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestLoadWallet();
-  // return await TestGetTxsHistory();
+  // return await TestLoadWallet();
+  return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
