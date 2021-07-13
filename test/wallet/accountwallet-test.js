@@ -835,12 +835,12 @@ async function TestGetWithdrawFeeLiquidityHistories() {
   }
 }
 
-async function TestGetUnspentCoinsV1() {
+async function TestGetUnspentCoinsByTokenIdV1() {
+  const tokenID = PRVID
   const account = await createAccountByPrivateKey(
-    "112t8rnfuHwKo5fmeJ1U7gTUVJyXYZ8APAwY86HFvSTV5BaqEXRWhmaNAqMqVkc9ehF95JmE8XBv3XGfPr3r6ooEtWntJrAv9SzybqbQwtoX"
+    "113hagqt552h92LXY6dWPdBGS8pPdLQX5eFBLgsnzbEoU1nUTLGJkkyrTnWCz7XuURtSKzkUKFfKrMPmoNVPAbmryRbMxvNTst9cY5xqiPNN"
   );
-  await account.getUnspentCoinsV1({ fromApi: true });
-  await account.getUnspentCoinsV1({ fromApi: true });
+  await account.getUnspentCoinsByTokenIdV1({ tokenID, version: 1 });
 }
 
 async function TestConvertCoinsV1() {
@@ -1048,7 +1048,7 @@ async function MainRoutine() {
     await delay(3000);
 
     //Convert
-    await TestGetUnspentCoinsV1();
+    await TestGetUnspentCoinsByTokenIdV1();
     await delay(3000);
     await TestConvertCoinsV1();
 
