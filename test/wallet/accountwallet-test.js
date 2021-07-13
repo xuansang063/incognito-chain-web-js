@@ -17,10 +17,14 @@ const { PaymentAddressType } = constants;
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
-const rpcClient = "http://139.162.55.124:8334";
-const rpcCoinService = "http://51.161.119.66:9009"; //dev-test-coin-service
-const rpcTxService = "http://51.161.119.66:8001"; //dev-test-coin-service
-const rpcRequestService = "http://51.161.119.66:5000"; //dev-test-coin-service
+const rpcClient = "https://testnet1.incognito.org/fullnode"; //testnet1
+// "http://139.162.55.124:8334";
+const rpcCoinService = "https://api-coinservice-staging2.incognito.org"; // testnet1
+// "http://51.161.119.66:9009"; //dev-test-coin-service
+const rpcTxService = "https://api-coinservice-staging2.incognito.org/txservice"; // testnet1
+//  "http://51.161.119.66:8001"; //dev-test-coin-service
+const rpcRequestService = "http://51.161.119.66:6000"; // testnet-1
+//  "http://51.161.119.66:5000"; //dev-test-coin-service
 const privacyVersion = 2;
 const rpcApiService = "https://privacyv2-api-service.incognito.org";
 const deviceID = "9AE4B404-3E61-495D-835A-05CEE34BE251";
@@ -703,6 +707,7 @@ async function createAccountByPrivateKey(privateKey) {
     account.setRPCCoinServices(rpcCoinService);
     account.setRPCClient(rpcClient);
     account.setRPCTxServices(rpcTxService);
+    account.setRPCRequestServices(rpcRequestService);
     const data = {
       DeviceID: deviceID,
     };
@@ -732,7 +737,7 @@ async function TestGetTxsByReceiver() {
 
 async function TestGetTxsHistory() {
   let account = await createAccountByPrivateKey(
-    "112t8rnY4wGSgmY58SCFE8wcpe7batDrUMy1HCTda4ymyMgDWYJotNJzXN4EpgEv8G1u2Was92HeLvuu9DAxnwsfcjnZQooHHDDXwXdQ1htn"
+    // "112t8rnY4wGSgmY58SCFE8wcpe7batDrUMy1HCTda4ymyMgDWYJotNJzXN4EpgEv8G1u2Was92HeLvuu9DAxnwsfcjnZQooHHDDXwXdQ1htn"
     // "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
     // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
@@ -740,26 +745,38 @@ async function TestGetTxsHistory() {
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
     // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
+    // "112t8rnX96d4eXEvmDwMv4qCCE6zjSsvaMttkUK7ygn9BdNtkFdjKY4PyLt2pvp64b5sPtU5wPFf3FvFhtt7GhdVvDRnte82zqqeYfPvqEdL"
+    // "112t8rnYifHV4UB793i68xgEStbat23eZCkzVng6YkqYXN5ZqGSFgnHvC65ezDvTGtxrFa2kCJsdDxBPVDmbktkzDYaKyygGPkJQ9jPpo3XD"
+    // "112t8rnX96d4eXEvmDwMv4qCCE6zjSsvaMttkUK7ygn9BdNtkFdjKY4PyLt2pvp64b5sPtU5wPFf3FvFhtt7GhdVvDRnte82zqqeYfPvqEdL"
+    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
   );
+  const version = 1;
   const tokenID =
-    // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
-    // "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74"; //usdt
-    "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854"; //eth
-  const balance = await account.getBalance({
+    "1e0b165a96d040f6e1b57a1d7efeb5001cd4803cc9ee43fca812ce085db26c7c";
+  // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
+  // "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74"; //usdt
+  // "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854"; //eth
+  const params = {
     tokenID,
-    version: privacyVersion,
-  });
-  console.log("TestGetTxsHistory-balance", balance);
+    version,
+  };
+  // const balance = await account.getBalance(params);
+  // console.log("balance", balance);
+  // console.log(
+  //   "SIZE OUTPUTS COINS",
+  //   (await account.getListOutputCoinsStorage(params))[0]
+  // );
+
+  // console.log("TestGetTxsHistory-balance", balance);
   const txs = await account.getTxsHistory({
     tokenID,
-    isPToken: true,
-    version: privacyVersion,
+    isPToken: false,
+    version: version,
   });
-  console.log(txs.length);
-  console.log(
-    `\n\n`,
-    await account.getCoinsStorage({ tokenID, version: privacyVersion })
-  );
+  // console.log(
+  //   `\n\n`,
+  //   await account.getCoinsStorage({ tokenID, version: privacyVersion })
+  // );
   // console.log("TestGetTxsHistory-txs", txs);
   // const history = txs.txsPToken.find((txp) => txp.id === 8);
   // const tx = await account.handleGetPTokenHistoryById({ history });
@@ -990,8 +1007,8 @@ async function TestLoadWallet() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestLoadWallet();
-  // return await TestGetTxsHistory();
+  // return await TestLoadWallet();
+  return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
