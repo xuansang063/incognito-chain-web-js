@@ -40,10 +40,6 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &IssuingResponse{}
 	case ContractingRequestMeta:
 		md = &ContractingRequest{}
-	case IssuingETHRequestMeta:
-		md = &IssuingETHRequest{}
-	case IssuingETHResponseMeta:
-		md = &IssuingETHResponse{}
 	case BeaconSalaryResponseMeta:
 		md = &BeaconBlockSalaryRes{}
 	case BurningRequestMeta:
@@ -94,6 +90,12 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &BurningRequest{}
 	case UnStakingMeta:
 		md = &UnStakingMetadata{}
+	case IssuingBSCRequestMeta:
+		md = &IssuingEVMRequest{}
+	case IssuingBSCResponseMeta:
+		md = &IssuingEVMResponse{}
+	case BurningPBSCRequestMeta:
+		md = &BurningRequest{}
 	default:
 		return nil, errors.Errorf("Could not parse metadata with type: %d", theType)
 	}
@@ -111,6 +113,9 @@ var bridgeMetas = []string{
 	strconv.Itoa(BridgeSwapConfirmMeta),
 	strconv.Itoa(BurningConfirmMeta),
 	strconv.Itoa(BurningConfirmForDepositToSCMeta),
+	strconv.Itoa(BurningConfirmMetaV2),
+	strconv.Itoa(BurningConfirmForDepositToSCMetaV2),
+	strconv.Itoa(BurningBSCConfirmMeta),
 }
 
 func HasBridgeInstructions(instructions [][]string) bool {
