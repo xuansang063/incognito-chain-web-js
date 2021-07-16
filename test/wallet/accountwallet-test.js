@@ -90,16 +90,17 @@ async function TestGetBalance() {
       // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
       // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
       // "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKoESjDGbF2J7"
-      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+      // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+      "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
     );
-    await account.submitOTAKey();
     const tokenID1 =
       "0000000000000000000000000000000000000000000000000000000000000004";
     const tokenID2 =
       "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc";
     const tokenIDs = [
       tokenID1,
-      //  tokenID2, ETH
+      //  tokenID2,
+      // ETH
     ];
     const keyInfo = await account.getKeyInfo({
       version: privacyVersion,
@@ -1024,11 +1025,11 @@ async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
   // return await TestLoadWallet();
-  return await TestGetTxsHistory();
+  // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
-  // return await TestGetBalance();
+  return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
   // return;
   // sequential execution of tests; the wait might still be too short
