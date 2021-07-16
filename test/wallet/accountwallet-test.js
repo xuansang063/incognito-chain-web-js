@@ -748,11 +748,13 @@ async function TestGetTxsHistory() {
     // "112t8rnX96d4eXEvmDwMv4qCCE6zjSsvaMttkUK7ygn9BdNtkFdjKY4PyLt2pvp64b5sPtU5wPFf3FvFhtt7GhdVvDRnte82zqqeYfPvqEdL"
     // "112t8rnYifHV4UB793i68xgEStbat23eZCkzVng6YkqYXN5ZqGSFgnHvC65ezDvTGtxrFa2kCJsdDxBPVDmbktkzDYaKyygGPkJQ9jPpo3XD"
     // "112t8rnX96d4eXEvmDwMv4qCCE6zjSsvaMttkUK7ygn9BdNtkFdjKY4PyLt2pvp64b5sPtU5wPFf3FvFhtt7GhdVvDRnte82zqqeYfPvqEdL"
-    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
+    // "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
+    "112t8rnXeqsyrBC9CN4QLxpQ9Z6AVBFUhg72NbvpHYGSBogWn4mRvyZ2LeKBmRSxQCcVfiVuM6jw7PgeCFqB99Bsmqhp9T6b1MxroKENS9UG"
   );
-  const version = 2;
+  const version = 1;
   const tokenID =
-    "1e0b165a96d040f6e1b57a1d7efeb5001cd4803cc9ee43fca812ce085db26c7c";
+    "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
+  // "1e0b165a96d040f6e1b57a1d7efeb5001cd4803cc9ee43fca812ce085db26c7c";
   // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
   // "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74"; //usdt
   // "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854"; //eth
@@ -766,14 +768,12 @@ async function TestGetTxsHistory() {
   //   "SIZE OUTPUTS COINS",
   //   (await account.getListOutputCoinsStorage(params))[0]
   // );
-
   // console.log("TestGetTxsHistory-balance", balance);
   const txs = await account.getTxsHistory({
-    tokenID,
     isPToken: false,
-    version: version,
+    ...params,
   });
-  await account.clearTxsHistory(params);
+  console.log("txs", txs);
   // console.log(
   //   `\n\n`,
   //   await account.getCoinsStorage({ tokenID, version: privacyVersion })
@@ -1024,7 +1024,7 @@ async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
   // return await TestLoadWallet();
-  // return await TestGetTxsHistory();
+  return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
