@@ -9,52 +9,8 @@
 	}
 })(window, function() {
 return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// install a JSONP callback for chunk loading
-/******/ 	function webpackJsonpCallback(data) {
-/******/ 		var chunkIds = data[0];
-/******/ 		var moreModules = data[1];
-/******/
-/******/
-/******/ 		// add "moreModules" to the modules object,
-/******/ 		// then flag all "chunkIds" as loaded and fire callback
-/******/ 		var moduleId, chunkId, i = 0, resolves = [];
-/******/ 		for(;i < chunkIds.length; i++) {
-/******/ 			chunkId = chunkIds[i];
-/******/ 			if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
-/******/ 				resolves.push(installedChunks[chunkId][0]);
-/******/ 			}
-/******/ 			installedChunks[chunkId] = 0;
-/******/ 		}
-/******/ 		for(moduleId in moreModules) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				modules[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
-/******/
-/******/ 		while(resolves.length) {
-/******/ 			resolves.shift()();
-/******/ 		}
-/******/
-/******/ 	};
-/******/
-/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
-/******/ 	// object to store loaded and loading chunks
-/******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 	// Promise = chunk loading, 0 = chunk loaded
-/******/ 	var installedChunks = {
-/******/ 		"wallet": 0
-/******/ 	};
-/******/
-/******/
-/******/
-/******/ 	// script path function
-/******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "build/" + ({}[chunkId]||chunkId) + ".js"
-/******/ 	}
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -80,12 +36,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		return module.exports;
 /******/ 	}
 /******/
-/******/ 	// The chunk loading function for additional chunks
-/******/ 	// Since all referenced chunks are already included
-/******/ 	// in this file, this function is empty here.
-/******/ 	__webpack_require__.e = function requireEnsure() {
-/******/ 		return Promise.resolve();
-/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -138,16 +88,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// on error function for async loading
-/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
-/******/
-/******/ 	var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
-/******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
-/******/ 	jsonpArray.push = webpackJsonpCallback;
-/******/ 	jsonpArray = jsonpArray.slice();
-/******/ 	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
-/******/ 	var parentJsonpFunction = oldJsonpFunction;
 /******/
 /******/
 /******/ 	// Load entry module and return exports
@@ -655,7 +595,7 @@ function getChildIdFromChildNumberArray(array) {
 /*!*********************************!*\
   !*** ./lib/common/constants.js ***!
   \*********************************/
-/*! exports provided: NUM_COIN_PROPERTIES, NUM_PROOF_PROPERTIES, ENCODE_VERSION, SIG_PUB_KEY_SIZE, SIG_NO_PRIVACY_SIZE, SIG_PRIVACY_SIZE, SPENDING_KEY_SIZE, PUBLIC_KEY_SIZE, PAYMENT_ADDR_SIZE, TRANSMISSION_KEY_SIZE, VIEWING_KEY_SIZE, ENCRYPTED_RANDOMNESS_SIZE, ENCRYPTED_SYM_KEY_SIZE, ELGAMAL_CIPHERTEXT_SIZE, AES_BLOCK_SIZE, HASH_SIZE, INPUT_COINS_NO_PRIVACY_SIZE, OUTPUT_COINS_NO_PRIVACY_SIZE, INPUT_COINS_PRIVACY_SIZE, OUTPUT_COINS_PRIVACY_SIZE, ED25519_KEY_SIZE, ShardNumber, BIP44_COIN_TYPE */
+/*! exports provided: NUM_COIN_PROPERTIES, NUM_PROOF_PROPERTIES, ENCODE_VERSION, SIG_PUB_KEY_SIZE, SIG_NO_PRIVACY_SIZE, SIG_PRIVACY_SIZE, SPENDING_KEY_SIZE, PUBLIC_KEY_SIZE, PAYMENT_ADDR_SIZE, TRANSMISSION_KEY_SIZE, VIEWING_KEY_SIZE, ENCRYPTED_RANDOMNESS_SIZE, ENCRYPTED_SYM_KEY_SIZE, ELGAMAL_CIPHERTEXT_SIZE, AES_BLOCK_SIZE, HASH_SIZE, INPUT_COINS_NO_PRIVACY_SIZE, OUTPUT_COINS_NO_PRIVACY_SIZE, INPUT_COINS_PRIVACY_SIZE, OUTPUT_COINS_PRIVACY_SIZE, ED25519_KEY_SIZE, ShardNumber, BIP44_COIN_TYPE, setShardNumber */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -683,6 +623,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ED25519_KEY_SIZE", function() { return ED25519_KEY_SIZE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShardNumber", function() { return ShardNumber; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BIP44_COIN_TYPE", function() { return BIP44_COIN_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setShardNumber", function() { return setShardNumber; });
 var NUM_COIN_PROPERTIES = 7;
 var NUM_PROOF_PROPERTIES = 14;
 var ENCODE_VERSION = 0x00;
@@ -708,8 +649,14 @@ var INPUT_COINS_NO_PRIVACY_SIZE = 175; // PublicKey + coin commitment + SND + Se
 
 var OUTPUT_COINS_NO_PRIVACY_SIZE = 145;
 var ED25519_KEY_SIZE = 32;
-var ShardNumber = 2;
+var ShardNumber = 8;
 var BIP44_COIN_TYPE = 587;
+
+var setShardNumber = function setShardNumber() {
+  var shardNumber = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 8;
+  ShardNumber = shardNumber;
+};
+
 
 
 /***/ }),
@@ -957,6 +904,10 @@ var ErrorObject = {
     code: -3013,
     description: "Push raw tx to pubsub failed!"
   },
+  GetFailRandomCommitments: {
+    code: -3014,
+    description: "Get random commitments failed!"
+  },
   // -4000 -> -4999: RPC error
   GetRewardAmountErr: {
     code: -4001,
@@ -1111,20 +1062,19 @@ function _GeneratePrivateKey() {
 
           case 3:
             privateKeyB64Encode = _context3.sent;
-            console.log("privateKeyB64Encode", privateKeyB64Encode);
 
             if (privateKeyB64Encode) {
-              _context3.next = 7;
+              _context3.next = 6;
               break;
             }
 
             throw new Error("Can not generate private key");
 
-          case 7:
+          case 6:
             spendingKey = Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_0__["base64Decode"])(privateKeyB64Encode);
             return _context3.abrupt("return", spendingKey);
 
-          case 9:
+          case 8:
           case "end":
             return _context3.stop();
         }
@@ -1457,13 +1407,15 @@ var KeySet = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                _context.prev = 0;
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("importFromPrivateKey-privateKey", privateKey).required();
                 params = {
                   PrivateKey: Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["base64Encode"])(privateKey)
                 };
-                _context.next = 3;
+                _context.next = 5;
                 return _wasm__WEBPACK_IMPORTED_MODULE_2__["wasm"].newKeySetFromPrivate(JSON.stringify(params));
 
-              case 3:
+              case 5:
                 resp = _context.sent;
                 obj = JSON.parse(resp);
                 this.PrivateKey = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["base64Decode"])(obj.PrivateKey); // let publicKey = GeneratePublicKey(this.PrivateKey);
@@ -1489,12 +1441,18 @@ var KeySet = /*#__PURE__*/function () {
                 };
                 return _context.abrupt("return", this);
 
-              case 10:
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](0);
+                console.log("importFromPrivateKey error", _context.t0);
+                throw _context.t0;
+
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this);
+        }, _callee, this, [[0, 14]]);
       }));
 
       function importFromPrivateKey(_x) {
@@ -1757,19 +1715,18 @@ var PRIORITY_LIST = [BIG_COINS.PRV, BIG_COINS.USDC, BIG_COINS.USDT, BIG_COINS.DA
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KeyWallet", function() { return KeyWallet; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewKey", function() { return NewKey; });
-/* harmony import */ var _common_keySet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../common/keySet */ "./lib/common/keySet.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constants */ "./lib/core/constants.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./lib/core/utils.js");
-/* harmony import */ var _common_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../common/common */ "./lib/common/common.js");
-/* harmony import */ var _common_base58__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/base58 */ "./lib/common/base58.js");
+/* harmony import */ var _lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/common/keySet */ "./lib/common/keySet.js");
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./lib/core/constants.js");
+/* harmony import */ var _lib_common_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lib/common/common */ "./lib/common/common.js");
+/* harmony import */ var _lib_common_base58__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/common/base58 */ "./lib/common/base58.js");
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _common_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/constants */ "./lib/common/constants.js");
-/* harmony import */ var _common_committeekey__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/committeekey */ "./lib/common/committeekey.js");
-/* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../privacy/utils */ "./lib/privacy/utils.js");
+/* harmony import */ var _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/common/constants */ "./lib/common/constants.js");
+/* harmony import */ var _lib_common_committeekey__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @lib/common/committeekey */ "./lib/common/committeekey.js");
+/* harmony import */ var _lib_privacy_utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @lib/privacy/utils */ "./lib/privacy/utils.js");
 /* harmony import */ var hdkey__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! hdkey */ "./node_modules/hdkey/lib/hdkey.js");
 /* harmony import */ var hdkey__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(hdkey__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -1791,18 +1748,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
 var KeyWallet = /*#__PURE__*/function () {
   function KeyWallet() {
     _classCallCheck(this, KeyWallet);
 
     this.Depth = 0; // 1 byte
 
-    this.ChildNumber = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_1__["ChildNumberSize"]); // 4 bytes
+    this.ChildNumber = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_2__["ChildNumberSize"]); // 4 bytes
 
-    this.ChainCode = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_1__["ChainCodeSize"]); // 32 bytes
+    this.ChainCode = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_2__["ChainCodeSize"]); // 32 bytes
 
-    this.KeySet = new _common_keySet__WEBPACK_IMPORTED_MODULE_0__["KeySet"]();
+    this.KeySet = new _lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__["KeySet"]();
   }
 
   _createClass(KeyWallet, [{
@@ -1815,12 +1771,12 @@ var KeyWallet = /*#__PURE__*/function () {
               case 0:
                 this.Depth = 0; // 1 byte
 
-                this.ChildNumber = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_1__["ChildNumberSize"]); // 4 bytes
+                this.ChildNumber = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_2__["ChildNumberSize"]); // 4 bytes
 
-                this.ChainCode = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_1__["ChainCodeSize"]); // 32 bytes
+                this.ChainCode = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_2__["ChainCodeSize"]); // 32 bytes
 
                 _context.next = 5;
-                return new _common_keySet__WEBPACK_IMPORTED_MODULE_0__["KeySet"]().importFromPrivateKey(privateKey);
+                return new _lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__["KeySet"]().importFromPrivateKey(privateKey);
 
               case 5:
                 this.KeySet = _context.sent;
@@ -1847,28 +1803,28 @@ var KeyWallet = /*#__PURE__*/function () {
       // Write fields to buffer in order
       var keyBytes;
 
-      if (keyType === _constants__WEBPACK_IMPORTED_MODULE_1__["PriKeyType"]) {
-        keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_1__["PriKeySerializeSize"]);
+      if (keyType === _constants__WEBPACK_IMPORTED_MODULE_2__["PriKeyType"]) {
+        keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_2__["PriKeySerializeSize"]);
         var offset = 0;
         keyBytes.set([keyType], offset);
         offset += 1;
         keyBytes.set([this.Depth], offset);
         offset += 1;
         keyBytes.set(this.ChildNumber, offset);
-        offset += _constants__WEBPACK_IMPORTED_MODULE_1__["ChildNumberSize"];
+        offset += _constants__WEBPACK_IMPORTED_MODULE_2__["ChildNumberSize"];
         keyBytes.set(this.ChainCode, offset);
-        offset += _constants__WEBPACK_IMPORTED_MODULE_1__["ChainCodeSize"];
+        offset += _constants__WEBPACK_IMPORTED_MODULE_2__["ChainCodeSize"];
         keyBytes.set([this.KeySet.PrivateKey.length], offset);
         offset += 1;
         keyBytes.set(this.KeySet.PrivateKey, offset);
-      } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"]) {
-        keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddrSerializeSize"]);
+      } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddressType"]) {
+        keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeSize"]);
 
         if (this.KeySet.PaymentAddress.OTAPublic.length > 0) {
-          keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddrSerializeSize"] + 1 + _common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"]);
-          keyBytes.set([this.KeySet.PaymentAddress.OTAPublic.length], _constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddrSerializeSize"]); // set length OTAPublicKey
+          keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeSize"] + 1 + _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"]);
+          keyBytes.set([this.KeySet.PaymentAddress.OTAPublic.length], _constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeSize"]); // set length OTAPublicKey
 
-          keyBytes.set(this.KeySet.PaymentAddress.OTAPublic, _constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddrSerializeSize"] + 1); // set OTAPublicKey
+          keyBytes.set(this.KeySet.PaymentAddress.OTAPublic, _constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeSize"] + 1); // set OTAPublicKey
         }
 
         var _offset = 0;
@@ -1877,40 +1833,40 @@ var KeyWallet = /*#__PURE__*/function () {
         keyBytes.set([this.KeySet.PaymentAddress.Pk.length], _offset);
         _offset += 1;
         keyBytes.set(this.KeySet.PaymentAddress.Pk, _offset);
-        _offset += _common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
+        _offset += _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
         keyBytes.set([this.KeySet.PaymentAddress.Tk.length], _offset);
         _offset += 1;
         keyBytes.set(this.KeySet.PaymentAddress.Tk, _offset);
-        _offset += _common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
-      } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_1__["ReadonlyKeyType"]) {
-        keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_1__["ReadonlyKeySerializeSize"]);
+        _offset += _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
+      } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_2__["ReadonlyKeyType"]) {
+        keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_2__["ReadonlyKeySerializeSize"]);
         var _offset2 = 0;
         keyBytes.set([keyType], _offset2);
         _offset2 += 1;
         keyBytes.set([this.KeySet.ReadonlyKey.Pk.length], _offset2);
         _offset2 += 1;
         keyBytes.set(this.KeySet.ReadonlyKey.Pk, _offset2);
-        _offset2 += _common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
+        _offset2 += _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
         keyBytes.set([this.KeySet.ReadonlyKey.Rk.length], _offset2);
         _offset2 += 1;
         keyBytes.set(this.KeySet.ReadonlyKey.Rk, _offset2);
-      } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_1__["OTAKeyType"]) {
-        keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_1__["OTAKeySerializeSize"]);
+      } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_2__["OTAKeyType"]) {
+        keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_2__["OTAKeySerializeSize"]);
         var _offset3 = 0;
         keyBytes.set([keyType], _offset3);
         _offset3 += 1;
         keyBytes.set([this.KeySet.OTAKey.Pk.length], _offset3);
         _offset3 += 1;
         keyBytes.set(this.KeySet.OTAKey.Pk, _offset3);
-        _offset3 += _common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
+        _offset3 += _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
         keyBytes.set([this.KeySet.OTAKey.OTASecret.length], _offset3);
         _offset3 += 1;
         keyBytes.set(this.KeySet.OTAKey.OTASecret, _offset3);
-        _offset3 += _common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
+        _offset3 += _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
       } // Append key bytes to the standard sha3 checksum
 
 
-      var checksum = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(keyBytes);
+      var checksum = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(keyBytes);
       var res = new Uint8Array(keyBytes.length + 4);
       res.set(keyBytes, 0);
       res.set(checksum, keyBytes.length);
@@ -1921,28 +1877,40 @@ var KeyWallet = /*#__PURE__*/function () {
     value: function base58CheckSerialize(keyType) {
       var serializedKey = this.serialize(keyType); // do not use legacy encoding
 
-      return Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(serializedKey, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"]);
+      return Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(serializedKey, _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"]);
+    }
+  }, {
+    key: "base64CheckSerialize",
+    value: function base64CheckSerialize(keyType) {
+      var serializedKey = this.serialize(keyType); // do not use legacy encoding
+
+      return Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_8__["base64Encode"])(serializedKey);
     }
   }, {
     key: "hexSerialize",
     value: function hexSerialize(keyType) {
       var serializedKey = this.serialize(keyType);
-      return Object(_common_common__WEBPACK_IMPORTED_MODULE_3__["byteToHexString"])(serializedKey);
+      return Object(_lib_common_common__WEBPACK_IMPORTED_MODULE_3__["byteToHexString"])(serializedKey);
     }
   }, {
     key: "getPublicKeyByHex",
     value: function getPublicKeyByHex() {
-      return Object(_common_common__WEBPACK_IMPORTED_MODULE_3__["byteToHexString"])(this.KeySet.PaymentAddress.Pk);
+      return Object(_lib_common_common__WEBPACK_IMPORTED_MODULE_3__["byteToHexString"])(this.KeySet.PaymentAddress.Pk);
     }
   }, {
     key: "getPublicKeyCheckEncode",
     value: function getPublicKeyCheckEncode() {
-      return Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(this.KeySet.PaymentAddress.Pk, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"]);
+      return Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(this.KeySet.PaymentAddress.Pk, _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"], true);
+    }
+  }, {
+    key: "getPublicKeyBase64CheckEncode",
+    value: function getPublicKeyBase64CheckEncode() {
+      return Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_8__["base64Encode"])(this.KeySet.PaymentAddress.Pk);
     }
   }, {
     key: "getMiningSeedKey",
     value: function getMiningSeedKey() {
-      return Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_8__["hashSha3BytesToBytes"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_8__["hashSha3BytesToBytes"])(this.KeySet.PrivateKey));
+      return Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_8__["hashSha3BytesToBytes"])(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_8__["hashSha3BytesToBytes"])(this.KeySet.PrivateKey));
     }
   }, {
     key: "getBLSPublicKeyB58CheckEncode",
@@ -1955,7 +1923,7 @@ var KeyWallet = /*#__PURE__*/function () {
               case 0:
                 miningSeedKey = this.getMiningSeedKey();
                 _context2.next = 3;
-                return Object(_common_committeekey__WEBPACK_IMPORTED_MODULE_7__["generateBLSPubKeyB58CheckEncodeFromSeed"])(miningSeedKey);
+                return Object(_lib_common_committeekey__WEBPACK_IMPORTED_MODULE_7__["generateBLSPubKeyB58CheckEncodeFromSeed"])(miningSeedKey);
 
               case 3:
                 blsPublicKey = _context2.sent;
@@ -1979,24 +1947,24 @@ var KeyWallet = /*#__PURE__*/function () {
     key: "toLegacyPaymentAddress",
     value: function toLegacyPaymentAddress(keyString) {
       var w = KeyWallet.base58CheckDeserialize(keyString);
-      var keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddrSerializeSize"]);
+      var keyBytes = new Uint8Array(_constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeSize"]);
       var offset = 0;
-      keyBytes.set([_constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"]], offset);
+      keyBytes.set([_constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddressType"]], offset);
       offset += 1;
       keyBytes.set([w.KeySet.PaymentAddress.Pk.length], offset);
       offset += 1;
       keyBytes.set(w.KeySet.PaymentAddress.Pk, offset);
-      offset += _common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
+      offset += _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"];
       keyBytes.set([w.KeySet.PaymentAddress.Tk.length], offset);
       offset += 1;
       keyBytes.set(w.KeySet.PaymentAddress.Tk, offset);
-      offset += _common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"]; // Append key bytes to the standard sha3 checksum
+      offset += _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ED25519_KEY_SIZE"]; // Append key bytes to the standard sha3 checksum
 
-      var checksum = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(keyBytes, true);
+      var checksum = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(keyBytes, true);
       var serializedKey = new Uint8Array(keyBytes.length + 4);
       serializedKey.set(keyBytes, 0);
       serializedKey.set(checksum, keyBytes.length);
-      return Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(serializedKey, _common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"], true);
+      return Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkEncode"])(serializedKey, _lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["ENCODE_VERSION"], true);
     }
   }], [{
     key: "deserialize",
@@ -2005,27 +1973,27 @@ var KeyWallet = /*#__PURE__*/function () {
 
       var keyType = bytes[0];
 
-      if (keyType === _constants__WEBPACK_IMPORTED_MODULE_1__["PriKeyType"]) {
+      if (keyType === _constants__WEBPACK_IMPORTED_MODULE_2__["PriKeyType"]) {
         key.Depth = bytes[1];
         key.ChildNumber = bytes.slice(2, 6);
         key.ChainCode = bytes.slice(6, 38);
         var keyLength = bytes[38];
         key.KeySet.PrivateKey = bytes.slice(39, 39 + keyLength);
-      } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"]) {
+      } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddressType"]) {
         var PublicKeyLength = bytes[1];
         key.KeySet.PaymentAddress.Pk = bytes.slice(2, 2 + PublicKeyLength);
         var TransmisionKeyLength = bytes[PublicKeyLength + 2];
         key.KeySet.PaymentAddress.Tk = bytes.slice(PublicKeyLength + 3, PublicKeyLength + 3 + TransmisionKeyLength);
 
-        if (bytes.length > _constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddrSerializeSize"]) {
-          key.KeySet.PaymentAddress.OTAPublic = bytes.slice(_constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddrSerializeSize"] + 1, _constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddrSerializeSize"] + 33);
+        if (bytes.length > _constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeSize"]) {
+          key.KeySet.PaymentAddress.OTAPublic = bytes.slice(_constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeSize"] + 1, _constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeSize"] + 33);
         }
-      } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_1__["ReadonlyKeyType"]) {
+      } else if (keyType === _constants__WEBPACK_IMPORTED_MODULE_2__["ReadonlyKeyType"]) {
         var _PublicKeyLength = bytes[1];
         key.KeySet.ReadonlyKey.Pk = bytes.slice(2, 2 + _PublicKeyLength);
         var ReceivingKeyLength = bytes[_PublicKeyLength + 2];
         key.KeySet.ReadonlyKey.Rk = bytes.slice(_PublicKeyLength + 3, _PublicKeyLength + 3 + ReceivingKeyLength);
-      } else if (keyType == _constants__WEBPACK_IMPORTED_MODULE_1__["OTAKeyType"]) {
+      } else if (keyType == _constants__WEBPACK_IMPORTED_MODULE_2__["OTAKeyType"]) {
         var _PublicKeyLength2 = bytes[1];
         key.KeySet.OTAKey.Pk = bytes.slice(2, 2 + _PublicKeyLength2);
         var _ReceivingKeyLength = bytes[_PublicKeyLength2 + 2];
@@ -2033,12 +2001,12 @@ var KeyWallet = /*#__PURE__*/function () {
       } // validate checksum
 
 
-      var cs1 = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(bytes.slice(0, bytes.length - 4), false);
+      var cs1 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(bytes.slice(0, bytes.length - 4), false);
       var cs2 = bytes.slice(bytes.length - 4);
 
       if (!cs1.equals(cs2)) {
         // accept checksum from both encodings
-        var checkSum = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(bytes.slice(0, bytes.length - 4), true);
+        var checkSum = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkSumFirst4Bytes"])(bytes.slice(0, bytes.length - 4), true);
 
         if (!checkSum.equals(cs2)) {
           throw new Error("Key deserialize: Wrong checksum!");
@@ -2050,11 +2018,11 @@ var KeyWallet = /*#__PURE__*/function () {
   }, {
     key: "base58CheckDeserialize",
     value: function base58CheckDeserialize(str) {
-      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("str", str).required().string();
+      new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("str", str).required().string();
       var bytes;
 
       try {
-        bytes = Object(_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkDecode"])(str).bytesDecoded;
+        bytes = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_4__["checkDecode"])(str).bytesDecoded;
       } catch (e) {
         throw e;
       }
@@ -2070,7 +2038,7 @@ var KeyWallet = /*#__PURE__*/function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("privateKeyStr", privateKeyStr).required().string();
+                new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("privateKeyStr", privateKeyStr).required().string();
                 _context3.prev = 1;
                 kw = KeyWallet.base58CheckDeserialize(privateKeyStr);
                 _context3.next = 8;
@@ -2086,10 +2054,10 @@ var KeyWallet = /*#__PURE__*/function () {
                 return kw.KeySet.importFromPrivateKey(kw.KeySet.PrivateKey);
 
               case 10:
-                paymentAddressStr = kw.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"]);
+                paymentAddressStr = kw.base58CheckSerialize(_constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddressType"]);
                 return _context3.abrupt("return", {
                   PaymentAddress: paymentAddressStr,
-                  ShardID: Object(_common_common__WEBPACK_IMPORTED_MODULE_3__["getShardIDFromLastByte"])(kw.KeySet.PaymentAddress.Pk[kw.KeySet.PaymentAddress.Pk.length - 1])
+                  ShardID: Object(_lib_common_common__WEBPACK_IMPORTED_MODULE_3__["getShardIDFromLastByte"])(kw.KeySet.PaymentAddress.Pk[kw.KeySet.PaymentAddress.Pk.length - 1])
                 });
 
               case 12:
@@ -2131,14 +2099,14 @@ function _NewKey() {
             index = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : 0;
             depth = _args4.length > 2 && _args4[2] !== undefined ? _args4[2] : -1;
             hdKey = hdkey__WEBPACK_IMPORTED_MODULE_9__["fromMasterSeed"](seed);
-            childHdKey = hdKey.derive("m/44'/".concat(_common_constants__WEBPACK_IMPORTED_MODULE_6__["BIP44_COIN_TYPE"], "'/0'/0/").concat(index));
-            incognitoKeySet = new _common_keySet__WEBPACK_IMPORTED_MODULE_0__["KeySet"]();
+            childHdKey = hdKey.derive("m/44'/".concat(_lib_common_constants__WEBPACK_IMPORTED_MODULE_6__["BIP44_COIN_TYPE"], "'/0'/0/").concat(index));
+            incognitoKeySet = new _lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__["KeySet"]();
             _context4.next = 7;
             return incognitoKeySet.generateKey(childHdKey.privateKey);
 
           case 7:
             incognitoChildKey = new KeyWallet();
-            incognitoChildKey.ChildNumber = new bn_js__WEBPACK_IMPORTED_MODULE_5___default.a(index).toArray("be", _constants__WEBPACK_IMPORTED_MODULE_1__["ChildNumberSize"]);
+            incognitoChildKey.ChildNumber = new bn_js__WEBPACK_IMPORTED_MODULE_5___default.a(index).toArray("be", _constants__WEBPACK_IMPORTED_MODULE_2__["ChildNumberSize"]);
             incognitoChildKey.ChainCode = childHdKey.chainCode;
             incognitoChildKey.Depth = depth + 1;
             incognitoChildKey.KeySet = incognitoKeySet;
@@ -2773,7 +2741,7 @@ var TX_TYPE = {
   SHIELDPORTAL: 101,
   UNSHIELDPORTAL: 102
 };
-var TX_TYPE_STR = (_TX_TYPE_STR = {}, _defineProperty(_TX_TYPE_STR, TX_TYPE.SEND, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.TRADE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.PROVIDE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.STAKE_VNODE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSTAKE_VNODE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.WITHDRAW_REWARD_TX, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.INIT_TOKEN, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.BURN, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.RECEIVE, "Receive"), _defineProperty(_TX_TYPE_STR, TX_TYPE.CONVERT, "Convert"), _defineProperty(_TX_TYPE_STR, TX_TYPE.SHIELD, "Shield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSHIELD, "Unshield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.SHIELDPORTAL, "Shield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSHIELDPORTAL, "Unshield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.CONSOLIDATE, "Consolidate"), _TX_TYPE_STR); // todo: 0xkraken
+var TX_TYPE_STR = (_TX_TYPE_STR = {}, _defineProperty(_TX_TYPE_STR, TX_TYPE.SEND, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.TRADE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.PROVIDE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.STAKE_VNODE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSTAKE_VNODE, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.WITHDRAW_REWARD_TX, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.INIT_TOKEN, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.BURN, "Send"), _defineProperty(_TX_TYPE_STR, TX_TYPE.RECEIVE, "Receive"), _defineProperty(_TX_TYPE_STR, TX_TYPE.CONVERT, "Convert"), _defineProperty(_TX_TYPE_STR, TX_TYPE.SHIELD, "Shield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSHIELD, "Unshield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.SHIELDPORTAL, "Shield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.UNSHIELDPORTAL, "Unshield"), _defineProperty(_TX_TYPE_STR, TX_TYPE.CONSOLIDATE, "Consolidate"), _defineProperty(_TX_TYPE_STR, TX_TYPE.ADD_LIQUIDITY, "Send"), _TX_TYPE_STR); // todo: 0xkraken
 // NumUTXO must be 255
 // because tx zise is exceed 100kb with NumUTXO = 255
 
@@ -2789,15 +2757,16 @@ var MAX_FEE_PER_TX = 100;
 var LIMIT = 100;
 var TX_STATUS = {
   PROCESSING: -1,
-  TXSTATUS_UNKNOWN: 0,
+  TXSTATUS_CANCELED: 0,
   TXSTATUS_FAILED: 1,
   TXSTATUS_PENDING: 2,
   TXSTATUS_SUCCESS: 3
 };
-var TX_STATUS_STR = (_TX_STATUS_STR = {}, _defineProperty(_TX_STATUS_STR, TX_STATUS.PROCESSING, "Proccessing"), _defineProperty(_TX_STATUS_STR, TX_STATUS.TXSTATUS_UNKNOWN, "Unknown"), _defineProperty(_TX_STATUS_STR, TX_STATUS.TXSTATUS_FAILED, "Failed"), _defineProperty(_TX_STATUS_STR, TX_STATUS.TXSTATUS_PENDING, "Pending"), _defineProperty(_TX_STATUS_STR, TX_STATUS.TXSTATUS_SUCCESS, "Success"), _TX_STATUS_STR);
+var TX_STATUS_STR = (_TX_STATUS_STR = {}, _defineProperty(_TX_STATUS_STR, TX_STATUS.PROCESSING, "Proccessing"), _defineProperty(_TX_STATUS_STR, TX_STATUS.TXSTATUS_CANCELED, "Canceled"), _defineProperty(_TX_STATUS_STR, TX_STATUS.TXSTATUS_FAILED, "Failed"), _defineProperty(_TX_STATUS_STR, TX_STATUS.TXSTATUS_PENDING, "Pending"), _defineProperty(_TX_STATUS_STR, TX_STATUS.TXSTATUS_SUCCESS, "Success"), _TX_STATUS_STR);
 var AIRDROP_STATUS = {
   FAIL: 0,
-  SUCCESS: 1
+  PENDING: 1,
+  SUCCESS: 2
 };
 var TIME_COUNT_BALANCE = 20;
 var MAX_COUNT_BALANCE = 8;
@@ -2816,8 +2785,8 @@ var META_TYPE = {
   92: "Trade Response",
   93: "Remove Liquidity Request",
   94: "Remove Liquidity Response",
-  205: "Cross Trade Request",
-  206: "Cross Trade Response",
+  205: "Trade Request",
+  206: "Trade Response",
   207: "Withdraw Fee Request",
   208: "Withdraw Fee Response",
   209: "Trading Fee Distribution",
@@ -2902,28 +2871,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_module_Account_features_Storage__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @lib/module/Account/features/Storage */ "./lib/module/Account/features/Storage/index.js");
 /* harmony import */ var _lib_module_Account_features_Consolidate__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @lib/module/Account/features/Consolidate */ "./lib/module/Account/features/Consolidate/index.js");
 /* harmony import */ var _lib_module_Account_features_Portal__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @lib/module/Account/features/Portal */ "./lib/module/Account/features/Portal/index.js");
-/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
+/* harmony import */ var _lib_module_Account_features_FollowToken_followToken__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @lib/module/Account/features/FollowToken/followToken */ "./lib/module/Account/features/FollowToken/followToken.js");
+/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -2967,22 +2926,10 @@ var Account = /*#__PURE__*/function () {
     this.key = new _lib_core_hdwallet__WEBPACK_IMPORTED_MODULE_2__["KeyWallet"]();
     this.child = [];
     this.isImport = false;
-    this.followingTokens = [];
-    this.txHistory = {
-      NormalTx: [],
-      CustomTokenTx: [],
-      PrivacyTokenTx: []
-    };
-    this.txReceivedHistory = {
-      NormalTx: [],
-      CustomTokenTx: [],
-      PrivacyTokenTx: []
-    };
     this.storage = w.Storage ? w.Storage : new _lib_services_storage__WEBPACK_IMPORTED_MODULE_3__["default"]();
     this.coinUTXOs = {};
     this.rpc = w.RpcClient ? new _lib_rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_10__["RpcClient"](w.RpcClient) : null;
     this.rpcCoinService = w.RpcCoinService ? new _lib_rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_6__["RpcHTTPCoinServiceClient"](w.RpcCoinService) : null;
-    this.rpcCoinService2 = new _lib_rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_6__["RpcHTTPCoinServiceClient"]("http://51.161.119.66:9080");
     this.rpcTxService = w.RpcTxService ? new _lib_rpcclient_rpchttptxservice__WEBPACK_IMPORTED_MODULE_7__["RpcHTTPTxServiceClient"](w.RpcTxService) : null;
     this.rpcRequestService = w.RpcRequestService ? new _lib_rpcclient_rpchttprequestservice__WEBPACK_IMPORTED_MODULE_1__["RpcHTTPRequestServiceClient"](w.RpcRequestService) : null;
     this.authToken = w.AuthToken ? w.AuthToken : null;
@@ -3001,58 +2948,6 @@ var Account = /*#__PURE__*/function () {
     value: function getShardID() {
       var shardId = Object(_lib_common_common__WEBPACK_IMPORTED_MODULE_4__["getShardIDFromLastByte"])(this.key.KeySet.PaymentAddress.Pk[this.key.KeySet.PaymentAddress.Pk.length - 1]) || 0;
       return shardId;
-    } // listFollowingTokens returns list of following tokens
-
-  }, {
-    key: "listFollowingTokens",
-    value: function listFollowingTokens() {
-      return this.followingTokens;
-    } // addFollowingToken adds token data array to following token list
-
-    /**
-     * @param {...{ID: string, Image: string, Name: string, Symbol: string, Amount: number, IsPrivacy: boolean, isInit: boolean, metaData: object}} tokenData - tokens to follow
-     */
-
-  }, {
-    key: "addFollowingToken",
-    value: function addFollowingToken() {
-      for (var _len = arguments.length, tokenData = new Array(_len), _key = 0; _key < _len; _key++) {
-        tokenData[_key] = arguments[_key];
-      }
-
-      if (tokenData.constructor === Array) {
-        var _this$followingTokens;
-
-        var addedTokenIds = this.followingTokens.map(function (t) {
-          return t.ID;
-        });
-        var tokenDataSet = {};
-        tokenData.forEach(function (t) {
-          if (!addedTokenIds.includes(t.ID)) {
-            tokenDataSet[t.ID] = t;
-          }
-        });
-        var tokens = Object.values(tokenDataSet);
-
-        (_this$followingTokens = this.followingTokens).unshift.apply(_this$followingTokens, _toConsumableArray(tokens));
-      }
-    } // removeFollowingToken removes token which has tokenID from list of following tokens
-
-    /**
-     *
-     * @param {string} tokenID
-     */
-
-  }, {
-    key: "removeFollowingToken",
-    value: function removeFollowingToken(tokenID) {
-      var removedIndex = this.followingTokens.findIndex(function (token) {
-        return token.ID === tokenID;
-      });
-
-      if (removedIndex !== -1) {
-        this.followingTokens.splice(removedIndex, 1);
-      }
     } // getPrivacyTokenTxHistoryByTokenID returns privacy token tx history with specific tokenID
 
     /**
@@ -3129,20 +3024,20 @@ var Account = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "getBalance",
+    key: "handleMeasureGetBalance",
     value: function () {
-      var _getBalance = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
-        var tokenID, version, accountBalance, _yield$this$measureAs, unspentCoins;
+      var _handleMeasureGetBalance = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
+        var accountBalance, tokenID, version, _yield$this$measureAs, unspentCoins;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                accountBalance = "0";
+                _context2.prev = 1;
                 tokenID = params.tokenID, version = params.version;
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_5__["default"]("getBalance-tokenID", tokenID).required().string();
                 new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_5__["default"]("getBalance-version", version).required().number();
-                accountBalance = "0";
-                _context2.prev = 4;
                 _context2.next = 7;
                 return this.measureAsyncFn(this.getOutputCoins, "totalTimeGetUnspentCoins", params);
 
@@ -3152,26 +3047,61 @@ var Account = /*#__PURE__*/function () {
                 accountBalance = (unspentCoins === null || unspentCoins === void 0 ? void 0 : unspentCoins.reduce(function (totalAmount, coin) {
                   return totalAmount.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(coin.Value));
                 }, new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0))) || new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
-                _context2.next = 15;
-                break;
+                accountBalance = accountBalance.toString();
+                throw error;
 
-              case 12:
-                _context2.prev = 12;
-                _context2.t0 = _context2["catch"](4);
-                throw _context2.t0;
-
-              case 15:
-                return _context2.abrupt("return", accountBalance.toString());
+              case 14:
+                _context2.prev = 14;
+                _context2.t0 = _context2["catch"](1);
 
               case 16:
+                return _context2.abrupt("return", accountBalance);
+
+              case 17:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[4, 12]]);
+        }, _callee2, this, [[1, 14]]);
       }));
 
-      function getBalance(_x) {
+      function handleMeasureGetBalance(_x) {
+        return _handleMeasureGetBalance.apply(this, arguments);
+      }
+
+      return handleMeasureGetBalance;
+    }()
+  }, {
+    key: "getBalance",
+    value: function () {
+      var _getBalance = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(params) {
+        var balance;
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return this.measureAsyncFn(this.handleMeasureGetBalance, "totalTimeGetBalance", params);
+
+              case 3:
+                balance = _context3.sent;
+                return _context3.abrupt("return", balance);
+
+              case 7:
+                _context3.prev = 7;
+                _context3.t0 = _context3["catch"](0);
+                throw _context3.t0;
+
+              case 10:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[0, 7]]);
+      }));
+
+      function getBalance(_x2) {
         return _getBalance.apply(this, arguments);
       }
 
@@ -3180,19 +3110,19 @@ var Account = /*#__PURE__*/function () {
   }, {
     key: "getBurnerAddress",
     value: function () {
-      var _getBurnerAddress = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      var _getBurnerAddress = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
-                return _context3.abrupt("return", Object(_lib_core__WEBPACK_IMPORTED_MODULE_29__["getBurningAddress"])(this.rpc));
+                return _context4.abrupt("return", Object(_lib_core__WEBPACK_IMPORTED_MODULE_30__["getBurningAddress"])(this.rpc));
 
               case 1:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
       function getBurnerAddress() {
@@ -3211,7 +3141,7 @@ var Account = /*#__PURE__*/function () {
   return Account;
 }();
 
-Object.assign(Account.prototype, _lib_module_Account_features_Transactor__WEBPACK_IMPORTED_MODULE_11__["default"], _lib_module_Account_features_History__WEBPACK_IMPORTED_MODULE_12__["default"], _lib_module_Account_features_Trade__WEBPACK_IMPORTED_MODULE_14__["default"], _lib_module_Account_features_Node__WEBPACK_IMPORTED_MODULE_15__["default"], _lib_module_Account_features_InitToken__WEBPACK_IMPORTED_MODULE_16__["default"], _lib_module_Account_features_Configs__WEBPACK_IMPORTED_MODULE_17__["default"], _lib_module_Account_features_Unshield__WEBPACK_IMPORTED_MODULE_18__["default"], _lib_module_Account_features_Send__WEBPACK_IMPORTED_MODULE_19__["default"], _lib_module_Account_features_Provide__WEBPACK_IMPORTED_MODULE_20__["default"], _lib_module_Account_features_Liquidity__WEBPACK_IMPORTED_MODULE_21__["default"], _lib_module_Account_features_KeySet__WEBPACK_IMPORTED_MODULE_22__["default"], _lib_module_Account_features_Convert__WEBPACK_IMPORTED_MODULE_13__["default"], _lib_module_Account_features_Coins__WEBPACK_IMPORTED_MODULE_25__["default"], _lib_module_Account_features_CoinsV1__WEBPACK_IMPORTED_MODULE_23__["default"], _lib_module_Account_features_CoinsV2__WEBPACK_IMPORTED_MODULE_24__["default"], _lib_module_Account_features_Storage__WEBPACK_IMPORTED_MODULE_26__["default"], _lib_module_Account_features_Consolidate__WEBPACK_IMPORTED_MODULE_27__["default"], _lib_module_Account_features_Portal__WEBPACK_IMPORTED_MODULE_28__["default"]);
+Object.assign(Account.prototype, _lib_module_Account_features_Transactor__WEBPACK_IMPORTED_MODULE_11__["default"], _lib_module_Account_features_History__WEBPACK_IMPORTED_MODULE_12__["default"], _lib_module_Account_features_Trade__WEBPACK_IMPORTED_MODULE_14__["default"], _lib_module_Account_features_Node__WEBPACK_IMPORTED_MODULE_15__["default"], _lib_module_Account_features_InitToken__WEBPACK_IMPORTED_MODULE_16__["default"], _lib_module_Account_features_Configs__WEBPACK_IMPORTED_MODULE_17__["default"], _lib_module_Account_features_Unshield__WEBPACK_IMPORTED_MODULE_18__["default"], _lib_module_Account_features_Send__WEBPACK_IMPORTED_MODULE_19__["default"], _lib_module_Account_features_Provide__WEBPACK_IMPORTED_MODULE_20__["default"], _lib_module_Account_features_Liquidity__WEBPACK_IMPORTED_MODULE_21__["default"], _lib_module_Account_features_KeySet__WEBPACK_IMPORTED_MODULE_22__["default"], _lib_module_Account_features_Convert__WEBPACK_IMPORTED_MODULE_13__["default"], _lib_module_Account_features_Coins__WEBPACK_IMPORTED_MODULE_25__["default"], _lib_module_Account_features_CoinsV1__WEBPACK_IMPORTED_MODULE_23__["default"], _lib_module_Account_features_CoinsV2__WEBPACK_IMPORTED_MODULE_24__["default"], _lib_module_Account_features_Storage__WEBPACK_IMPORTED_MODULE_26__["default"], _lib_module_Account_features_Consolidate__WEBPACK_IMPORTED_MODULE_27__["default"], _lib_module_Account_features_Portal__WEBPACK_IMPORTED_MODULE_28__["default"], _lib_module_Account_features_FollowToken_followToken__WEBPACK_IMPORTED_MODULE_29__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (Account);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
@@ -3241,22 +3171,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pagination", function() { return pagination; });
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/cloneDeep */ "./node_modules/lodash/cloneDeep.js");
-/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
-/* harmony import */ var _lib_tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lib/tx/txcustomtokendata */ "./lib/tx/txcustomtokendata.js");
-/* harmony import */ var _lib_common_key__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/common/key */ "./lib/common/key.js");
-/* harmony import */ var _lib_tx_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/tx/constants */ "./lib/tx/constants.js");
-/* harmony import */ var _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/common/errorhandler */ "./lib/common/errorhandler.js");
-/* harmony import */ var _lib_privacy_utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @lib/privacy/utils */ "./lib/privacy/utils.js");
-/* harmony import */ var _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @lib/services/coinChooser */ "./lib/services/coinChooser.js");
-/* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
-/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
-/* harmony import */ var _lib_common_common__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @lib/common/common */ "./lib/common/common.js");
-/* harmony import */ var _lib_common_base58__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @lib/common/base58 */ "./lib/common/base58.js");
-/* harmony import */ var lodash_camelCase__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! lodash/camelCase */ "./node_modules/lodash/camelCase.js");
-/* harmony import */ var lodash_camelCase__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(lodash_camelCase__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _account_constants__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var _lib_tx_txcustomtokendata__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/tx/txcustomtokendata */ "./lib/tx/txcustomtokendata.js");
+/* harmony import */ var _lib_common_key__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/common/key */ "./lib/common/key.js");
+/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
+/* harmony import */ var _lib_tx_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/tx/constants */ "./lib/tx/constants.js");
+/* harmony import */ var _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/common/errorhandler */ "./lib/common/errorhandler.js");
+/* harmony import */ var _lib_privacy_utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/privacy/utils */ "./lib/privacy/utils.js");
+/* harmony import */ var _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @lib/services/coinChooser */ "./lib/services/coinChooser.js");
+/* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var _lib_common_base58__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @lib/common/base58 */ "./lib/common/base58.js");
+/* harmony import */ var lodash_camelCase__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lodash/camelCase */ "./node_modules/lodash/camelCase.js");
+/* harmony import */ var lodash_camelCase__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(lodash_camelCase__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _account_constants__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./account.constants */ "./lib/module/Account/account.constants.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -3280,9 +3207,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-
-
 var camelCaseKeys = function camelCaseKeys(obj) {
   if (Array.isArray(obj)) {
     return obj.map(function (v) {
@@ -3290,7 +3214,7 @@ var camelCaseKeys = function camelCaseKeys(obj) {
     });
   } else if (obj !== null && obj.constructor === Object) {
     return Object.keys(obj).reduce(function (result, key) {
-      return _objectSpread(_objectSpread({}, result), {}, _defineProperty({}, lodash_camelCase__WEBPACK_IMPORTED_MODULE_13___default()(key), camelCaseKeys(obj[key])));
+      return _objectSpread(_objectSpread({}, result), {}, _defineProperty({}, lodash_camelCase__WEBPACK_IMPORTED_MODULE_11___default()(key), camelCaseKeys(obj[key])));
     }, {});
   }
 
@@ -3305,7 +3229,7 @@ var getEstimateFee = /*#__PURE__*/function () {
         switch (_context.prev = _context.next) {
           case 0:
             amountBN = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(amount);
-            paymentInfos = [new _lib_common_key__WEBPACK_IMPORTED_MODULE_4__["PaymentInfo"](to, amountBN.toString())];
+            paymentInfos = [new _lib_common_key__WEBPACK_IMPORTED_MODULE_2__["PaymentInfo"](to, amountBN.toString())];
             tokenID = null, tokenParams = null;
 
             if (tokenObject) {
@@ -3412,12 +3336,12 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             _ref3 = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}, amountTransfer = _ref3.amountTransfer, fee = _ref3.fee, tokenID = _ref3.tokenID, account = _ref3.account, _ref3$numOfOtherPks = _ref3.numOfOtherPks, numOfOtherPks = _ref3$numOfOtherPks === void 0 ? 7 : _ref3$numOfOtherPks, version = _ref3.version;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("prepareInputForTxV2-tokenID", tokenID).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("prepareInputForTxV2-fee", fee).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("prepareInputForTxV2-amountTransfer", amountTransfer).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("prepareInputForTxV2-numOfOtherPks", numOfOtherPks).number();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("prepareInputForTxV2-account", account).required();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("prepareInputForTxV2-version", version).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_9__["default"]("prepareInputForTxV2-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_9__["default"]("prepareInputForTxV2-fee", fee).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_9__["default"]("prepareInputForTxV2-amountTransfer", amountTransfer).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_9__["default"]("prepareInputForTxV2-numOfOtherPks", numOfOtherPks).number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_9__["default"]("prepareInputForTxV2-account", account).required();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_9__["default"]("prepareInputForTxV2-version", version).required().number();
             params = {
               version: version,
               tokenID: tokenID
@@ -3436,7 +3360,7 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
             }
 
             // negative means use all inputs
-            arrayEnd = _lib_tx_constants__WEBPACK_IMPORTED_MODULE_5__["MAX_INPUT_PER_TX"];
+            arrayEnd = _lib_tx_constants__WEBPACK_IMPORTED_MODULE_4__["MAX_INPUT_PER_TX"];
 
             if (unspentCoinExceptSpendingCoin.length < arrayEnd) {
               arrayEnd = unspentCoinExceptSpendingCoin.length;
@@ -3444,24 +3368,22 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
 
             inputCoinsToSpent = unspentCoinExceptSpendingCoin.slice(0, arrayEnd);
             amountTransfer = feeBN;
-            _context2.next = 26;
+            _context2.next = 24;
             break;
 
           case 19:
             amountTransfer = amountTransfer.add(feeBN);
-            console.log('prepareInputForTxV2 amountTransfer', amountTransfer.toNumber());
-            console.log('prepareInputForTxV2 unspentCoinExceptSpendingCoin', unspentCoinExceptSpendingCoin);
-            respChooseBestCoin = _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_8__["defaultCoinChooser"].coinsToSpend(unspentCoinExceptSpendingCoin, amountTransfer);
+            respChooseBestCoin = _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_7__["defaultCoinChooser"].coinsToSpend(unspentCoinExceptSpendingCoin, amountTransfer);
             inputCoinsToSpent = respChooseBestCoin.resultInputCoins;
 
             if (!(inputCoinsToSpent.length === 0 && amountTransfer.cmp(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0)) !== 0)) {
-              _context2.next = 26;
+              _context2.next = 24;
               break;
             }
 
-            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].NotEnoughCoinError, "Not enough coin to spend");
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].NotEnoughCoinError, "Not enough coin to spend");
 
-          case 26:
+          case 24:
             totalValueInput = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(0);
 
             for (i = 0; i < inputCoinsToSpent.length; i++) {
@@ -3471,10 +3393,10 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
 
             shardID = account.getShardID();
             cc = null;
-            _context2.prev = 30;
+            _context2.prev = 28;
 
             if (!(numOfOtherPks > 0)) {
-              _context2.next = 39;
+              _context2.next = 37;
               break;
             }
 
@@ -3484,7 +3406,7 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
               limit = numOfOtherPks;
             }
 
-            _context2.next = 36;
+            _context2.next = 34;
             return account.rpcCoinService.apiGetRandomCommitments({
               tokenID: tokenID,
               shardID: shardID,
@@ -3492,22 +3414,21 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
               limit: limit
             });
 
-          case 36:
+          case 34:
             cc = _context2.sent;
             cc.Indexes = cc.CommitmentIndices;
             cc.AssetTags = cc.AssetTags || [];
 
-          case 39:
-            _context2.next = 45;
+          case 37:
+            _context2.next = 42;
             break;
 
-          case 41:
-            _context2.prev = 41;
-            _context2.t0 = _context2["catch"](30);
-            console.log("ERROR", error);
-            throw _context2.t0;
+          case 39:
+            _context2.prev = 39;
+            _context2.t0 = _context2["catch"](28);
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].GetFailRandomCommitments, _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].GetFailRandomCommitments.description, _context2.t0);
 
-          case 45:
+          case 42:
             res = {
               inputCoinStrs: inputCoinsToSpent,
               totalValueInput: totalValueInput,
@@ -3515,12 +3436,12 @@ var prepareInputForTxV2 = /*#__PURE__*/function () {
             };
             return _context2.abrupt("return", res);
 
-          case 47:
+          case 44:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[30, 41]]);
+    }, _callee2, null, [[28, 39]]);
   }));
 
   return function prepareInputForTxV2() {
@@ -3565,7 +3486,7 @@ var estimateFee = /*#__PURE__*/function () {
           case 9:
             _context3.prev = 9;
             _context3.t0 = _context3["catch"](3);
-            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].GetUnitFeeErr, "Can not get unit fee when estimate");
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].GetUnitFeeErr, "Can not get unit fee when estimate");
 
           case 12:
             _context3.next = 14;
@@ -3574,12 +3495,12 @@ var estimateFee = /*#__PURE__*/function () {
           case 14:
             txSize = _context3.sent;
 
-            if (!(txSize > _lib_core__WEBPACK_IMPORTED_MODULE_2__["MaxTxSize"])) {
+            if (!(txSize > _lib_core__WEBPACK_IMPORTED_MODULE_3__["MaxTxSize"])) {
               _context3.next = 17;
               break;
             }
 
-            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].TxSizeExceedErr, "tx size is exceed error");
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_5__["ErrorObject"].TxSizeExceedErr, "tx size is exceed error");
 
           case 17:
             return _context3.abrupt("return", (txSize + 1) * resp.unitFee);
@@ -3622,7 +3543,7 @@ var estimateTxSize = /*#__PURE__*/function () {
               TokenParams: tokenParams
             };
             _context4.next = 3;
-            return _lib_wasm__WEBPACK_IMPORTED_MODULE_9__["wasm"].estimateTxSize(JSON.stringify(params));
+            return _lib_wasm__WEBPACK_IMPORTED_MODULE_8__["wasm"].estimateTxSize(JSON.stringify(params));
 
           case 3:
             sz = _context4.sent;
@@ -3707,7 +3628,7 @@ var getUnspentCoin = /*#__PURE__*/function () {
 }();
 
 function newParamTxV2(senderKeyWalletObj, paymentInfos, inputCoins, fee, tokenID, metadata, info, otherCoinsForRing) {
-  var sk = Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_7__["base64Encode"])(senderKeyWalletObj.KeySet.PrivateKey);
+  var sk = Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_6__["base64Encode"])(senderKeyWalletObj.KeySet.PrivateKey);
   var param = {
     SenderSK: sk,
     PaymentInfo: paymentInfos,
@@ -3774,10 +3695,10 @@ function _createCoin() {
         switch (_context7.prev = _context7.next) {
           case 0:
             _ref8 = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : {}, paymentInfo = _ref8.paymentInfo, _ref8$tokenID = _ref8.tokenID, tokenID = _ref8$tokenID === void 0 ? null : _ref8$tokenID;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("paymentInfo", paymentInfo).paymentInfo();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_9__["default"]("paymentInfo", paymentInfo).paymentInfo();
             _context7.prev = 2;
             _context7.next = 5;
-            return _lib_wasm__WEBPACK_IMPORTED_MODULE_9__["wasm"].createCoin(JSON.stringify({
+            return _lib_wasm__WEBPACK_IMPORTED_MODULE_8__["wasm"].createCoin(JSON.stringify({
               PaymentInfo: paymentInfo,
               TokenID: tokenID
             }));
@@ -3786,7 +3707,7 @@ function _createCoin() {
             temp = _context7.sent;
             coin = JSON.parse(temp);
             ["PublicKey", "TxRandom"].forEach(function (key) {
-              coin[key] = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_12__["checkEncode"])(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_7__["base64Decode"])(coin[key]));
+              coin[key] = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_10__["checkEncode"])(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_6__["base64Decode"])(coin[key]));
             });
             _context7.next = 13;
             break;
@@ -3810,9 +3731,9 @@ function _createCoin() {
 }
 
 function pagination(size, limited) {
-  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("size", size).required().number();
-  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_10__["default"]("limited", limited).number();
-  var limit = limited || _account_constants__WEBPACK_IMPORTED_MODULE_14__["LIMIT"];
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_9__["default"]("size", size).required().number();
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_9__["default"]("limited", limited).number();
+  var limit = limited || _account_constants__WEBPACK_IMPORTED_MODULE_12__["LIMIT"];
   var times = Math.floor(size / limit);
   var remainder = size % limit;
   return {
@@ -3839,15 +3760,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cachePromise", function() { return cachePromise; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clearCache", function() { return clearCache; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clearAllCaches", function() { return clearAllCaches; });
+/* harmony import */ var _lib_module_Account_features_Coins_coins_spendingCoins__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/module/Account/features/Coins/coins.spendingCoins */ "./lib/module/Account/features/Coins/coins.spendingCoins.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+
 var caches = {};
 var CACHE_KEYS = {
-  P_TOKEN: "$ptoken",
-  CUSTOM_TOKEN: "$custom_token",
-  PDE_STATE: "$pde_state"
+  P_TOKEN: "P_TOKEN",
+  CUSTOM_TOKEN: "CUSTOM_TOKEN",
+  PDE_STATE: "PDE_STATE",
+  COIN_MEMPOOL_CACHE: 'COIN_MEMPOOL_CACHE'
 };
 /**
  * Cache data
@@ -4100,7 +4024,7 @@ function _decryptCoins() {
                         SNDerivators: [],
                         PublicKeys: []
                       }), SNDerivators = _coins$reduce.SNDerivators, PublicKeys = _coins$reduce.PublicKeys;
-                      privateKey = _this.key.base58CheckSerialize(_lib_core_constants__WEBPACK_IMPORTED_MODULE_0__["PriKeyType"]);
+                      privateKey = _this.getPrivateKey();
                       LIMIT_PAGES = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_4__["LIMIT"] * 2;
                       decryptedCoins = [];
 
@@ -4185,7 +4109,7 @@ function _decryptCoins() {
                           CoinCommitment: coinObject === null || coinObject === void 0 ? void 0 : coinObject.Commitment
                         });
                       }));
-                      uniqValue = version === _lib_core_constants__WEBPACK_IMPORTED_MODULE_0__["PrivacyVersion"].ver2 ? 'PublicKey' : 'SNDerivator';
+                      uniqValue = version === _lib_core_constants__WEBPACK_IMPORTED_MODULE_0__["PrivacyVersion"].ver2 ? "PublicKey" : "SNDerivator";
                       decryptedCoins = lodash_uniqBy__WEBPACK_IMPORTED_MODULE_7___default()(decryptedCoins, function (item) {
                         return item[uniqValue];
                       });
@@ -4266,8 +4190,7 @@ function _getKeyInfo() {
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeyInfo-version", version).required().number();
             otaKey = this.getOTAKey();
             cacheKeyInfo = "".concat(KEY_INFO_CACHE, "-").concat(version, "-").concat(otaKey);
-            console.time(KEY_INFO_CACHE);
-            _context3.next = 8;
+            _context3.next = 7;
             return Object(_Cache_cache__WEBPACK_IMPORTED_MODULE_3__["cachePromise"])(cacheKeyInfo, function () {
               return _this2.rpcCoinService.apiGetKeyInfo({
                 key: otaKey,
@@ -4275,22 +4198,21 @@ function _getKeyInfo() {
               });
             });
 
-          case 8:
+          case 7:
             result = _context3.sent;
-            console.timeEnd(KEY_INFO_CACHE);
             return _context3.abrupt("return", result);
 
-          case 13:
-            _context3.prev = 13;
+          case 11:
+            _context3.prev = 11;
             _context3.t0 = _context3["catch"](1);
             throw _context3.t0;
 
-          case 16:
+          case 14:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, this, [[1, 13]]);
+    }, _callee3, this, [[1, 11]]);
   }));
   return _getKeyInfo.apply(this, arguments);
 }
@@ -4349,14 +4271,15 @@ function setCoinsStorage(_x4) {
 
 function _setCoinsStorage() {
   _setCoinsStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(params) {
-    var value, tokenID, version, key, data, newData;
+    var _params$value, value, tokenID, version, key, data, newData;
+
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.prev = 0;
-            value = params.value, tokenID = params.tokenID, version = params.version;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("setCoinsStorage-value", value).required().object();
+            _params$value = params.value, value = _params$value === void 0 ? {} : _params$value, tokenID = params.tokenID, version = params.version;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("setCoinsStorage-value", value).object();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("setCoinsStorage-tokenID", tokenID).required().string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("setCoinsStorage-version", version).required().number();
             key = this.getKeyCoinsStorageByTokenId(params);
@@ -4423,7 +4346,7 @@ function _getFlagSubmittedOTAKey() {
           case 8:
             _context6.prev = 8;
             _context6.t0 = _context6["catch"](1);
-            console.log("error", _context6.t0);
+            console.log("error getFlagSubmittedOTAKey", _context6.t0);
 
           case 11:
             return _context6.abrupt("return", !!submitted);
@@ -4449,8 +4372,8 @@ function _submitOTAKey() {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
+            _context7.prev = 0;
             otaKey = this.getOTAKey();
-            _context7.prev = 1;
             _context7.next = 4;
             return this.getFlagSubmittedOTAKey();
 
@@ -4486,7 +4409,7 @@ function _submitOTAKey() {
 
           case 15:
             _context7.prev = 15;
-            _context7.t0 = _context7["catch"](1);
+            _context7.t0 = _context7["catch"](0);
             console.log("Submit failed!");
 
           case 18:
@@ -4494,7 +4417,7 @@ function _submitOTAKey() {
             return _context7.stop();
         }
       }
-    }, _callee7, this, [[1, 15]]);
+    }, _callee7, this, [[0, 15]]);
   }));
   return _submitOTAKey.apply(this, arguments);
 }
@@ -4653,7 +4576,7 @@ function _getListOutputsCoins() {
             break;
 
           case 8:
-            return _context.abrupt("return", this.getOutputCoinsV1(params));
+            return _context.abrupt("return", this.getListOutputCoinsV1(params));
 
           case 9:
             return _context.abrupt("return", this.getListOutputCoinsV2(params));
@@ -4738,94 +4661,88 @@ function _getOutputCoins() {
             unspentCoins = [];
             _context3.prev = 2;
             tokenID = params.tokenID, version = params.version;
-            console.warn("YOU'RE CALLING GET OUTPUTS COINS WITH VERSION", version);
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getOutputCoins-tokenID", tokenID).required().string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getOutputCoins-version", version).required().number();
-            _context3.next = 9;
+            _context3.next = 8;
             return this.submitOTAKey();
 
-          case 9:
+          case 8:
             _context3.t0 = version;
-            _context3.next = _context3.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_0__["PrivacyVersion"].ver1 ? 12 : _context3.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_0__["PrivacyVersion"].ver2 ? 19 : 34;
+            _context3.next = _context3.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_0__["PrivacyVersion"].ver1 ? 11 : _context3.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_0__["PrivacyVersion"].ver2 ? 21 : 36;
             break;
 
-          case 12:
-            _context3.next = 14;
-            return (_this$getUnspentCoins = this.getUnspentCoinsByTokenIdV1(_objectSpread(_objectSpread({}, params), {}, {
-              fromApi: true
-            }))) === null || _this$getUnspentCoins === void 0 ? void 0 : _this$getUnspentCoins.unspentCoins;
+          case 11:
+            _context3.next = 13;
+            return (_this$getUnspentCoins = this.getUnspentCoinsByTokenIdV1(_objectSpread({}, params))) === null || _this$getUnspentCoins === void 0 ? void 0 : _this$getUnspentCoins.unspentCoins;
 
-          case 14:
+          case 13:
             _context3.t1 = _context3.sent;
 
             if (_context3.t1) {
-              _context3.next = 17;
+              _context3.next = 16;
               break;
             }
 
             _context3.t1 = [];
 
-          case 17:
+          case 16:
             unspentCoins = _context3.t1;
-            return _context3.abrupt("break", 35);
-
-          case 19:
-            _context3.prev = 19;
-            _context3.next = 22;
-            return this.getUnspentCoinsV2(params);
-
-          case 22:
-            unspentCoins = _context3.sent;
-            _context3.next = 25;
+            _context3.next = 19;
             return this.getListSpentCoinsStorage(params);
 
-          case 25:
+          case 19:
             spentCoins = _context3.sent;
-            _context3.next = 33;
+            return _context3.abrupt("break", 37);
+
+          case 21:
+            _context3.prev = 21;
+            _context3.next = 24;
+            return this.getUnspentCoinsV2(params);
+
+          case 24:
+            unspentCoins = _context3.sent;
+            _context3.next = 27;
+            return this.getListSpentCoinsStorage(params);
+
+          case 27:
+            spentCoins = _context3.sent;
+            _context3.next = 35;
             break;
 
-          case 28:
-            _context3.prev = 28;
-            _context3.t2 = _context3["catch"](19);
-            _context3.next = 32;
+          case 30:
+            _context3.prev = 30;
+            _context3.t2 = _context3["catch"](21);
+            _context3.next = 34;
             return this.clearCacheStorage(params);
 
-          case 32:
+          case 34:
             throw _context3.t2;
 
-          case 33:
-            return _context3.abrupt("break", 35);
-
-          case 34:
-            return _context3.abrupt("break", 35);
-
           case 35:
+            return _context3.abrupt("break", 37);
+
+          case 36:
+            return _context3.abrupt("break", 37);
+
+          case 37:
             result = {
               spentCoins: spentCoins,
               unspentCoins: unspentCoins,
               outputCoins: [].concat(_toConsumableArray(unspentCoins), _toConsumableArray(spentCoins))
             };
-            console.log("\n\n=======================================");
-            console.log("PRIVACY VERSION", version);
-            console.log("ACCOUNT", this.name, this.getOTAKey());
-            console.log("TOKEN ID", tokenID);
-            console.log("UNSPENT COINS", unspentCoins.length);
-            console.log("SPENT COINS", spentCoins.length);
-            console.log("OUTPUTS COINS", result.outputCoins.length);
-            console.log("=======================================");
             return _context3.abrupt("return", result);
 
-          case 47:
-            _context3.prev = 47;
+          case 41:
+            _context3.prev = 41;
             _context3.t3 = _context3["catch"](2);
             throw _context3.t3;
 
-          case 50:
+          case 44:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, this, [[2, 47], [19, 28]]);
+    }, _callee3, this, [[2, 41], [21, 30]]);
   }));
   return _getOutputCoins.apply(this, arguments);
 }
@@ -4853,9 +4770,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
 /* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/uniq */ "./node_modules/lodash/uniq.js");
 /* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_uniq__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _lib_module_Account_features_Cache_cache__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/module/Account/features/Cache/cache */ "./lib/module/Account/features/Cache/cache.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -4871,7 +4796,7 @@ function _getSpendingCoinsStorageByTokenId() {
   _getSpendingCoinsStorageByTokenId = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(params) {
     var _this = this;
 
-    var tokenID, version, key, spendingCoins, txIds, tasks, statuses, spendingCoinsFilterByTime;
+    var tokenID, version, key, spendingCoins, timeExpired, lockTime, spendingCoinsFilter, txIds, tasks, statuses, spendingCoinsMapStatus, spendingCoinsFilterByTime;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -4900,7 +4825,12 @@ function _getSpendingCoinsStorageByTokenId() {
 
           case 12:
             spendingCoins = _context.t0;
-            txIds = lodash_uniq__WEBPACK_IMPORTED_MODULE_3___default()(spendingCoins.map(function (coin) {
+            timeExpired = 3 * 60 * 1000;
+            lockTime = 40 * 1000;
+            spendingCoinsFilter = spendingCoins.filter(function (item) {
+              return Date.now() - item.createdAt > lockTime;
+            });
+            txIds = lodash_uniq__WEBPACK_IMPORTED_MODULE_3___default()(spendingCoinsFilter.map(function (coin) {
               return coin.txId;
             }));
             tasks = txIds.map(function (txId) {
@@ -4909,55 +4839,80 @@ function _getSpendingCoinsStorageByTokenId() {
               });
             });
             statuses = [];
-            _context.prev = 16;
-            _context.next = 19;
+            _context.prev = 19;
+            _context.next = 22;
             return Promise.all(tasks);
 
-          case 19:
+          case 22:
             statuses = _context.sent;
-            _context.next = 25;
+            _context.next = 28;
             break;
 
-          case 22:
-            _context.prev = 22;
-            _context.t1 = _context["catch"](16);
+          case 25:
+            _context.prev = 25;
+            _context.t1 = _context["catch"](19);
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_0__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_0__["ErrorObject"].GetStatusTransactionErr, "Message is too large", _context.t1);
 
-          case 25:
+          case 28:
             statuses = txIds.map(function (txId, index) {
               return {
                 txId: txId,
                 status: statuses[index]
               };
             });
-            spendingCoinsFilterByTime = spendingCoins.filter(function (item) {
-              var timeExist = new Date().getTime() - (item === null || item === void 0 ? void 0 : item.createdAt);
-              var timeExpired = 2 * 60 * 1000;
-
-              var _statuses$find = statuses.find(function (status) {
+            spendingCoinsMapStatus = spendingCoins.map(function (item) {
+              /** success or fail, wait some minutes close lock */
+              var timeTxEnd = item.timeTxEnd;
+              var status = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_1__["TX_STATUS"].TXSTATUS_PENDING;
+              var tx = statuses.find(function (status) {
                 return status.txId === item.txId;
-              }),
-                  status = _statuses$find.status;
+              });
 
-              return status === _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_1__["TX_STATUS"].TXSTATUS_UNKNOWN && timeExist < timeExpired || status === _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_1__["TX_STATUS"].TXSTATUS_PENDING || status === _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_1__["TX_STATUS"].PROCESSING;
+              if (tx) {
+                status = tx === null || tx === void 0 ? void 0 : tx.status;
+              }
+              /** update timeTxEnd when success or fail and didn't update before */
+
+
+              if ((status === _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_1__["TX_STATUS"].TXSTATUS_FAILED || status === _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_1__["TX_STATUS"].TXSTATUS_SUCCESS) && timeTxEnd === undefined) {
+                timeTxEnd = Date.now();
+              }
+
+              return _objectSpread(_objectSpread({}, item), {}, {
+                status: status,
+                timeTxEnd: timeTxEnd
+              });
             });
-            _context.next = 29;
+            spendingCoinsFilterByTime = spendingCoinsMapStatus.filter(function (item) {
+              var status = item.status,
+                  timeTxEnd = item.timeTxEnd;
+              var timeTxEndExist;
+
+              if (timeTxEnd !== undefined) {
+                timeTxEndExist = Date.now() - timeTxEnd;
+              }
+
+              var timeExist = new Date().getTime() - (item === null || item === void 0 ? void 0 : item.createdAt);
+              var isTxEnd = timeTxEndExist !== undefined && timeTxEndExist > timeExpired || timeExist > timeExpired && status === _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_1__["TX_STATUS"].TXSTATUS_CANCELED;
+              return !isTxEnd;
+            });
+            _context.next = 33;
             return this.setAccountStorage(key, spendingCoinsFilterByTime);
 
-          case 29:
+          case 33:
             return _context.abrupt("return", spendingCoinsFilterByTime || []);
 
-          case 32:
-            _context.prev = 32;
+          case 36:
+            _context.prev = 36;
             _context.t2 = _context["catch"](0);
             throw _context.t2;
 
-          case 35:
+          case 39:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[0, 32], [16, 22]]);
+    }, _callee, this, [[0, 36], [19, 25]]);
   }));
   return _getSpendingCoinsStorageByTokenId.apply(this, arguments);
 }
@@ -5009,7 +4964,9 @@ function _setSpendingCoinsStorage() {
                 keyImage: item === null || item === void 0 ? void 0 : item.KeyImage,
                 createdAt: new Date().getTime(),
                 txId: txId,
-                tokenID: tokenID
+                tokenID: tokenID,
+                timeTxEnd: undefined // tx success, wait couple minutes close lock
+
               };
             });
             mapCoins.forEach(function (item) {
@@ -5043,43 +5000,71 @@ function _setSpendingCoinsStorage() {
   return _setSpendingCoinsStorage.apply(this, arguments);
 }
 
+function getCoinsInMempoolCached() {
+  return _getCoinsInMempoolCached.apply(this, arguments);
+}
+
+function _getCoinsInMempoolCached() {
+  _getCoinsInMempoolCached = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    var coins;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return Object(_lib_module_Account_features_Cache_cache__WEBPACK_IMPORTED_MODULE_4__["cachePromise"])(_lib_module_Account_features_Cache_cache__WEBPACK_IMPORTED_MODULE_4__["CACHE_KEYS"].COIN_MEMPOOL_CACHE, this.rpcCoinService.apiGetSpendingCoinInMemPool);
+
+          case 2:
+            coins = _context3.sent;
+            return _context3.abrupt("return", coins || []);
+
+          case 4:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this);
+  }));
+  return _getCoinsInMempoolCached.apply(this, arguments);
+}
+
 function getSpendingCoins(_x3) {
   return _getSpendingCoins.apply(this, arguments);
 }
 
 function _getSpendingCoins() {
-  _getSpendingCoins = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(params) {
+  _getSpendingCoins = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(params) {
     var tokenID, version, _yield$this$getOutput, coins, spendingCoinsStorage, spendingCoins;
 
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            _context3.prev = 0;
+            _context4.prev = 0;
             tokenID = params.tokenID, version = params.version;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getSpendingCoins-tokenID", tokenID).required().string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getSpendingCoins-version", version).required().number();
-            _context3.next = 6;
+            _context4.next = 6;
             return this.getOutputCoins(params);
 
           case 6:
-            _yield$this$getOutput = _context3.sent;
+            _yield$this$getOutput = _context4.sent;
             coins = _yield$this$getOutput.unspentCoins;
-            _context3.next = 10;
+            _context4.next = 10;
             return this.getSpendingCoinsStorageByTokenId(params);
 
           case 10:
-            spendingCoinsStorage = _context3.sent;
+            spendingCoinsStorage = _context4.sent;
             coins = coins.filter(function (item) {
               return !(spendingCoinsStorage !== null && spendingCoinsStorage !== void 0 && spendingCoinsStorage.find(function (coin) {
                 return (coin === null || coin === void 0 ? void 0 : coin.keyImage) === (item === null || item === void 0 ? void 0 : item.KeyImage);
               }));
             });
-            _context3.next = 14;
-            return this.rpcCoinService.apiGetSpendingCoinInMemPool();
+            _context4.next = 14;
+            return this.getCoinsInMempoolCached();
 
           case 14:
-            spendingCoins = _context3.sent;
+            spendingCoins = _context4.sent;
 
             if (!!spendingCoins) {
               coins = coins.filter(function (coin) {
@@ -5087,20 +5072,20 @@ function _getSpendingCoins() {
               });
             }
 
-            return _context3.abrupt("return", coins || []);
+            return _context4.abrupt("return", coins || []);
 
           case 19:
-            _context3.prev = 19;
-            _context3.t0 = _context3["catch"](0);
-            console.log("getSpendingCoins FAILED", _context3.t0);
-            throw _context3.t0;
+            _context4.prev = 19;
+            _context4.t0 = _context4["catch"](0);
+            console.log("getSpendingCoins FAILED", _context4.t0);
+            throw _context4.t0;
 
           case 23:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3, this, [[0, 19]]);
+    }, _callee4, this, [[0, 19]]);
   }));
   return _getSpendingCoins.apply(this, arguments);
 }
@@ -5123,16 +5108,16 @@ function removeSpendingCoinsByTxIDs(_x4) {
 }
 
 function _removeSpendingCoinsByTxIDs() {
-  _removeSpendingCoinsByTxIDs = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(_ref) {
+  _removeSpendingCoinsByTxIDs = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(_ref) {
     var _this2 = this;
 
     var txIDs, tokenIDs, version, tasks;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
             txIDs = _ref.txIDs, tokenIDs = _ref.tokenIDs, version = _ref.version;
-            _context5.prev = 1;
+            _context6.prev = 1;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("removeSpendingCoinsByTxIDs-txIDs", txIDs).required().array();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("removeSpendingCoinsByTxIDs-tokenIDs", tokenIDs).required().array();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("removeSpendingCoinsByTxIDs-version", version).required().number();
@@ -5143,74 +5128,74 @@ function _removeSpendingCoinsByTxIDs() {
               return !!txID;
             });
             tasks = lodash_uniq__WEBPACK_IMPORTED_MODULE_3___default()(tokenIDs).map( /*#__PURE__*/function () {
-              var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(tokenID) {
+              var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(tokenID) {
                 var oldSpendingCoins, newSpendingCoins, key;
-                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
                   while (1) {
-                    switch (_context4.prev = _context4.next) {
+                    switch (_context5.prev = _context5.next) {
                       case 0:
-                        _context4.next = 2;
+                        _context5.next = 2;
                         return _this2.getSpendingCoinsStorageByTokenId({
                           tokenID: tokenID,
                           version: version
                         });
 
                       case 2:
-                        _context4.t0 = _context4.sent;
+                        _context5.t0 = _context5.sent;
 
-                        if (_context4.t0) {
-                          _context4.next = 5;
+                        if (_context5.t0) {
+                          _context5.next = 5;
                           break;
                         }
 
-                        _context4.t0 = [];
+                        _context5.t0 = [];
 
                       case 5:
-                        oldSpendingCoins = _context4.t0;
+                        oldSpendingCoins = _context5.t0;
                         newSpendingCoins = oldSpendingCoins.filter(function (spendingCoins) {
                           return !txIDs.includes(spendingCoins === null || spendingCoins === void 0 ? void 0 : spendingCoins.txId);
                         });
-                        _context4.next = 9;
+                        _context5.next = 9;
                         return _this2.getKeySpendingCoinsStorageByTokenId({
                           tokenID: tokenID,
                           version: version
                         });
 
                       case 9:
-                        key = _context4.sent;
-                        _context4.next = 12;
+                        key = _context5.sent;
+                        _context5.next = 12;
                         return _this2.setAccountStorage(key, newSpendingCoins);
 
                       case 12:
                       case "end":
-                        return _context4.stop();
+                        return _context5.stop();
                     }
                   }
-                }, _callee4);
+                }, _callee5);
               }));
 
               return function (_x5) {
                 return _ref2.apply(this, arguments);
               };
             }());
-            _context5.next = 10;
+            _context6.next = 10;
             return Promise.all(tasks);
 
           case 10:
-            _context5.next = 15;
+            _context6.next = 15;
             break;
 
           case 12:
-            _context5.prev = 12;
-            _context5.t0 = _context5["catch"](1);
-            throw _context5.t0;
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](1);
+            throw _context6.t0;
 
           case 15:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5, null, [[1, 12]]);
+    }, _callee6, null, [[1, 12]]);
   }));
   return _removeSpendingCoinsByTxIDs.apply(this, arguments);
 }
@@ -5220,7 +5205,8 @@ function _removeSpendingCoinsByTxIDs() {
   getKeySpendingCoinsStorageByTokenId: getKeySpendingCoinsStorageByTokenId,
   getSpendingCoinsStorageByTokenId: getSpendingCoinsStorageByTokenId,
   setSpendingCoinsStorage: setSpendingCoinsStorage,
-  removeSpendingCoinsByTxIDs: removeSpendingCoinsByTxIDs
+  removeSpendingCoinsByTxIDs: removeSpendingCoinsByTxIDs,
+  getCoinsInMempoolCached: getCoinsInMempoolCached
 });
 
 /***/ }),
@@ -5429,10 +5415,6 @@ function _getListSpentCoinsStorage() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 
 
 function getKeyStorageByTokenId(params) {
@@ -5457,53 +5439,9 @@ function getPrefixKeyStorage(_ref) {
   return "PRIVACY-".concat(version);
 }
 
-function clearCacheStorage(_x) {
-  return _clearCacheStorage.apply(this, arguments);
-}
-
-function _clearCacheStorage() {
-  _clearCacheStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(params) {
-    var tokenID, version, totalCoinsKey, unspentCoinsKey, spendingCoinsKey, storageCoins, spentCoinsKey, otaKey;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.prev = 0;
-            tokenID = params.tokenID, version = params.version;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("clearCacheStorage-tokenID", tokenID).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("clearCacheStorage-version", version).required().number();
-            totalCoinsKey = this.getKeyTotalCoinsStorageByTokenId(params);
-            unspentCoinsKey = this.getKeyListUnspentCoinsByTokenId(params);
-            spendingCoinsKey = this.getKeySpendingCoinsStorageByTokenId(params);
-            storageCoins = this.getKeyCoinsStorageByTokenId(params);
-            spentCoinsKey = this.getKeyListSpentCoinsByTokenId(params);
-            otaKey = this.getOTAKey();
-            _context.next = 12;
-            return Promise.all([this.clearAccountStorage(totalCoinsKey), this.clearAccountStorage(unspentCoinsKey), this.clearAccountStorage(spendingCoinsKey), this.clearAccountStorage(storageCoins), this.clearAccountStorage(spentCoinsKey), this.clearAccountStorage(otaKey), this.clearTxsHistory(params)]);
-
-          case 12:
-            _context.next = 17;
-            break;
-
-          case 14:
-            _context.prev = 14;
-            _context.t0 = _context["catch"](0);
-            throw _context.t0;
-
-          case 17:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, this, [[0, 14]]);
-  }));
-  return _clearCacheStorage.apply(this, arguments);
-}
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   getPrefixKeyStorage: getPrefixKeyStorage,
-  getKeyStorageByTokenId: getKeyStorageByTokenId,
-  clearCacheStorage: clearCacheStorage
+  getKeyStorageByTokenId: getKeyStorageByTokenId
 });
 
 /***/ }),
@@ -5911,21 +5849,23 @@ function checkKeyImageV1(_x) {
 
 function _checkKeyImageV() {
   _checkKeyImageV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
-    var listOutputsCoins, shardId, version, coinsDecrypted, keyImages, unspentCoins, spentCoins, keyImagesStatus;
+    var listOutputsCoins, shardId, version, tokenID, coinsDecrypted, keyImages, unspentCoins, spentCoins, keyImagesStatus;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            listOutputsCoins = _ref.listOutputsCoins, shardId = _ref.shardId, version = _ref.version;
+            listOutputsCoins = _ref.listOutputsCoins, shardId = _ref.shardId, version = _ref.version, tokenID = _ref.tokenID;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("checkKeyImageV1-listOutputsCoins", listOutputsCoins).required().array();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("checkKeyImageV1-shardId", shardId).required().number();
-            _context.next = 5;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("checkKeyImageV1-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("checkKeyImageV1-version", version).required().number();
+            _context.next = 7;
             return this.measureAsyncFn(this.decryptCoins, "timeCheckKeyImages.timeGetDecryptCoinsV1", {
               coins: listOutputsCoins,
               version: version
             });
 
-          case 5:
+          case 7:
             coinsDecrypted = _context.sent;
             keyImages = this.getKeyImagesBase64Encode({
               coinsDecrypted: coinsDecrypted
@@ -5934,28 +5874,28 @@ function _checkKeyImageV() {
             spentCoins = [];
 
             if (!(keyImages.length !== 0)) {
-              _context.next = 18;
+              _context.next = 22;
               break;
             }
 
-            _context.next = 12;
+            _context.next = 14;
             return this.measureAsyncFn(this.rpcCoinService.apiCheckKeyImages, "timeCheckKeyImages.timeCheckKeyImagesV1", {
               keyImages: keyImages,
               shardId: shardId,
               version: version
             });
 
-          case 12:
+          case 14:
             _context.t0 = _context.sent;
 
             if (_context.t0) {
-              _context.next = 15;
+              _context.next = 17;
               break;
             }
 
             _context.t0 = [];
 
-          case 15:
+          case 17:
             keyImagesStatus = _context.t0;
             unspentCoins = coinsDecrypted === null || coinsDecrypted === void 0 ? void 0 : coinsDecrypted.filter(function (coin, index) {
               return !keyImagesStatus[index];
@@ -5963,14 +5903,21 @@ function _checkKeyImageV() {
             spentCoins = coinsDecrypted === null || coinsDecrypted === void 0 ? void 0 : coinsDecrypted.filter(function (coin, index) {
               return keyImagesStatus[index];
             });
+            _context.next = 22;
+            return this.measureAsyncFn(this.storeListSpentCoins, //
+            "timeCheckKeyImages.timeStoreListSpentCoinsV1", {
+              tokenID: tokenID,
+              version: version,
+              spentCoins: spentCoins
+            });
 
-          case 18:
+          case 22:
             return _context.abrupt("return", {
               unspentCoins: unspentCoins,
               spentCoins: spentCoins
             });
 
-          case 19:
+          case 23:
           case "end":
             return _context.stop();
         }
@@ -6066,7 +6013,7 @@ function _getKeyInfoByTokenIdV() {
         switch (_context2.prev = _context2.next) {
           case 0:
             tokenID = _ref.tokenID;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('tokenID', tokenID).isRequired().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('tokenID', tokenID).required().string();
             version = _lib_core_constants__WEBPACK_IMPORTED_MODULE_0__["PrivacyVersion"].ver1;
             _context2.next = 5;
             return this.measureAsyncFn(this.getKeyInfo, "timeGetKeysInfoV1", {
@@ -6140,12 +6087,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-function getOutputCoinsV1(_x) {
-  return _getOutputCoinsV.apply(this, arguments);
+function getListOutputCoinsV1(_x) {
+  return _getListOutputCoinsV.apply(this, arguments);
 }
 
-function _getOutputCoinsV() {
-  _getOutputCoinsV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
+function _getListOutputCoinsV() {
+  _getListOutputCoinsV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
     var _this = this;
 
     var tokenID, total, version, listOutputsCoins, oldTotal, viewKey, _version, key, _pagination, times, remainder, task, result;
@@ -6155,9 +6102,9 @@ function _getOutputCoinsV() {
         switch (_context.prev = _context.next) {
           case 0:
             tokenID = _ref.tokenID, total = _ref.total, version = _ref.version;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('getOutputCoinsV1-tokenID', tokenID).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('getOutputCoinsV1-total', total).required().number();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('getOutputCoinsV1-version', version).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('getListOutputCoinsV1-tokenID', tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('getListOutputCoinsV1-total', total).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('getListOutputCoinsV1-version', version).required().number();
             listOutputsCoins = [];
             _context.next = 7;
             return this.getTotalCoinsStorage({
@@ -6249,7 +6196,7 @@ function _getOutputCoinsV() {
       }
     }, _callee, this, [[8, 29]]);
   }));
-  return _getOutputCoinsV.apply(this, arguments);
+  return _getListOutputCoinsV.apply(this, arguments);
 }
 
 function removeStorageCoinsV1ByTokenID(_x2) {
@@ -6258,7 +6205,7 @@ function removeStorageCoinsV1ByTokenID(_x2) {
 
 function _removeStorageCoinsV1ByTokenID() {
   _removeStorageCoinsV1ByTokenID = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
-    var tokenID, version, keyUnspentCoins, keyTotalKeyInfo, tasks;
+    var tokenID, version, keyUnspentCoins, keyTotalKeyInfo, keySpendCoins, keyAirdropCoinVer2, keySpendingCoins, tasks;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -6270,21 +6217,39 @@ function _removeStorageCoinsV1ByTokenID() {
 
             keyUnspentCoins = this.getKeyListUnspentCoinsByTokenId(params);
             keyTotalKeyInfo = this.getKeyTotalCoinsStorageByTokenId(params);
-            _context2.next = 7;
-            return this.setAccountStorage(keyUnspentCoins, []);
-
-          case 7:
-            _context2.t0 = _context2.sent;
+            keySpendCoins = this.getKeyListSpentCoinsByTokenId(params);
+            keyAirdropCoinVer2 = this.getKeyFlagRequestAirdrop();
+            keySpendingCoins = this.getKeySpendingCoinsStorageByTokenId(params);
             _context2.next = 10;
-            return this.setAccountStorage(keyTotalKeyInfo, 0);
+            return this.clearAccountStorage(keyUnspentCoins);
 
           case 10:
+            _context2.t0 = _context2.sent;
+            _context2.next = 13;
+            return this.clearAccountStorage(keyTotalKeyInfo);
+
+          case 13:
             _context2.t1 = _context2.sent;
-            tasks = [_context2.t0, _context2.t1];
-            _context2.next = 14;
+            _context2.next = 16;
+            return this.clearAccountStorage(keySpendCoins);
+
+          case 16:
+            _context2.t2 = _context2.sent;
+            _context2.next = 19;
+            return this.clearAccountStorage(keyAirdropCoinVer2);
+
+          case 19:
+            _context2.t3 = _context2.sent;
+            _context2.next = 22;
+            return this.clearAccountStorage(keySpendingCoins);
+
+          case 22:
+            _context2.t4 = _context2.sent;
+            tasks = [_context2.t0, _context2.t1, _context2.t2, _context2.t3, _context2.t4];
+            _context2.next = 26;
             return Promise.all(tasks);
 
-          case 14:
+          case 26:
           case "end":
             return _context2.stop();
         }
@@ -6344,7 +6309,7 @@ function _removeStorageCoinsV() {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  getOutputCoinsV1: getOutputCoinsV1,
+  getListOutputCoinsV1: getListOutputCoinsV1,
   removeStorageCoinsV1ByTokenID: removeStorageCoinsV1ByTokenID,
   removeStorageCoinsV1: removeStorageCoinsV1
 });
@@ -6386,18 +6351,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/common/errorhandler */ "./lib/common/errorhandler.js");
-/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
-/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
-/* harmony import */ var _lib_module_Account_features_CoinsV1_coins_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lib/module/Account/features/CoinsV1/coins.utils */ "./lib/module/Account/features/CoinsV1/coins.utils.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/module/Account/account.utils */ "./lib/module/Account/account.utils.js");
-/* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
-/* harmony import */ var lodash_flatten__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash/flatten */ "./node_modules/lodash/flatten.js");
-/* harmony import */ var lodash_flatten__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash_flatten__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lodash/isEmpty */ "./node_modules/lodash/isEmpty.js");
-/* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(lodash_isEmpty__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
+/* harmony import */ var _lib_module_Account_features_CoinsV1_coins_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/module/Account/features/CoinsV1/coins.utils */ "./lib/module/Account/features/CoinsV1/coins.utils.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/module/Account/account.utils */ "./lib/module/Account/account.utils.js");
+/* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash/isEmpty */ "./node_modules/lodash/isEmpty.js");
+/* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash_isEmpty__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _lib_tx_constants__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @lib/tx/constants */ "./lib/tx/constants.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -6416,7 +6379,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-
 var KEY_STORAGE = {
   TOTAL_UNSPENT_COINS_V1: 'TOTAL_UNSPENT_COINS_V1'
 };
@@ -6425,7 +6387,7 @@ function getKeyListUnspentCoinsV1() {
   try {
     var viewkey = this.getReadonlyKey();
     var prefix = this.getPrefixKeyStorage({
-      version: _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["PrivacyVersion"].ver1
+      version: _lib_core_constants__WEBPACK_IMPORTED_MODULE_1__["PrivacyVersion"].ver1
     });
     return "".concat(prefix, "-").concat(KEY_STORAGE.TOTAL_UNSPENT_COINS_V1, "-").concat(viewkey);
   } catch (error) {
@@ -6495,9 +6457,9 @@ function _setUnspentCoinsStorageV() {
         switch (_context2.prev = _context2.next) {
           case 0:
             allUnspentCoins = _ref.allUnspentCoins;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("setUnspentCoinsStorageV1-allUnspentCoins", allUnspentCoins).required().array();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("setUnspentCoinsStorageV1-allUnspentCoins", allUnspentCoins).required().array();
 
-            if (!(lodash_isEmpty__WEBPACK_IMPORTED_MODULE_8___default()(allUnspentCoins) || !this.storage)) {
+            if (!(lodash_isEmpty__WEBPACK_IMPORTED_MODULE_6___default()(allUnspentCoins) || !this.storage)) {
               _context2.next = 4;
               break;
             }
@@ -6546,8 +6508,8 @@ function _updateStatusStorageUnspentCoinsV() {
           case 0:
             _context3.prev = 0;
             tokenID = params.tokenID, version = params.version;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("updateStatusStorageUnspentCoinsV1-tokenID", tokenID).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("updateStatusStorageUnspentCoinsV1-version", version).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("updateStatusStorageUnspentCoinsV1-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("updateStatusStorageUnspentCoinsV1-version", version).required().number();
             _context3.next = 6;
             return this.getTotalCoinsStorage(params);
 
@@ -6649,9 +6611,9 @@ function _getUnspentCoinsByTokenIdV() {
         switch (_context4.prev = _context4.next) {
           case 0:
             _ref2 = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : {}, tokenID = _ref2.tokenID, total = _ref2.total, version = _ref2.version;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('getUnspentCoinsByTokenIdV1-tokenId', tokenID).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('getUnspentCoinsByTokenIdV1-total', total).number();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('getUnspentCoinsByTokenIdV1-version', version).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]('getUnspentCoinsByTokenIdV1-tokenId', tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]('getUnspentCoinsByTokenIdV1-total', total).number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]('getUnspentCoinsByTokenIdV1-version', version).required().number();
             _context4.prev = 4;
 
             if (total) {
@@ -6757,7 +6719,7 @@ function _getUnspentCoinsByTokenIdV() {
           case 36:
             listUnspentCoinsMerged = _context4.sent;
             _context4.next = 39;
-            return Object(_lib_module_Account_features_CoinsV1_coins_utils__WEBPACK_IMPORTED_MODULE_3__["getUnspentCoinExceptSpendingCoinV1"])({
+            return Object(_lib_module_Account_features_CoinsV1_coins_utils__WEBPACK_IMPORTED_MODULE_2__["getUnspentCoinExceptSpendingCoinV1"])({
               account: this,
               tokenID: tokenID,
               unspentCoins: listUnspentCoinsMerged,
@@ -6769,9 +6731,9 @@ function _getUnspentCoinsByTokenIdV() {
             _unspentCoinExceptSpe = unspentCoinExceptSpendingCoin === null || unspentCoinExceptSpendingCoin === void 0 ? void 0 : unspentCoinExceptSpendingCoin.reduce(function (prev, coin) {
               var balance = prev.balance,
                   unspentCoinsFiltered = prev.unspentCoinsFiltered;
-              var amount = new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(coin.Value);
+              var amount = new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(coin.Value);
 
-              if (tokenID === _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"] && amount.toNumber() <= 5) {
+              if (tokenID === _lib_core_constants__WEBPACK_IMPORTED_MODULE_1__["PRVIDSTR"] && amount.lte(new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(_lib_tx_constants__WEBPACK_IMPORTED_MODULE_7__["MIN_AMOUNT_COIN_CONVERT"]))) {
                 return prev;
               }
 
@@ -6780,22 +6742,19 @@ function _getUnspentCoinsByTokenIdV() {
                 unspentCoinsFiltered: unspentCoinsFiltered.concat([coin])
               };
             }, {
-              balance: new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(0),
+              balance: new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(0),
               unspentCoinsFiltered: []
-            }), balance = _unspentCoinExceptSpe.balance, unspentCoinsFiltered = _unspentCoinExceptSpe.unspentCoinsFiltered; // case PRV balance < 100
+            }), balance = _unspentCoinExceptSpe.balance, unspentCoinsFiltered = _unspentCoinExceptSpe.unspentCoinsFiltered; // case PRV balance <= MAX_FEE_PER_TX
 
-            if (balance.toNumber() <= 100 && tokenID === _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"]) {
-              balance = new bn_js__WEBPACK_IMPORTED_MODULE_4___default.a(0);
+            if (balance.lte(new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(_lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["MAX_FEE_PER_TX"])) && tokenID === _lib_core_constants__WEBPACK_IMPORTED_MODULE_1__["PRVIDSTR"]) {
+              balance = new bn_js__WEBPACK_IMPORTED_MODULE_3___default.a(0);
               unspentCoinsFiltered = [];
             }
 
             return _context4.abrupt("return", {
               tokenID: tokenID,
-              balance: balance.toNumber(),
-              unspentCoins: unspentCoinsFiltered,
-              numberUnspent: unspentCoinsFiltered.length,
-              numberKeyInfo: total,
-              numberCoins: listOutputsCoins.length
+              balance: balance.toString(),
+              unspentCoins: unspentCoinsFiltered
             });
 
           case 45:
@@ -6829,14 +6788,26 @@ function _getUnspentCoinsV() {
     var _this = this;
 
     var _ref3,
-        fromApi,
+        _ref3$limitPage,
+        limitPage,
+        _ref3$version,
         version,
-        isAirdrop,
-        _unspentCoins,
         keysInfo,
-        tasks,
         start,
+        LIMIT_PAGES,
+        noCoins,
         unspentCoins,
+        _pagination,
+        times,
+        remainder,
+        index,
+        sliceData,
+        tasks,
+        result,
+        _sliceData,
+        _tasks,
+        _result,
+        _tasks2,
         end,
         _args5 = arguments;
 
@@ -6844,95 +6815,64 @@ function _getUnspentCoinsV() {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _ref3 = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : {}, fromApi = _ref3.fromApi;
-            version = _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["PrivacyVersion"].ver1;
-            /** fromApi = false, get unspent coins from storage */
-
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('getUnspentCoinsV1-fromApi', fromApi).required()["boolean"]();
+            _ref3 = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : {}, _ref3$limitPage = _ref3.limitPage, limitPage = _ref3$limitPage === void 0 ? 25 : _ref3$limitPage, _ref3$version = _ref3.version, version = _ref3$version === void 0 ? _lib_core_constants__WEBPACK_IMPORTED_MODULE_1__["PrivacyVersion"].ver1 : _ref3$version;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]('getUnspentCoinsV1-limitPage', limitPage);
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]('getUnspentCoinsV1-version', version);
             /** request airdrop for convert coin v1 */
 
-            _context5.prev = 3;
-            _context5.next = 6;
-            return this.getFlagRequestAirdrop();
-
-          case 6:
-            isAirdrop = _context5.sent;
-
-            if (isAirdrop) {
-              _context5.next = 10;
-              break;
-            }
-
-            _context5.next = 10;
+            _context5.next = 5;
             return this.requestAirdrop();
 
-          case 10:
-            _context5.next = 15;
-            break;
+          case 5:
+            _context5.next = 7;
+            return this.getCoinsInMempoolCached();
 
-          case 12:
-            _context5.prev = 12;
-            _context5.t0 = _context5["catch"](3);
-            console.log('GetUnspentCoinsV1: error: ', _context5.t0); // throw new CustomError(ErrorObject.RequestAirdropErr, e.message, e);
-
-          case 15:
-            if (fromApi) {
-              _context5.next = 25;
-              break;
-            }
-
-            _context5.next = 18;
-            return this.getUnspentCoinsStorageV1();
-
-          case 18:
-            _context5.t1 = _context5.sent;
-
-            if (_context5.t1) {
-              _context5.next = 21;
-              break;
-            }
-
-            _context5.t1 = [];
-
-          case 21:
-            _unspentCoins = _context5.t1;
-            _unspentCoins = _unspentCoins.filter(function (coin) {
-              return !!coin;
-            });
-
-            if (lodash_isEmpty__WEBPACK_IMPORTED_MODULE_8___default()(_unspentCoins)) {
-              _context5.next = 25;
-              break;
-            }
-
-            return _context5.abrupt("return", _unspentCoins);
-
-          case 25:
+          case 7:
             this.coinsV1Storage = {
               unspentCoinV1: [],
               timeGetUnspentCoinsV1: 0
             };
             /** Get Key Info */
 
-            _context5.next = 28;
+            _context5.next = 10;
             return this.getKeyInfoV1();
 
-          case 28:
-            _context5.t2 = _context5.sent;
+          case 10:
+            _context5.t0 = _context5.sent;
 
-            if (_context5.t2) {
-              _context5.next = 31;
+            if (_context5.t0) {
+              _context5.next = 13;
               break;
             }
 
-            _context5.t2 = [];
+            _context5.t0 = [];
 
-          case 31:
-            keysInfo = _context5.t2;
+          case 13:
+            keysInfo = _context5.t0;
             console.debug("KeysInfoV1: ", keysInfo);
             /** Get Unspent Coins By Token Id */
 
-            tasks = keysInfo.map(function (_ref4) {
+            start = new Date().getTime();
+            LIMIT_PAGES = limitPage;
+            noCoins = keysInfo.length;
+            unspentCoins = [];
+
+            if (!(noCoins > LIMIT_PAGES)) {
+              _context5.next = 41;
+              break;
+            }
+
+            _pagination = Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_4__["pagination"])(noCoins, LIMIT_PAGES), times = _pagination.times, remainder = _pagination.remainder;
+            index = 0;
+
+          case 22:
+            if (!(index < times)) {
+              _context5.next = 32;
+              break;
+            }
+
+            sliceData = keysInfo.slice(index * LIMIT_PAGES, index * LIMIT_PAGES + LIMIT_PAGES);
+            tasks = sliceData.map(function (_ref4) {
               var tokenID = _ref4.tokenID,
                   total = _ref4.total;
               return _this.getUnspentCoinsByTokenIdV1({
@@ -6941,34 +6881,84 @@ function _getUnspentCoinsV() {
                 version: version
               });
             });
-            start = new Date().getTime();
-            _context5.next = 37;
+            _context5.next = 27;
             return Promise.all(tasks);
 
+          case 27:
+            result = _context5.sent;
+            unspentCoins = unspentCoins.concat(result);
+
+          case 29:
+            index++;
+            _context5.next = 22;
+            break;
+
+          case 32:
+            if (!(remainder > 0)) {
+              _context5.next = 39;
+              break;
+            }
+
+            _sliceData = keysInfo.slice(times * LIMIT_PAGES, times * LIMIT_PAGES + remainder);
+            _tasks = _sliceData.map(function (_ref5) {
+              var tokenID = _ref5.tokenID,
+                  total = _ref5.total;
+              return _this.getUnspentCoinsByTokenIdV1({
+                tokenID: tokenID,
+                total: total,
+                version: version
+              });
+            });
+            _context5.next = 37;
+            return Promise.all(_tasks);
+
           case 37:
+            _result = _context5.sent;
+            unspentCoins = unspentCoins.concat(_result);
+
+          case 39:
+            _context5.next = 45;
+            break;
+
+          case 41:
+            _tasks2 = keysInfo.map(function (_ref6) {
+              var tokenID = _ref6.tokenID,
+                  total = _ref6.total;
+              return _this.getUnspentCoinsByTokenIdV1({
+                tokenID: tokenID,
+                total: total,
+                version: version
+              });
+            });
+            _context5.next = 44;
+            return Promise.all(_tasks2);
+
+          case 44:
             unspentCoins = _context5.sent;
+
+          case 45:
             end = new Date().getTime();
             /** set list unspent coins V1 */
 
-            _context5.next = 41;
+            _context5.next = 48;
             return this.measureAsyncFn(this.setUnspentCoinsStorageV1, "timeSetStorageUnspentCoinsV1", {
               allUnspentCoins: unspentCoins,
               version: version
             });
 
-          case 41:
+          case 48:
             console.debug("===============================");
             console.debug("Convert: unspentCoins", unspentCoins);
             console.debug("Convert: time get unspentCoins", end - start);
             console.debug("===============================");
             return _context5.abrupt("return", unspentCoins);
 
-          case 46:
+          case 53:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, this, [[3, 12]]);
+    }, _callee5, this);
   }));
   return _getUnspentCoinsV.apply(this, arguments);
 }
@@ -7091,23 +7081,13 @@ var getUnspentCoinExceptSpendingCoinV1 = /*#__PURE__*/function () {
           case 9:
             unspentCoins = _context2.sent;
             _context2.next = 12;
-            return account.rpcCoinService.apiGetSpendingCoinInMemPool();
+            return account.getCoinsInMempoolCached();
 
           case 12:
-            _context2.t0 = _context2.sent;
-
-            if (_context2.t0) {
-              _context2.next = 15;
-              break;
-            }
-
-            _context2.t0 = [];
-
-          case 15:
-            spendingCoins = _context2.t0;
+            spendingCoins = _context2.sent;
 
             if (!(Array.isArray(spendingCoins) && spendingCoins.length > 0)) {
-              _context2.next = 20;
+              _context2.next = 17;
               break;
             }
 
@@ -7117,24 +7097,24 @@ var getUnspentCoinExceptSpendingCoinV1 = /*#__PURE__*/function () {
             });
             return _context2.abrupt("return", unspentCoinExceptSpendingCoin);
 
-          case 20:
-            _context2.next = 25;
+          case 17:
+            _context2.next = 22;
             break;
 
-          case 22:
-            _context2.prev = 22;
-            _context2.t1 = _context2["catch"](6);
-            throw _context2.t1;
+          case 19:
+            _context2.prev = 19;
+            _context2.t0 = _context2["catch"](6);
+            throw _context2.t0;
 
-          case 25:
+          case 22:
             return _context2.abrupt("return", unspentCoins || []);
 
-          case 26:
+          case 23:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[6, 22]]);
+    }, _callee2, null, [[6, 19]]);
   }));
 
   return function getUnspentCoinExceptSpendingCoinV1(_x2) {
@@ -7143,44 +7123,37 @@ var getUnspentCoinExceptSpendingCoinV1 = /*#__PURE__*/function () {
 }();
 var prepareInputForConvertTxV2 = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_ref5) {
-    var fee, tokenID, account, version, isPToken, unspentCoins, unspentCoinExceptSpendingCoin, maxInputs, maxLength, totalValueInput, inputCoinsToSpent, subUnspent, i, coinsForRing, inputCoinsForFee, unspentPRV_v2, shardID;
+    var fee, tokenID, account, version, isPToken, _yield$account$getUns, unspentCoinExceptSpendingCoin, maxInputs, maxLength, totalValueInput, inputCoinsToSpent, remainInputCoins, i, coinsForRing, inputCoinsForFee, unspentPRV_v2, shardID;
+
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             fee = _ref5.fee, tokenID = _ref5.tokenID, account = _ref5.account, version = _ref5.version;
+            tokenID = tokenID || _lib_core__WEBPACK_IMPORTED_MODULE_3__["PRVIDSTR"];
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('fee', fee).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('tokenID', tokenID).string().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('tokenID', tokenID).required().string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('account', account).required();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('version', version).required().number();
             isPToken = tokenID !== _lib_core__WEBPACK_IMPORTED_MODULE_3__["PRVIDSTR"];
-            _context3.next = 8;
-            return account.getListUnspentCoinsStorage({
+            _context3.next = 9;
+            return account.getUnspentCoinsByTokenIdV1({
               version: version,
               tokenID: tokenID
             });
 
-          case 8:
-            unspentCoins = _context3.sent;
-            _context3.next = 11;
-            return getUnspentCoinExceptSpendingCoinV1({
-              account: account,
-              tokenID: tokenID,
-              unspentCoins: unspentCoins,
-              version: version
-            });
-
-          case 11:
-            unspentCoinExceptSpendingCoin = _context3.sent;
+          case 9:
+            _yield$account$getUns = _context3.sent;
+            unspentCoinExceptSpendingCoin = _yield$account$getUns.unspentCoins;
             maxInputs = _lib_tx_constants__WEBPACK_IMPORTED_MODULE_4__["DEFAULT_INPUT_PER_TX"];
             maxLength = unspentCoinExceptSpendingCoin.length;
             totalValueInput = new bn_js__WEBPACK_IMPORTED_MODULE_5___default.a(0);
-            inputCoinsToSpent = unspentCoinExceptSpendingCoin.slice(0, maxInputs);
-            subUnspent = unspentCoinExceptSpendingCoin.slice(maxInputs, maxLength);
+            inputCoinsToSpent = unspentCoinExceptSpendingCoin.slice(0, maxInputs); // const subUnspent = unspentCoinExceptSpendingCoin.slice(maxInputs, maxLength);
+            // if (subUnspent.length <= 10) {
+            //   inputCoinsToSpent = inputCoinsToSpent.concat(subUnspent);
+            // }
 
-            if (subUnspent.length <= 10) {
-              inputCoinsToSpent = inputCoinsToSpent.concat(subUnspent);
-            }
+            remainInputCoins = maxLength - inputCoinsToSpent.length;
 
             for (i = 0; i < inputCoinsToSpent.length; i++) {
               totalValueInput = totalValueInput.add(new bn_js__WEBPACK_IMPORTED_MODULE_5___default.a(inputCoinsToSpent[i].Value));
@@ -7188,43 +7161,43 @@ var prepareInputForConvertTxV2 = /*#__PURE__*/function () {
             }
 
             if (!isPToken) {
-              _context3.next = 35;
+              _context3.next = 33;
               break;
             }
 
-            _context3.next = 22;
+            _context3.next = 20;
             return account.getSpendingCoins({
               tokenID: _lib_core__WEBPACK_IMPORTED_MODULE_3__["PRVIDSTR"],
               version: _lib_core_constants__WEBPACK_IMPORTED_MODULE_10__["PrivacyVersion"].ver2
             });
 
-          case 22:
+          case 20:
             _context3.t0 = _context3.sent;
 
             if (_context3.t0) {
-              _context3.next = 25;
+              _context3.next = 23;
               break;
             }
 
             _context3.t0 = [];
 
-          case 25:
+          case 23:
             unspentPRV_v2 = _context3.t0;
 
             if (!(unspentPRV_v2.length === 0)) {
-              _context3.next = 28;
+              _context3.next = 26;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_11__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_11__["ErrorObject"].NotEnoughCoinError, "Not enough coin to spend for fee");
 
-          case 28:
+          case 26:
             inputCoinsForFee = _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_6__["defaultCoinChooser"].coinsToSpend(unspentPRV_v2, new bn_js__WEBPACK_IMPORTED_MODULE_5___default.a(fee)).resultInputCoins;
             shardID = Object(_lib_common_common__WEBPACK_IMPORTED_MODULE_7__["getShardIDFromLastByte"])(account.key.KeySet.PaymentAddress.Pk[account.key.KeySet.PaymentAddress.Pk.length - 1]);
-            _context3.next = 32;
+            _context3.next = 30;
             return _lib_services_coinChooser__WEBPACK_IMPORTED_MODULE_6__["defaultCoinChooser"].coinsForRing(account.rpc, shardID, inputCoinsForFee.length * 7, _lib_core__WEBPACK_IMPORTED_MODULE_3__["PRVIDSTR"]);
 
-          case 32:
+          case 30:
             coinsForRing = _context3.sent;
             coinsForRing.Commitments = coinsForRing.Commitments.map(function (item) {
               var base58 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_8__["checkDecode"])(item).bytesDecoded;
@@ -7235,7 +7208,7 @@ var prepareInputForConvertTxV2 = /*#__PURE__*/function () {
               return Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_9__["base64Encode"])(base58);
             });
 
-          case 35:
+          case 33:
             console.debug("inputCoinsToSpent: ", {
               unspentCoinExceptSpendingCoin: unspentCoinExceptSpendingCoin,
               inputCoinsToSpent: inputCoinsToSpent,
@@ -7246,10 +7219,11 @@ var prepareInputForConvertTxV2 = /*#__PURE__*/function () {
               inputCoinsToSpent: inputCoinsToSpent,
               totalValueInput: totalValueInput,
               coinsForRing: coinsForRing,
-              inputCoinsForFee: inputCoinsForFee
+              inputCoinsForFee: inputCoinsForFee,
+              remainInputCoins: remainInputCoins
             });
 
-          case 37:
+          case 35:
           case "end":
             return _context3.stop();
         }
@@ -7867,6 +7841,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
 /* harmony import */ var lodash_set__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lodash/set */ "./node_modules/lodash/set.js");
 /* harmony import */ var lodash_set__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(lodash_set__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _lib_utils_performance__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @lib/utils/performance */ "./lib/utils/performance.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -7882,11 +7857,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-var performance = {
-  now: function now() {
-    return new Date().getTime();
-  }
-};
+
 /** ========================= */
 
 /** Init configs for Account instance */
@@ -8068,54 +8039,52 @@ function _measureAsyncFn() {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.prev = 0;
-            t = performance.now();
-            console.log("\nFN", fn, "key", key);
+            t = _lib_utils_performance__WEBPACK_IMPORTED_MODULE_11__["performance"].now();
             _ref = args || {}, version = _ref.version;
-            console.log("version", version);
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("measureAsyncFn-version", version).number().required();
 
             if (!(typeof fn === "function")) {
-              _context5.next = 10;
+              _context5.next = 8;
               break;
             }
 
-            _context5.next = 9;
+            _context5.next = 7;
             return fn.call(this, args);
 
-          case 9:
+          case 7:
             result = _context5.sent;
 
-          case 10:
-            e = performance.now() - t;
+          case 8:
+            e = _lib_utils_performance__WEBPACK_IMPORTED_MODULE_11__["performance"].now() - t;
             value = version === _lib_core_constants__WEBPACK_IMPORTED_MODULE_9__["PrivacyVersion"].ver1 ? this.coinsV1Storage : this.coinsStorage;
             lodash_set__WEBPACK_IMPORTED_MODULE_10___default()(value, key, "".concat(e / 1000, "s"));
             return _context5.abrupt("return", result);
 
-          case 16:
-            _context5.prev = 16;
+          case 14:
+            _context5.prev = 14;
             _context5.t0 = _context5["catch"](0);
             console.log("measureAsyncFn FAILED", _context5.t0);
             console.log("FN NAME", fn, key, args);
 
-          case 20:
+          case 18:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, this, [[0, 16]]);
+    }, _callee5, this, [[0, 14]]);
   }));
   return _measureAsyncFn.apply(this, arguments);
 }
 
 function measureFn(fn, key, args) {
-  var t = performance.now();
+  var t = _lib_utils_performance__WEBPACK_IMPORTED_MODULE_11__["performance"].now();
   var result;
 
   if (typeof fn === "function") {
     result = fn.call(this, args);
   }
 
-  var e = performance.now() - t;
+  var e = _lib_utils_performance__WEBPACK_IMPORTED_MODULE_11__["performance"].now() - t;
   lodash_set__WEBPACK_IMPORTED_MODULE_10___default()(this.coinsStorage, key, "".concat(e / 1000, "s"));
   return result;
 }
@@ -8159,27 +8128,18 @@ function initTrackingGetOutCoins() {
       timeSetListUnspentCoinsStorage: -1,
       timeSetTotalCoinsStorage: -1,
       totalTimeGetUnspentCoins: -1,
+      totalTimeGetBalance: -1,
       tokenID: null,
       otaKey: this.getOTAKey(),
       txsHistory: {
         setKeyImages: -1,
         setPublicKeys: -1,
         txsPToken: -1,
-        txsTransactor: -1
+        txsTransactor: -1,
+        totalTime: -1
       }
     };
   }
-}
-/**
- * setRPCCoinServices - Set rpc coin services
- * @param {string} url
- */
-// Todo: Remove when merge to coinservice
-
-
-function setRPCCoinServices2(url) {
-  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("rpcCoinService 2", url).required().string();
-  this.rpcCoinService2 = new _lib_rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_1__["RpcHTTPCoinServiceClient"](url);
 }
 /**
  * setRPCPortalServices - Set rpc portal services
@@ -8207,7 +8167,6 @@ function setRPCPortalServices(url) {
   getProgressTx: getProgressTx,
   getDebugMessage: getDebugMessage,
   initTrackingGetOutCoins: initTrackingGetOutCoins,
-  setRPCCoinServices2: setRPCCoinServices2,
   setRPCPortalServices: setRPCPortalServices
 });
 
@@ -8292,7 +8251,7 @@ function finalizeConsolidate(_x) {
 
 function _finalizeConsolidate() {
   _finalizeConsolidate = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
-    var txParams, isToken, version, tokenID, fee, txParamsJson, theirTime, wasmResult, _JSON$parse, b58EncodedTx, hash, outputs, senderSeal, tempBuf, theString, txObj, tx, response;
+    var txParams, isToken, version, tokenID, fee, _txParams$TokenParams, txParamsJson, theirTime, wasmResult, _JSON$parse, b58EncodedTx, hash, outputs, senderSeal, tempBuf, theString, txObj, tx, response, taskSpendingCoins, _txParams$TokenParams2;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -8384,29 +8343,47 @@ function _finalizeConsolidate() {
             throw _context.t0;
 
           case 36:
-            if (!isToken) {
-              _context.next = 39;
-              break;
+            // if (isToken) {
+            //   await this.waitTx(hash, 3);
+            // }
+            taskSpendingCoins = [];
+
+            if (!!(txParams !== null && txParams !== void 0 && txParams.InputCoins)) {
+              taskSpendingCoins.push(this.setSpendingCoinsStorage({
+                coins: txParams === null || txParams === void 0 ? void 0 : txParams.InputCoins,
+                tokenID: _lib_core__WEBPACK_IMPORTED_MODULE_8__["PRVIDSTR"],
+                txId: hash,
+                version: version
+              }));
             }
 
-            _context.next = 39;
-            return this.waitTx(hash, 3);
+            if (tokenID !== _lib_core__WEBPACK_IMPORTED_MODULE_8__["PRVIDSTR"] && !!(txParams !== null && txParams !== void 0 && txParams.TokenParams) && !!(txParams !== null && txParams !== void 0 && (_txParams$TokenParams = txParams.TokenParams) !== null && _txParams$TokenParams !== void 0 && _txParams$TokenParams.InputCoins)) {
+              taskSpendingCoins.push(this.setSpendingCoinsStorage({
+                coins: txParams === null || txParams === void 0 ? void 0 : (_txParams$TokenParams2 = txParams.TokenParams) === null || _txParams$TokenParams2 === void 0 ? void 0 : _txParams$TokenParams2.InputCoins,
+                tokenID: tokenID,
+                txId: hash,
+                version: version
+              }));
+            }
 
-          case 39:
+            _context.next = 41;
+            return Promise.all(taskSpendingCoins);
+
+          case 41:
             return _context.abrupt("return", tx);
 
-          case 42:
-            _context.prev = 42;
+          case 44:
+            _context.prev = 44;
             _context.t1 = _context["catch"](6);
             console.log("finalizeConsolidate ERROR", _context.t1);
             throw _context.t1;
 
-          case 46:
+          case 48:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[6, 42], [25, 33]]);
+    }, _callee, this, [[6, 44], [25, 33]]);
   }));
   return _finalizeConsolidate.apply(this, arguments);
 }
@@ -8501,27 +8478,25 @@ function consolidate(_x2) {
 }
 
 function _consolidate() {
-  _consolidate = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_ref2) {
-    var _this = this;
+  _consolidate = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_ref2) {
+    var _ref2$transfer, _ref2$transfer2, _ref2$transfer2$fee, fee, tokenID, _ref2$extra, _ref2$extra2, _ref2$extra2$inputsPe, inputsPerTx, version, info, isToken, _yield$this$prepareIn, groupedInputs, coinsForRing, results, _iterator, _step, inputs, _yield$prepareInputFo, prvInputs, prvCoinsForRing, txParams, tokenParams, tx, _iterator2, _step2, _inputs, _txParams, _tx;
 
-    var _ref2$transfer, _ref2$transfer2, _ref2$transfer2$fee, fee, tokenID, _ref2$extra, _ref2$extra2, _ref2$extra2$inputsPe, inputsPerTx, version, info, isToken, _yield$this$prepareIn, groupedInputs, coinsForRing, results, _iterator, _step, inputs, _yield$prepareInputFo, prvInputs, prvCoinsForRing, txParams, tokenParams, tx, task;
-
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context3.prev = _context3.next) {
           case 0:
             _ref2$transfer = _ref2.transfer, _ref2$transfer2 = _ref2$transfer === void 0 ? {} : _ref2$transfer, _ref2$transfer2$fee = _ref2$transfer2.fee, fee = _ref2$transfer2$fee === void 0 ? _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_3__["MAX_FEE_PER_TX"] : _ref2$transfer2$fee, tokenID = _ref2$transfer2.tokenID, _ref2$extra = _ref2.extra, _ref2$extra2 = _ref2$extra === void 0 ? {} : _ref2$extra, _ref2$extra2$inputsPe = _ref2$extra2.inputsPerTx, inputsPerTx = _ref2$extra2$inputsPe === void 0 ? _lib_tx_constants__WEBPACK_IMPORTED_MODULE_1__["MaxInputNumberForDefragment"] : _ref2$extra2$inputsPe, version = _ref2$extra2.version;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("consolidate-fee", fee).required().amount();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("consolidate-tokenID", tokenID).required().string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("consolidate-inputsPerTx", inputsPerTx).required().number();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("consolidate-version", version).required().number();
-            _context4.next = 7;
+            _context3.next = 7;
             return this.updateProgressTx(20, "Analyzing Coins");
 
           case 7:
             info = Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_0__["base64Encode"])(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_0__["stringToBytes"])("consolidate"));
-            isToken = tokenID != _lib_core__WEBPACK_IMPORTED_MODULE_8__["PRVIDSTR"];
-            _context4.next = 11;
+            isToken = tokenID !== _lib_core__WEBPACK_IMPORTED_MODULE_8__["PRVIDSTR"];
+            _context3.next = 11;
             return this.prepareInputConsolidate({
               fee: fee,
               tokenID: tokenID,
@@ -8531,46 +8506,46 @@ function _consolidate() {
             });
 
           case 11:
-            _yield$this$prepareIn = _context4.sent;
+            _yield$this$prepareIn = _context3.sent;
             groupedInputs = _yield$this$prepareIn.groupedInputs;
             coinsForRing = _yield$this$prepareIn.coinsForRing;
 
             if (groupedInputs) {
-              _context4.next = 17;
+              _context3.next = 17;
               break;
             }
 
             console.log("No coin below threshold. End consolidate");
-            return _context4.abrupt("return", []);
+            return _context3.abrupt("return", []);
 
           case 17:
-            _context4.next = 19;
+            _context3.next = 19;
             return this.updateProgressTx(50, "Signing & Sending Transaction");
 
           case 19:
             results = [];
 
             if (!isToken) {
-              _context4.next = 53;
+              _context3.next = 53;
               break;
             }
 
             // consolidate token: send & wait for each tx to confirm
             _iterator = _createForOfIteratorHelper(groupedInputs);
-            _context4.prev = 22;
+            _context3.prev = 22;
 
             _iterator.s();
 
           case 24:
             if ((_step = _iterator.n()).done) {
-              _context4.next = 43;
+              _context3.next = 43;
               break;
             }
 
             inputs = _step.value;
-            _context4.next = 28;
+            _context3.next = 28;
             return Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_9__["prepareInputForTxV2"])({
-              amountTransfer: new bn_js__WEBPACK_IMPORTED_MODULE_10___default.a(0).toString(),
+              amountTransfer: new bn_js__WEBPACK_IMPORTED_MODULE_10___default.a(0),
               fee: fee,
               tokenID: _lib_core__WEBPACK_IMPORTED_MODULE_8__["PRVIDSTR"],
               account: this,
@@ -8578,7 +8553,7 @@ function _consolidate() {
             });
 
           case 28:
-            _yield$prepareInputFo = _context4.sent;
+            _yield$prepareInputFo = _context3.sent;
             prvInputs = _yield$prepareInputFo.inputCoinStrs;
             prvCoinsForRing = _yield$prepareInputFo.coinsForRing;
             // lua coin prv de tra fee
@@ -8586,7 +8561,7 @@ function _consolidate() {
 
             tokenParams = Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_9__["newTokenParamV2"])([], inputs, tokenID, coinsForRing, {});
             txParams.TokenParams = tokenParams;
-            _context4.next = 36;
+            _context3.next = 36;
             return this.finalizeConsolidate({
               txParams: txParams,
               version: version,
@@ -8596,7 +8571,7 @@ function _consolidate() {
             });
 
           case 36:
-            tx = _context4.sent;
+            tx = _context3.sent;
             tx = _objectSpread(_objectSpread({}, tx), {}, {
               tokenInputs: inputs,
               tokenAmount: inputs.reduce(function (totalAmount, coin) {
@@ -8605,7 +8580,7 @@ function _consolidate() {
               inputs: prvInputs,
               amount: fee
             });
-            _context4.next = 40;
+            _context3.next = 40;
             return this.saveTxHistory({
               tx: tx,
               version: version,
@@ -8616,108 +8591,116 @@ function _consolidate() {
             results.push(tx);
 
           case 41:
-            _context4.next = 24;
+            _context3.next = 24;
             break;
 
           case 43:
-            _context4.next = 48;
+            _context3.next = 48;
             break;
 
           case 45:
-            _context4.prev = 45;
-            _context4.t0 = _context4["catch"](22);
+            _context3.prev = 45;
+            _context3.t0 = _context3["catch"](22);
 
-            _iterator.e(_context4.t0);
+            _iterator.e(_context3.t0);
 
           case 48:
-            _context4.prev = 48;
+            _context3.prev = 48;
 
             _iterator.f();
 
-            return _context4.finish(48);
+            return _context3.finish(48);
 
           case 51:
-            _context4.next = 57;
+            _context3.next = 83;
             break;
 
           case 53:
-            // consolidate PRV: create all transactions without overlapping inputs & send in parallel
-            task = groupedInputs.map( /*#__PURE__*/function () {
-              var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(inputs) {
-                var txParams, tx;
-                return regeneratorRuntime.wrap(function _callee3$(_context3) {
-                  while (1) {
-                    switch (_context3.prev = _context3.next) {
-                      case 0:
-                        txParams = Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_9__["newParamTxV2"])(_this.key, [], inputs, fee, null, null, info, coinsForRing);
-                        _context3.prev = 1;
-                        _context3.next = 4;
-                        return _this.finalizeConsolidate({
-                          txParams: txParams,
-                          version: version,
-                          tokenID: tokenID,
-                          isToken: isToken,
-                          fee: fee
-                        });
+            _iterator2 = _createForOfIteratorHelper(groupedInputs);
+            _context3.prev = 54;
 
-                      case 4:
-                        tx = _context3.sent;
-                        _context3.next = 10;
-                        break;
-
-                      case 7:
-                        _context3.prev = 7;
-                        _context3.t0 = _context3["catch"](1);
-                        console.log("ERROR", _context3.t0);
-
-                      case 10:
-                        tx = _objectSpread(_objectSpread({}, tx), {}, {
-                          inputs: inputs,
-                          amount: inputs.reduce(function (totalAmount, coin) {
-                            return totalAmount.add(new bn_js__WEBPACK_IMPORTED_MODULE_10___default.a(coin.Value));
-                          }, new bn_js__WEBPACK_IMPORTED_MODULE_10___default.a(-fee)).toString()
-                        });
-                        _context3.next = 13;
-                        return _this.saveTxHistory({
-                          tx: tx,
-                          version: version,
-                          tokenID: tokenID
-                        });
-
-                      case 13:
-                        return _context3.abrupt("return", tx);
-
-                      case 14:
-                      case "end":
-                        return _context3.stop();
-                    }
-                  }
-                }, _callee3, null, [[1, 7]]);
-              }));
-
-              return function (_x3) {
-                return _ref4.apply(this, arguments);
-              };
-            }());
-            _context4.next = 56;
-            return Promise.all(task);
+            _iterator2.s();
 
           case 56:
-            results = _context4.sent;
+            if ((_step2 = _iterator2.n()).done) {
+              _context3.next = 75;
+              break;
+            }
 
-          case 57:
-            _context4.next = 59;
+            _inputs = _step2.value;
+            _txParams = Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_9__["newParamTxV2"])(this.key, [], _inputs, fee, null, null, info, coinsForRing);
+            _tx = void 0;
+            _context3.prev = 60;
+            _context3.next = 63;
+            return this.finalizeConsolidate({
+              txParams: _txParams,
+              version: version,
+              tokenID: tokenID,
+              isToken: isToken,
+              fee: fee
+            });
+
+          case 63:
+            _tx = _context3.sent;
+            _context3.next = 69;
+            break;
+
+          case 66:
+            _context3.prev = 66;
+            _context3.t1 = _context3["catch"](60);
+            console.log("ERROR", _context3.t1);
+
+          case 69:
+            _tx = _objectSpread(_objectSpread({}, _tx), {}, {
+              inputs: _inputs,
+              amount: _inputs.reduce(function (totalAmount, coin) {
+                return totalAmount.add(new bn_js__WEBPACK_IMPORTED_MODULE_10___default.a(coin.Value));
+              }, new bn_js__WEBPACK_IMPORTED_MODULE_10___default.a(-fee)).toString()
+            });
+            _context3.next = 72;
+            return this.saveTxHistory({
+              tx: _tx,
+              version: version,
+              tokenID: tokenID
+            });
+
+          case 72:
+            results.push(_tx);
+
+          case 73:
+            _context3.next = 56;
+            break;
+
+          case 75:
+            _context3.next = 80;
+            break;
+
+          case 77:
+            _context3.prev = 77;
+            _context3.t2 = _context3["catch"](54);
+
+            _iterator2.e(_context3.t2);
+
+          case 80:
+            _context3.prev = 80;
+
+            _iterator2.f();
+
+            return _context3.finish(80);
+
+          case 83:
+            _context3.next = 85;
             return this.updateProgressTx(100, "Done");
 
-          case 59:
-            return _context4.abrupt("return", results);
+          case 85:
+            return _context3.abrupt("return", results);
 
-          case 60:
+          case 86:
           case "end":
-            return _context4.stop();
+            return _context3.stop();
         }
       }
-    }, _callee4, this, [[22, 45, 48, 51]]);
+    }, _callee3, this, [[22, 45, 48, 51], [54, 77, 80, 83], [60, 66]]);
   }));
   return _consolidate.apply(this, arguments);
 }
@@ -8765,9 +8748,11 @@ var consolidatePrototype = _objectSpread({}, _consolidate__WEBPACK_IMPORTED_MODU
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
 /* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/common/errorhandler */ "./lib/common/errorhandler.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -8862,34 +8847,58 @@ function requestAirdrop() {
 
 function _requestAirdrop() {
   _requestAirdrop = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-    var paymentAddress, status;
+    var submited, paymentAddress, status;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            paymentAddress = this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_0__["PaymentAddressType"]);
+            _context3.prev = 0;
             _context3.next = 3;
+            return this.getFlagRequestAirdrop();
+
+          case 3:
+            submited = _context3.sent;
+
+            if (submited) {
+              _context3.next = 13;
+              break;
+            }
+
+            paymentAddress = this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_0__["PaymentAddressType"]);
+            _context3.next = 8;
             return this.rpcRequestService.apiRequestAirdrop({
               paymentAddress: paymentAddress
             });
 
-          case 3:
+          case 8:
             status = _context3.sent;
 
-            if (!(_lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_1__["AIRDROP_STATUS"].SUCCESS === status)) {
-              _context3.next = 7;
+            if (!(_lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_1__["AIRDROP_STATUS"].SUCCESS !== status)) {
+              _context3.next = 11;
               break;
             }
 
-            _context3.next = 7;
+            return _context3.abrupt("return");
+
+          case 11:
+            _context3.next = 13;
             return this.setFlagRequestAirdrop();
 
-          case 7:
+          case 13:
+            _context3.next = 18;
+            break;
+
+          case 15:
+            _context3.prev = 15;
+            _context3.t0 = _context3["catch"](0);
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_2__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_2__["ErrorObject"].RequestAirdropErr, _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_2__["ErrorObject"].RequestAirdropErr.description);
+
+          case 18:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, this);
+    }, _callee3, this, [[0, 15]]);
   }));
   return _requestAirdrop.apply(this, arguments);
 }
@@ -8918,6 +8927,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
 /* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
 /* harmony import */ var _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/common/errorhandler */ "./lib/common/errorhandler.js");
+/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
 
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
@@ -8926,9 +8936,16 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -9022,13 +9039,13 @@ function createAndSendConvertPToken(_x2) {
 
 function _createAndSendConvertPToken() {
   _createAndSendConvertPToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_ref2) {
-    var tokenID, balance, _ref2$fee, fee, info, paymentInfo, tokenPaymentInfo, nextStep;
+    var tokenID, balance, _ref2$fee, fee, _ref2$txHandler, txHandler, info, paymentInfo, tokenPaymentInfo, start, _yield$this$getUnspen, unspentCoinExceptSpendingCoin, nextStep, tsx, end;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            tokenID = _ref2.tokenID, balance = _ref2.balance, _ref2$fee = _ref2.fee, fee = _ref2$fee === void 0 ? _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_3__["MAX_FEE_PER_TX"] : _ref2$fee;
+            tokenID = _ref2.tokenID, balance = _ref2.balance, _ref2$fee = _ref2.fee, fee = _ref2$fee === void 0 ? _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_3__["MAX_FEE_PER_TX"] : _ref2$fee, _ref2$txHandler = _ref2.txHandler, txHandler = _ref2$txHandler === void 0 ? null : _ref2$txHandler;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendConvertPToken-tokenID", tokenID).required().string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendConvertPToken-balance", balance).required().amount();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendConvertPToken-fee", fee).required().amount();
@@ -9050,21 +9067,40 @@ function _createAndSendConvertPToken() {
             if (false) {}
 
             _context2.prev = 10;
-            _context2.next = 13;
+            start = Date.now();
+            _context2.next = 14;
+            return this.getUnspentCoinsByTokenIdV1({
+              version: _lib_core_constants__WEBPACK_IMPORTED_MODULE_5__["PrivacyVersion"].ver1,
+              tokenID: tokenID
+            });
+
+          case 14:
+            _yield$this$getUnspen = _context2.sent;
+            unspentCoinExceptSpendingCoin = _yield$this$getUnspen.unspentCoins;
+
+            if (!(unspentCoinExceptSpendingCoin.length === 0)) {
+              _context2.next = 18;
+              break;
+            }
+
+            return _context2.abrupt("break", 37);
+
+          case 18:
+            _context2.next = 20;
             return this.waitingBalanceNativeTokenV2();
 
-          case 13:
+          case 20:
             nextStep = _context2.sent;
 
             if (nextStep) {
-              _context2.next = 16;
+              _context2.next = 23;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_4__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_4__["ErrorObject"].PrepareInputForFeeErr, _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_4__["ErrorObject"].PrepareInputForFeeErr.description);
 
-          case 16:
-            _context2.next = 18;
+          case 23:
+            _context2.next = 25;
             return this.createAndSendConvertTx({
               transfer: {
                 tokenID: tokenID,
@@ -9078,34 +9114,43 @@ function _createAndSendConvertPToken() {
               }
             });
 
-          case 18:
-            _context2.next = 25;
+          case 25:
+            tsx = _context2.sent;
+            end = Date.now();
+
+            if (typeof txHandler === 'function') {
+              txHandler(_objectSpread(_objectSpread({}, tsx), {}, {
+                timeCreate: end - start
+              }));
+            }
+
+            _context2.next = 35;
             break;
 
-          case 20:
-            _context2.prev = 20;
+          case 30:
+            _context2.prev = 30;
             _context2.t0 = _context2["catch"](10);
 
             if (!(_context2.t0.code === _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_4__["ErrorObject"].EmptyUTXO.code)) {
-              _context2.next = 24;
+              _context2.next = 34;
               break;
             }
 
-            return _context2.abrupt("break", 27);
+            return _context2.abrupt("break", 37);
 
-          case 24:
+          case 34:
             throw _context2.t0;
 
-          case 25:
+          case 35:
             _context2.next = 9;
             break;
 
-          case 27:
+          case 37:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, this, [[10, 20]]);
+    }, _callee2, this, [[10, 30]]);
   }));
   return _createAndSendConvertPToken.apply(this, arguments);
 }
@@ -9201,13 +9246,13 @@ function createAndSendConvertNativeToken(_x3) {
 
 function _createAndSendConvertNativeToken() {
   _createAndSendConvertNativeToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_ref3) {
-    var _ref3$tokenID, tokenID, balance, _ref3$fee, fee, info, paymentInfosParam;
+    var _ref3$tokenID, tokenID, balance, _ref3$fee, fee, _ref3$txHandler, txHandler, info, paymentInfosParam, start, tsx, end;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _ref3$tokenID = _ref3.tokenID, tokenID = _ref3$tokenID === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"] : _ref3$tokenID, balance = _ref3.balance, _ref3$fee = _ref3.fee, fee = _ref3$fee === void 0 ? _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_3__["MAX_FEE_PER_TX"] : _ref3$fee;
+            _ref3$tokenID = _ref3.tokenID, tokenID = _ref3$tokenID === void 0 ? _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"] : _ref3$tokenID, balance = _ref3.balance, _ref3$fee = _ref3.fee, fee = _ref3$fee === void 0 ? _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_3__["MAX_FEE_PER_TX"] : _ref3$fee, _ref3$txHandler = _ref3.txHandler, txHandler = _ref3$txHandler === void 0 ? null : _ref3$txHandler;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendConvertNativeToken-tokenID", tokenID).string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendConvertNativeToken-balance", balance).required().amount();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendConvertNativeToken-fee", fee).required().amount();
@@ -9219,7 +9264,8 @@ function _createAndSendConvertNativeToken() {
             _context4.prev = 5;
             info = "";
             paymentInfosParam = [];
-            _context4.next = 10;
+            start = Date.now();
+            _context4.next = 11;
             return this.createAndSendConvertTx({
               transfer: {
                 prvPayments: paymentInfosParam,
@@ -9232,34 +9278,43 @@ function _createAndSendConvertNativeToken() {
               }
             });
 
-          case 10:
-            _context4.next = 17;
+          case 11:
+            tsx = _context4.sent;
+            end = Date.now();
+
+            if (typeof txHandler === 'function') {
+              txHandler(_objectSpread(_objectSpread({}, tsx), {}, {
+                timeCreate: end - start
+              }));
+            }
+
+            _context4.next = 21;
             break;
 
-          case 12:
-            _context4.prev = 12;
+          case 16:
+            _context4.prev = 16;
             _context4.t0 = _context4["catch"](5);
 
             if (!(_context4.t0.code === _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_4__["ErrorObject"].EmptyUTXO.code)) {
-              _context4.next = 16;
+              _context4.next = 20;
               break;
             }
 
-            return _context4.abrupt("break", 19);
+            return _context4.abrupt("break", 23);
 
-          case 16:
+          case 20:
             throw _context4.t0;
 
-          case 17:
+          case 21:
             _context4.next = 4;
             break;
 
-          case 19:
+          case 23:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, this, [[5, 12]]);
+    }, _callee4, this, [[5, 16]]);
   }));
   return _createAndSendConvertNativeToken.apply(this, arguments);
 }
@@ -9411,7 +9466,7 @@ function transactConvert(_x) {
 
 function _transactConvert() {
   _transactConvert = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
-    var _ref$transfer, _ref$transfer2, _ref$transfer2$fee, fee, _ref$transfer2$info, info, _ref$transfer2$tokenI, tokenID, _ref$transfer2$prvPay, prvPayments, tokenPayments, _ref$extra, _ref$extra2, _ref$extra2$txType, txType, _ref$extra2$version, version, account, isTokenConvert, metadata, _txParams$TokenParams, paramConvert, inputForTx, inputCoins, inputTokenCoins, totalPRVConvert, totalTokenConvert, txParams, theirTime, txParamsJson, wasmResult, _JSON$parse, b58EncodedTx, hash, outputs, tempBuf, theString, txObj, paymentAddress, tx, inputV1, inputV2, pushRawTxToPubsub;
+    var _ref$transfer, _ref$transfer2, _ref$transfer2$fee, fee, _ref$transfer2$info, info, _ref$transfer2$tokenI, tokenID, _ref$transfer2$prvPay, prvPayments, tokenPayments, _ref$extra, _ref$extra2, _ref$extra2$txType, txType, _ref$extra2$version, version, account, isTokenConvert, metadata, _txParams$TokenParams, paramConvert, inputForTx, inputCoins, inputTokenCoins, totalPRVConvert, totalTokenConvert, txParams, theirTime, txParamsJson, wasmResult, _JSON$parse, b58EncodedTx, hash, outputs, tempBuf, theString, txObj, paymentAddress, tx, inputV1, tasks, inputV2, pushRawTxToPubsub;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -9439,9 +9494,13 @@ function _transactConvert() {
               version: version
             };
             _context.next = 11;
-            return Object(_lib_module_Account_features_CoinsV1_coins_utils__WEBPACK_IMPORTED_MODULE_7__["prepareInputForConvertTxV2"])(paramConvert);
+            return this.updateProgressTx(10, "Selecting Coins");
 
           case 11:
+            _context.next = 13;
+            return Object(_lib_module_Account_features_CoinsV1_coins_utils__WEBPACK_IMPORTED_MODULE_7__["prepareInputForConvertTxV2"])(paramConvert);
+
+          case 13:
             inputForTx = _context.sent;
             inputCoins = isTokenConvert ? inputForTx === null || inputForTx === void 0 ? void 0 : inputForTx.inputCoinsForFee : inputForTx === null || inputForTx === void 0 ? void 0 : inputForTx.inputCoinsToSpent;
             inputTokenCoins = [];
@@ -9461,42 +9520,54 @@ function _transactConvert() {
             }
 
             if (!(inputCoins.length === 0)) {
-              _context.next = 19;
+              _context.next = 21;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].EmptyUTXO, "Error: Dont have UTXO PRV v1");
 
-          case 19:
+          case 21:
+            _context.next = 23;
+            return this.updateProgressTx(30, "Packing Parameters");
+
+          case 23:
             txParams = Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_8__["newParamTxV2"])(this.key, prvPayments, inputCoins, fee, null, null, info, inputForTx.coinsForRing);
 
             if (!isTokenConvert) {
-              _context.next = 24;
+              _context.next = 28;
               break;
             }
 
             if (!(inputTokenCoins.length === 0)) {
-              _context.next = 23;
+              _context.next = 27;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].EmptyUTXO, "Error: Dont have UTXO pToken v1");
 
-          case 23:
+          case 27:
             txParams.TokenParams = Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_8__["newTokenParamV2"])(tokenPayments, inputTokenCoins, tokenID, null);
 
-          case 24:
-            _context.next = 26;
+          case 28:
+            _context.next = 30;
+            return this.updateProgressTx(40, "Getting LockTime");
+
+          case 30:
+            _context.next = 32;
             return this.rpc.getNodeTime();
 
-          case 26:
+          case 32:
             theirTime = _context.sent;
             txParamsJson = JSON.stringify(txParams);
             console.debug('txParams: ', txParamsJson);
-            _context.next = 31;
+            _context.next = 37;
+            return this.updateProgressTx(60, "Signing Transaction");
+
+          case 37:
+            _context.next = 39;
             return _lib_wasm__WEBPACK_IMPORTED_MODULE_9__["wasm"].createConvertTx(txParamsJson, theirTime);
 
-          case 31:
+          case 39:
             wasmResult = _context.sent;
 
             /** create raw tx success */
@@ -9505,13 +9576,13 @@ function _transactConvert() {
             console.log('b58EncodedTx: ', b58EncodedTx);
 
             if (!(b58EncodedTx === null || b58EncodedTx === "")) {
-              _context.next = 37;
+              _context.next = 45;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].InitNormalTxErr, "Can not init transaction transferring PRV");
 
-          case 37:
+          case 45:
             tempBuf = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_10__["checkDecode"])(b58EncodedTx).bytesDecoded;
             theString = String.fromCharCode.apply(null, tempBuf);
             txObj = JSON.parse(theString);
@@ -9533,19 +9604,21 @@ function _transactConvert() {
               metadata: metadata,
               txType: txType,
               status: _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["TX_STATUS"].PROCESSING,
-              info: info
+              info: info,
+              remainInputCoins: inputForTx.remainInputCoins
             };
-            _context.next = 45;
-            return this.saveTxHistory({
+            _context.next = 53;
+            return this.updateProgressTx(70, "Storage Coins");
+
+          case 53:
+            this.saveTxHistory({
               tx: tx,
               version: _lib_core_constants__WEBPACK_IMPORTED_MODULE_11__["PrivacyVersion"].ver2,
               tokenID: tokenID
-            });
+            }).then(); // set pending tx
 
-          case 45:
-            // set pending tx
             inputV1 = isTokenConvert ? txParams === null || txParams === void 0 ? void 0 : (_txParams$TokenParams = txParams.TokenParams) === null || _txParams$TokenParams === void 0 ? void 0 : _txParams$TokenParams.InputCoins : txParams === null || txParams === void 0 ? void 0 : txParams.InputCoins;
-            _context.next = 48;
+            _context.next = 57;
             return this.setSpendingCoinsStorage({
               tokenID: tokenID,
               coins: inputV1 || [],
@@ -9553,17 +9626,20 @@ function _transactConvert() {
               txId: hash
             });
 
-          case 48:
+          case 57:
+            _context.t0 = _context.sent;
+            tasks = [_context.t0];
             console.log('Convert: InputV1 ', inputV1);
 
             if (!isTokenConvert) {
-              _context.next = 54;
+              _context.next = 68;
               break;
             }
 
             inputV2 = txParams === null || txParams === void 0 ? void 0 : txParams.InputCoins;
             console.log('Convert: InputV2 ', inputV2);
-            _context.next = 54;
+            _context.t1 = tasks;
+            _context.next = 66;
             return this.setSpendingCoinsStorage({
               tokenID: _lib_core__WEBPACK_IMPORTED_MODULE_1__["PRVIDSTR"],
               coins: inputV2,
@@ -9571,47 +9647,64 @@ function _transactConvert() {
               version: _lib_core_constants__WEBPACK_IMPORTED_MODULE_11__["PrivacyVersion"].ver2
             });
 
-          case 54:
-            _context.prev = 54;
-            _context.next = 57;
+          case 66:
+            _context.t2 = _context.sent;
+
+            _context.t1.push.call(_context.t1, _context.t2);
+
+          case 68:
+            _context.next = 70;
+            return Promise.all(tasks);
+
+          case 70:
+            _context.next = 72;
+            return this.updateProgressTx(80, "Submit Rawdata Pubsub");
+
+          case 72:
+            _context.prev = 72;
+            _context.next = 75;
             return this.rpcTxService.apiPushTx({
               rawTx: b58EncodedTx
             });
 
-          case 57:
+          case 75:
             pushRawTxToPubsub = _context.sent;
             console.log("pushRawTxToPubsub: ", pushRawTxToPubsub);
 
             if (pushRawTxToPubsub) {
-              _context.next = 61;
+              _context.next = 79;
               break;
             }
 
             throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].FailPushRawTxToPubsub, "Can not send transaction");
 
-          case 61:
-            _context.next = 66;
+          case 79:
+            _context.next = 84;
             break;
 
-          case 63:
-            _context.prev = 63;
-            _context.t0 = _context["catch"](54);
-            throw _context.t0;
+          case 81:
+            _context.prev = 81;
+            _context.t3 = _context["catch"](72);
+            throw _context.t3;
 
-          case 66:
+          case 84:
+            _context.next = 86;
+            return this.updateProgressTx(100, "Completed");
+
+          case 86:
             return _context.abrupt("return", tx);
 
-          case 69:
-            _context.prev = 69;
-            _context.t1 = _context["catch"](7);
-            throw _context.t1;
+          case 89:
+            _context.prev = 89;
+            _context.t4 = _context["catch"](7);
+            throw _context.t4;
 
-          case 72:
+          case 92:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[7, 69], [54, 63]]);
+    }, _callee, this, [[7, 89], [72, 81]]);
   }));
   return _transactConvert.apply(this, arguments);
 }
@@ -9770,8 +9863,9 @@ function _waitingBalanceNativeTokenV() {
         timeCount,
         counterStep,
         nextStep,
-        _yield$this$checkBala,
+        _ref4,
         balance,
+        humanAmount,
         _args4 = arguments;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
@@ -9791,37 +9885,51 @@ function _waitingBalanceNativeTokenV() {
             }
 
             nextStep = true;
-            return _context4.abrupt("break", 19);
+            return _context4.abrupt("break", 25);
 
           case 7:
             _context4.next = 9;
             return this.checkBalanceNativeTokenV2();
 
           case 9:
-            _yield$this$checkBala = _context4.sent;
-            balance = _yield$this$checkBala.balance;
+            _context4.t0 = _context4.sent;
 
+            if (_context4.t0) {
+              _context4.next = 12;
+              break;
+            }
+
+            _context4.t0 = 0;
+
+          case 12:
+            _ref4 = _context4.t0;
+            balance = _ref4.balance;
+            humanAmount = new bn_js__WEBPACK_IMPORTED_MODULE_1___default.a(balance).div(new bn_js__WEBPACK_IMPORTED_MODULE_1___default.a(10).pow(new bn_js__WEBPACK_IMPORTED_MODULE_1___default.a(_lib_core_constants__WEBPACK_IMPORTED_MODULE_0__["PRV"].pDecimals))).toString();
+            _context4.next = 17;
+            return this.updateProgressTx(10, "Getting Balance CoinsV2: ".concat(humanAmount, " PRV Time ").concat(counterStep + 1));
+
+          case 17:
             if (!(balance >= _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["MAX_FEE_PER_TX"])) {
-              _context4.next = 14;
+              _context4.next = 20;
               break;
             }
 
             nextStep = true;
-            return _context4.abrupt("break", 19);
+            return _context4.abrupt("break", 25);
 
-          case 14:
+          case 20:
             counterStep += 1;
-            _context4.next = 17;
+            _context4.next = 23;
             return Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_3__["sleep"])(timeCount * 1000);
 
-          case 17:
+          case 23:
             _context4.next = 3;
             break;
 
-          case 19:
+          case 25:
             return _context4.abrupt("return", nextStep);
 
-          case 20:
+          case 26:
           case "end":
             return _context4.stop();
         }
@@ -9866,6 +9974,398 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var convertPrototype = _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, _convert__WEBPACK_IMPORTED_MODULE_0__["default"]), _convert_utils__WEBPACK_IMPORTED_MODULE_2__["default"]), _convert_airdrop__WEBPACK_IMPORTED_MODULE_1__["default"]), _convert_transactor__WEBPACK_IMPORTED_MODULE_3__["default"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (convertPrototype);
+
+/***/ }),
+
+/***/ "./lib/module/Account/features/FollowToken/followToken.js":
+/*!****************************************************************!*\
+  !*** ./lib/module/Account/features/FollowToken/followToken.js ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/uniq */ "./node_modules/lodash/uniq.js");
+/* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_uniq__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+function getKeyFollowTokens() {
+  var otaKey = this.getOTAKey();
+  return "FOLLOWING-TOKENS-".concat(otaKey);
+}
+
+function getKeyFollowedDefaultTokens() {
+  var otaKey = this.getOTAKey();
+  return "FOLLOWED-DEFAULT-TOKENS-".concat(otaKey);
+}
+
+function getListFollowingTokens() {
+  return _getListFollowingTokens.apply(this, arguments);
+}
+
+function _getListFollowingTokens() {
+  _getListFollowingTokens = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var key, list;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            key = this.getKeyFollowTokens();
+            _context.next = 4;
+            return this.getAccountStorage(key);
+
+          case 4:
+            _context.t0 = _context.sent;
+
+            if (_context.t0) {
+              _context.next = 7;
+              break;
+            }
+
+            _context.t0 = [];
+
+          case 7:
+            list = _context.t0;
+            return _context.abrupt("return", list);
+
+          case 11:
+            _context.prev = 11;
+            _context.t1 = _context["catch"](0);
+            throw _context.t1;
+
+          case 14:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this, [[0, 11]]);
+  }));
+  return _getListFollowingTokens.apply(this, arguments);
+}
+
+function isFollowedDefaultTokens() {
+  return _isFollowedDefaultTokens.apply(this, arguments);
+}
+
+function _isFollowedDefaultTokens() {
+  _isFollowedDefaultTokens = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    var key, isFollowed;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            key = this.getKeyFollowedDefaultTokens();
+            _context2.next = 4;
+            return this.getAccountStorage(key);
+
+          case 4:
+            _context2.t0 = _context2.sent;
+
+            if (_context2.t0) {
+              _context2.next = 7;
+              break;
+            }
+
+            _context2.t0 = false;
+
+          case 7:
+            isFollowed = _context2.t0;
+            return _context2.abrupt("return", isFollowed);
+
+          case 11:
+            _context2.prev = 11;
+            _context2.t1 = _context2["catch"](0);
+            console.log("isFollowedDefaultTokens error", _context2.t1);
+            throw _context2.t1;
+
+          case 15:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this, [[0, 11]]);
+  }));
+  return _isFollowedDefaultTokens.apply(this, arguments);
+}
+
+function followingDefaultTokens(_x) {
+  return _followingDefaultTokens.apply(this, arguments);
+}
+
+function _followingDefaultTokens() {
+  _followingDefaultTokens = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(params) {
+    var tokenIDs, key, isFollowed;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.prev = 0;
+            tokenIDs = params.tokenIDs;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("followingDefaultTokens-tokenIDs", tokenIDs).required().array();
+            key = this.getKeyFollowedDefaultTokens();
+            _context3.next = 6;
+            return this.isFollowedDefaultTokens();
+
+          case 6:
+            isFollowed = _context3.sent;
+
+            if (isFollowed) {
+              _context3.next = 10;
+              break;
+            }
+
+            _context3.next = 10;
+            return Promise.all([this.addListFollowingToken({
+              tokenIDs: tokenIDs
+            }), this.setAccountStorage(key, true)]);
+
+          case 10:
+            _context3.next = 16;
+            break;
+
+          case 12:
+            _context3.prev = 12;
+            _context3.t0 = _context3["catch"](0);
+            console.log("followingDefaultTokens error", _context3.t0);
+            throw _context3.t0;
+
+          case 16:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this, [[0, 12]]);
+  }));
+  return _followingDefaultTokens.apply(this, arguments);
+}
+
+function setListFollowingTokens(_x2) {
+  return _setListFollowingTokens.apply(this, arguments);
+}
+
+function _setListFollowingTokens() {
+  _setListFollowingTokens = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_ref) {
+    var list, key, value;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            list = _ref.list;
+            _context4.prev = 1;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("setListFollowingTokens-list", list).required().array();
+            key = this.getKeyFollowTokens();
+            value = list.filter(function (tokenID) {
+              return tokenID && tokenID !== _lib_core__WEBPACK_IMPORTED_MODULE_1__["PRVIDSTR"];
+            });
+            _context4.next = 7;
+            return this.setAccountStorage(key, value);
+
+          case 7:
+            return _context4.abrupt("return", true);
+
+          case 10:
+            _context4.prev = 10;
+            _context4.t0 = _context4["catch"](1);
+            console.log("setListFollowingTokens error", _context4.t0);
+            throw _context4.t0;
+
+          case 14:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this, [[1, 10]]);
+  }));
+  return _setListFollowingTokens.apply(this, arguments);
+}
+
+function addFollowingToken(_x3) {
+  return _addFollowingToken.apply(this, arguments);
+}
+
+function _addFollowingToken() {
+  _addFollowingToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(params) {
+    var tokenID, oldList, isExist;
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.prev = 0;
+            tokenID = params.tokenID;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("addFollowingToken-tokenID", tokenID).required().string();
+            _context5.next = 5;
+            return this.getListFollowingTokens();
+
+          case 5:
+            oldList = _context5.sent;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("addFollowingToken-oldList", oldList).required().array();
+            isExist = oldList.includes(tokenID);
+
+            if (isExist) {
+              _context5.next = 11;
+              break;
+            }
+
+            _context5.next = 11;
+            return this.setListFollowingTokens({
+              list: [tokenID].concat(_toConsumableArray(oldList))
+            });
+
+          case 11:
+            _context5.next = 17;
+            break;
+
+          case 13:
+            _context5.prev = 13;
+            _context5.t0 = _context5["catch"](0);
+            console.log("addFollowingToken error", _context5.t0);
+            throw _context5.t0;
+
+          case 17:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, this, [[0, 13]]);
+  }));
+  return _addFollowingToken.apply(this, arguments);
+}
+
+function addListFollowingToken(_x4) {
+  return _addListFollowingToken.apply(this, arguments);
+}
+
+function _addListFollowingToken() {
+  _addListFollowingToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(params) {
+    var tokenIDs, oldList, list;
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.prev = 0;
+            tokenIDs = params.tokenIDs;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("addFollowingToken-tokenIDs", tokenIDs).required().array();
+            _context6.next = 5;
+            return this.getListFollowingTokens();
+
+          case 5:
+            oldList = _context6.sent;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("addFollowingToken-oldList", oldList).required().array();
+            list = lodash_uniq__WEBPACK_IMPORTED_MODULE_0___default()([].concat(_toConsumableArray(tokenIDs), _toConsumableArray(oldList)));
+            _context6.next = 10;
+            return this.setListFollowingTokens({
+              list: list
+            });
+
+          case 10:
+            _context6.next = 16;
+            break;
+
+          case 12:
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](0);
+            console.log("addListFollowingToken error", _context6.t0);
+            throw _context6.t0;
+
+          case 16:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, this, [[0, 12]]);
+  }));
+  return _addListFollowingToken.apply(this, arguments);
+}
+
+function removeFollowingToken(_x5) {
+  return _removeFollowingToken.apply(this, arguments);
+}
+
+function _removeFollowingToken() {
+  _removeFollowingToken = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(params) {
+    var tokenID, oldList, isExist;
+    return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.prev = 0;
+            tokenID = params.tokenID;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("removeFollowingToken-tokenID", tokenID).required().string();
+            _context7.next = 5;
+            return this.getListFollowingTokens();
+
+          case 5:
+            oldList = _context7.sent;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("removeFollowingToken-oldList", oldList).required().array();
+            isExist = oldList.includes(tokenID);
+
+            if (!isExist) {
+              _context7.next = 11;
+              break;
+            }
+
+            _context7.next = 11;
+            return this.setListFollowingTokens({
+              list: oldList.filter(function (_tokenID) {
+                return _tokenID !== tokenID;
+              })
+            });
+
+          case 11:
+            _context7.next = 17;
+            break;
+
+          case 13:
+            _context7.prev = 13;
+            _context7.t0 = _context7["catch"](0);
+            console.log("removeFollowingToken error", _context7.t0);
+            throw _context7.t0;
+
+          case 17:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, this, [[0, 13]]);
+  }));
+  return _removeFollowingToken.apply(this, arguments);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  addFollowingToken: addFollowingToken,
+  removeFollowingToken: removeFollowingToken,
+  setListFollowingTokens: setListFollowingTokens,
+  getListFollowingTokens: getListFollowingTokens,
+  getKeyFollowTokens: getKeyFollowTokens,
+  addListFollowingToken: addListFollowingToken,
+  followingDefaultTokens: followingDefaultTokens,
+  getKeyFollowedDefaultTokens: getKeyFollowedDefaultTokens,
+  isFollowedDefaultTokens: isFollowedDefaultTokens
+});
 
 /***/ }),
 
@@ -9958,6 +10458,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_endsWith__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash/endsWith */ "./node_modules/lodash/endsWith.js");
 /* harmony import */ var lodash_endsWith__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash_endsWith__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
+/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash/cloneDeep */ "./node_modules/lodash/cloneDeep.js");
+/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7__);
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -9991,6 +10494,8 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
 
 
 
@@ -10035,22 +10540,50 @@ function getKeyTxHistoryByTokenId(params) {
   }
 }
 
+function deleteUnnecessaryStorageTxKey(_ref) {
+  var tx = _ref.tx,
+      tokenID = _ref.tokenID;
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("deleteUnnecessaryStorageTxKey-tokenID", tokenID).required().string();
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("deleteUnnecessaryStorageTxKey-tx", tx).required().object();
+  var keysDelete = ["Proof", "Sig"];
+  var isToken = tokenID !== _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"];
+  tx === null || tx === void 0 ? true : delete tx.tx["Encoded"];
+
+  if (isToken) {
+    keysDelete.forEach(function (key) {
+      var _tx = tx === null || tx === void 0 ? void 0 : tx.tx;
+
+      if (_tx !== null && _tx !== void 0 && _tx.TxTokenPrivacyData) {
+        _tx === null || _tx === void 0 ? true : delete _tx.TxTokenPrivacyData[key];
+      }
+
+      _tx === null || _tx === void 0 ? true : delete _tx.Tx[key];
+    });
+  } else {
+    keysDelete.forEach(function (key) {
+      tx === null || tx === void 0 ? true : delete tx.tx[key];
+    });
+  }
+
+  return tx;
+}
+
 function saveTxHistory(_x) {
   return _saveTxHistory.apply(this, arguments);
 }
 
 function _saveTxHistory() {
   _saveTxHistory = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(params) {
-    var _ref8, tx, version, _tokenID, tokenID, key, txs, isExisted, newTxs;
+    var _ref9, _tx, version, _tokenID, tokenID, key, txs, txIndex, newTxs, tx, _tx2;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            _ref8 = params || {}, tx = _ref8.tx, version = _ref8.version, _tokenID = _ref8.tokenID;
-            tokenID = (tx === null || tx === void 0 ? void 0 : tx.tokenID) || _tokenID;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("saveTxHistory-tx", tx).required().object();
+            _ref9 = params || {}, _tx = _ref9.tx, version = _ref9.version, _tokenID = _ref9.tokenID;
+            tokenID = (_tx === null || _tx === void 0 ? void 0 : _tx.tokenID) || _tokenID;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("saveTxHistory-tx", _tx).required().object();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("saveTxHistory-tokenID", tokenID).required().string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("saveTxHistory-version", version).required().number();
             key = this.getKeyTxHistoryByTokenId({
@@ -10072,30 +10605,48 @@ function _saveTxHistory() {
 
           case 12:
             txs = _context.t0;
-            isExisted = txs.find(function (i) {
-              return i.txId === tx.txId;
+            txIndex = txs.findIndex(function (i) {
+              return (i === null || i === void 0 ? void 0 : i.txId) === (_tx === null || _tx === void 0 ? void 0 : _tx.txId);
             });
             newTxs = [];
-            newTxs = isExisted ? _toConsumableArray(txs).map(function (i) {
-              return i.txId === tx.txId ? _objectSpread(_objectSpread({}, tx), {}, {
-                updatedAt: new Date().getTime()
-              }) : i;
-            }) : [_objectSpread(_objectSpread({}, tx), {}, {
-              createdAt: new Date().getTime()
-            })].concat(_toConsumableArray(txs));
+
+            if (txIndex >= 0) {
+              // tx existed
+              tx = txs[txIndex];
+              tx = this.deleteUnnecessaryStorageTxKey({
+                tokenID: tokenID,
+                tx: tx
+              });
+              newTxs = _toConsumableArray(txs).map(function (i) {
+                return i.txId === tx.txId ? _objectSpread(_objectSpread({}, tx), {}, {
+                  status: _tx === null || _tx === void 0 ? void 0 : _tx.status,
+                  updatedAt: new Date().getTime()
+                }) : i;
+              });
+            } else {
+              _tx2 = this.deleteUnnecessaryStorageTxKey({
+                tokenID: tokenID,
+                tx: _tx
+              });
+              newTxs = [_objectSpread(_objectSpread({}, _tx2), {}, {
+                createdAt: new Date().getTime()
+              })].concat(_toConsumableArray(txs));
+            }
+
             _context.next = 18;
-            return this.setAccountStorage(key, newTxs);
+            return this.setAccountStorage(key, lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(newTxs));
 
           case 18:
-            _context.next = 23;
+            _context.next = 24;
             break;
 
           case 20:
             _context.prev = 20;
             _context.t1 = _context["catch"](0);
+            console.log("saveTxHistory FAILED", _context.t1);
             throw _context.t1;
 
-          case 23:
+          case 24:
           case "end":
             return _context.stop();
         }
@@ -10111,7 +10662,7 @@ function getTxHistoryByTxID(_x2) {
 
 function _getTxHistoryByTxID() {
   _getTxHistoryByTxID = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
-    var tx, tokenID, txId, version, key, txs, status, _params, _tx, result;
+    var tx, tokenID, txId, version, key, txs, status, _params, _tx3, result;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
@@ -10143,7 +10694,7 @@ function _getTxHistoryByTxID() {
             });
 
             if (!tx) {
-              _context2.next = 29;
+              _context2.next = 30;
               break;
             }
 
@@ -10157,71 +10708,55 @@ function _getTxHistoryByTxID() {
             status = _context2.sent;
 
             if (!(Number.isFinite(status) && status >= 0)) {
-              _context2.next = 22;
+              _context2.next = 23;
               break;
             }
 
+            tx = _objectSpread(_objectSpread({}, tx), {}, {
+              status: status
+            });
             _params = {
-              tx: _objectSpread(_objectSpread({}, tx), {}, {
-                status: status
-              }),
+              tx: tx,
               version: version,
               tokenID: tokenID
             };
-            _context2.next = 22;
+            _context2.next = 23;
             return this.saveTxHistory(_params);
 
-          case 22:
-            _context2.next = 27;
+          case 23:
+            _context2.next = 28;
             break;
 
-          case 24:
-            _context2.prev = 24;
+          case 25:
+            _context2.prev = 25;
             _context2.t1 = _context2["catch"](14);
-            console.log("GET TX HISTORY BY TXID FAILED", (_tx = tx) === null || _tx === void 0 ? void 0 : _tx.txId);
+            console.log("GET TX HISTORY BY TXID FAILED", (_tx3 = tx) === null || _tx3 === void 0 ? void 0 : _tx3.txId);
 
-          case 27:
+          case 28:
             result = this.mappingTxsTransactorFromStorage({
               tokenID: tokenID,
               tx: tx
             });
             return _context2.abrupt("return", result);
 
-          case 29:
-            _context2.next = 35;
+          case 30:
+            _context2.next = 36;
             break;
 
-          case 31:
-            _context2.prev = 31;
+          case 32:
+            _context2.prev = 32;
             _context2.t2 = _context2["catch"](0);
             console.log("getTxHistoryByTxID FAILED", _context2.t2);
             throw _context2.t2;
 
-          case 35:
+          case 36:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, this, [[0, 31], [14, 24]]);
+    }, _callee2, this, [[0, 32], [14, 25]]);
   }));
   return _getTxHistoryByTxID.apply(this, arguments);
-}
-
-function getKeySetKeysStorageByTokenId(params) {
-  try {
-    var tokenID = params.tokenID,
-        prefixName = params.prefixName,
-        version = params.version;
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeySetKeysStorageByTokenId-tokenID", tokenID).required().string();
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeySetKeysStorageByTokenId-prefixName", prefixName).required().string();
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeySetKeysStorageByTokenId-version", version).required().number();
-    var keyByTokenId = this.getKeyStorageByTokenId(params);
-    var key = "".concat(prefixName, "-").concat(keyByTokenId);
-    return key;
-  } catch (error) {
-    console.log("getKeySetKeysStorageByTokenId FAILED", error);
-    throw error;
-  }
 }
 
 function getTransactorHistoriesByTokenID(_x3) {
@@ -10261,10 +10796,23 @@ function _getTransactorHistoriesByTokenID() {
           case 11:
             txs = _context3.t0.map(function (history) {
               var tokenID = history.tokenID,
-                  tokenId = history.tokenId;
+                  tokenId = history.tokenId,
+                  tx = history.tx;
+
+              var _tokenID = tokenId || tokenID;
+
+              var lockTime;
+
+              if (_tokenID === _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"]) {
+                lockTime = tx === null || tx === void 0 ? void 0 : tx.LockTime;
+              } else {
+                lockTime = tx === null || tx === void 0 ? void 0 : tx.Tx.LockTime;
+              }
+
               return _objectSpread(_objectSpread({}, history), {}, {
-                tokenID: tokenID || tokenId,
-                tokenId: tokenID || tokenId
+                tokenID: _tokenID,
+                tokenId: _tokenID,
+                lockTime: lockTime
               });
             });
             _context3.next = 17;
@@ -10289,9 +10837,9 @@ function _getTransactorHistoriesByTokenID() {
 }
 
 function mappingTxDetail() {
-  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-      tx = _ref.tx,
-      tokenID = _ref.tokenID;
+  var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      tx = _ref2.tx,
+      tokenID = _ref2.tokenID;
 
   try {
     new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tx", tx).object();
@@ -10303,14 +10851,14 @@ function mappingTxDetail() {
 
     var isPRV = tokenID === _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"];
 
-    var _ref2 = tx || {},
-        LockTime = _ref2.LockTime,
-        Fee = _ref2.Fee,
-        Metadata = _ref2.Metadata,
-        Hash = _ref2.Hash,
-        Info = _ref2.Info,
-        Type = _ref2.Type,
-        rest = _objectWithoutProperties(_ref2, ["LockTime", "Fee", "Metadata", "Hash", "Info", "Type"]);
+    var _ref3 = tx || {},
+        LockTime = _ref3.LockTime,
+        Fee = _ref3.Fee,
+        Metadata = _ref3.Metadata,
+        Hash = _ref3.Hash,
+        Info = _ref3.Info,
+        Type = _ref3.Type,
+        rest = _objectWithoutProperties(_ref3, ["LockTime", "Fee", "Metadata", "Hash", "Info", "Type"]);
 
     var metadata = Object(_lib_utils_json__WEBPACK_IMPORTED_MODULE_3__["isJsonString"])(Metadata) ? JSON.parse(Metadata) : {};
     var metaType = metadata === null || metadata === void 0 ? void 0 : metadata.Type;
@@ -10366,8 +10914,8 @@ function mappingTxDetail() {
   }
 }
 
-function mappingTxs(_ref3) {
-  var txs = _ref3.txs;
+function mappingTxs(_ref4) {
+  var txs = _ref4.txs;
 
   try {
     if (!txs || txs.length === 0) {
@@ -10381,17 +10929,17 @@ function mappingTxs(_ref3) {
       return (tx === null || tx === void 0 ? void 0 : tx.TypeStr) !== "" ? _objectSpread(_objectSpread({}, tx), {}, {
         TxTypeStr: tx === null || tx === void 0 ? void 0 : tx.TypeStr
       }) : tx;
-    }).map(function (_ref4) {
-      var Fee = _ref4.Fee,
-          LockTime = _ref4.LockTime,
-          Amount = _ref4.Amount,
-          TxHash = _ref4.TxHash,
-          TxType = _ref4.TxType,
-          TxTypeStr = _ref4.TxTypeStr,
-          Info = _ref4.Info,
-          _ref4$ReceiverAddress = _ref4.ReceiverAddress,
-          ReceiverAddress = _ref4$ReceiverAddress === void 0 ? "" : _ref4$ReceiverAddress,
-          Metadata = _ref4.Metadata;
+    }).map(function (_ref5) {
+      var Fee = _ref5.Fee,
+          LockTime = _ref5.LockTime,
+          Amount = _ref5.Amount,
+          TxHash = _ref5.TxHash,
+          TxType = _ref5.TxType,
+          TxTypeStr = _ref5.TxTypeStr,
+          Info = _ref5.Info,
+          _ref5$ReceiverAddress = _ref5.ReceiverAddress,
+          ReceiverAddress = _ref5$ReceiverAddress === void 0 ? "" : _ref5$ReceiverAddress,
+          Metadata = _ref5.Metadata;
       return {
         time: new Date(!lodash_endsWith__WEBPACK_IMPORTED_MODULE_4___default()(LockTime, "Z") ? "".concat(LockTime, "Z") : LockTime).getTime(),
         fee: Fee,
@@ -10424,9 +10972,9 @@ function mappingSetKeys(setKeys) {
     setKeys.filter(function (tx) {
       return !!(tx !== null && tx !== void 0 && tx.TxHash);
     }).forEach(function (tx) {
-      var _ref5 = tx || {},
-          TxHash = _ref5.TxHash,
-          Value = _ref5.Value;
+      var _ref6 = tx || {},
+          TxHash = _ref6.TxHash,
+          Value = _ref6.Value;
 
       var indexTx = keys.findIndex(function (tx) {
         return (tx === null || tx === void 0 ? void 0 : tx.TxHash) === TxHash;
@@ -10453,13 +11001,13 @@ function getSetKeysStorage(_x4) {
 }
 
 function _getSetKeysStorage() {
-  _getSetKeysStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_ref6) {
+  _getSetKeysStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(_ref7) {
     var key;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            key = _ref6.key;
+            key = _ref7.key;
             _context4.prev = 1;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("key", key).required().string();
             _context4.next = 5;
@@ -10498,13 +11046,13 @@ function setSetKeysStorage(_x5) {
 }
 
 function _setSetKeysStorage() {
-  _setSetKeysStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(_ref7) {
+  _setSetKeysStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(_ref8) {
     var tokenID, setKeys, key, oldSetKeys, value;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            tokenID = _ref7.tokenID, setKeys = _ref7.setKeys, key = _ref7.key;
+            tokenID = _ref8.tokenID, setKeys = _ref8.setKeys, key = _ref8.key;
             _context5.prev = 1;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("tokenID", tokenID).required().string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("key", key).required().string();
@@ -10550,38 +11098,52 @@ function _clearTxsHistory() {
             tokenID = params.tokenID, version = params.version;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("clearTxsHistory-tokenID", tokenID).required().string();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("clearTxsHistory-version", version).required().number();
+            _context6.t0 = version;
+            _context6.next = _context6.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver1 ? 7 : _context6.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver2 ? 8 : 14;
+            break;
+
+          case 7:
+            return _context6.abrupt("break", 15);
+
+          case 8:
             keySetKeysImage = this.getKeySetKeysImageStorage(params);
             keySetKeysPublic = this.getKeySetPublickKeysStorage(params);
             task = [this.clearAccountStorage(keySetKeysImage), this.clearAccountStorage(keySetKeysPublic)];
-            _context6.next = 9;
+            _context6.next = 13;
             return Promise.all(task);
 
-          case 9:
-            _context6.next = 14;
-            break;
-
-          case 11:
-            _context6.prev = 11;
-            _context6.t0 = _context6["catch"](0);
-            throw _context6.t0;
+          case 13:
+            return _context6.abrupt("break", 15);
 
           case 14:
+            return _context6.abrupt("break", 15);
+
+          case 15:
+            _context6.next = 20;
+            break;
+
+          case 17:
+            _context6.prev = 17;
+            _context6.t1 = _context6["catch"](0);
+            throw _context6.t1;
+
+          case 20:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, this, [[0, 11]]);
+    }, _callee6, this, [[0, 17]]);
   }));
   return _clearTxsHistory.apply(this, arguments);
 }
 
-function getTxsHistory(_x7) {
-  return _getTxsHistory.apply(this, arguments);
+function handleMeasureGetTxsHistory(_x7) {
+  return _handleMeasureGetTxsHistory.apply(this, arguments);
 }
 
-function _getTxsHistory() {
-  _getTxsHistory = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(params) {
-    var result, tokenID, _params$isPToken, isPToken, version, task, _yield$Promise$all, _yield$Promise$all2, setKeyImages, setPublicKeys, _yield$Promise$all2$, txsPToken, _yield$Promise$all2$2, isPortalToken, keyImages, publicKeys, txsTransactor, txsReceiver, txsPortal, portalFilters;
+function _handleMeasureGetTxsHistory() {
+  _handleMeasureGetTxsHistory = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(params) {
+    var result, tokenID, _params$isPToken, isPToken, version, task, _yield$Promise$all, _yield$Promise$all2, setKeyImages, setSNDs, _yield$Promise$all2$, txsPToken, keyImages, publicKeys, txsTransactor, txsReceiver, _task, _yield$Promise$all3, _yield$Promise$all4, _setKeyImages, setPublicKeys, _yield$Promise$all4$, _txsPToken, _yield$Promise$all4$2, isPortalToken, _keyImages, _publicKeys, _txsTransactor, _txsReceiver, txsPortal, portalFilters;
 
     return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
@@ -10596,35 +11158,46 @@ function _getTxsHistory() {
             _context7.prev = 1;
             tokenID = params.tokenID, _params$isPToken = params.isPToken, isPToken = _params$isPToken === void 0 ? false : _params$isPToken, version = params.version;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsHistory-tokenID", tokenID).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsHistory-isPToken", isPToken)["boolean"]();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsHistory-isPToken", isPToken)["boolean"]().required();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsHistory-version", version).required().number();
+            _context7.t0 = version;
+            _context7.next = _context7.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver1 ? 9 : _context7.t0 === _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver2 ? 46 : 99;
+            break;
+
+          case 9:
+            _context7.prev = 9;
+            _context7.next = 12;
+            return this.getUnspentCoinsByTokenIdV1(params);
+
+          case 12:
             task = [this.measureAsyncFn(this.getSetKeyImages, "txsHistory.setKeyImages", params), //
-            this.measureAsyncFn(this.getSetPublicKeys, "txsHistory.setPublicKeys", params) //
+            this.measureAsyncFn(this.getSetKeySNDs, "txsHistory.setKeySNDs", params) //
             ];
 
-            if (isPToken) {
-              task.push(this.measureAsyncFn(this.getPTokenHistoryByTokenID, "txsHistory.txsPToken", params), this.handleCheckIsPortalToken({
-                tokenID: tokenID
-              }));
+            if (isPToken) {// task.push(
+              //   this.measureAsyncFn(
+              //     this.getPTokenHistoryByTokenID,
+              //     "txsHistory.txsPToken",
+              //     params
+              //   )
+              // );
             }
 
-            _context7.next = 10;
+            _context7.next = 16;
             return Promise.all(task);
 
-          case 10:
+          case 16:
             _yield$Promise$all = _context7.sent;
-            _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 4);
+            _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 3);
             setKeyImages = _yield$Promise$all2[0];
-            setPublicKeys = _yield$Promise$all2[1];
+            setSNDs = _yield$Promise$all2[1];
             _yield$Promise$all2$ = _yield$Promise$all2[2];
             txsPToken = _yield$Promise$all2$ === void 0 ? [] : _yield$Promise$all2$;
-            _yield$Promise$all2$2 = _yield$Promise$all2[3];
-            isPortalToken = _yield$Promise$all2$2 === void 0 ? false : _yield$Promise$all2$2;
-            console.log("setKeyImages", setKeyImages.length);
-            console.log("setPublicKeys", setPublicKeys.length);
+            // console.log("setKeyImages", setKeyImages);
+            // console.log("setSNDs", setSNDs);
             keyImages = this.mappingSetKeys(setKeyImages);
-            publicKeys = this.mappingSetKeys(setPublicKeys);
-            _context7.next = 24;
+            publicKeys = this.mappingSetKeys(setSNDs);
+            _context7.next = 26;
             return this.measureAsyncFn(this.getTxsTransactor, "txsHistory.txsTransactor", {
               keyImages: keyImages,
               publicKeys: publicKeys,
@@ -10632,18 +11205,14 @@ function _getTxsHistory() {
               version: version
             });
 
-          case 24:
+          case 26:
             txsTransactor = _context7.sent;
             txsReceiver = this.getTxsReceiver({
               keyImages: keyImages,
               publicKeys: publicKeys,
               tokenID: tokenID
             });
-            console.log("========== Get history from api ==========");
-            console.log("txsTransactor: ", txsTransactor.length);
-            console.log("txsReceiver: ", txsReceiver.length);
             console.log("txsPToken", txsPToken.length);
-            console.log("isPortalToken: ", isPortalToken);
 
             if (txsPToken.length > 0) {
               txsPToken = this.handleMappingTxsPTokenByTxsTransactor({
@@ -10671,65 +11240,231 @@ function _getTxsHistory() {
                 txsTransactor: txsTransactor
               });
               console.log("txsTransactor after filter by txsPToken", txsTransactor.length);
+            }
+
+            if (txsReceiver.length > 0 && txsTransactor.length > 0) {
+              txsTransactor = this.handleFilterTxsTransactorByTxsReceiver({
+                txsTransactor: txsTransactor,
+                txsReceiver: txsReceiver
+              });
+            }
+
+            result.txsTransactor = txsTransactor || [];
+            result.txsReceiver = txsReceiver || [];
+            result.txsPToken = txsPToken || [];
+            _context7.next = 45;
+            break;
+
+          case 40:
+            _context7.prev = 40;
+            _context7.t1 = _context7["catch"](9);
+            console.log("ERROR getTxsHistory", _context7.t1);
+            _context7.next = 45;
+            return this.clearTxsHistory(params);
+
+          case 45:
+            return _context7.abrupt("return", result);
+
+          case 46:
+            _context7.prev = 46;
+            _task = [this.measureAsyncFn(this.getSetKeyImages, "txsHistory.setKeyImages", params), //
+            this.measureAsyncFn(this.getSetPublicKeys, "txsHistory.setPublicKeys", params) //
+            ];
+
+            if (isPToken) {
+              _task.push(this.measureAsyncFn(this.getPTokenHistoryByTokenID, "txsHistory.txsPToken", params), this.handleCheckIsPortalToken({
+                tokenID: tokenID
+              }));
+            }
+
+            _context7.next = 51;
+            return Promise.all(_task);
+
+          case 51:
+            _yield$Promise$all3 = _context7.sent;
+            _yield$Promise$all4 = _slicedToArray(_yield$Promise$all3, 4);
+            _setKeyImages = _yield$Promise$all4[0];
+            setPublicKeys = _yield$Promise$all4[1];
+            _yield$Promise$all4$ = _yield$Promise$all4[2];
+            _txsPToken = _yield$Promise$all4$ === void 0 ? [] : _yield$Promise$all4$;
+            _yield$Promise$all4$2 = _yield$Promise$all4[3];
+            isPortalToken = _yield$Promise$all4$2 === void 0 ? false : _yield$Promise$all4$2;
+            console.log("setKeyImages", _setKeyImages.length);
+            console.log("setPublicKeys", setPublicKeys.length);
+            _keyImages = this.mappingSetKeys(_setKeyImages);
+            _publicKeys = this.mappingSetKeys(setPublicKeys);
+            _context7.next = 65;
+            return this.measureAsyncFn(this.getTxsTransactor, "txsHistory.txsTransactor", {
+              keyImages: _keyImages,
+              publicKeys: _publicKeys,
+              tokenID: tokenID,
+              version: version
+            });
+
+          case 65:
+            _txsTransactor = _context7.sent;
+            _txsReceiver = this.getTxsReceiver({
+              keyImages: _keyImages,
+              publicKeys: _publicKeys,
+              tokenID: tokenID
+            });
+            console.log("txsPToken", _txsPToken.length);
+
+            if (_txsPToken.length > 0) {
+              _txsPToken = this.handleMappingTxsPTokenByTxsTransactor({
+                txsPToken: _txsPToken,
+                txsTransactor: _txsTransactor
+              });
+              console.log("txsPToken after mapping by txsTransactor", _txsPToken.length);
+            }
+
+            console.log("txsReceiver", _txsReceiver.length);
+
+            if (_txsReceiver.length > 0) {
+              _txsReceiver = this.handleFilterTxsReceiverByTxsPToken({
+                txsReceiver: _txsReceiver,
+                txsPToken: _txsPToken
+              });
+              console.log("txsReceiver after filter by txsPToken", _txsReceiver.length);
+            }
+
+            console.log("txsTransactor", _txsTransactor.length);
+
+            if (_txsTransactor.length > 0) {
+              _txsTransactor = this.handleFilterTxsTransactorByTxsPToken({
+                txsPToken: _txsPToken,
+                txsTransactor: _txsTransactor
+              });
+              console.log("txsTransactor after filter by txsPToken", _txsTransactor.length);
+            }
+
+            if (_txsReceiver.length > 0 && _txsTransactor.length > 0) {
+              _txsTransactor = this.handleFilterTxsTransactorByTxsReceiver({
+                txsTransactor: _txsTransactor,
+                txsReceiver: _txsReceiver
+              });
             } // filter portal txs
 
 
             txsPortal = [];
 
             if (!isPortalToken) {
-              _context7.next = 44;
+              _context7.next = 82;
               break;
             }
 
-            _context7.next = 40;
-            return this.getTxsPortal(params, txsReceiver, txsTransactor);
+            _context7.next = 78;
+            return this.getTxsPortal(params, _txsReceiver, _txsTransactor);
 
-          case 40:
+          case 78:
             portalFilters = _context7.sent;
             txsPortal = portalFilters.txsPortal;
-            txsReceiver = portalFilters.txsReceiver;
-            txsTransactor = portalFilters.txsTransactor;
+            _txsReceiver = portalFilters.txsReceiver;
+            _txsTransactor = portalFilters.txsTransactor;
 
-          case 44:
+          case 82:
             console.log("========== Get history after mapping ==========");
-            console.log("txsTransactor: ", txsTransactor.length);
-            console.log("txsReceiver: ", txsReceiver.length);
-            console.log("txsPToken: ", txsPToken.length);
+            console.log("txsTransactor: ", _txsTransactor.length);
+            console.log("txsReceiver: ", _txsReceiver.length);
+            console.log("txsPToken: ", _txsPToken.length);
             console.log("txsPortal: ", txsPortal.length);
-            result.txsTransactor = txsTransactor || [];
-            result.txsReceiver = txsReceiver || [];
-            result.txsPToken = txsPToken || [];
+            result.txsTransactor = _txsTransactor || [];
+            result.txsReceiver = _txsReceiver || [];
+            result.txsPToken = _txsPToken || [];
             result.txsPortal = txsPortal || [];
-            _context7.next = 55;
-            return this.setCoinsStorage(_objectSpread({
-              value: this.coinsStorage
-            }, params));
-
-          case 55:
-            _context7.next = 63;
+            _context7.next = 98;
             break;
 
-          case 57:
-            _context7.prev = 57;
-            _context7.t0 = _context7["catch"](1);
-            console.log("ERROR getTxsHistory", _context7.t0);
-            _context7.next = 62;
+          case 93:
+            _context7.prev = 93;
+            _context7.t2 = _context7["catch"](46);
+            console.log("ERROR getTxsHistory", _context7.t2);
+            _context7.next = 98;
             return this.clearTxsHistory(params);
 
-          case 62:
-            throw _context7.t0;
-
-          case 63:
+          case 98:
             return _context7.abrupt("return", result);
 
-          case 64:
+          case 99:
+            return _context7.abrupt("break", 100);
+
+          case 100:
+            _context7.next = 105;
+            break;
+
+          case 102:
+            _context7.prev = 102;
+            _context7.t3 = _context7["catch"](1);
+            throw _context7.t3;
+
+          case 105:
+            return _context7.abrupt("return", result);
+
+          case 106:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, this, [[1, 57]]);
+    }, _callee7, this, [[1, 102], [9, 40], [46, 93]]);
+  }));
+  return _handleMeasureGetTxsHistory.apply(this, arguments);
+}
+
+function getTxsHistory(_x8) {
+  return _getTxsHistory.apply(this, arguments);
+}
+
+function _getTxsHistory() {
+  _getTxsHistory = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(params) {
+    var result;
+    return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.prev = 0;
+            _context8.next = 3;
+            return this.measureAsyncFn(this.handleMeasureGetTxsHistory, "txsHistory.totalTime", params);
+
+          case 3:
+            result = _context8.sent;
+            _context8.next = 6;
+            return this.setCoinsStorage(_objectSpread({
+              value: this.coinsStorage
+            }, params));
+
+          case 6:
+            return _context8.abrupt("return", result);
+
+          case 9:
+            _context8.prev = 9;
+            _context8.t0 = _context8["catch"](0);
+            throw _context8.t0;
+
+          case 12:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, this, [[0, 9]]);
   }));
   return _getTxsHistory.apply(this, arguments);
+}
+
+function getKeySetKeysStorageByTokenId(params) {
+  try {
+    var tokenID = params.tokenID,
+        prefixName = params.prefixName,
+        version = params.version;
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeySetKeysStorageByTokenId-tokenID", tokenID).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeySetKeysStorageByTokenId-prefixName", prefixName).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeySetKeysStorageByTokenId-version", version).required().number();
+    var keyByTokenId = this.getKeyStorageByTokenId(params);
+    var key = "".concat(prefixName, "-").concat(keyByTokenId);
+    return key;
+  } catch (error) {
+    console.log("getKeySetKeysStorageByTokenId FAILED", error);
+    throw error;
+  }
 }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -10744,10 +11479,12 @@ function _getTxsHistory() {
   mappingTxDetail: mappingTxDetail,
   setSetKeysStorage: setSetKeysStorage,
   getSetKeysStorage: getSetKeysStorage,
-  getKeySetKeysStorageByTokenId: getKeySetKeysStorageByTokenId,
   mappingSetKeys: mappingSetKeys,
   clearTxsHistory: clearTxsHistory,
-  getPrivacyTokenTxHistoryByTokenID: getPrivacyTokenTxHistoryByTokenID
+  getPrivacyTokenTxHistoryByTokenID: getPrivacyTokenTxHistoryByTokenID,
+  handleMeasureGetTxsHistory: handleMeasureGetTxsHistory,
+  getKeySetKeysStorageByTokenId: getKeySetKeysStorageByTokenId,
+  deleteUnnecessaryStorageTxKey: deleteUnnecessaryStorageTxKey
 });
 
 /***/ }),
@@ -11550,6 +12287,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_differenceBy__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash/differenceBy */ "./node_modules/lodash/differenceBy.js");
 /* harmony import */ var lodash_differenceBy__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash_differenceBy__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var lodash_uniqBy__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash/uniqBy */ "./node_modules/lodash/uniqBy.js");
+/* harmony import */ var lodash_uniqBy__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash_uniqBy__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash/isEqual */ "./node_modules/lodash/isEqual.js");
+/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash_isEqual__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var lodash_isArray__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lodash/isArray */ "./node_modules/lodash/isArray.js");
+/* harmony import */ var lodash_isArray__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(lodash_isArray__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_9__);
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -11578,7 +12323,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
+
+
+
 var SET_PUBLIC_KEY = "SET_PUBLIC_KEY";
+var SET_SND_KEY = "SET_SND_KEY";
 
 function getKeySetPublickKeysStorage(params) {
   try {
@@ -11596,43 +12346,318 @@ function getKeySetPublickKeysStorage(params) {
   }
 }
 
-function getSetPublicKeys(_x) {
-  return _getSetPublicKeys.apply(this, arguments);
+function getKeySetSNDsStorage(params) {
+  try {
+    var tokenID = params.tokenID,
+        version = params.version;
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getKeySetSNDsStorage-tokenID", tokenID).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getKeySetSNDsStorage-version", version).required().number();
+    return this.getKeySetKeysStorageByTokenId({
+      tokenID: tokenID,
+      prefixName: SET_SND_KEY,
+      version: version
+    });
+  } catch (error) {
+    throw error;
+  }
 }
 
-function _getSetPublicKeys() {
-  _getSetPublicKeys = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(params) {
-    var _this = this;
+function getKeyTxsReceiverStorageBySCV(_x) {
+  return _getKeyTxsReceiverStorageBySCV.apply(this, arguments);
+}
 
-    var key, tokenID, outputCoins, oldSetPublicKeys, oldPublicKeys, outputCoinsPublicKeys, pubKeys, txs, setPublicKeys;
+function _getKeyTxsReceiverStorageBySCV() {
+  _getKeyTxsReceiverStorageBySCV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(params) {
+    var tokenID, version, key;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
+            tokenID = params.tokenID, version = params.version;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getKeyTxsReceiverStorageBySCV-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getKeyTxsReceiverStorageBySCV-version", version).required().number();
+            key = this.getTxsByReceiverByCSV(params);
+            return _context.abrupt("return", key);
+
+          case 8:
+            _context.prev = 8;
+            _context.t0 = _context["catch"](0);
+            throw _context.t0;
+
+          case 11:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this, [[0, 8]]);
+  }));
+  return _getKeyTxsReceiverStorageBySCV.apply(this, arguments);
+}
+
+function getTxsByReceiverByCSV(_x2) {
+  return _getTxsByReceiverByCSV.apply(this, arguments);
+}
+
+function _getTxsByReceiverByCSV() {
+  _getTxsByReceiverByCSV = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
+    var txsReceiver, tokenID, version, limit, index, offset, txs;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            txsReceiver = [];
+            _context2.prev = 1;
+            tokenID = params.tokenID, version = params.version;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getTxsByReceiverByCSV-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getTxsByReceiverByCSV-version", version).required().number();
+            limit = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["LIMIT"];
+            index = 0;
+
+          case 7:
+            if (false) {}
+
+            offset = limit * index;
+            _context2.next = 11;
+            return this.rpcCoinService.apiGetTxsByReceiver({
+              tokenID: tokenID,
+              version: version,
+              limit: limit,
+              offset: offset,
+              paymentkey: this.getPaymentAddress()
+            });
+
+          case 11:
+            _context2.t0 = _context2.sent;
+
+            if (_context2.t0) {
+              _context2.next = 14;
+              break;
+            }
+
+            _context2.t0 = [];
+
+          case 14:
+            txs = _context2.t0;
+            index++;
+            txsReceiver = txsReceiver.concat(txs);
+
+            if (!((txs === null || txs === void 0 ? void 0 : txs.length) < limit)) {
+              _context2.next = 19;
+              break;
+            }
+
+            return _context2.abrupt("break", 21);
+
+          case 19:
+            _context2.next = 7;
+            break;
+
+          case 21:
+            txsReceiver = lodash_uniqBy__WEBPACK_IMPORTED_MODULE_6___default()(txsReceiver, function (item) {
+              var _item$TxDetail;
+
+              return item === null || item === void 0 ? void 0 : (_item$TxDetail = item.TxDetail) === null || _item$TxDetail === void 0 ? void 0 : _item$TxDetail.Hash;
+            });
+            _context2.next = 27;
+            break;
+
+          case 24:
+            _context2.prev = 24;
+            _context2.t1 = _context2["catch"](1);
+            throw _context2.t1;
+
+          case 27:
+            return _context2.abrupt("return", txsReceiver);
+
+          case 28:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this, [[1, 24]]);
+  }));
+  return _getTxsByReceiverByCSV.apply(this, arguments);
+}
+
+function getSetKeySNDs(_x3) {
+  return _getSetKeySNDs.apply(this, arguments);
+}
+
+function _getSetKeySNDs() {
+  _getSetKeySNDs = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(params) {
+    var _this = this;
+
+    var key, setSNDs, tokenID, version, outputCoins, oldSetSNDs, oldSNDs, outputCoinsSNDs, sdnds, accountPubkey, txsByReceiver;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            setSNDs = [];
+            _context3.prev = 1;
+            tokenID = params.tokenID, version = params.version;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getSetKeySNDs-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getSetKeySNDs-version", version).required().number();
+            key = this.getKeySetSNDsStorage(params); //
+
+            _context3.next = 8;
+            return this.getListOutputCoinsStorage(params);
+
+          case 8:
+            outputCoins = _context3.sent;
+            _context3.next = 11;
+            return this.getSetKeysStorage({
+              key: key
+            });
+
+          case 11:
+            _context3.t0 = _context3.sent;
+
+            if (_context3.t0) {
+              _context3.next = 14;
+              break;
+            }
+
+            _context3.t0 = [];
+
+          case 14:
+            oldSetSNDs = _context3.t0;
+
+            if (!(outputCoins.length === 0)) {
+              _context3.next = 17;
+              break;
+            }
+
+            return _context3.abrupt("return", oldSetSNDs);
+
+          case 17:
+            oldSNDs = oldSetSNDs.map(function (i) {
+              return i === null || i === void 0 ? void 0 : i.SNDerivator;
+            });
+            outputCoinsSNDs = outputCoins.map(function (coin) {
+              return coin === null || coin === void 0 ? void 0 : coin.SNDerivator;
+            });
+            sdnds = lodash_difference__WEBPACK_IMPORTED_MODULE_3___default()(outputCoinsSNDs, oldSNDs);
+
+            if (!(sdnds.length === 0)) {
+              _context3.next = 22;
+              break;
+            }
+
+            return _context3.abrupt("return", oldSetSNDs);
+
+          case 22:
+            accountPubkey = this.getPublicKeyBase64();
+            _context3.next = 25;
+            return this.getTxsByReceiverByCSV(params);
+
+          case 25:
+            txsByReceiver = _context3.sent;
+            setSNDs = txsByReceiver.map(function (tx) {
+              return tx === null || tx === void 0 ? void 0 : tx.TxDetail;
+            }).map(function (tx) {
+              try {
+                var _ref3 = tx || {},
+                    _ref3$OutputCoinPubKe = _ref3.OutputCoinPubKey,
+                    OutputCoinPubKey = _ref3$OutputCoinPubKe === void 0 ? [] : _ref3$OutputCoinPubKe,
+                    _ref3$OutputCoinSND = _ref3.OutputCoinSND,
+                    OutputCoinSND = _ref3$OutputCoinSND === void 0 ? [] : _ref3$OutputCoinSND,
+                    _ref3$TokenOutputCoin = _ref3.TokenOutputCoinPubKey,
+                    TokenOutputCoinPubKey = _ref3$TokenOutputCoin === void 0 ? [] : _ref3$TokenOutputCoin,
+                    _ref3$TokenOutputCoin2 = _ref3.TokenOutputCoinSND,
+                    TokenOutputCoinSND = _ref3$TokenOutputCoin2 === void 0 ? [] : _ref3$TokenOutputCoin2,
+                    Type = _ref3.Type;
+
+                var SNDerivator;
+                var Value = new bn_js__WEBPACK_IMPORTED_MODULE_9___default.a("0");
+                var outputCoinSND = lodash_isArray__WEBPACK_IMPORTED_MODULE_8___default()(OutputCoinSND) ? _toConsumableArray(OutputCoinSND) : [];
+                var outputCoinPubkey = lodash_isArray__WEBPACK_IMPORTED_MODULE_8___default()(OutputCoinPubKey) ? _toConsumableArray(OutputCoinPubKey) : [];
+
+                if (["tp", "tcv"].includes(Type)) {
+                  outputCoinPubkey = lodash_isArray__WEBPACK_IMPORTED_MODULE_8___default()(TokenOutputCoinPubKey) ? _toConsumableArray(TokenOutputCoinPubKey) : [];
+                  outputCoinSND = lodash_isArray__WEBPACK_IMPORTED_MODULE_8___default()(TokenOutputCoinSND) ? _toConsumableArray(TokenOutputCoinSND) : [];
+                }
+
+                outputCoinPubkey.forEach(function (pubkey, index) {
+                  if (lodash_isEqual__WEBPACK_IMPORTED_MODULE_7___default()(pubkey, accountPubkey)) {
+                    var _SNDerivator = outputCoinSND[index];
+                    var foundCoin = outputCoins.find(function (coin) {
+                      return lodash_isEqual__WEBPACK_IMPORTED_MODULE_7___default()(coin === null || coin === void 0 ? void 0 : coin.SNDerivator, _SNDerivator);
+                    });
+                    Value = Value.add(new bn_js__WEBPACK_IMPORTED_MODULE_9___default.a((foundCoin === null || foundCoin === void 0 ? void 0 : foundCoin.Value) || "0"));
+                  }
+                });
+                return _objectSpread(_objectSpread({}, _this.mappingTxDetail({
+                  tx: tx,
+                  tokenID: tokenID
+                })), {}, {
+                  SNDerivator: SNDerivator,
+                  Value: Value.toString()
+                });
+              } catch (error) {
+                console.log("MAPPING SET SNDS FAILED", error);
+                return tx;
+              }
+            });
+            _context3.next = 33;
+            break;
+
+          case 29:
+            _context3.prev = 29;
+            _context3.t1 = _context3["catch"](1);
+            console.log("getSetKeySNDs error", _context3.t1);
+            throw _context3.t1;
+
+          case 33:
+            return _context3.abrupt("return", setSNDs);
+
+          case 34:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this, [[1, 29]]);
+  }));
+  return _getSetKeySNDs.apply(this, arguments);
+}
+
+function getSetPublicKeys(_x4) {
+  return _getSetPublicKeys.apply(this, arguments);
+}
+
+function _getSetPublicKeys() {
+  _getSetPublicKeys = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(params) {
+    var _this2 = this;
+
+    var key, tokenID, outputCoins, oldSetPublicKeys, oldPublicKeys, outputCoinsPublicKeys, pubKeys, txs, setPublicKeys;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
             tokenID = params.tokenID;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getSetPublicKeys-tokenID", tokenID).required().string();
             key = this.getKeySetPublickKeysStorage(params); //
 
-            _context.next = 6;
+            _context4.next = 6;
             return this.getListOutputCoinsStorage(params);
 
           case 6:
-            outputCoins = _context.sent;
-            _context.next = 9;
+            outputCoins = _context4.sent;
+            _context4.next = 9;
             return this.getSetKeysStorage({
               key: key
             });
 
           case 9:
-            oldSetPublicKeys = _context.sent;
+            oldSetPublicKeys = _context4.sent;
 
             if (!(outputCoins.length === 0)) {
-              _context.next = 12;
+              _context4.next = 12;
               break;
             }
 
-            return _context.abrupt("return", oldSetPublicKeys);
+            return _context4.abrupt("return", oldSetPublicKeys);
 
           case 12:
             oldPublicKeys = oldSetPublicKeys.map(function (i) {
@@ -11644,23 +12669,23 @@ function _getSetPublicKeys() {
             pubKeys = lodash_difference__WEBPACK_IMPORTED_MODULE_3___default()(outputCoinsPublicKeys, oldPublicKeys);
 
             if (!(pubKeys.length === 0)) {
-              _context.next = 17;
+              _context4.next = 17;
               break;
             }
 
-            return _context.abrupt("return", oldSetPublicKeys);
+            return _context4.abrupt("return", oldSetPublicKeys);
 
           case 17:
-            _context.next = 19;
+            _context4.next = 19;
             return this.rpcCoinService.apiGetTxsByPublicKey({
               pubKeys: pubKeys
             });
 
           case 19:
-            txs = _context.sent;
+            txs = _context4.sent;
 
             if (!(txs.length !== pubKeys.length)) {
-              _context.next = 22;
+              _context4.next = 22;
               break;
             }
 
@@ -11668,11 +12693,11 @@ function _getSetPublicKeys() {
 
           case 22:
             if (!(txs.length === 0)) {
-              _context.next = 24;
+              _context4.next = 24;
               break;
             }
 
-            return _context.abrupt("return", oldSetPublicKeys);
+            return _context4.abrupt("return", oldSetPublicKeys);
 
           case 24:
             setPublicKeys = txs.map(function (tx) {
@@ -11683,7 +12708,7 @@ function _getSetPublicKeys() {
                 return coin.PublicKey === PublicKey;
               });
               var Value = (foundCoin === null || foundCoin === void 0 ? void 0 : foundCoin.Value) || 0;
-              return _objectSpread(_objectSpread({}, _this.mappingTxDetail({
+              return _objectSpread(_objectSpread({}, _this2.mappingTxDetail({
                 tx: tx,
                 tokenID: tokenID
               })), {}, {
@@ -11691,7 +12716,7 @@ function _getSetPublicKeys() {
                 Value: Value
               });
             });
-            _context.next = 27;
+            _context4.next = 27;
             return this.setSetKeysStorage({
               tokenID: tokenID,
               setKeys: setPublicKeys,
@@ -11699,29 +12724,29 @@ function _getSetPublicKeys() {
             });
 
           case 27:
-            _context.next = 32;
+            _context4.next = 32;
             break;
 
           case 29:
-            _context.prev = 29;
-            _context.t0 = _context["catch"](0);
-            throw _context.t0;
+            _context4.prev = 29;
+            _context4.t0 = _context4["catch"](0);
+            throw _context4.t0;
 
           case 32:
-            _context.next = 34;
+            _context4.next = 34;
             return this.getSetKeysStorage({
               key: key
             });
 
           case 34:
-            return _context.abrupt("return", _context.sent);
+            return _context4.abrupt("return", _context4.sent);
 
           case 35:
           case "end":
-            return _context.stop();
+            return _context4.stop();
         }
       }
-    }, _callee, this, [[0, 29]]);
+    }, _callee4, this, [[0, 29]]);
   }));
   return _getSetPublicKeys.apply(this, arguments);
 }
@@ -11799,10 +12824,16 @@ function handleFilterTxsReceiverByTxsPToken(_ref2) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  //v2
   getKeySetPublickKeysStorage: getKeySetPublickKeysStorage,
   getSetPublicKeys: getSetPublicKeys,
   getTxsReceiver: getTxsReceiver,
-  handleFilterTxsReceiverByTxsPToken: handleFilterTxsReceiverByTxsPToken
+  handleFilterTxsReceiverByTxsPToken: handleFilterTxsReceiverByTxsPToken,
+  //v1
+  getSetKeySNDs: getSetKeySNDs,
+  getTxsByReceiverByCSV: getTxsByReceiverByCSV,
+  getKeyTxsReceiverStorageBySCV: getKeyTxsReceiverStorageBySCV,
+  getKeySetSNDsStorage: getKeySetSNDsStorage
 });
 
 /***/ }),
@@ -11816,22 +12847,23 @@ function handleFilterTxsReceiverByTxsPToken(_ref2) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/uniq */ "./node_modules/lodash/uniq.js");
-/* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_uniq__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
-/* harmony import */ var lodash_intersectionBy__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/intersectionBy */ "./node_modules/lodash/intersectionBy.js");
-/* harmony import */ var lodash_intersectionBy__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_intersectionBy__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var lodash_differenceBy__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash/differenceBy */ "./node_modules/lodash/differenceBy.js");
-/* harmony import */ var lodash_differenceBy__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash_differenceBy__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var lodash_difference__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash/difference */ "./node_modules/lodash/difference.js");
-/* harmony import */ var lodash_difference__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(lodash_difference__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
-/* harmony import */ var _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @lib/common/errorhandler */ "./lib/common/errorhandler.js");
-/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
-
-
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var lodash_intersectionBy__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/intersectionBy */ "./node_modules/lodash/intersectionBy.js");
+/* harmony import */ var lodash_intersectionBy__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_intersectionBy__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var lodash_differenceBy__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/differenceBy */ "./node_modules/lodash/differenceBy.js");
+/* harmony import */ var lodash_differenceBy__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_differenceBy__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lodash_difference__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash/difference */ "./node_modules/lodash/difference.js");
+/* harmony import */ var lodash_difference__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash_difference__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/common/errorhandler */ "./lib/common/errorhandler.js");
+/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
+/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lodash/isEqual */ "./node_modules/lodash/isEqual.js");
+/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(lodash_isEqual__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lodash/uniq */ "./node_modules/lodash/uniq.js");
+/* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(lodash_uniq__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -11862,13 +12894,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
+
+
 var SET_KEY_IMAGES = "SET_KEY_IMAGES";
 
 function mappingTxsTransactorFromStorage(_ref) {
   var tokenID = _ref.tokenID,
       tx = _ref.tx;
-  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("mappingTxsTransactorFromStorage-tokenID", tokenID).required().string();
-  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("mappingTxsTransactorFromStorage-tx", tx).required().object();
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("mappingTxsTransactorFromStorage-tokenID", tokenID).required().string();
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("mappingTxsTransactorFromStorage-tx", tx).required().object();
 
   try {
     var txId = tx.txId,
@@ -11880,13 +12915,14 @@ function mappingTxsTransactorFromStorage(_ref) {
         receivers = tx.receivers,
         tokenReceivers = tx.tokenReceivers,
         memo = tx.memo,
-        tokenAmount = tx.tokenAmount;
-    var isMainCrypto = tokenID === _lib_core__WEBPACK_IMPORTED_MODULE_8__["PRVIDSTR"];
+        tokenAmount = tx.tokenAmount,
+        txTokenID = tx.tokenID;
+    var isMainCrypto = tokenID === _lib_core__WEBPACK_IMPORTED_MODULE_7__["PRVIDSTR"];
 
     var _tx = isMainCrypto ? txDetail : txDetail === null || txDetail === void 0 ? void 0 : txDetail.Tx;
 
-    var statusStr = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_6__["TX_STATUS_STR"][status];
-    var txTypeStr = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_6__["TX_TYPE_STR"][txType];
+    var statusStr = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_STATUS_STR"][status];
+    var txTypeStr = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE_STR"][txType];
     var time = (_tx === null || _tx === void 0 ? void 0 : _tx.LockTime) * 1000;
     var receiverAddress = isMainCrypto ? receivers[0] : tokenReceivers[0];
 
@@ -11902,7 +12938,8 @@ function mappingTxsTransactorFromStorage(_ref) {
       time: time,
       fee: fee,
       receiverAddress: receiverAddress,
-      memo: memo
+      memo: memo,
+      tokenID: txTokenID || tokenID
     };
     return result;
   } catch (error) {
@@ -11914,8 +12951,8 @@ function getKeySetKeysImageStorage(params) {
   try {
     var tokenID = params.tokenID,
         version = params.version;
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getKeySetKeysImageStorage-tokenID", tokenID).required().string();
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getKeySetKeysImageStorage-version", version).required().number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeySetKeysImageStorage-tokenID", tokenID).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeySetKeysImageStorage-version", version).required().number();
     return this.getKeySetKeysStorageByTokenId({
       tokenID: tokenID,
       prefixName: SET_KEY_IMAGES,
@@ -11935,79 +12972,80 @@ function _getSetKeyImages() {
   _getSetKeyImages = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(params) {
     var _this = this;
 
-    var key, tokenID, oldSetKeyImages, spentCoins, oldKeyImages, spentCoinsKeyImages, keyImages, shardID, txs, setKeyImages;
+    var key, tokenID, version, oldSetKeyImages, spentCoins, oldKeyImages, spentCoinsKeyImages, keyImages, shardID, txs, setKeyImages;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            tokenID = params.tokenID;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getSetKeyImages-tokenID", tokenID).required().string();
+            tokenID = params.tokenID, version = params.version;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getSetKeyImages-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getSetKeyImages-version", version).required().number();
             key = this.getKeySetKeysImageStorage(params); //
 
-            _context.next = 6;
+            _context.next = 7;
             return this.getSetKeysStorage({
               key: key
             });
 
-          case 6:
+          case 7:
             oldSetKeyImages = _context.sent;
-            _context.next = 9;
+            _context.next = 10;
             return this.getListSpentCoinsStorage(params);
 
-          case 9:
+          case 10:
             spentCoins = _context.sent;
 
             if (!(spentCoins.length === 0)) {
-              _context.next = 12;
+              _context.next = 13;
               break;
             }
 
             return _context.abrupt("return", oldSetKeyImages);
 
-          case 12:
+          case 13:
             oldKeyImages = oldSetKeyImages.map(function (i) {
               return i === null || i === void 0 ? void 0 : i.KeyImage;
             });
             spentCoinsKeyImages = spentCoins.map(function (coin) {
               return coin === null || coin === void 0 ? void 0 : coin.KeyImage;
             });
-            keyImages = lodash_difference__WEBPACK_IMPORTED_MODULE_5___default()(spentCoinsKeyImages, oldKeyImages);
+            keyImages = lodash_difference__WEBPACK_IMPORTED_MODULE_4___default()(spentCoinsKeyImages, oldKeyImages);
 
             if (!(keyImages.length === 0)) {
-              _context.next = 17;
+              _context.next = 18;
               break;
             }
 
             return _context.abrupt("return", oldSetKeyImages);
 
-          case 17:
+          case 18:
             shardID = this.getShardID();
-            _context.next = 20;
+            _context.next = 21;
             return this.rpcCoinService.apiGetTxsBySender({
               shardID: shardID,
               keyImages: keyImages
             });
 
-          case 20:
+          case 21:
             txs = _context.sent;
 
             if (!(txs.length !== keyImages.length)) {
-              _context.next = 23;
+              _context.next = 24;
               break;
             }
 
-            throw new Error(_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_7__["ErrorObject"].GetTxsByKeyImagesFail.description);
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].GetTxsByKeyImagesFail, _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].GetTxsByKeyImagesFail.description);
 
-          case 23:
+          case 24:
             if (!(txs.length === 0)) {
-              _context.next = 25;
+              _context.next = 26;
               break;
             }
 
             return _context.abrupt("return", oldSetKeyImages);
 
-          case 25:
+          case 26:
             setKeyImages = txs.map(function (tx) {
               return tx === null || tx === void 0 ? void 0 : tx.TxDetail;
             }).map(function (tx, index) {
@@ -12024,37 +13062,39 @@ function _getSetKeyImages() {
                 Value: Value
               });
             });
-            _context.next = 28;
+            console.log("setKeyImages", setKeyImages.length);
+            _context.next = 30;
             return this.setSetKeysStorage({
               tokenID: tokenID,
               setKeys: setKeyImages,
               key: key
             });
 
-          case 28:
-            _context.next = 33;
+          case 30:
+            _context.next = 36;
             break;
 
-          case 30:
-            _context.prev = 30;
+          case 32:
+            _context.prev = 32;
             _context.t0 = _context["catch"](0);
+            console.log("getSetKeyImages error", _context.t0);
             throw _context.t0;
 
-          case 33:
-            _context.next = 35;
+          case 36:
+            _context.next = 38;
             return this.getSetKeysStorage({
               key: key
             });
 
-          case 35:
+          case 38:
             return _context.abrupt("return", _context.sent);
 
-          case 36:
+          case 39:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[0, 30]]);
+    }, _callee, this, [[0, 32]]);
   }));
   return _getSetKeyImages.apply(this, arguments);
 }
@@ -12067,106 +13107,139 @@ function _getTxsTransactorFromStorage() {
   _getTxsTransactorFromStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
     var _this2 = this;
 
-    var txsTransactor, tokenID, version, key, txs, task, _txs;
+    var txsTransactor, _ref6, tokenID, version, key, txs, task, index, tx;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             txsTransactor = [];
-            _context2.prev = 1;
-            tokenID = params.tokenID, version = params.version;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getTxsTransactorFromStorage-tokenID", tokenID).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getTxsTransactorFromStorage-version", version).required().number();
+            _ref6 = params || {}, tokenID = _ref6.tokenID, version = _ref6.version;
             key = this.getKeyTxHistoryByTokenId(params);
-            _context2.next = 8;
-            return this.getAccountStorage(key);
+            _context2.prev = 3;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsTransactorFromStorage-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsTransactorFromStorage-version", version).required().number();
 
-          case 8:
-            _context2.t0 = _context2.sent;
-
-            if (_context2.t0) {
-              _context2.next = 11;
-              break;
-            }
-
-            _context2.t0 = [];
-
-          case 11:
-            txs = _context2.t0;
-
-            if (txs) {
-              _context2.next = 14;
+            if (!(version === _lib_core_constants__WEBPACK_IMPORTED_MODULE_10__["PrivacyVersion"].ver1)) {
+              _context2.next = 8;
               break;
             }
 
             return _context2.abrupt("return", []);
 
-          case 14:
-            txsTransactor = _toConsumableArray(txs);
+          case 8:
+            _context2.next = 10;
+            return this.getAccountStorage(key);
 
-            if (!(txsTransactor.length > 0)) {
-              _context2.next = 29;
+          case 10:
+            _context2.t0 = _context2.sent;
+
+            if (_context2.t0) {
+              _context2.next = 13;
               break;
             }
 
+            _context2.t0 = [];
+
+          case 13:
+            txs = _context2.t0;
+            txs = txs.filter(function (tx) {
+              return lodash_isEqual__WEBPACK_IMPORTED_MODULE_8___default()(tx === null || tx === void 0 ? void 0 : tx.tokenID, tokenID);
+            }).map(function (tx) {
+              return _objectSpread({}, _this2.mappingTxsTransactorFromStorage({
+                tokenID: tokenID,
+                tx: tx
+              }));
+            });
+
+            if (txs) {
+              _context2.next = 17;
+              break;
+            }
+
+            return _context2.abrupt("return", []);
+
+          case 17:
+            _context2.prev = 17;
+            task = [];
+            task = txs.filter(function (tx) {
+              var shouldReGetTxStatus = ![_lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_STATUS"].TXSTATUS_SUCCESS, _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_STATUS"].TXSTATUS_CANCELED, _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_STATUS"].TXSTATUS_FAILED].includes(tx === null || tx === void 0 ? void 0 : tx.status);
+              return shouldReGetTxStatus;
+            });
+            index = 0;
+
+          case 21:
+            if (!(index < task.length)) {
+              _context2.next = 28;
+              break;
+            }
+
+            tx = task[index];
+            _context2.next = 25;
+            return this.getTxHistoryByTxID({
+              tokenID: tokenID,
+              txId: tx === null || tx === void 0 ? void 0 : tx.txId,
+              version: version
+            });
+
+          case 25:
+            index++;
+            _context2.next = 21;
+            break;
+
+          case 28:
+            _context2.next = 30;
+            return Promise.all(task);
+
+          case 30:
+            _context2.next = 35;
+            break;
+
+          case 32:
+            _context2.prev = 32;
+            _context2.t1 = _context2["catch"](17);
+            console.log("ERROR update status getTxHistoryByTxID", _context2.t1);
+
+          case 35:
+            _context2.next = 41;
+            break;
+
+          case 37:
+            _context2.prev = 37;
+            _context2.t2 = _context2["catch"](3);
+            console.log("getTxsTransactorFromStorage ERROR", _context2.t2);
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].GetTxsTransactorFromStorage, _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].GetTxsTransactorFromStorage.description, _context2.t2);
+
+          case 41:
+            _context2.next = 43;
+            return this.getAccountStorage(key);
+
+          case 43:
+            _context2.t3 = _context2.sent;
+
+            if (_context2.t3) {
+              _context2.next = 46;
+              break;
+            }
+
+            _context2.t3 = [];
+
+          case 46:
+            txsTransactor = _context2.t3;
             txsTransactor = txsTransactor.map(function (tx) {
               return _objectSpread({}, _this2.mappingTxsTransactorFromStorage({
                 tokenID: tokenID,
                 tx: tx
               }));
             });
-            _context2.prev = 17;
-            task = [];
-            task = txs.filter(function (tx) {
-              return tx.status !== _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_6__["TX_STATUS"].TXSTATUS_SUCCESS;
-            }).map(function (tx) {
-              return _this2.getTxHistoryByTxID({
-                tokenID: tokenID,
-                txId: tx === null || tx === void 0 ? void 0 : tx.txId,
-                version: version
-              });
-            });
-            _context2.next = 22;
-            return Promise.all(task);
-
-          case 22:
-            _txs = _context2.sent;
-
-            _txs.forEach(function (_tx) {
-              var index = txsTransactor.findIndex(function (tx) {
-                return (tx === null || tx === void 0 ? void 0 : tx.txId) === (_tx === null || _tx === void 0 ? void 0 : _tx.txId);
-              });
-              txsTransactor[index].status = _tx.status;
-              txsTransactor[index].statusStr = _tx.statusStr;
-            });
-
-            _context2.next = 29;
-            break;
-
-          case 26:
-            _context2.prev = 26;
-            _context2.t1 = _context2["catch"](17);
-            console.log("ERROR", _context2.t1);
-
-          case 29:
-            _context2.next = 34;
-            break;
-
-          case 31:
-            _context2.prev = 31;
-            _context2.t2 = _context2["catch"](1);
-            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_7__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_7__["ErrorObject"].GetTxsTransactorFromStorage, _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_7__["ErrorObject"].GetTxsTransactorFromStorage.description, _context2.t2);
-
-          case 34:
             return _context2.abrupt("return", txsTransactor);
 
-          case 35:
+          case 49:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, this, [[1, 31], [17, 26]]);
+    }, _callee2, this, [[3, 37], [17, 32]]);
   }));
   return _getTxsTransactorFromStorage.apply(this, arguments);
 }
@@ -12186,12 +13259,12 @@ function _getTxsTransactor() {
             differenceTxs = [];
             _context3.prev = 2;
             keyImages = params.keyImages, publicKeys = params.publicKeys, tokenID = params.tokenID, version = params.version;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getTxsTransactor-tokenID", tokenID).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getTxsTransactor-keyImages", keyImages).required().array();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getTxsTransactor-publicKeys", publicKeys).required().array();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("getTxsTransactor-version", version).required().number();
-            intersectHash = lodash_intersectionBy__WEBPACK_IMPORTED_MODULE_3___default()(keyImages, publicKeys, "TxHash");
-            diffrentHash = lodash_differenceBy__WEBPACK_IMPORTED_MODULE_4___default()(keyImages, publicKeys, "TxHash");
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsTransactor-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsTransactor-keyImages", keyImages).required().array();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsTransactor-publicKeys", publicKeys).required().array();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsTransactor-version", version).required().number();
+            intersectHash = lodash_intersectionBy__WEBPACK_IMPORTED_MODULE_2___default()(keyImages, publicKeys, "TxHash");
+            diffrentHash = lodash_differenceBy__WEBPACK_IMPORTED_MODULE_3___default()(keyImages, publicKeys, "TxHash");
             combineHashs = [].concat(_toConsumableArray(intersectHash), _toConsumableArray(diffrentHash));
             txsTransactorStorage = [];
             _context3.prev = 12;
@@ -12209,38 +13282,39 @@ function _getTxsTransactor() {
           case 18:
             _context3.prev = 18;
             _context3.t0 = _context3["catch"](12);
-            console.log("ERROR WHEN GET TXS TRANSACTOR FROM STORAGE", JSON.stringify(_context3.t0));
+            console.log("ERROR WHEN GET TXS TRANSACTOR FROM STORAGE", _context3.t0);
 
           case 21:
             txsTransactor = combineHashs.map(function (tx) {
-              var _ref4 = tx || {},
-                  Fee = _ref4.Fee,
-                  TxHash = _ref4.TxHash,
-                  _ref4$Amount = _ref4.Amount,
-                  AmountTxKeyImg = _ref4$Amount === void 0 ? 0 : _ref4$Amount,
-                  Type = _ref4.Type,
-                  ProofDetail = _ref4.ProofDetail;
+              var _ref7 = tx || {},
+                  Fee = _ref7.Fee,
+                  TxHash = _ref7.TxHash,
+                  _ref7$Amount = _ref7.Amount,
+                  AmountTxKeyImg = _ref7$Amount === void 0 ? 0 : _ref7$Amount,
+                  Type = _ref7.Type,
+                  ProofDetail = _ref7.ProofDetail,
+                  Metatype = _ref7.Metatype;
 
               var txPubKey = publicKeys.find(function (tx) {
                 return tx.TxHash === TxHash;
               });
 
-              var _ref5 = txPubKey || {},
-                  _ref5$Amount = _ref5.Amount,
-                  AmountTxPubKey = _ref5$Amount === void 0 ? 0 : _ref5$Amount;
+              var _ref8 = txPubKey || {},
+                  _ref8$Amount = _ref8.Amount,
+                  AmountTxPubKey = _ref8$Amount === void 0 ? 0 : _ref8$Amount;
 
-              var amount = new bn_js__WEBPACK_IMPORTED_MODULE_1___default.a(AmountTxKeyImg).sub(new bn_js__WEBPACK_IMPORTED_MODULE_1___default.a(AmountTxPubKey)).sub(new bn_js__WEBPACK_IMPORTED_MODULE_1___default.a(Type === "n" ? Fee : 0));
+              var amount = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(AmountTxKeyImg).sub(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(AmountTxPubKey)).sub(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(Type === "n" ? Fee : 0));
               var ReceiverAddress = "";
               var foundIndex = txsTransactorStorage.findIndex(function (txs) {
                 return (txs === null || txs === void 0 ? void 0 : txs.txId) === TxHash;
-              });
+              }); //tx send max
 
               if (foundIndex > -1) {
                 var foundTx = txsTransactorStorage[foundIndex];
 
                 if (!txPubKey) {
-                  var _ref6 = ProofDetail || {},
-                      OutputCoins = _ref6.OutputCoins;
+                  var _ref9 = ProofDetail || {},
+                      OutputCoins = _ref9.OutputCoins;
 
                   if (OutputCoins.length > 1) {
                     amount = foundTx.amount;
@@ -12250,24 +13324,35 @@ function _getTxsTransactor() {
                 ReceiverAddress = foundTx.receiverAddress;
               }
 
-              return _objectSpread(_objectSpread({}, tx), {}, {
-                Amount: amount.toString(),
-                TxType: _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_6__["TX_TYPE"].SEND,
-                TxTypeStr: _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_6__["TX_TYPE_STR"][_lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_6__["TX_TYPE"].SEND],
+              var Amount = amount.toString();
+
+              var txResult = _objectSpread(_objectSpread({}, tx), {}, {
+                Amount: Amount,
+                TxType: _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE"].SEND,
+                TxTypeStr: _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE_STR"][_lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE"].SEND],
                 ReceiverAddress: ReceiverAddress
-              });
+              }); //tx consolidate
+
+
+              if (lodash_isEqual__WEBPACK_IMPORTED_MODULE_8___default()(Amount, "0") && !Metatype) {
+                txResult.TxType = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE"].CONSOLIDATE;
+                txResult.TxTypeStr = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE_STR"][_lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_5__["TX_TYPE"].CONSOLIDATE];
+                txResult.Amount = AmountTxPubKey;
+              }
+
+              return txResult;
             });
             txsTransactor = this.mappingTxs({
               txs: txsTransactor
             });
-            differenceTxs = lodash_differenceBy__WEBPACK_IMPORTED_MODULE_4___default()(txsTransactorStorage, txsTransactor, "txId");
+            differenceTxs = lodash_differenceBy__WEBPACK_IMPORTED_MODULE_3___default()(txsTransactorStorage, txsTransactor, "txId");
             _context3.next = 29;
             break;
 
           case 26:
             _context3.prev = 26;
             _context3.t1 = _context3["catch"](2);
-            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_7__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_7__["ErrorObject"].GetTxsTransactorFail, _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_7__["ErrorObject"].GetTxsTransactorFail.description, _context3.t1);
+            throw new _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["CustomError"](_lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].GetTxsTransactorFail, _lib_common_errorhandler__WEBPACK_IMPORTED_MODULE_6__["ErrorObject"].GetTxsTransactorFail.description, _context3.t1);
 
           case 29:
             txsTransactor = [].concat(_toConsumableArray(txsTransactor), _toConsumableArray(differenceTxs));
@@ -12290,8 +13375,8 @@ function handleFilterTxsTransactorByTxsPToken(_ref2) {
   var _txsTransactor = _toConsumableArray(txsTransactor);
 
   try {
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("txsPToken", txsPToken).required().array();
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("txsTransactor", txsTransactor).required().array();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("txsPToken", txsPToken).required().array();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("txsTransactor", txsTransactor).required().array();
     _txsTransactor = _txsTransactor.filter(function (txt) {
       var foundIndex = txsPToken.findIndex(function (txp) {
         return txp.incognitoTx === txt.txId || txp.incognitoTxToPayOutsideChainFee === txt.txId;
@@ -12325,17 +13410,17 @@ function _removeTxHistoryByTxIDs() {
           case 0:
             txIDs = _ref3.txIDs, tokenIDs = _ref3.tokenIDs, version = _ref3.version;
             _context5.prev = 1;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("removeTxHistoryByTxIDs-txIDs", txIDs).required().array();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("removeTxHistoryByTxIDs-tokenIDs", tokenIDs).required().array();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]("removeTxHistoryByTxIDs-version", version).required().number();
-            tokenIDs = lodash_uniq__WEBPACK_IMPORTED_MODULE_0___default()(tokenIDs).filter(function (tokenID) {
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("removeTxHistoryByTxIDs-txIDs", txIDs).required().array();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("removeTxHistoryByTxIDs-tokenIDs", tokenIDs).required().array();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("removeTxHistoryByTxIDs-version", version).required().number();
+            tokenIDs = lodash_uniq__WEBPACK_IMPORTED_MODULE_9___default()(tokenIDs).filter(function (tokenID) {
               return !!tokenID;
             });
-            txIDs = lodash_uniq__WEBPACK_IMPORTED_MODULE_0___default()(txIDs).filter(function (txID) {
+            txIDs = lodash_uniq__WEBPACK_IMPORTED_MODULE_9___default()(txIDs).filter(function (txID) {
               return !!txID;
             });
-            tasks = lodash_uniq__WEBPACK_IMPORTED_MODULE_0___default()(tokenIDs).map( /*#__PURE__*/function () {
-              var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(tokenID) {
+            tasks = lodash_uniq__WEBPACK_IMPORTED_MODULE_9___default()(tokenIDs).map( /*#__PURE__*/function () {
+              var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(tokenID) {
                 var oldHistories, newHistories, key;
                 return regeneratorRuntime.wrap(function _callee4$(_context4) {
                   while (1) {
@@ -12378,7 +13463,7 @@ function _removeTxHistoryByTxIDs() {
               }));
 
               return function (_x5) {
-                return _ref7.apply(this, arguments);
+                return _ref10.apply(this, arguments);
               };
             }());
             _context5.next = 10;
@@ -12403,6 +13488,27 @@ function _removeTxHistoryByTxIDs() {
   return _removeTxHistoryByTxIDs.apply(this, arguments);
 }
 
+function handleFilterTxsTransactorByTxsReceiver(_ref4) {
+  var txsTransactor = _ref4.txsTransactor,
+      txsReceiver = _ref4.txsReceiver;
+  var _txsTransactor = [];
+
+  try {
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("handleFilterTxsTransactorByTxsReceiver-txsReceiver", txsReceiver).required().array();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("handleFilterTxsTransactorByTxsReceiver-txsTransactor", txsTransactor).required().array();
+    _txsTransactor = (txsTransactor || []).filter(function (_ref5) {
+      var txId = _ref5.txId;
+      return !(txsReceiver || []).some(function (txsReceiver) {
+        return txsReceiver.txId === txId;
+      });
+    });
+  } catch (e) {
+    throw e;
+  }
+
+  return _txsTransactor;
+}
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   getSetKeyImages: getSetKeyImages,
   getTxsTransactor: getTxsTransactor,
@@ -12410,7 +13516,8 @@ function _removeTxHistoryByTxIDs() {
   getTxsTransactorFromStorage: getTxsTransactorFromStorage,
   mappingTxsTransactorFromStorage: mappingTxsTransactorFromStorage,
   handleFilterTxsTransactorByTxsPToken: handleFilterTxsTransactorByTxsPToken,
-  removeTxHistoryByTxIDs: removeTxHistoryByTxIDs
+  removeTxHistoryByTxIDs: removeTxHistoryByTxIDs,
+  handleFilterTxsTransactorByTxsReceiver: handleFilterTxsTransactorByTxsReceiver
 });
 
 /***/ }),
@@ -12648,12 +13755,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_privacy_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/privacy/utils */ "./lib/privacy/utils.js");
 /* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
 /* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -12682,6 +13783,14 @@ function getPrivateKey() {
 
 function getReadonlyKey() {
   return this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_4__["ReadonlyKeyType"]);
+}
+
+function getPublicKey() {
+  return this.key.getPublicKeyCheckEncode();
+}
+
+function getPublicKeyBase64() {
+  return this.key.getPublicKeyBase64CheckEncode();
 }
 
 function getSignPublicKeyEncode() {
@@ -12789,23 +13898,12 @@ function _getDeserializeInformation() {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            privateKey = this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_4__["PriKeyType"]);
-
-            if (!deserializedAccounts[privateKey]) {
-              _context3.next = 3;
-              break;
-            }
-
-            return _context3.abrupt("return", _objectSpread(_objectSpread({}, deserializedAccounts[privateKey]), {}, {
-              AccountName: this.name
-            }));
-
-          case 3:
+            privateKey = this.getPrivateKey();
             miningSeedKey = Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_5__["hashSha3BytesToBytes"])(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_5__["hashSha3BytesToBytes"])(this.key.KeySet.PrivateKey));
-            _context3.next = 6;
+            _context3.next = 4;
             return Object(_lib_common_committeekey__WEBPACK_IMPORTED_MODULE_1__["generateBLSPubKeyB58CheckEncodeFromSeed"])(miningSeedKey);
 
-          case 6:
+          case 4:
             blsPublicKey = _context3.sent;
             information = {
               ID: Object(_lib_common_common__WEBPACK_IMPORTED_MODULE_2__["getChildIdFromChildNumberArray"])(this.key.ChildNumber),
@@ -12815,15 +13913,19 @@ function _getDeserializeInformation() {
               ReadonlyKey: this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_4__["ReadonlyKeyType"]),
               PublicKey: this.key.getPublicKeyByHex(),
               PublicKeyCheckEncode: this.key.getPublicKeyCheckEncode(),
-              ValidatorKey: Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkEncode"])(miningSeedKey, _lib_common_constants__WEBPACK_IMPORTED_MODULE_3__["ENCODE_VERSION"]),
+              ValidatorKey: Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkEncode"])(miningSeedKey, _lib_common_constants__WEBPACK_IMPORTED_MODULE_3__["ENCODE_VERSION"], true),
               BLSPublicKey: blsPublicKey,
               PublicKeyBytes: this.key.KeySet.PaymentAddress.Pk.toString(),
-              OTAKey: this.getOTAKey()
+              OTAKey: this.getOTAKey(),
+              PaymentAddressV1: this.getPaymentAddressV1(),
+              accountName: this.name,
+              name: this.name,
+              PublicKeyBase64: this.getPublicKeyBase64()
             };
             deserializedAccounts[privateKey] = information;
             return _context3.abrupt("return", information);
 
-          case 10:
+          case 8:
           case "end":
             return _context3.stop();
         }
@@ -12836,17 +13938,18 @@ function _getDeserializeInformation() {
 function toSerializedAccountObj() {
   return {
     AccountName: this.name,
-    PrivateKey: this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_4__["PriKeyType"]),
+    PrivateKey: this.getPrivateKey(),
     PaymentAddress: this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_4__["PaymentAddressType"]),
     ReadonlyKey: this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_4__["ReadonlyKeyType"]),
     PublicKey: this.key.getPublicKeyByHex(),
     PublicKeyCheckEncode: this.key.getPublicKeyCheckEncode(),
     PublicKeyBytes: this.key.KeySet.PaymentAddress.Pk.toString(),
-    ValidatorKey: Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkEncode"])(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_5__["hashSha3BytesToBytes"])(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_5__["hashSha3BytesToBytes"])(this.key.KeySet.PrivateKey)), _lib_common_constants__WEBPACK_IMPORTED_MODULE_3__["ENCODE_VERSION"])
+    ValidatorKey: Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkEncode"])(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_5__["hashSha3BytesToBytes"])(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_5__["hashSha3BytesToBytes"])(this.key.KeySet.PrivateKey)), _lib_common_constants__WEBPACK_IMPORTED_MODULE_3__["ENCODE_VERSION"], true),
+    PaymentAddressV1: this.getPaymentAddressV1()
   };
 }
 
-function getOldPaymentAddress() {
+function getPaymentAddressV1() {
   var newPaymentAddress = this.getPaymentAddress();
   return this.key.toLegacyPaymentAddress(newPaymentAddress);
 }
@@ -12860,7 +13963,9 @@ function getOldPaymentAddress() {
   setKey: setKey,
   getDeserializeInformation: getDeserializeInformation,
   toSerializedAccountObj: toSerializedAccountObj,
-  getOldPaymentAddress: getOldPaymentAddress
+  getPaymentAddressV1: getPaymentAddressV1,
+  getPublicKey: getPublicKey,
+  getPublicKeyBase64: getPublicKeyBase64
 });
 
 /***/ }),
@@ -12878,8 +13983,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_uniqBy__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_uniqBy__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/uniq */ "./node_modules/lodash/uniq.js");
 /* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_uniq__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var lodash_minBy__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/minBy */ "./node_modules/lodash/minBy.js");
-/* harmony import */ var lodash_minBy__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_minBy__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var lodash_maxBy__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/maxBy */ "./node_modules/lodash/maxBy.js");
+/* harmony import */ var lodash_maxBy__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_maxBy__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/isEmpty */ "./node_modules/lodash/isEmpty.js");
 /* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_isEmpty__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var lodash_flatten__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash/flatten */ "./node_modules/lodash/flatten.js");
@@ -12939,7 +14044,7 @@ function _getContributeHistories() {
             _ref = _args.length > 0 && _args[0] !== undefined ? _args[0] : {}, _ref$offset = _ref.offset, offset = _ref$offset === void 0 ? 0 : _ref$offset, _ref$limit = _ref.limit, limit = _ref$limit === void 0 ? 50 : _ref$limit;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_5__["default"]("getContributeHistory-offset", offset).required().number();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_5__["default"]("getContributeHistory-limit", limit).number();
-            return _context.abrupt("return", this.rpcCoinService2.apiGetContributeHistories({
+            return _context.abrupt("return", this.rpcCoinService.apiGetContributeHistories({
               offset: offset,
               limit: limit,
               paymentAddress: this.getPaymentAddress()
@@ -12975,7 +14080,7 @@ function _getLiquidityRemoveHistories() {
             _ref2 = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {}, _ref2$offset = _ref2.offset, offset = _ref2$offset === void 0 ? 0 : _ref2$offset, _ref2$limit = _ref2.limit, limit = _ref2$limit === void 0 ? 50 : _ref2$limit;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_5__["default"]("getLiquidityRemoveHistories-offset", offset).required().number();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_5__["default"]("getLiquidityRemoveHistories-limit", limit).number();
-            return _context2.abrupt("return", this.rpcCoinService2.apiGetLiquidityRemoveHistories({
+            return _context2.abrupt("return", this.rpcCoinService.apiGetLiquidityRemoveHistories({
               offset: offset,
               limit: limit,
               paymentAddress: this.getPaymentAddress()
@@ -13011,7 +14116,7 @@ function _getLiquidityWithdrawFeeHistories() {
             _ref3 = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : {}, _ref3$offset = _ref3.offset, offset = _ref3$offset === void 0 ? 0 : _ref3$offset, _ref3$limit = _ref3.limit, limit = _ref3$limit === void 0 ? 50 : _ref3$limit;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_5__["default"]("getLiquidityWithdrawFeeHistories-offset", offset).required().number();
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_5__["default"]("getLiquidityWithdrawFeeHistories-limit", limit).number();
-            return _context3.abrupt("return", this.rpcCoinService2.apiGetLiquidityWithdrawFeeHistories({
+            return _context3.abrupt("return", this.rpcCoinService.apiGetLiquidityWithdrawFeeHistories({
               offset: offset,
               limit: limit,
               paymentAddress: this.getPaymentAddress()
@@ -13144,7 +14249,7 @@ function _getContributeHistoriesWithStorage() {
 
                       case 5:
                         histories = _context5.t0;
-                        histories.filter(function (item) {
+                        histories = histories.filter(function (item) {
                           return (item === null || item === void 0 ? void 0 : item.txType) === _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_7__["TX_TYPE"].ADD_LIQUIDITY;
                         });
                         tasks = histories.map( /*#__PURE__*/function () {
@@ -13216,133 +14321,86 @@ function _getContributeHistoriesWithStorage() {
           case 26:
             _context6.t3 = _context6.sent;
             storageContributeTxs = (0, _context6.t2)(_context6.t3);
-            pairIds = contributes.reduce(function (prv, apiHistory) {
+            pairIds = contributes.reduce(function (prev, apiHistory) {
               var pairId = apiHistory.pairId;
 
-              if (!prv.includes(pairId)) {
-                prv.push(pairId);
+              if (!prev.includes(pairId)) {
+                prev.push(pairId);
               }
 
-              return prv;
+              return prev;
             }, []);
             contributeHistories = pairIds.map(function (pairId) {
-              var _minBy2;
+              var _maxBy2;
 
               var _contributes = contributes.filter(function (item) {
                 return item.pairId === pairId;
               });
 
-              var txHashs = _contributes.reduce(function (prev, item) {
-                prev.push(item.requestTx);
-                return prev;
-              }, []);
+              var txHashs = _contributes.map(function (item) {
+                return item.requestTx;
+              });
 
-              var subContribute = storageContributeTxs.reduce(function (prv, item) {
-                var _item$tx, _item$tx3, _metaData;
-
-                var metaData;
-
-                if (item !== null && item !== void 0 && (_item$tx = item.tx) !== null && _item$tx !== void 0 && _item$tx.Tx) {
-                  var _item$tx2, _item$tx2$Tx;
-
-                  metaData = item === null || item === void 0 ? void 0 : (_item$tx2 = item.tx) === null || _item$tx2 === void 0 ? void 0 : (_item$tx2$Tx = _item$tx2.Tx) === null || _item$tx2$Tx === void 0 ? void 0 : _item$tx2$Tx.Metadata;
-                }
-
-                if (item !== null && item !== void 0 && (_item$tx3 = item.tx) !== null && _item$tx3 !== void 0 && _item$tx3.Metadata) {
-                  var _item$tx4;
-
-                  metaData = item === null || item === void 0 ? void 0 : (_item$tx4 = item.tx) === null || _item$tx4 === void 0 ? void 0 : _item$tx4.Metadata;
-                }
-
+              var subContribute = storageContributeTxs.reduce(function (prev, item) {
                 var txHash = item.hash,
-                    status = item.status;
+                    status = item.status,
+                    metaData = item.metadata;
 
-                if (metaData && !txHashs.includes(txHash) && ((_metaData = metaData) === null || _metaData === void 0 ? void 0 : _metaData.PDEContributionPairID) === pairId) {
-                  var _metaData2, _metaData3, _metaData4, _metaData5, _item$tx5, _item$tx5$Tx;
-
-                  return {
-                    tokenId: (_metaData2 = metaData) === null || _metaData2 === void 0 ? void 0 : _metaData2.TokenIDStr,
-                    pairId: (_metaData3 = metaData) === null || _metaData3 === void 0 ? void 0 : _metaData3.PDEContributionPairID,
-                    amount: (_metaData4 = metaData) === null || _metaData4 === void 0 ? void 0 : _metaData4.ContributedAmount,
-                    paymentAddress: (_metaData5 = metaData) === null || _metaData5 === void 0 ? void 0 : _metaData5.ContributorAddressStr,
+                if (metaData && !txHashs.includes(txHash) && (metaData === null || metaData === void 0 ? void 0 : metaData.PDEContributionPairID) === pairId) {
+                  var contributeStorage = {
+                    tokenId: metaData === null || metaData === void 0 ? void 0 : metaData.TokenIDStr,
+                    pairId: metaData === null || metaData === void 0 ? void 0 : metaData.PDEContributionPairID,
+                    amount: metaData === null || metaData === void 0 ? void 0 : metaData.ContributedAmount,
+                    paymentAddress: metaData === null || metaData === void 0 ? void 0 : metaData.ContributorAddressStr,
                     requestTx: txHash,
-                    blockTime: item === null || item === void 0 ? void 0 : (_item$tx5 = item.tx) === null || _item$tx5 === void 0 ? void 0 : (_item$tx5$Tx = _item$tx5.Tx) === null || _item$tx5$Tx === void 0 ? void 0 : _item$tx5$Tx.LockTime,
+                    lockTime: item === null || item === void 0 ? void 0 : item.lockTime,
                     status: status,
                     isStorage: true
                   };
+                  prev.push(contributeStorage);
                 }
 
-                return prv;
-              }, {});
+                return prev;
+              }, []);
 
               if (!lodash_isEmpty__WEBPACK_IMPORTED_MODULE_3___default()(subContribute)) {
-                _contributes.push(subContribute);
+                _contributes = _contributes.concat(subContribute);
               }
 
               return {
                 pairId: pairId,
                 contributes: _contributes,
-                blockTime: (_minBy2 = lodash_minBy__WEBPACK_IMPORTED_MODULE_2___default()(_contributes, 'blockTime')) === null || _minBy2 === void 0 ? void 0 : _minBy2.blockTime
+                lockTime: (_maxBy2 = lodash_maxBy__WEBPACK_IMPORTED_MODULE_2___default()(_contributes, 'lockTime')) === null || _maxBy2 === void 0 ? void 0 : _maxBy2.lockTime
               };
             });
             storageContributes = spendingPairIds.reduce(function (prev, pairId) {
               var contributes = storageContributeTxs.filter(function (item) {
-                var _item$tx6, _item$tx8, _metaData6;
-
-                var metaData;
-
-                if (item !== null && item !== void 0 && (_item$tx6 = item.tx) !== null && _item$tx6 !== void 0 && _item$tx6.Tx) {
-                  var _item$tx7, _item$tx7$Tx;
-
-                  metaData = item === null || item === void 0 ? void 0 : (_item$tx7 = item.tx) === null || _item$tx7 === void 0 ? void 0 : (_item$tx7$Tx = _item$tx7.Tx) === null || _item$tx7$Tx === void 0 ? void 0 : _item$tx7$Tx.Metadata;
-                }
-
-                if (item !== null && item !== void 0 && (_item$tx8 = item.tx) !== null && _item$tx8 !== void 0 && _item$tx8.Metadata) {
-                  var _item$tx9;
-
-                  metaData = item === null || item === void 0 ? void 0 : (_item$tx9 = item.tx) === null || _item$tx9 === void 0 ? void 0 : _item$tx9.Metadata;
-                }
-
-                return ((_metaData6 = metaData) === null || _metaData6 === void 0 ? void 0 : _metaData6.PDEContributionPairID) === pairId;
+                var metaData = item.metadata;
+                return (metaData === null || metaData === void 0 ? void 0 : metaData.PDEContributionPairID) === pairId;
               });
 
               if (contributes.length > 0) {
-                var _minBy3;
+                var _maxBy3;
 
                 contributes = contributes.map(function (item) {
-                  var _item$tx10, _item$tx12, _metaData7, _metaData8, _metaData9, _metaData10, _tx;
-
-                  var metaData;
-                  var tx;
-
-                  if (item !== null && item !== void 0 && (_item$tx10 = item.tx) !== null && _item$tx10 !== void 0 && _item$tx10.Tx) {
-                    var _item$tx11;
-
-                    tx = item === null || item === void 0 ? void 0 : (_item$tx11 = item.tx) === null || _item$tx11 === void 0 ? void 0 : _item$tx11.Tx;
-                    metaData = tx.Metadata;
-                  }
-
-                  if (item !== null && item !== void 0 && (_item$tx12 = item.tx) !== null && _item$tx12 !== void 0 && _item$tx12.Metadata) {
-                    tx = item === null || item === void 0 ? void 0 : item.tx;
-                    metaData = tx.Metadata;
-                  }
-
                   var txHash = item.hash,
-                      status = item.status;
+                      status = item.status,
+                      metaData = item.metadata,
+                      lockTime = item.lockTime;
                   return {
-                    tokenId: (_metaData7 = metaData) === null || _metaData7 === void 0 ? void 0 : _metaData7.TokenIDStr,
-                    pairId: (_metaData8 = metaData) === null || _metaData8 === void 0 ? void 0 : _metaData8.PDEContributionPairID,
-                    amount: (_metaData9 = metaData) === null || _metaData9 === void 0 ? void 0 : _metaData9.ContributedAmount,
-                    paymentAddress: (_metaData10 = metaData) === null || _metaData10 === void 0 ? void 0 : _metaData10.ContributorAddressStr,
+                    tokenId: metaData === null || metaData === void 0 ? void 0 : metaData.TokenIDStr,
+                    pairId: metaData === null || metaData === void 0 ? void 0 : metaData.PDEContributionPairID,
+                    amount: metaData === null || metaData === void 0 ? void 0 : metaData.ContributedAmount,
+                    paymentAddress: metaData === null || metaData === void 0 ? void 0 : metaData.ContributorAddressStr,
                     requestTx: txHash,
-                    blockTime: (_tx = tx) === null || _tx === void 0 ? void 0 : _tx.LockTime,
+                    lockTime: lockTime,
                     status: status
                   };
                 });
                 prev.push({
                   pairId: pairId,
                   contributes: contributes,
-                  blockTime: (_minBy3 = lodash_minBy__WEBPACK_IMPORTED_MODULE_2___default()(contributes, 'blockTime')) === null || _minBy3 === void 0 ? void 0 : _minBy3.blockTime
+                  lockTime: (_maxBy3 = lodash_maxBy__WEBPACK_IMPORTED_MODULE_2___default()(contributes, 'lockTime')) === null || _maxBy3 === void 0 ? void 0 : _maxBy3.lockTime
                 });
               }
 
@@ -13416,10 +14474,7 @@ function _getLiquidityWithdrawHistoriesWithStorage() {
           case 6:
             _context8.t0 = _context8.sent;
             _context8.next = 9;
-            return this.getTransactorHistoriesByTokenID({
-              tokenID: _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PRVIDSTR"],
-              version: _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver2
-            });
+            return this.getStorageHistoriesRemovePool();
 
           case 9:
             _context8.t1 = _context8.sent;
@@ -13434,38 +14489,30 @@ function _getLiquidityWithdrawHistoriesWithStorage() {
             storageHistories = _yield$Promise$all4[1];
             spendingStorage = (storageHistories || []).filter(function (history) {
               var isExist = apiHistories.some(function (apiHistory) {
-                return (apiHistory === null || apiHistory === void 0 ? void 0 : apiHistory.requestTx) === (history === null || history === void 0 ? void 0 : history.txId);
+                return (apiHistory === null || apiHistory === void 0 ? void 0 : apiHistory.requestTx) === (history === null || history === void 0 ? void 0 : history.requestTx);
               });
-              var isWithdrawFee = (history === null || history === void 0 ? void 0 : history.txType) === _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_7__["TX_TYPE"].WITHDRAW_LIQUIDITY;
-              return !isExist && isWithdrawFee;
+              return !isExist;
             });
             tasksStorage = spendingStorage.map( /*#__PURE__*/function () {
               var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(history) {
-                var metadata, txId, tx, status, amount1, tokenId1, tokenId2;
+                var requestTx, status;
                 return regeneratorRuntime.wrap(function _callee7$(_context7) {
                   while (1) {
                     switch (_context7.prev = _context7.next) {
                       case 0:
-                        metadata = history.metadata, txId = history.txId, tx = history.tx;
+                        requestTx = history.requestTx;
                         _context7.next = 3;
                         return _this2.rpcTxService.apiGetTxStatus({
-                          txId: txId
+                          txId: requestTx
                         });
 
                       case 3:
                         status = _context7.sent;
-                        amount1 = metadata.WithdrawalShareAmt, tokenId1 = metadata.WithdrawalToken1IDStr, tokenId2 = metadata.WithdrawalToken2IDStr;
-                        return _context7.abrupt("return", {
-                          id: txId,
-                          requestTx: txId,
-                          amount1: amount1,
-                          tokenId1: tokenId1,
-                          tokenId2: tokenId2,
-                          status: status,
-                          blockTime: tx === null || tx === void 0 ? void 0 : tx.LockTime
-                        });
+                        return _context7.abrupt("return", _objectSpread(_objectSpread({}, history), {}, {
+                          status: status
+                        }));
 
-                      case 6:
+                      case 5:
                       case "end":
                         return _context7.stop();
                     }
@@ -13571,12 +14618,12 @@ function _getLiquidityWithdrawFeeHistoriesWithStorage() {
             });
             tasksStorage = spendingStorage.map( /*#__PURE__*/function () {
               var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(history) {
-                var metadata, txId, tx, status, amount, tokenId1, tokenId2;
+                var metadata, txId, lockTime, status, amount, tokenId1, tokenId2;
                 return regeneratorRuntime.wrap(function _callee9$(_context9) {
                   while (1) {
                     switch (_context9.prev = _context9.next) {
                       case 0:
-                        metadata = history.metadata, txId = history.txId, tx = history.tx;
+                        metadata = history.metadata, txId = history.txId, lockTime = history.lockTime;
                         _context9.next = 3;
                         return _this3.rpcTxService.apiGetTxStatus({
                           txId: txId
@@ -13592,7 +14639,7 @@ function _getLiquidityWithdrawFeeHistoriesWithStorage() {
                           tokenId1: tokenId1,
                           tokenId2: tokenId2,
                           status: status,
-                          blockTime: tx === null || tx === void 0 ? void 0 : tx.LockTime
+                          lockTime: lockTime
                         });
 
                       case 6:
@@ -13706,7 +14753,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var STORAGE_KEYS = {
   BEACON_HEIGHT_KEY: "$BEACON_HEIGHT_KEY",
   PDE_STATE: "$PDE_STATE_KEY",
-  PAIR_ID: "$STORAGE_PAIR_ID_KEY"
+  PAIR_ID: "$STORAGE_PAIR_ID_KEY",
+  STORAGE_HISTORIES_REMOVE_POOL: "STORAGE_HISTORIES_REMOVE_POOL"
 };
 /**
  *
@@ -13727,6 +14775,8 @@ function createAndSendTxWithContribution(_x) {
  * @param {string} withdrawalToken1IDStr
  * @param {string} withdrawalToken2IDStr
  * @param {amount} withdrawalShareAmt
+ * @param {amount} withdrawalAmount1
+ * @param {amount} withdrawalAmount2
  * @returns {object}
  */
 
@@ -13860,22 +14910,24 @@ function createAndSendWithdrawContributionTx(_x2) {
 
 function _createAndSendWithdrawContributionTx() {
   _createAndSendWithdrawContributionTx = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_ref2) {
-    var _ref2$transfer$fee, fee, _ref2$extra, _ref2$extra2, withdrawalToken1IDStr, withdrawalToken2IDStr, withdrawalShareAmt, version, md, result;
+    var _ref2$transfer$fee, fee, _ref2$extra, _ref2$extra2, withdrawalToken1IDStr, withdrawalToken2IDStr, withdrawalShareAmt, withdrawalAmount1, withdrawalAmount2, version, md, result, status, txId, tx, params;
 
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _ref2$transfer$fee = _ref2.transfer.fee, fee = _ref2$transfer$fee === void 0 ? _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["MAX_FEE_PER_TX"] : _ref2$transfer$fee, _ref2$extra = _ref2.extra, _ref2$extra2 = _ref2$extra === void 0 ? {} : _ref2$extra, withdrawalToken1IDStr = _ref2$extra2.withdrawalToken1IDStr, withdrawalToken2IDStr = _ref2$extra2.withdrawalToken2IDStr, withdrawalShareAmt = _ref2$extra2.withdrawalShareAmt;
+            _ref2$transfer$fee = _ref2.transfer.fee, fee = _ref2$transfer$fee === void 0 ? _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["MAX_FEE_PER_TX"] : _ref2$transfer$fee, _ref2$extra = _ref2.extra, _ref2$extra2 = _ref2$extra === void 0 ? {} : _ref2$extra, withdrawalToken1IDStr = _ref2$extra2.withdrawalToken1IDStr, withdrawalToken2IDStr = _ref2$extra2.withdrawalToken2IDStr, withdrawalShareAmt = _ref2$extra2.withdrawalShareAmt, withdrawalAmount1 = _ref2$extra2.withdrawalAmount1, withdrawalAmount2 = _ref2$extra2.withdrawalAmount2;
             version = _lib_core_constants__WEBPACK_IMPORTED_MODULE_4__["PrivacyVersion"].ver2;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("fee", fee).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("withdrawalShareAmt", withdrawalShareAmt).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("withdrawalToken1IDStr", withdrawalToken1IDStr).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("withdrawalToken2IDStr", withdrawalToken2IDStr).required().string();
-            _context3.next = 8;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendWithdrawContributionTx-fee", fee).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendWithdrawContributionTx-withdrawalShareAmt", withdrawalShareAmt).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendWithdrawContributionTx-withdrawalToken1IDStr", withdrawalToken1IDStr).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendWithdrawContributionTx-withdrawalToken2IDStr", withdrawalToken2IDStr).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendWithdrawContributionTx-withdrawalAmount1", withdrawalAmount1).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendWithdrawContributionTx-withdrawalAmount2", withdrawalAmount2).required().amount();
+            _context3.next = 10;
             return this.updateProgressTx(10, "Generating Metadata");
 
-          case 8:
+          case 10:
             md = {
               WithdrawerAddressStr: this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"]),
               WithdrawalToken1IDStr: withdrawalToken1IDStr,
@@ -13883,8 +14935,8 @@ function _createAndSendWithdrawContributionTx() {
               WithdrawalShareAmt: new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(withdrawalShareAmt).toString(),
               Type: _lib_core__WEBPACK_IMPORTED_MODULE_1__["PDEWithdrawalRequestMeta"]
             };
-            _context3.prev = 9;
-            _context3.next = 12;
+            _context3.prev = 11;
+            _context3.next = 14;
             return this.transact({
               transfer: {
                 fee: fee,
@@ -13897,25 +14949,45 @@ function _createAndSendWithdrawContributionTx() {
               }
             });
 
-          case 12:
+          case 14:
             result = _context3.sent;
-            _context3.next = 15;
+
+            if (!result) {
+              _context3.next = 20;
+              break;
+            }
+
+            status = result.status, txId = result.txId, tx = result.tx;
+            params = {
+              amount1: withdrawalAmount1,
+              amount2: withdrawalAmount2,
+              requestTx: txId,
+              status: status,
+              tokenId1: withdrawalToken1IDStr,
+              tokenId2: withdrawalToken2IDStr,
+              lockTime: tx === null || tx === void 0 ? void 0 : tx.LockTime
+            };
+            _context3.next = 20;
+            return this.setStorageHistoriesRemovePool(params);
+
+          case 20:
+            _context3.next = 22;
             return this.updateProgressTx(100, "Completed");
 
-          case 15:
+          case 22:
             return _context3.abrupt("return", result);
 
-          case 18:
-            _context3.prev = 18;
-            _context3.t0 = _context3["catch"](9);
+          case 25:
+            _context3.prev = 25;
+            _context3.t0 = _context3["catch"](11);
             throw _context3.t0;
 
-          case 21:
+          case 28:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, this, [[9, 18]]);
+    }, _callee3, this, [[11, 25]]);
   }));
   return _createAndSendWithdrawContributionTx.apply(this, arguments);
 }
@@ -14042,14 +15114,14 @@ function _createAndSendTxsWithContributions() {
 
             txHandler1 = function txHandler1(_ref7) {
               var rawTx = _ref7.rawTx,
-                  txID = _ref7.txID;
+                  txID = _ref7.txId;
               txID1 = txID;
               rawTx1 = rawTx;
             };
 
             txHandler2 = function txHandler2(_ref8) {
               var rawTx = _ref8.rawTx,
-                  txID = _ref8.txID;
+                  txID = _ref8.txId;
               txID2 = txID;
               rawTx2 = rawTx;
             };
@@ -14358,7 +15430,7 @@ function getPairs() {
 
 function _getPairs() {
   _getPairs = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-    var tasks, _yield$Promise$all, _yield$Promise$all2, pTokens, chainTokens, chainPairs, oldPaymentAddress;
+    var tasks, _yield$Promise$all, _yield$Promise$all2, pTokens, chainTokens, chainPairs, paymentAddressV1;
 
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
@@ -14394,12 +15466,12 @@ function _getPairs() {
             if (!lodash_has__WEBPACK_IMPORTED_MODULE_1___default()(chainPairs, 'PDEPoolPairs')) {// throw new CustomError(ErrorCode.FULLNODE_DOWN);
             }
 
-            oldPaymentAddress = this.getOldPaymentAddress();
+            paymentAddressV1 = this.getPaymentAddressV1();
             return _context3.abrupt("return", Object(_lib_module_Account_features_Liquidity_liquidity_utils__WEBPACK_IMPORTED_MODULE_5__["mergeTokens"])({
               chainTokens: chainTokens,
               pTokens: pTokens,
               chainPairs: chainPairs,
-              oldPaymentAddress: oldPaymentAddress
+              paymentAddressV1: paymentAddressV1
             }));
 
           case 23:
@@ -14417,12 +15489,135 @@ function _getPairs() {
   return _getPairs.apply(this, arguments);
 }
 
+function getKeyStorageHistoriesRemovePool() {
+  return "".concat(_lib_module_Account_features_Liquidity_liquidity__WEBPACK_IMPORTED_MODULE_3__["STORAGE_KEYS"].STORAGE_HISTORIES_REMOVE_POOL, "-").concat(this.getPaymentAddress());
+}
+
+function getStorageHistoriesRemovePool() {
+  return _getStorageHistoriesRemovePool.apply(this, arguments);
+}
+/**
+ *
+ * @param {amount} amount1
+ * @param {amount} amount2
+ * @param {string} tokenID
+ * @param {string} requestTx
+ * @param {number} status
+ * @param {string} tokenId1
+ * @param {string} tokenId2
+ * @param {number} lockTime
+ */
+
+
+function _getStorageHistoriesRemovePool() {
+  _getStorageHistoriesRemovePool = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+    var key, result;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            key = this.getKeyStorageHistoriesRemovePool();
+            _context4.next = 3;
+            return this.getAccountStorage(key);
+
+          case 3:
+            _context4.t0 = _context4.sent;
+
+            if (_context4.t0) {
+              _context4.next = 6;
+              break;
+            }
+
+            _context4.t0 = [];
+
+          case 6:
+            result = _context4.t0;
+            return _context4.abrupt("return", result);
+
+          case 8:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this);
+  }));
+  return _getStorageHistoriesRemovePool.apply(this, arguments);
+}
+
+function setStorageHistoriesRemovePool(_x2) {
+  return _setStorageHistoriesRemovePool.apply(this, arguments);
+}
+
+function _setStorageHistoriesRemovePool() {
+  _setStorageHistoriesRemovePool = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(_ref3) {
+    var amount1, amount2, requestTx, status, tokenId1, tokenId2, lockTime, key, histories, isExist, params;
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            amount1 = _ref3.amount1, amount2 = _ref3.amount2, requestTx = _ref3.requestTx, status = _ref3.status, tokenId1 = _ref3.tokenId1, tokenId2 = _ref3.tokenId2, lockTime = _ref3.lockTime;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]('amount1', amount1).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]('amount2', amount2).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]('requestTx', requestTx).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]('tokenId1', tokenId1).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]('tokenId2', tokenId2).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]('lockTime', lockTime).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_2__["default"]('status', status).required();
+            key = this.getKeyStorageHistoriesRemovePool();
+            _context5.next = 11;
+            return this.getStorageHistoriesRemovePool();
+
+          case 11:
+            _context5.t0 = _context5.sent;
+
+            if (_context5.t0) {
+              _context5.next = 14;
+              break;
+            }
+
+            _context5.t0 = [];
+
+          case 14:
+            histories = _context5.t0;
+            isExist = histories.some(function (history) {
+              return requestTx === (history === null || history === void 0 ? void 0 : history.requestTx);
+            });
+
+            if (!isExist) {
+              params = {
+                amount1: amount1,
+                amount2: amount2,
+                requestTx: requestTx,
+                status: status,
+                tokenId1: tokenId1,
+                tokenId2: tokenId2,
+                lockTime: lockTime
+              };
+              histories.push(params);
+            }
+
+            _context5.next = 19;
+            return this.setAccountStorage(key, histories);
+
+          case 19:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, this);
+  }));
+  return _setStorageHistoriesRemovePool.apply(this, arguments);
+}
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   createPairId: createPairId,
   getKeyStoragePairId: getKeyStoragePairId,
   getAllStoragePairIds: getAllStoragePairIds,
   setStoragePairId: setStoragePairId,
-  getPairs: getPairs
+  getPairs: getPairs,
+  getKeyStorageHistoriesRemovePool: getKeyStorageHistoriesRemovePool,
+  getStorageHistoriesRemovePool: getStorageHistoriesRemovePool,
+  setStorageHistoriesRemovePool: setStorageHistoriesRemovePool
 });
 
 /***/ }),
@@ -14486,12 +15681,12 @@ var mergeTokens = function mergeTokens() {
       chainTokens = _ref.chainTokens,
       pTokens = _ref.pTokens,
       chainPairs = _ref.chainPairs,
-      oldPaymentAddress = _ref.oldPaymentAddress;
+      paymentAddressV1 = _ref.paymentAddressV1;
 
   new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_6__["default"]('chainTokens', chainTokens).required().array();
   new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_6__["default"]('pTokens', pTokens).required().array();
   new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_6__["default"]('chainPairs', chainPairs).required().object();
-  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_6__["default"]('oldPaymentAddress', oldPaymentAddress).required().string();
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_6__["default"]('paymentAddressV1', paymentAddressV1).required().string();
 
   var tokens = lodash_uniqBy__WEBPACK_IMPORTED_MODULE_4___default()([].concat(_toConsumableArray(chainTokens), _toConsumableArray(pTokens)), function (item) {
     return item.tokenId || item.id;
@@ -14565,7 +15760,7 @@ var mergeTokens = function mergeTokens() {
     var token2 = pairTokens.find(function (item) {
       return item.id === tokenIds[1];
     });
-    var mergeKey = "".concat(tokenIds.join('-'), "-").concat(oldPaymentAddress);
+    var mergeKey = "".concat(tokenIds.join('-'), "-").concat(paymentAddressV1);
     var shareKey = Object.keys(shares).find(function (key) {
       return key.includes(mergeKey);
     });
@@ -14679,7 +15874,8 @@ var formatContributeHistory = function formatContributeHistory(contribute) {
     amount: contribute === null || contribute === void 0 ? void 0 : contribute.amount,
     returnAmount: contribute === null || contribute === void 0 ? void 0 : contribute.returnamount,
     paymentAddress: contribute === null || contribute === void 0 ? void 0 : contribute.contributor,
-    blockTime: contribute === null || contribute === void 0 ? void 0 : contribute.respondblock,
+    blockHeight: contribute === null || contribute === void 0 ? void 0 : contribute.respondblock,
+    lockTime: contribute === null || contribute === void 0 ? void 0 : contribute.Locktime,
     isStorage: false
   };
 };
@@ -14697,7 +15893,7 @@ var formatWithdrawFeeHistory = function formatWithdrawFeeHistory(history) {
     tokenId2: history === null || history === void 0 ? void 0 : history.tokenid2,
     amount: history === null || history === void 0 ? void 0 : history.amount,
     paymentAddress: history === null || history === void 0 ? void 0 : history.contributor,
-    blockTime: history === null || history === void 0 ? void 0 : history.respondtime
+    lockTime: history === null || history === void 0 ? void 0 : history.respondtime
   };
 };
 
@@ -14728,7 +15924,7 @@ var formatWithdrawHistory = function formatWithdrawHistory(history) {
     amount1: history === null || history === void 0 ? void 0 : history.amount1,
     amount2: history === null || history === void 0 ? void 0 : history.amount2,
     paymentAddress: history === null || history === void 0 ? void 0 : history.contributor,
-    blockTime: history === null || history === void 0 ? void 0 : history.respondtime,
+    lockTime: history === null || history === void 0 ? void 0 : history.respondtime,
     requestTx: history === null || history === void 0 ? void 0 : history.requesttx
   };
 };
@@ -14916,6 +16112,7 @@ function createAndSendStopAutoStakingTx(_x2) {
 /** createAndSendWithdrawRewardTx
  * @param {string} tokenID
  * @param {number} fee
+ * @param {number} version
  */
 
 
@@ -14959,7 +16156,7 @@ function _createAndSendStopAutoStakingTx() {
           case 19:
             committeeKey = _context2.sent;
             meta = {
-              Type: _lib_core__WEBPACK_IMPORTED_MODULE_2__["StopAutoStakingMeta"],
+              Type: _lib_core__WEBPACK_IMPORTED_MODULE_2__["UnStakingMeta"],
               CommitteePublicKey: committeeKey
             };
             _context2.next = 23;
@@ -15011,7 +16208,8 @@ function _createAndSendStopAutoStakingTx() {
 
 function createAndSendWithdrawRewardTx(_x3) {
   return _createAndSendWithdrawRewardTx.apply(this, arguments);
-}
+} // unstake TODO: //
+
 
 function _createAndSendWithdrawRewardTx() {
   _createAndSendWithdrawRewardTx = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(_ref3) {
@@ -15862,8 +17060,8 @@ function _signPoolWithdraw() {
           case 0:
             amount = _ref.amount;
             new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("amount", amount).required();
-            privateKey = this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_2__["PriKeyType"]);
-            paymentAddress = this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_2__["PaymentAddressType"]);
+            privateKey = this.getPrivateKey();
+            paymentAddress = this.getPaymentAddress();
             args = {
               data: {
                 privateKey: privateKey,
@@ -16166,9 +17364,11 @@ var storagePrototype = _objectSpread({}, _storage__WEBPACK_IMPORTED_MODULE_0__["
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_utils_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/utils/json */ "./lib/utils/json.js");
 /* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var _lib_module_Account_features_Cache_cache__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/module/Account/features/Cache/cache */ "./lib/module/Account/features/Cache/cache.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -16306,10 +17506,54 @@ function _clearAccountStorage() {
   return _clearAccountStorage.apply(this, arguments);
 }
 
+function clearCacheStorage(_x5) {
+  return _clearCacheStorage.apply(this, arguments);
+}
+
+function _clearCacheStorage() {
+  _clearCacheStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(params) {
+    var tokenID, version, totalCoinsKey, unspentCoinsKey, spendingCoinsKey, storageCoins, spentCoinsKey;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
+            tokenID = params.tokenID, version = params.version;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("clearCacheStorage-tokenID", tokenID).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("clearCacheStorage-version", version).required().number();
+            Object(_lib_module_Account_features_Cache_cache__WEBPACK_IMPORTED_MODULE_2__["clearAllCaches"])();
+            totalCoinsKey = this.getKeyTotalCoinsStorageByTokenId(params);
+            unspentCoinsKey = this.getKeyListUnspentCoinsByTokenId(params);
+            spendingCoinsKey = this.getKeySpendingCoinsStorageByTokenId(params);
+            storageCoins = this.getKeyCoinsStorageByTokenId(params);
+            spentCoinsKey = this.getKeyListSpentCoinsByTokenId(params);
+            _context4.next = 12;
+            return Promise.all([this.clearAccountStorage(totalCoinsKey), this.clearAccountStorage(unspentCoinsKey), this.clearAccountStorage(spendingCoinsKey), this.clearAccountStorage(storageCoins), this.clearAccountStorage(spentCoinsKey), this.clearTxsHistory(params)]);
+
+          case 12:
+            _context4.next = 17;
+            break;
+
+          case 14:
+            _context4.prev = 14;
+            _context4.t0 = _context4["catch"](0);
+            throw _context4.t0;
+
+          case 17:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this, [[0, 14]]);
+  }));
+  return _clearCacheStorage.apply(this, arguments);
+}
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   getAccountStorage: getAccountStorage,
   setAccountStorage: setAccountStorage,
-  clearAccountStorage: clearAccountStorage
+  clearAccountStorage: clearAccountStorage,
+  clearCacheStorage: clearCacheStorage
 });
 
 /***/ }),
@@ -16324,6 +17568,8 @@ function _clearAccountStorage() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _trade__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./trade */ "./lib/module/Account/features/Trade/trade.js");
+/* harmony import */ var _trade_histories__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./trade.histories */ "./lib/module/Account/features/Trade/trade.histories.js");
+/* harmony import */ var _trade_storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./trade.storage */ "./lib/module/Account/features/Trade/trade.storage.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16332,32 +17578,40 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var tradePrototype = _objectSpread({}, _trade__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+
+var tradePrototype = _objectSpread(_objectSpread(_objectSpread({}, _trade__WEBPACK_IMPORTED_MODULE_0__["default"]), _trade_histories__WEBPACK_IMPORTED_MODULE_1__["default"]), _trade_storage__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (tradePrototype);
 
 /***/ }),
 
-/***/ "./lib/module/Account/features/Trade/trade.js":
-/*!****************************************************!*\
-  !*** ./lib/module/Account/features/Trade/trade.js ***!
-  \****************************************************/
+/***/ "./lib/module/Account/features/Trade/trade.histories.js":
+/*!**************************************************************!*\
+  !*** ./lib/module/Account/features/Trade/trade.histories.js ***!
+  \**************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var lodash_orderBy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/orderBy */ "./node_modules/lodash/orderBy.js");
-/* harmony import */ var lodash_orderBy__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_orderBy__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var lodash_flatten__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/flatten */ "./node_modules/lodash/flatten.js");
-/* harmony import */ var lodash_flatten__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_flatten__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
-/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
-/* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/module/Account//account.constants */ "./lib/module/Account/account.constants.js");
-/* harmony import */ var _lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/module/Account//account.utils */ "./lib/module/Account/account.utils.js");
-/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
+/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
+/* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/uniq */ "./node_modules/lodash/uniq.js");
+/* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_uniq__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash_orderBy__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/orderBy */ "./node_modules/lodash/orderBy.js");
+/* harmony import */ var lodash_orderBy__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_orderBy__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var lodash_flatten__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/flatten */ "./node_modules/lodash/flatten.js");
+/* harmony import */ var lodash_flatten__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_flatten__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lodash_uniqBy__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash/uniqBy */ "./node_modules/lodash/uniqBy.js");
+/* harmony import */ var lodash_uniqBy__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash_uniqBy__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _lib_module_Account_features_Trade_trade_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/module/Account/features/Trade/trade.utils */ "./lib/module/Account/features/Trade/trade.utils.js");
+/* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -16371,7 +17625,360 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+
+
+
+
+
+function getPDexHistoriesApi() {
+  return _getPDexHistoriesApi.apply(this, arguments);
+}
+
+function _getPDexHistoriesApi() {
+  _getPDexHistoriesApi = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var _ref,
+        offset,
+        limit,
+        histories,
+        accountName,
+        otakey,
+        _args = arguments;
+
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _ref = _args.length > 0 && _args[0] !== undefined ? _args[0] : {}, offset = _ref.offset, limit = _ref.limit;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_7__["default"]('offset', offset).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_7__["default"]('limit', limit).required().number();
+            histories = [];
+            accountName = this.name || "";
+            _context.prev = 5;
+            otakey = this.getOTAKey();
+            _context.next = 9;
+            return this.rpcCoinService.apiGetPDexHistories({
+              otakey: otakey,
+              offset: offset,
+              limit: limit
+            });
+
+          case 9:
+            histories = _context.sent;
+            _context.next = 15;
+            break;
+
+          case 12:
+            _context.prev = 12;
+            _context.t0 = _context["catch"](5);
+            console.debug('getPDexHistoriesApi error: ', _context.t0);
+
+          case 15:
+            return _context.abrupt("return", histories.map(function (history) {
+              return Object(_lib_module_Account_features_Trade_trade_utils__WEBPACK_IMPORTED_MODULE_5__["pdexHistoryPureModel"])({
+                history: history,
+                accountName: accountName
+              });
+            }));
+
+          case 16:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this, [[5, 12]]);
+  }));
+  return _getPDexHistoriesApi.apply(this, arguments);
+}
+
+function getTxPdexStorageHistories() {
+  return _getTxPdexStorageHistories.apply(this, arguments);
+}
+
+function _getTxPdexStorageHistories() {
+  _getTxPdexStorageHistories = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    var _this = this;
+
+    var version, keyInfo, tokenIds, storageTokenIDs, coinsIndex, tasks, accountName;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.prev = 0;
+            version = _lib_core_constants__WEBPACK_IMPORTED_MODULE_0__["PrivacyVersion"].ver2;
+            _context3.next = 4;
+            return this.getKeyInfo({
+              version: version
+            });
+
+          case 4:
+            keyInfo = _context3.sent;
+            tokenIds = [];
+            _context3.next = 8;
+            return this.getStorageTradeTokenIDs({
+              version: version
+            });
+
+          case 8:
+            _context3.t0 = _context3.sent;
+
+            if (_context3.t0) {
+              _context3.next = 11;
+              break;
+            }
+
+            _context3.t0 = [];
+
+          case 11:
+            storageTokenIDs = _context3.t0;
+            coinsIndex = keyInfo === null || keyInfo === void 0 ? void 0 : keyInfo.coinindex;
+
+            if (coinsIndex) {
+              tokenIds = Object.keys(coinsIndex);
+            }
+
+            tokenIds = lodash_uniq__WEBPACK_IMPORTED_MODULE_1___default()(tokenIds.concat(storageTokenIDs));
+            tasks = tokenIds.map( /*#__PURE__*/function () {
+              var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(tokenID) {
+                var histories;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                  while (1) {
+                    switch (_context2.prev = _context2.next) {
+                      case 0:
+                        _context2.next = 2;
+                        return _this.getTransactorHistoriesByTokenID({
+                          tokenID: tokenID,
+                          version: version
+                        });
+
+                      case 2:
+                        _context2.t0 = _context2.sent;
+
+                        if (_context2.t0) {
+                          _context2.next = 5;
+                          break;
+                        }
+
+                        _context2.t0 = [];
+
+                      case 5:
+                        histories = _context2.t0;
+                        return _context2.abrupt("return", histories.filter(function (item) {
+                          return (item === null || item === void 0 ? void 0 : item.txType) === _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_6__["TX_TYPE"].TRADE;
+                        }));
+
+                      case 7:
+                      case "end":
+                        return _context2.stop();
+                    }
+                  }
+                }, _callee2);
+              }));
+
+              return function (_x) {
+                return _ref2.apply(this, arguments);
+              };
+            }());
+            accountName = this.name || "";
+            _context3.t1 = lodash_orderBy__WEBPACK_IMPORTED_MODULE_2___default.a;
+            _context3.t2 = lodash_flatten__WEBPACK_IMPORTED_MODULE_3___default.a;
+            _context3.next = 21;
+            return Promise.all(tasks);
+
+          case 21:
+            _context3.t3 = _context3.sent;
+            _context3.t4 = (0, _context3.t2)(_context3.t3);
+            return _context3.abrupt("return", (0, _context3.t1)(_context3.t4).map(function (history) {
+              return Object(_lib_module_Account_features_Trade_trade_utils__WEBPACK_IMPORTED_MODULE_5__["pdexHistoryStoragePureModel"])({
+                history: history,
+                accountName: accountName
+              });
+            }));
+
+          case 26:
+            _context3.prev = 26;
+            _context3.t5 = _context3["catch"](0);
+            throw _context3.t5;
+
+          case 29:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this, [[0, 26]]);
+  }));
+  return _getTxPdexStorageHistories.apply(this, arguments);
+}
+
+function getPDexHistories() {
+  return _getPDexHistories.apply(this, arguments);
+}
+
+function _getPDexHistories() {
+  _getPDexHistories = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+    var _this2 = this;
+
+    var _ref3,
+        offset,
+        limit,
+        oldHistories,
+        tasks,
+        _yield$Promise$all,
+        _yield$Promise$all2,
+        newHistories,
+        storageHistories,
+        oldIds,
+        apiHistories,
+        pendingStorage,
+        tasksStorage,
+        histories,
+        _args5 = arguments;
+
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _ref3 = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : {}, offset = _ref3.offset, limit = _ref3.limit, oldHistories = _ref3.oldHistories;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_7__["default"]('offset', offset).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_7__["default"]('limit', limit).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_7__["default"]('oldHistories', oldHistories).array();
+            _context5.next = 6;
+            return this.getPDexHistoriesApi({
+              limit: limit,
+              offset: offset
+            });
+
+          case 6:
+            _context5.t0 = _context5.sent;
+            _context5.next = 9;
+            return this.getTxPdexStorageHistories();
+
+          case 9:
+            _context5.t1 = _context5.sent;
+            tasks = [_context5.t0, _context5.t1];
+            _context5.next = 13;
+            return Promise.all(tasks);
+
+          case 13:
+            _yield$Promise$all = _context5.sent;
+            _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 2);
+            newHistories = _yield$Promise$all2[0];
+            storageHistories = _yield$Promise$all2[1];
+            oldIds = oldHistories.map(function (item) {
+              return item.requestTx;
+            });
+            newHistories = newHistories.filter(function (item) {
+              return !oldIds.includes(item.requestTx);
+            });
+            apiHistories = lodash_uniqBy__WEBPACK_IMPORTED_MODULE_4___default()(oldHistories.concat(newHistories.filter(function (item) {
+              return !oldIds.includes(item.requestTx);
+            })), function (item) {
+              return item.requestTx;
+            });
+            pendingStorage = [];
+            storageHistories.forEach(function (history) {
+              var notHave = apiHistories.some(function (item) {
+                return (item === null || item === void 0 ? void 0 : item.requestTx) === (history === null || history === void 0 ? void 0 : history.requestTx);
+              });
+
+              if (!notHave) {
+                pendingStorage.push(history);
+              }
+            });
+            tasksStorage = pendingStorage.map( /*#__PURE__*/function () {
+              var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(history) {
+                var txId, status;
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                  while (1) {
+                    switch (_context4.prev = _context4.next) {
+                      case 0:
+                        txId = history.requestTx;
+                        _context4.next = 3;
+                        return _this2.rpcTxService.apiGetTxStatus({
+                          txId: txId
+                        });
+
+                      case 3:
+                        status = _context4.sent;
+                        return _context4.abrupt("return", _objectSpread(_objectSpread({}, history), {}, {
+                          status: status
+                        }));
+
+                      case 5:
+                      case "end":
+                        return _context4.stop();
+                    }
+                  }
+                }, _callee4);
+              }));
+
+              return function (_x2) {
+                return _ref4.apply(this, arguments);
+              };
+            }());
+            _context5.t2 = lodash_flatten__WEBPACK_IMPORTED_MODULE_3___default.a;
+            _context5.next = 26;
+            return Promise.all(tasksStorage);
+
+          case 26:
+            _context5.t3 = _context5.sent;
+            pendingStorage = (0, _context5.t2)(_context5.t3);
+            histories = lodash_orderBy__WEBPACK_IMPORTED_MODULE_2___default()(apiHistories.concat(pendingStorage), ['requestTime'], ['desc']);
+            return _context5.abrupt("return", {
+              histories: histories,
+              apiHistoriesLength: (newHistories || []).length
+            });
+
+          case 30:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, this);
+  }));
+  return _getPDexHistories.apply(this, arguments);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  getPDexHistories: getPDexHistories,
+  getTxPdexStorageHistories: getTxPdexStorageHistories,
+  getPDexHistoriesApi: getPDexHistoriesApi
+});
+
+/***/ }),
+
+/***/ "./lib/module/Account/features/Trade/trade.js":
+/*!****************************************************!*\
+  !*** ./lib/module/Account/features/Trade/trade.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/module/Account//account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var _lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lib/module/Account//account.utils */ "./lib/module/Account/account.utils.js");
+/* harmony import */ var _lib_module_Account_features_Cache_cache__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/module/Account/features/Cache/cache */ "./lib/module/Account/features/Cache/cache.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -16405,13 +18012,13 @@ function _createAndSendTradeRequestTx() {
         switch (_context.prev = _context.next) {
           case 0:
             fee = _ref.transfer.fee, _ref$extra = _ref.extra, _ref$extra2 = _ref$extra === void 0 ? {} : _ref$extra, tokenIDToBuy = _ref$extra2.tokenIDToBuy, tokenIDToSell = _ref$extra2.tokenIDToSell, sellAmount = _ref$extra2.sellAmount, minAcceptableAmount = _ref$extra2.minAcceptableAmount, tradingFee = _ref$extra2.tradingFee, version = _ref$extra2.version;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendTradeRequestTx-tokenIDToBuy", tokenIDToBuy).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendTradeRequestTx-tokenIDToSell", tokenIDToSell).required().string();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendTradeRequestTx-sellAmount", sellAmount).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendTradeRequestTx-minAcceptableAmount", minAcceptableAmount).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendTradeRequestTx-tradingFee", tradingFee).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendTradeRequestTx-fee", fee).required().amount();
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendTradeRequestTx-version", version).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendTradeRequestTx-tokenIDToBuy", tokenIDToBuy).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendTradeRequestTx-tokenIDToSell", tokenIDToSell).required().string();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendTradeRequestTx-sellAmount", sellAmount).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendTradeRequestTx-minAcceptableAmount", minAcceptableAmount).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendTradeRequestTx-tradingFee", tradingFee).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendTradeRequestTx-fee", fee).required().amount();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendTradeRequestTx-version", version).required().number();
 
             if (fee < 0) {
               fee = 0;
@@ -16421,13 +18028,13 @@ function _createAndSendTradeRequestTx() {
             return this.updateProgressTx(10, "Generating Metadata");
 
           case 11:
-            sellPRV = tokenIDToSell === _lib_core__WEBPACK_IMPORTED_MODULE_2__["PRVIDSTR"];
+            sellPRV = tokenIDToSell === _lib_core__WEBPACK_IMPORTED_MODULE_0__["PRVIDSTR"];
             _context.next = 14;
-            return Object(_lib_core__WEBPACK_IMPORTED_MODULE_2__["getBurningAddress"])(this.rpc);
+            return Object(_lib_core__WEBPACK_IMPORTED_MODULE_0__["getBurningAddress"])(this.rpc);
 
           case 14:
             burningAddress = _context.sent;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("createAndSendTradeRequestTx-burningAddress", burningAddress).required().paymentAddress();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("createAndSendTradeRequestTx-burningAddress", burningAddress).required().paymentAddress();
             amount = tradingFee;
             tokenPaymentInfos = [];
 
@@ -16446,15 +18053,15 @@ function _createAndSendTradeRequestTx() {
               Amount: amount,
               Message: ""
             }];
-            myAddressStr = this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_2__["PaymentAddressType"]);
+            myAddressStr = this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_0__["PaymentAddressType"]);
             pInf = {
               PaymentAddress: myAddressStr,
               Amount: "0"
             };
-            newCoinsTask = [Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_5__["createCoin"])({
+            newCoinsTask = [Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_3__["createCoin"])({
               paymentInfo: pInf,
               tokenID: tokenIDToBuy
-            }), Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_5__["createCoin"])({
+            }), Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_3__["createCoin"])({
               paymentInfo: pInf,
               tokenID: tokenIDToSell
             })];
@@ -16471,7 +18078,7 @@ function _createAndSendTradeRequestTx() {
               TokenIDToBuyStr: tokenIDToBuy,
               TokenIDToSellStr: tokenIDToSell,
               SellAmount: sellAmount,
-              Type: _lib_core__WEBPACK_IMPORTED_MODULE_2__["PDECrossPoolTradeRequestMeta"],
+              Type: _lib_core__WEBPACK_IMPORTED_MODULE_0__["PDECrossPoolTradeRequestMeta"],
               MinAcceptableAmount: minAcceptableAmount,
               TradingFee: tradingFee,
               TraderAddressStr: newCoin.PublicKey,
@@ -16495,7 +18102,7 @@ function _createAndSendTradeRequestTx() {
               },
               extra: {
                 metadata: metadata,
-                txType: _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_4__["TX_TYPE"].TRADE,
+                txType: _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["TX_TYPE"].TRADE,
                 version: version
               }
             });
@@ -16516,7 +18123,7 @@ function _createAndSendTradeRequestTx() {
               },
               extra: {
                 metadata: metadata,
-                txType: _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_4__["TX_TYPE"].TRADE,
+                txType: _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["TX_TYPE"].TRADE,
                 version: version
               }
             });
@@ -16526,22 +18133,29 @@ function _createAndSendTradeRequestTx() {
 
           case 41:
             _context.next = 43;
-            return this.updateProgressTx(100, "Completed");
+            return this.setStorageTradeTokenIDs({
+              tokenIDs: [tokenIDToBuy, tokenIDToSell],
+              version: version
+            });
 
           case 43:
+            _context.next = 45;
+            return this.updateProgressTx(100, "Completed");
+
+          case 45:
             return _context.abrupt("return", tx);
 
-          case 46:
-            _context.prev = 46;
+          case 48:
+            _context.prev = 48;
             _context.t0 = _context["catch"](31);
             throw _context.t0;
 
-          case 49:
+          case 51:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[31, 46]]);
+    }, _callee, this, [[31, 48]]);
   }));
   return _createAndSendTradeRequestTx.apply(this, arguments);
 }
@@ -16568,170 +18182,233 @@ function _getPDeState() {
   return _getPDeState.apply(this, arguments);
 }
 
-function getPDexHistories() {
-  return _getPDexHistories.apply(this, arguments);
+function getPDeStateCached() {
+  return _getPDeStateCached.apply(this, arguments);
 }
 
-function _getPDexHistories() {
-  _getPDexHistories = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-    var _ref3,
-        offset,
-        limit,
-        otakey,
-        _args3 = arguments;
-
+function _getPDeStateCached() {
+  _getPDeStateCached = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _ref3 = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : {}, offset = _ref3.offset, limit = _ref3.limit;
-            otakey = this.getOTAKey();
-            offset = offset || 0;
-            limit = limit || 100000;
-            return _context3.abrupt("return", this.rpcCoinService.apiGetPDexHistories({
-              otakey: otakey,
-              offset: offset,
-              limit: limit
-            }));
+            return _context3.abrupt("return", Object(_lib_module_Account_features_Cache_cache__WEBPACK_IMPORTED_MODULE_4__["cachePromise"])(_lib_module_Account_features_Cache_cache__WEBPACK_IMPORTED_MODULE_4__["CACHE_KEYS"].PDE_STATE, this.rpcCoinService.apiGetPDeState));
 
-          case 5:
+          case 1:
           case "end":
             return _context3.stop();
         }
       }
     }, _callee3, this);
   }));
-  return _getPDexHistories.apply(this, arguments);
-}
-
-var PDexHistoryStoragePureModel = function PDexHistoryStoragePureModel(_ref2) {
-  var history = _ref2.history,
-      accountName = _ref2.accountName;
-
-  _classCallCheck(this, PDexHistoryStoragePureModel);
-
-  var metadata = history.metadata,
-      txId = history.txId,
-      status = history.status,
-      tx = history.tx;
-  this.sellAmount = metadata === null || metadata === void 0 ? void 0 : metadata.SellAmount;
-  this.buyAmount = metadata === null || metadata === void 0 ? void 0 : metadata.MinAcceptableAmount;
-  this.buyTokenId = metadata === null || metadata === void 0 ? void 0 : metadata.TokenIDToBuyStr;
-  this.sellTokenId = metadata === null || metadata === void 0 ? void 0 : metadata.TokenIDToSellStr;
-  this.requestTx = txId;
-  this.status = status;
-  this.networkFee = tx === null || tx === void 0 ? void 0 : tx.Fee;
-  this.requesttime = tx === null || tx === void 0 ? void 0 : tx.LockTime;
-  this.accountName = accountName;
-};
-
-function getTxPdexStorageHistories() {
-  return _getTxPdexStorageHistories.apply(this, arguments);
-}
-
-function _getTxPdexStorageHistories() {
-  _getTxPdexStorageHistories = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-    var _this = this;
-
-    var version, keyInfo, tokenIds, coinsIndex, tasks, accountName;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            _context5.prev = 0;
-            version = _lib_core_constants__WEBPACK_IMPORTED_MODULE_6__["PrivacyVersion"].ver1;
-            _context5.next = 4;
-            return this.getKeyInfo({
-              version: version
-            });
-
-          case 4:
-            keyInfo = _context5.sent;
-            tokenIds = [];
-            coinsIndex = keyInfo === null || keyInfo === void 0 ? void 0 : keyInfo.coinindex;
-
-            if (coinsIndex) {
-              tokenIds = Object.keys(coinsIndex);
-            }
-
-            tasks = tokenIds.map( /*#__PURE__*/function () {
-              var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(tokenID) {
-                var histories;
-                return regeneratorRuntime.wrap(function _callee4$(_context4) {
-                  while (1) {
-                    switch (_context4.prev = _context4.next) {
-                      case 0:
-                        _context4.next = 2;
-                        return _this.getTransactorHistoriesByTokenID({
-                          tokenID: tokenID,
-                          version: version
-                        });
-
-                      case 2:
-                        _context4.t0 = _context4.sent;
-
-                        if (_context4.t0) {
-                          _context4.next = 5;
-                          break;
-                        }
-
-                        _context4.t0 = [];
-
-                      case 5:
-                        histories = _context4.t0;
-                        return _context4.abrupt("return", histories.filter(function (item) {
-                          return (item === null || item === void 0 ? void 0 : item.txType) === _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_4__["TX_TYPE"].TRADE;
-                        }));
-
-                      case 7:
-                      case "end":
-                        return _context4.stop();
-                    }
-                  }
-                }, _callee4);
-              }));
-
-              return function (_x2) {
-                return _ref4.apply(this, arguments);
-              };
-            }());
-            accountName = this.name || "";
-            _context5.t0 = lodash_orderBy__WEBPACK_IMPORTED_MODULE_0___default.a;
-            _context5.t1 = lodash_flatten__WEBPACK_IMPORTED_MODULE_1___default.a;
-            _context5.next = 14;
-            return Promise.all(tasks);
-
-          case 14:
-            _context5.t2 = _context5.sent;
-            _context5.t3 = (0, _context5.t1)(_context5.t2);
-            return _context5.abrupt("return", (0, _context5.t0)(_context5.t3).map(function (history) {
-              return new PDexHistoryStoragePureModel({
-                history: history,
-                accountName: accountName
-              });
-            }));
-
-          case 19:
-            _context5.prev = 19;
-            _context5.t4 = _context5["catch"](0);
-            throw _context5.t4;
-
-          case 22:
-          case "end":
-            return _context5.stop();
-        }
-      }
-    }, _callee5, this, [[0, 19]]);
-  }));
-  return _getTxPdexStorageHistories.apply(this, arguments);
+  return _getPDeStateCached.apply(this, arguments);
 }
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   createAndSendTradeRequestTx: createAndSendTradeRequestTx,
   getPDeState: getPDeState,
-  getPDexHistories: getPDexHistories,
-  getTxPdexStorageHistories: getTxPdexStorageHistories
+  getPDeStateCached: getPDeStateCached
 });
+
+/***/ }),
+
+/***/ "./lib/module/Account/features/Trade/trade.storage.js":
+/*!************************************************************!*\
+  !*** ./lib/module/Account/features/Trade/trade.storage.js ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/uniq */ "./node_modules/lodash/uniq.js");
+/* harmony import */ var lodash_uniq__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_uniq__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+var STORAGE_KEYS = {
+  TRADE_TOKEN_IDS: '[trade] tokenIDs'
+};
+
+function getKeyTradeTokenIDs(_ref) {
+  var version = _ref.version;
+  new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('version', version).required().number();
+  var otaKey = this.getOTAKey();
+  var prefix = this.getPrefixKeyStorage({
+    version: version
+  });
+  return "".concat(prefix, "-").concat(otaKey, "-").concat(STORAGE_KEYS.TRADE_TOKEN_IDS);
+}
+
+function getStorageTradeTokenIDs(_x) {
+  return _getStorageTradeTokenIDs.apply(this, arguments);
+}
+
+function _getStorageTradeTokenIDs() {
+  _getStorageTradeTokenIDs = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref2) {
+    var version, key;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            version = _ref2.version;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('version', version).required().number();
+            key = this.getKeyTradeTokenIDs({
+              version: version
+            });
+            _context.next = 5;
+            return this.getAccountStorage(key);
+
+          case 5:
+            return _context.abrupt("return", _context.sent);
+
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+  return _getStorageTradeTokenIDs.apply(this, arguments);
+}
+
+function setStorageTradeTokenIDs(_x2) {
+  return _setStorageTradeTokenIDs.apply(this, arguments);
+}
+
+function _setStorageTradeTokenIDs() {
+  _setStorageTradeTokenIDs = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_ref3) {
+    var _ref3$tokenIDs, tokenIDs, version, oldTokenIDs, newTokenIDs, key;
+
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _ref3$tokenIDs = _ref3.tokenIDs, tokenIDs = _ref3$tokenIDs === void 0 ? [] : _ref3$tokenIDs, version = _ref3.version;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('version', version).required().number();
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]('tokenIDs', tokenIDs).required().array();
+            _context2.next = 5;
+            return this.getStorageTradeTokenIDs({
+              version: version
+            });
+
+          case 5:
+            _context2.t0 = _context2.sent;
+
+            if (_context2.t0) {
+              _context2.next = 8;
+              break;
+            }
+
+            _context2.t0 = [];
+
+          case 8:
+            oldTokenIDs = _context2.t0;
+            newTokenIDs = lodash_uniq__WEBPACK_IMPORTED_MODULE_0___default()(oldTokenIDs.concat(tokenIDs).filter(function (tokenID) {
+              return !!tokenID;
+            }));
+            key = this.getKeyTradeTokenIDs({
+              version: version
+            });
+            _context2.next = 13;
+            return this.setAccountStorage(key, newTokenIDs);
+
+          case 13:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this);
+  }));
+  return _setStorageTradeTokenIDs.apply(this, arguments);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  getKeyTradeTokenIDs: getKeyTradeTokenIDs,
+  getStorageTradeTokenIDs: getStorageTradeTokenIDs,
+  setStorageTradeTokenIDs: setStorageTradeTokenIDs
+});
+
+/***/ }),
+
+/***/ "./lib/module/Account/features/Trade/trade.utils.js":
+/*!**********************************************************!*\
+  !*** ./lib/module/Account/features/Trade/trade.utils.js ***!
+  \**********************************************************/
+/*! exports provided: pdexHistoryStoragePureModel, pdexHistoryPureModel */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pdexHistoryStoragePureModel", function() { return pdexHistoryStoragePureModel; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pdexHistoryPureModel", function() { return pdexHistoryPureModel; });
+/* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/isEmpty */ "./node_modules/lodash/isEmpty.js");
+/* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_isEmpty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _lib_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/core */ "./lib/core/index.js");
+
+
+var pdexHistoryStoragePureModel = function pdexHistoryStoragePureModel(_ref) {
+  var history = _ref.history,
+      accountName = _ref.accountName;
+  var metadata = history.metadata,
+      txId = history.txId,
+      status = history.status,
+      tx = history.tx,
+      tokenID = history.tokenID;
+  var lockTime;
+
+  if (tokenID === _lib_core__WEBPACK_IMPORTED_MODULE_1__["PRVIDSTR"]) {
+    lockTime = tx === null || tx === void 0 ? void 0 : tx.LockTime;
+  } else {
+    lockTime = tx === null || tx === void 0 ? void 0 : tx.Tx.LockTime;
+  }
+
+  return {
+    sellAmount: metadata === null || metadata === void 0 ? void 0 : metadata.SellAmount,
+    buyAmount: metadata === null || metadata === void 0 ? void 0 : metadata.MinAcceptableAmount,
+    buyTokenId: metadata === null || metadata === void 0 ? void 0 : metadata.TokenIDToBuyStr,
+    sellTokenId: metadata === null || metadata === void 0 ? void 0 : metadata.TokenIDToSellStr,
+    requestTx: txId,
+    status: status,
+    networkFee: (history === null || history === void 0 ? void 0 : history.fee) + ((metadata === null || metadata === void 0 ? void 0 : metadata.TradingFee) || 0),
+    requestTime: lockTime,
+    accountName: accountName,
+    tradingFee: metadata === null || metadata === void 0 ? void 0 : metadata.TradingFee
+  };
+};
+var pdexHistoryPureModel = function pdexHistoryPureModel(_ref2) {
+  var history = _ref2.history,
+      accountName = _ref2.accountName;
+  var responseTx;
+
+  if (!lodash_isEmpty__WEBPACK_IMPORTED_MODULE_0___default()(history === null || history === void 0 ? void 0 : history.respondtx)) {
+    responseTx = history === null || history === void 0 ? void 0 : history.respondtx;
+  }
+
+  var buyAmount = 0;
+  var buyTokenId = history === null || history === void 0 ? void 0 : history.buytoken;
+
+  if (buyTokenId && !lodash_isEmpty__WEBPACK_IMPORTED_MODULE_0___default()(history === null || history === void 0 ? void 0 : history.receive) && history !== null && history !== void 0 && history.receive[buyTokenId]) {
+    buyAmount = history === null || history === void 0 ? void 0 : history.receive[buyTokenId];
+  }
+
+  return {
+    sellAmount: history === null || history === void 0 ? void 0 : history.sell,
+    requestTx: history === null || history === void 0 ? void 0 : history.requesttx,
+    responseTx: responseTx,
+    status: history === null || history === void 0 ? void 0 : history.status,
+    buyTokenId: buyTokenId,
+    sellTokenId: history === null || history === void 0 ? void 0 : history.selltoken,
+    buyAmount: buyAmount,
+    networkFee: history === null || history === void 0 ? void 0 : history.fee,
+    requestTime: history === null || history === void 0 ? void 0 : history.requesttime,
+    accountName: accountName
+  };
+};
 
 /***/ }),
 
@@ -17043,7 +18720,7 @@ function _transact() {
             tokenReceiverPaymentAddrStr = new Array(tokenPayments.length);
 
             for (_i = 0; _i < tokenPayments.length; _i++) {
-              receiverPaymentAddrStr[_i] = tokenPayments[_i].PaymentAddress;
+              tokenReceiverPaymentAddrStr[_i] = tokenPayments[_i].PaymentAddress;
               totalAmountTokenTransfer = totalAmountTokenTransfer.add(new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(tokenPayments[_i].Amount));
               tokenPayments[_i].Amount = new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(tokenPayments[_i].Amount).toString();
             }
@@ -22203,7 +23880,9 @@ var RpcClient = function RpcClient(url, user, password) {
             case 16:
               return _context13.abrupt("return", Object.assign({
                 blockHash: response.data.Result.BlockHash,
-                err: null
+                err: null,
+                isInBlock: response.data.Result.IsInBlock,
+                isInMempool: response.data.Result.IsInMempool
               }, response.data.Result));
 
             case 17:
@@ -24159,9 +25838,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core */ "./lib/core/index.js");
 /* harmony import */ var _http_axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../http/axios */ "./lib/http/axios.js");
 /* harmony import */ var _lib_module_Account_features_Liquidity_liquidity_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lib/module/Account/features/Liquidity/liquidity.utils */ "./lib/module/Account/features/Liquidity/liquidity.utils.js");
+/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -24279,19 +25960,43 @@ var RpcHTTPCoinServiceClient = function RpcHTTPCoinServiceClient(_url) {
 
   _defineProperty(this, "apiGetTxsByReceiver", function () {
     var _ref6 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-        _ref6$tokenID = _ref6.tokenID,
-        tokenID = _ref6$tokenID === void 0 ? _core__WEBPACK_IMPORTED_MODULE_1__["PRVIDSTR"] : _ref6$tokenID,
-        otaKey = _ref6.otaKey,
+        tokenID = _ref6.tokenID,
+        _ref6$otaKey = _ref6.otaKey,
+        otaKey = _ref6$otaKey === void 0 ? "" : _ref6$otaKey,
+        _ref6$paymentkey = _ref6.paymentkey,
+        paymentkey = _ref6$paymentkey === void 0 ? "" : _ref6$paymentkey,
         _ref6$limit = _ref6.limit,
         limit = _ref6$limit === void 0 ? 100 : _ref6$limit,
         _ref6$offset = _ref6.offset,
-        offset = _ref6$offset === void 0 ? 0 : _ref6$offset;
+        offset = _ref6$offset === void 0 ? 0 : _ref6$offset,
+        version = _ref6.version;
 
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("tokenID", tokenID).required().string();
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("otaKey", otaKey).required().string();
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("limit", limit).required().number();
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("offset", offset).required().number();
-    var url = "gettxsbyreceiver?tokenid=".concat(tokenID, "&limit=").concat(limit, "&offset=").concat(offset, "&otakey=").concat(otaKey);
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("apiGetTxsByReceiver-tokenID", tokenID).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("apiGetTxsByReceiver-limit", limit).required().number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("apiGetTxsByReceiver-offset", offset).required().number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("apiGetTxsByReceiver-version", version).required().number();
+    var url = "gettxsbyreceiver?tokenid=".concat(tokenID, "&limit=").concat(limit, "&offset=").concat(offset);
+
+    switch (version) {
+      case _lib_core_constants__WEBPACK_IMPORTED_MODULE_4__["PrivacyVersion"].ver1:
+        {
+          new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("apiGetTxsByReceiver-paymentkey", paymentkey).string().required();
+          url = "".concat(url, "&paymentkey=").concat(paymentkey);
+          break;
+        }
+
+      case _lib_core_constants__WEBPACK_IMPORTED_MODULE_4__["PrivacyVersion"].ver2:
+        {
+          new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("apiGetTxsByReceiver-otaKey", otaKey).string().required();
+          url = "".concat(url, "&otakey=").concat(otakey);
+          break;
+        }
+
+      default:
+        break;
+    }
+
+    console.log("URL", url);
     return _this.http.get(url);
   });
 
@@ -24304,7 +26009,8 @@ var RpcHTTPCoinServiceClient = function RpcHTTPCoinServiceClient(_url) {
     new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("keyImages", keyImages).required().array();
     var data = {
       ShardID: shardID,
-      Keyimages: keyImages
+      Keyimages: keyImages,
+      Base58: false
     };
     return _this.http.post("gettxsbysender", data);
   });
@@ -24973,7 +26679,7 @@ var StorageServices = /*#__PURE__*/function () {
 /*!*****************************!*\
   !*** ./lib/tx/constants.js ***!
   \*****************************/
-/*! exports provided: TxNormalType, TxSalaryType, TxCustomTokenType, TxCustomTokenPrivacyType, CustomTokenInit, CustomTokenTransfer, TxVersion, MaxInputNumberForDefragment, MaxInfoSize, MAX_INPUT_PER_TX, MAX_DEFRAGMENT_TXS, DEFAULT_INPUT_PER_TX */
+/*! exports provided: TxNormalType, TxSalaryType, TxCustomTokenType, TxCustomTokenPrivacyType, CustomTokenInit, CustomTokenTransfer, TxVersion, MaxInputNumberForDefragment, MaxInfoSize, MAX_INPUT_PER_TX, MAX_DEFRAGMENT_TXS, DEFAULT_INPUT_PER_TX, MIN_AMOUNT_COIN_CONVERT */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24990,6 +26696,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAX_INPUT_PER_TX", function() { return MAX_INPUT_PER_TX; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAX_DEFRAGMENT_TXS", function() { return MAX_DEFRAGMENT_TXS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_INPUT_PER_TX", function() { return DEFAULT_INPUT_PER_TX; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MIN_AMOUNT_COIN_CONVERT", function() { return MIN_AMOUNT_COIN_CONVERT; });
 var TxNormalType = "n"; // normal tx(send and receive coin)
 
 var TxSalaryType = "s"; // salary tx(gov pay salary for block producer)
@@ -25007,8 +26714,9 @@ var TxVersion = 1; // todo: 0xkraken
 var MaxInputNumberForDefragment = 30;
 var MAX_DEFRAGMENT_TXS = 30;
 var MAX_INPUT_PER_TX = 30;
-var DEFAULT_INPUT_PER_TX = 20;
+var DEFAULT_INPUT_PER_TX = 30;
 var MaxInfoSize = 512;
+var MIN_AMOUNT_COIN_CONVERT = 5;
 
 
 /***/ }),
@@ -25305,6 +27013,24 @@ var isJsonString = function isJsonString(str) {
   }
 
   return true;
+};
+
+/***/ }),
+
+/***/ "./lib/utils/performance.js":
+/*!**********************************!*\
+  !*** ./lib/utils/performance.js ***!
+  \**********************************/
+/*! exports provided: performance */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "performance", function() { return performance; });
+var performance = {
+  now: function now() {
+    return new Date().getTime();
+  }
 };
 
 /***/ }),
@@ -25642,7 +27368,7 @@ var Validator = /*#__PURE__*/function () {
 /*!***********************!*\
   !*** ./lib/wallet.js ***!
   \***********************/
-/*! exports provided: Wallet, Account, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, PaymentAddressType, CustomTokenTransfer, CustomTokenInit, PRVIDSTR, ENCODE_VERSION, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, BurningPBSCRequestMeta, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDEPRVRequiredContributionRequestMeta, PDETradeRequestMeta, PDECrossPoolTradeRequestMeta, PDEWithdrawalRequestMeta, PortalV4ShieldingRequestMeta, PortalV4ShieldingResponseMeta, PortalV4UnshieldRequestMeta, PortalV4UnshieldingResponseMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin, constants, coinChooser, newMnemonic, newSeed, validateMnemonic, RpcHTTPCoinServiceClient, PrivacyVersion, Validator, ACCOUNT_CONSTANT, TX_STATUS, ErrorObject */
+/*! exports provided: Wallet, Account, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, PaymentAddressType, CustomTokenTransfer, CustomTokenInit, PRVIDSTR, ENCODE_VERSION, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, BurningPBSCRequestMeta, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDEPRVRequiredContributionRequestMeta, PDETradeRequestMeta, PDECrossPoolTradeRequestMeta, PDEWithdrawalRequestMeta, PortalV4ShieldingRequestMeta, PortalV4ShieldingResponseMeta, PortalV4UnshieldRequestMeta, PortalV4UnshieldingResponseMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin, constants, coinChooser, newMnemonic, newSeed, validateMnemonic, RpcHTTPCoinServiceClient, PrivacyVersion, Validator, ACCOUNT_CONSTANT, byteToHexString, hexStringToByte, TX_STATUS, ErrorObject, setShardNumber */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25650,137 +27376,161 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(Buffer) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Wallet", function() { return Wallet; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultStorage", function() { return DefaultStorage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "constants", function() { return constants; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setShardNumber", function() { return setShardNumber; });
 /* harmony import */ var lodash_isNumber__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/isNumber */ "./node_modules/lodash/isNumber.js");
 /* harmony import */ var lodash_isNumber__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_isNumber__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var lodash_lowerCase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/lowerCase */ "./node_modules/lodash/lowerCase.js");
-/* harmony import */ var lodash_lowerCase__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_lowerCase__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/isEqual */ "./node_modules/lodash/isEqual.js");
-/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_isEqual__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _utils_validator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/validator */ "./lib/utils/validator.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Validator", function() { return _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+/* harmony import */ var lodash_uniqBy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/uniqBy */ "./node_modules/lodash/uniqBy.js");
+/* harmony import */ var lodash_uniqBy__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_uniqBy__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash_toString__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/toString */ "./node_modules/lodash/toString.js");
+/* harmony import */ var lodash_toString__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_toString__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var lodash_toLower__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/toLower */ "./node_modules/lodash/toLower.js");
+/* harmony import */ var lodash_toLower__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_toLower__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lodash_set__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash/set */ "./node_modules/lodash/set.js");
+/* harmony import */ var lodash_set__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash_set__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var lodash_lowerCase__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash/lowerCase */ "./node_modules/lodash/lowerCase.js");
+/* harmony import */ var lodash_lowerCase__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(lodash_lowerCase__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash/isEqual */ "./node_modules/lodash/isEqual.js");
+/* harmony import */ var lodash_isEqual__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash_isEqual__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash/cloneDeep */ "./node_modules/lodash/cloneDeep.js");
+/* harmony import */ var lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var crypto_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! crypto-js */ "./node_modules/crypto-js/index.js");
+/* harmony import */ var crypto_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(crypto_js__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _privacy_sjcl__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./privacy/sjcl */ "./lib/privacy/sjcl/sjcl.js");
+/* harmony import */ var _privacy_sjcl__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_privacy_sjcl__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
+/* harmony import */ var _utils_validator__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils/validator */ "./lib/utils/validator.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Validator", function() { return _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]; });
 
-/* harmony import */ var _common_keySet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./common/keySet */ "./lib/common/keySet.js");
-/* harmony import */ var _common_key__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./common/key */ "./lib/common/key.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PaymentInfo", function() { return _common_key__WEBPACK_IMPORTED_MODULE_5__["PaymentInfo"]; });
+/* harmony import */ var _common_key__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./common/key */ "./lib/common/key.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PaymentInfo", function() { return _common_key__WEBPACK_IMPORTED_MODULE_12__["PaymentInfo"]; });
 
-/* harmony import */ var _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./rpcclient/rpcclient */ "./lib/rpcclient/rpcclient.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RpcClient", function() { return _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_6__["RpcClient"]; });
+/* harmony import */ var _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./rpcclient/rpcclient */ "./lib/rpcclient/rpcclient.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RpcClient", function() { return _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_13__["RpcClient"]; });
 
-/* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./privacy/utils */ "./lib/privacy/utils.js");
-/* harmony import */ var _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./privacy/hybridEncryption */ "./lib/privacy/hybridEncryption.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridEncryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_8__["hybridEncryption"]; });
+/* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./privacy/utils */ "./lib/privacy/utils.js");
+/* harmony import */ var _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./privacy/hybridEncryption */ "./lib/privacy/hybridEncryption.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridEncryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_15__["hybridEncryption"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridDecryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_8__["hybridDecryption"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hybridDecryption", function() { return _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_15__["hybridDecryption"]; });
 
-/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./core */ "./lib/core/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TxHistoryInfo", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["TxHistoryInfo"]; });
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./core */ "./lib/core/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TxHistoryInfo", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["TxHistoryInfo"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "KeyWallet", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["KeyWallet"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "KeyWallet", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["KeyWallet"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PaymentAddressType", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PaymentAddressType"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PaymentAddressType", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PaymentAddressType"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PRVIDSTR", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PRVIDSTR"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PRVIDSTR", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PRVIDSTR"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FailedTx", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["FailedTx"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FailedTx", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["FailedTx"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SuccessTx", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["SuccessTx"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SuccessTx", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["SuccessTx"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConfirmedTx", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["ConfirmedTx"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConfirmedTx", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["ConfirmedTx"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MetaStakingBeacon", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["MetaStakingBeacon"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MetaStakingBeacon", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["MetaStakingBeacon"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MetaStakingShard", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["MetaStakingShard"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MetaStakingShard", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["MetaStakingShard"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "toNanoPRV", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["toNanoPRV"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "toNanoPRV", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["toNanoPRV"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "toPRV", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["toPRV"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "toPRV", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["toPRV"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BurningRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["BurningRequestMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BurningRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["BurningRequestMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "WithDrawRewardRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["WithDrawRewardRequestMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "WithDrawRewardRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["WithDrawRewardRequestMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDEContributionMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PDEContributionMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDEContributionMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PDEContributionMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDEPRVRequiredContributionRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PDEPRVRequiredContributionRequestMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDEPRVRequiredContributionRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PDEPRVRequiredContributionRequestMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDETradeRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PDETradeRequestMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDETradeRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PDETradeRequestMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDECrossPoolTradeRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PDECrossPoolTradeRequestMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDECrossPoolTradeRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PDECrossPoolTradeRequestMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDEWithdrawalRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PDEWithdrawalRequestMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PDEWithdrawalRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PDEWithdrawalRequestMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalV4ShieldingRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PortalV4ShieldingRequestMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalV4ShieldingRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PortalV4ShieldingRequestMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalV4ShieldingResponseMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PortalV4ShieldingResponseMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalV4ShieldingResponseMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PortalV4ShieldingResponseMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalV4UnshieldRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PortalV4UnshieldRequestMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalV4UnshieldRequestMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PortalV4UnshieldRequestMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalV4UnshieldingResponseMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["PortalV4UnshieldingResponseMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalV4UnshieldingResponseMeta", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["PortalV4UnshieldingResponseMeta"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "encryptMessageOutCoin", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["encryptMessageOutCoin"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "encryptMessageOutCoin", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["encryptMessageOutCoin"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "decryptMessageOutCoin", function() { return _core__WEBPACK_IMPORTED_MODULE_9__["decryptMessageOutCoin"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "decryptMessageOutCoin", function() { return _core__WEBPACK_IMPORTED_MODULE_16__["decryptMessageOutCoin"]; });
 
-/* harmony import */ var _tx_constants__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./tx/constants */ "./lib/tx/constants.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CustomTokenTransfer", function() { return _tx_constants__WEBPACK_IMPORTED_MODULE_10__["CustomTokenTransfer"]; });
+/* harmony import */ var _tx_constants__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./tx/constants */ "./lib/tx/constants.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CustomTokenTransfer", function() { return _tx_constants__WEBPACK_IMPORTED_MODULE_17__["CustomTokenTransfer"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CustomTokenInit", function() { return _tx_constants__WEBPACK_IMPORTED_MODULE_10__["CustomTokenInit"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CustomTokenInit", function() { return _tx_constants__WEBPACK_IMPORTED_MODULE_17__["CustomTokenInit"]; });
 
-/* harmony import */ var _common_base58__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./common/base58 */ "./lib/common/base58.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "checkEncode", function() { return _common_base58__WEBPACK_IMPORTED_MODULE_11__["checkEncode"]; });
+/* harmony import */ var _common_base58__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./common/base58 */ "./lib/common/base58.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "checkEncode", function() { return _common_base58__WEBPACK_IMPORTED_MODULE_18__["checkEncode"]; });
 
-/* harmony import */ var _common_common__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./common/common */ "./lib/common/common.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getShardIDFromLastByte", function() { return _common_common__WEBPACK_IMPORTED_MODULE_12__["getShardIDFromLastByte"]; });
+/* harmony import */ var _common_common__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./common/common */ "./lib/common/common.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getShardIDFromLastByte", function() { return _common_common__WEBPACK_IMPORTED_MODULE_19__["getShardIDFromLastByte"]; });
 
-/* harmony import */ var _lib_module_Account__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @lib/module/Account */ "./lib/module/Account/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Account", function() { return _lib_module_Account__WEBPACK_IMPORTED_MODULE_13__["Account"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "byteToHexString", function() { return _common_common__WEBPACK_IMPORTED_MODULE_19__["byteToHexString"]; });
 
-/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./tx/utils */ "./lib/tx/utils.js");
-/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_tx_utils__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEstimateFee", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_14__["getEstimateFee"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hexStringToByte", function() { return _common_common__WEBPACK_IMPORTED_MODULE_19__["hexStringToByte"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEstimateFeeForPToken", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_14__["getEstimateFeeForPToken"]; });
+/* harmony import */ var _lib_module_Account__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @lib/module/Account */ "./lib/module/Account/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Account", function() { return _lib_module_Account__WEBPACK_IMPORTED_MODULE_20__["Account"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getMaxWithdrawAmount", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_14__["getMaxWithdrawAmount"]; });
+/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./tx/utils */ "./lib/tx/utils.js");
+/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(_tx_utils__WEBPACK_IMPORTED_MODULE_21__);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEstimateFee", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_21__["getEstimateFee"]; });
 
-/* harmony import */ var _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./privacy/ecdsa */ "./lib/privacy/ecdsa.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateECDSAKeyPair", function() { return _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_15__["generateECDSAKeyPair"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getEstimateFeeForPToken", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_21__["getEstimateFeeForPToken"]; });
 
-/* harmony import */ var _privacy_bls__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./privacy/bls */ "./lib/privacy/bls.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateBLSKeyPair", function() { return _privacy_bls__WEBPACK_IMPORTED_MODULE_16__["generateBLSKeyPair"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getMaxWithdrawAmount", function() { return _tx_utils__WEBPACK_IMPORTED_MODULE_21__["getMaxWithdrawAmount"]; });
 
-/* harmony import */ var _common_constants__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./common/constants */ "./lib/common/constants.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ENCODE_VERSION", function() { return _common_constants__WEBPACK_IMPORTED_MODULE_17__["ENCODE_VERSION"]; });
+/* harmony import */ var _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./privacy/ecdsa */ "./lib/privacy/ecdsa.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateECDSAKeyPair", function() { return _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_22__["generateECDSAKeyPair"]; });
 
-/* harmony import */ var _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./common/errorhandler */ "./lib/common/errorhandler.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ErrorObject", function() { return _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"]; });
+/* harmony import */ var _privacy_bls__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./privacy/bls */ "./lib/privacy/bls.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateBLSKeyPair", function() { return _privacy_bls__WEBPACK_IMPORTED_MODULE_23__["generateBLSKeyPair"]; });
 
-/* harmony import */ var _common_committeekey__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./common/committeekey */ "./lib/common/committeekey.js");
-/* harmony import */ var _services_coinChooser__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./services/coinChooser */ "./lib/services/coinChooser.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "coinChooser", function() { return _services_coinChooser__WEBPACK_IMPORTED_MODULE_20__["defaultCoinChooser"]; });
+/* harmony import */ var _common_constants__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./common/constants */ "./lib/common/constants.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ENCODE_VERSION", function() { return _common_constants__WEBPACK_IMPORTED_MODULE_24__["ENCODE_VERSION"]; });
 
-/* harmony import */ var crypto_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! crypto-js */ "./node_modules/crypto-js/index.js");
-/* harmony import */ var crypto_js__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(crypto_js__WEBPACK_IMPORTED_MODULE_21__);
-/* harmony import */ var _core_mnemonic__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./core/mnemonic */ "./lib/core/mnemonic.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "newMnemonic", function() { return _core_mnemonic__WEBPACK_IMPORTED_MODULE_22__["newMnemonic"]; });
+/* harmony import */ var _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./common/errorhandler */ "./lib/common/errorhandler.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ErrorObject", function() { return _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "newSeed", function() { return _core_mnemonic__WEBPACK_IMPORTED_MODULE_22__["newSeed"]; });
+/* harmony import */ var _common_committeekey__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./common/committeekey */ "./lib/common/committeekey.js");
+/* harmony import */ var _services_coinChooser__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./services/coinChooser */ "./lib/services/coinChooser.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "coinChooser", function() { return _services_coinChooser__WEBPACK_IMPORTED_MODULE_27__["defaultCoinChooser"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "validateMnemonic", function() { return _core_mnemonic__WEBPACK_IMPORTED_MODULE_22__["validateMnemonic"]; });
+/* harmony import */ var _core_mnemonic__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./core/mnemonic */ "./lib/core/mnemonic.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "newMnemonic", function() { return _core_mnemonic__WEBPACK_IMPORTED_MODULE_28__["newMnemonic"]; });
 
-/* harmony import */ var _rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./rpcclient/rpchttpcoinservice */ "./lib/rpcclient/rpchttpcoinservice.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RpcHTTPCoinServiceClient", function() { return _rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_23__["RpcHTTPCoinServiceClient"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "newSeed", function() { return _core_mnemonic__WEBPACK_IMPORTED_MODULE_28__["newSeed"]; });
 
-/* harmony import */ var _core_constants__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./core/constants */ "./lib/core/constants.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BurningPBSCRequestMeta", function() { return _core_constants__WEBPACK_IMPORTED_MODULE_24__["BurningPBSCRequestMeta"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "validateMnemonic", function() { return _core_mnemonic__WEBPACK_IMPORTED_MODULE_28__["validateMnemonic"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PrivacyVersion", function() { return _core_constants__WEBPACK_IMPORTED_MODULE_24__["PrivacyVersion"]; });
+/* harmony import */ var _rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./rpcclient/rpchttpcoinservice */ "./lib/rpcclient/rpchttpcoinservice.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RpcHTTPCoinServiceClient", function() { return _rpcclient_rpchttpcoinservice__WEBPACK_IMPORTED_MODULE_29__["RpcHTTPCoinServiceClient"]; });
 
-/* harmony import */ var _module_Account_account_constants__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./module/Account/account.constants */ "./lib/module/Account/account.constants.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ACCOUNT_CONSTANT", function() { return _module_Account_account_constants__WEBPACK_IMPORTED_MODULE_25__["default"]; });
+/* harmony import */ var _core_constants__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./core/constants */ "./lib/core/constants.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BurningPBSCRequestMeta", function() { return _core_constants__WEBPACK_IMPORTED_MODULE_30__["BurningPBSCRequestMeta"]; });
 
-/* harmony import */ var _wasm__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./wasm */ "./lib/wasm/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TX_STATUS", function() { return _module_Account_account_constants__WEBPACK_IMPORTED_MODULE_25__["TX_STATUS"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PrivacyVersion", function() { return _core_constants__WEBPACK_IMPORTED_MODULE_30__["PrivacyVersion"]; });
+
+/* harmony import */ var _module_Account_account_constants__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./module/Account/account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ACCOUNT_CONSTANT", function() { return _module_Account_account_constants__WEBPACK_IMPORTED_MODULE_31__["default"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TX_STATUS", function() { return _module_Account_account_constants__WEBPACK_IMPORTED_MODULE_31__["TX_STATUS"]; });
+
+/* harmony import */ var _services_storage__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./services/storage */ "./lib/services/storage.js");
+/* harmony import */ var _utils_performance__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./utils/performance */ "./lib/utils/performance.js");
+/* harmony import */ var _utils_json__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./utils/json */ "./lib/utils/json.js");
+
+
+
+
 
 
 
@@ -25794,13 +27544,11 @@ function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableTo
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
@@ -25841,9 +27589,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+
+
+
 var constants = {
-  CustomTokenTransfer: _tx_constants__WEBPACK_IMPORTED_MODULE_10__["CustomTokenTransfer"],
-  MAX_INPUT_PER_TX: _tx_constants__WEBPACK_IMPORTED_MODULE_10__["MAX_INPUT_PER_TX"]
+  CustomTokenTransfer: _tx_constants__WEBPACK_IMPORTED_MODULE_17__["CustomTokenTransfer"],
+  MAX_INPUT_PER_TX: _tx_constants__WEBPACK_IMPORTED_MODULE_17__["MAX_INPUT_PER_TX"]
 };
 
 var Wallet = /*#__PURE__*/function () {
@@ -25852,13 +27604,36 @@ var Wallet = /*#__PURE__*/function () {
 
     this.PassPhrase = "";
     this.Mnemonic = "";
-    this.MasterAccount = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_13__["Account"](this);
+    this.MasterAccount = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_20__["Account"](this);
     this.Name = "";
-    this.Storage = null;
     this.Seed = "";
+    this.Storage = new _services_storage__WEBPACK_IMPORTED_MODULE_32__["default"]();
+    this.measureStorage = {};
   }
 
   _createClass(Wallet, [{
+    key: "configWallet",
+    value: function configWallet(params) {
+      try {
+        var passPhrase = params.passPhrase,
+            name = params.name,
+            mnemonic = params.mnemonic,
+            storage = params.storage;
+        new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("configWallet-passPhrase", passPhrase).required().string();
+        new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("configWallet-storage", storage).required().object();
+        new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("configWallet-name", name).required().string();
+        new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("configWallet-mnemonic", mnemonic).required();
+        this.PassPhrase = passPhrase;
+        this.Name = name;
+        this.IsBIP44 = true;
+        this.Mnemonic = mnemonic;
+        this.Storage = storage;
+      } catch (error) {
+        console.log("CONFIG WALLET ERROR", error, params);
+        throw error;
+      }
+    }
+  }, {
     key: "init",
     value: function () {
       var _init = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(passPhrase, storage, walletName, accountName) {
@@ -25866,32 +27641,42 @@ var Wallet = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("passPhrase", passPhrase).required().string();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("storage", storage).required().object();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("walletName", walletName).required().string();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("accountName", accountName).required().string();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("WASM", _wasm__WEBPACK_IMPORTED_MODULE_26__["wasm"]).required().object();
-                this.Name = walletName;
-                this.Mnemonic = Object(_core_mnemonic__WEBPACK_IMPORTED_MODULE_22__["newMnemonic"])();
-                this.PassPhrase = passPhrase;
-                this.IsBIP44 = true;
-                this.Storage = storage;
-                _context.next = 12;
+                _context.prev = 0;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("init-passPhrase", passPhrase).required().string();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("init-storage", storage).required().object();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("init-walletName", walletName).required().string();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("init-accountName", accountName).required().string();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("init-WASM", _lib_wasm__WEBPACK_IMPORTED_MODULE_10__["wasm"]).required().object();
+                console.log("INIT WALLET");
+                this.configWallet({
+                  passPhrase: passPhrase,
+                  name: walletName,
+                  storage: storage,
+                  mnemonic: Object(_core_mnemonic__WEBPACK_IMPORTED_MODULE_28__["newMnemonic"])()
+                });
+                _context.next = 10;
                 return this._generateMasterAccount();
 
-              case 12:
-                _context.next = 14;
+              case 10:
+                _context.next = 12;
                 return this._generateFirstAccount(accountName);
 
-              case 14:
+              case 12:
+                console.log("INITED");
                 return _context.abrupt("return", this);
 
-              case 15:
+              case 16:
+                _context.prev = 16;
+                _context.t0 = _context["catch"](0);
+                console.log("INIT WALLET ERROR", _context.t0);
+                throw _context.t0;
+
+              case 20:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this);
+        }, _callee, this, [[0, 16]]);
       }));
 
       function init(_x, _x2, _x3, _x4) {
@@ -25899,6 +27684,71 @@ var Wallet = /*#__PURE__*/function () {
       }
 
       return init;
+    }()
+  }, {
+    key: "measureImport",
+    value: function () {
+      var _measureImport = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(mnemonic, passPhrase, name, storage) {
+        var _this = this;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("import-mnemonic", mnemonic).required();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("import-passPhrase", passPhrase).required().string();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("import-name", name).required().string();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("import-storage", storage).required().object();
+
+                if (Object(_core_mnemonic__WEBPACK_IMPORTED_MODULE_28__["validateMnemonic"])(mnemonic)) {
+                  _context2.next = 7;
+                  break;
+                }
+
+                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].MnemonicInvalidErr, _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].MnemonicInvalidErr.description);
+
+              case 7:
+                this.configWallet({
+                  passPhrase: passPhrase,
+                  name: name,
+                  storage: storage,
+                  mnemonic: mnemonic
+                });
+                _context2.next = 10;
+                return this.measureAsyncFn(function () {
+                  return _this._generateMasterAccount();
+                }, "importWallet.generateMasterAccount");
+
+              case 10:
+                _context2.next = 12;
+                return this.measureAsyncFn(function () {
+                  return _this._generateFirstAccount();
+                }, "importWallet.generateFirstAccount");
+
+              case 12:
+                _context2.next = 18;
+                break;
+
+              case 14:
+                _context2.prev = 14;
+                _context2.t0 = _context2["catch"](0);
+                console.log("IMPORT WALLET ERROR", _context2.t0);
+                throw _context2.t0;
+
+              case 18:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[0, 14]]);
+      }));
+
+      function measureImport(_x5, _x6, _x7, _x8) {
+        return _measureImport.apply(this, arguments);
+      }
+
+      return measureImport;
     }()
     /**
      *
@@ -25911,42 +27761,37 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "import",
     value: function () {
-      var _import2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(mnemonic, passPhrase, name, storage) {
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      var _import2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(mnemonic, passPhrase, name, storage) {
+        var _this2 = this;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                if (Object(_core_mnemonic__WEBPACK_IMPORTED_MODULE_22__["validateMnemonic"])(mnemonic)) {
-                  _context2.next = 2;
-                  break;
-                }
+                _context3.prev = 0;
+                _context3.next = 3;
+                return this.measureAsyncFn(function () {
+                  return _this2.measureImport(mnemonic, passPhrase, name, storage);
+                }, "importWallet.totalTime");
 
-                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].MnemonicInvalidErr, _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].MnemonicInvalidErr.description);
+              case 3:
+                _context3.next = 8;
+                break;
 
-              case 2:
-                this.PassPhrase = passPhrase;
-                this.Name = name;
-                this.IsBIP44 = true;
-                this.Mnemonic = mnemonic;
-                _context2.next = 8;
-                return this._generateMasterAccount();
+              case 5:
+                _context3.prev = 5;
+                _context3.t0 = _context3["catch"](0);
+                throw _context3.t0;
 
               case 8:
-                _context2.next = 10;
-                return this._generateFirstAccount();
-
-              case 10:
-                this.Storage = storage;
-
-              case 11:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this, [[0, 5]]);
       }));
 
-      function _import(_x5, _x6, _x7, _x8) {
+      function _import(_x9, _x10, _x11, _x12) {
         return _import2.apply(this, arguments);
       }
 
@@ -25955,29 +27800,29 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "_generateMasterAccount",
     value: function () {
-      var _generateMasterAccount2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      var _generateMasterAccount2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
         var masterAccountKey;
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
-                this.Seed = Object(_core_mnemonic__WEBPACK_IMPORTED_MODULE_22__["newSeed"])(this.Mnemonic);
-                _context3.next = 3;
-                return Object(_core__WEBPACK_IMPORTED_MODULE_9__["NewKey"])(this.Seed, 0, -1);
+                this.Seed = Object(_core_mnemonic__WEBPACK_IMPORTED_MODULE_28__["newSeed"])(this.Mnemonic);
+                _context4.next = 3;
+                return Object(_core__WEBPACK_IMPORTED_MODULE_16__["NewKey"])(this.Seed, 0, -1);
 
               case 3:
-                masterAccountKey = _context3.sent;
-                this.MasterAccount = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_13__["Account"](Wallet);
+                masterAccountKey = _context4.sent;
+                this.MasterAccount = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_20__["Account"](Wallet);
                 this.MasterAccount.key = masterAccountKey;
                 this.MasterAccount.child = [];
                 this.MasterAccount.name = "master";
 
               case 8:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
       function _generateMasterAccount() {
@@ -25989,28 +27834,28 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "_generateFirstAccount",
     value: function () {
-      var _generateFirstAccount2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+      var _generateFirstAccount2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
         var accountName,
             account,
-            _args4 = arguments;
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+            _args5 = arguments;
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
-                accountName = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : "Anon";
-                _context4.next = 3;
+                accountName = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : "Anon";
+                _context5.next = 3;
                 return this.createAccountWithId(1, accountName);
 
               case 3:
-                account = _context4.sent;
+                account = _context5.sent;
                 this.MasterAccount.child.push(account);
 
               case 5:
               case "end":
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee5, this);
       }));
 
       function _generateFirstAccount() {
@@ -26029,152 +27874,16 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "getAccountIndexByName",
     value: function getAccountIndexByName(accountName) {
-      return this.MasterAccount.child.findIndex(function (item) {
-        return item.name.toLowerCase() === accountName.toLowerCase();
-      });
-    }
-  }, {
-    key: "getCreatedAccounts",
-    value: function () {
-      var _getCreatedAccounts = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-        var _ref,
-            _ref$deserialize,
-            deserialize,
-            createdAccounts,
-            _iterator,
-            _step,
-            _account,
-            id,
-            newAccount,
-            newPrivateKey,
-            oldPrivateKey,
-            deserializeCreatedAccounts,
-            _iterator2,
-            _step2,
-            account,
-            info,
-            _args5 = arguments;
-
-        return regeneratorRuntime.wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                _ref = _args5.length > 0 && _args5[0] !== undefined ? _args5[0] : {}, _ref$deserialize = _ref.deserialize, deserialize = _ref$deserialize === void 0 ? true : _ref$deserialize;
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("deserialize", deserialize)["boolean"]();
-                createdAccounts = [];
-                _iterator = _createForOfIteratorHelper(this.MasterAccount.child);
-                _context5.prev = 4;
-
-                _iterator.s();
-
-              case 6:
-                if ((_step = _iterator.n()).done) {
-                  _context5.next = 17;
-                  break;
-                }
-
-                _account = _step.value;
-                id = Object(_common_common__WEBPACK_IMPORTED_MODULE_12__["getChildIdFromChildNumberArray"])(_account.key.ChildNumber);
-                _context5.next = 11;
-                return this.createAccountWithId(id);
-
-              case 11:
-                newAccount = _context5.sent;
-                newPrivateKey = newAccount.key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_9__["PriKeyType"]);
-                oldPrivateKey = _account.key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_9__["PriKeyType"]);
-
-                if (newPrivateKey === oldPrivateKey) {
-                  createdAccounts.push(_account);
-                }
-
-              case 15:
-                _context5.next = 6;
-                break;
-
-              case 17:
-                _context5.next = 22;
-                break;
-
-              case 19:
-                _context5.prev = 19;
-                _context5.t0 = _context5["catch"](4);
-
-                _iterator.e(_context5.t0);
-
-              case 22:
-                _context5.prev = 22;
-
-                _iterator.f();
-
-                return _context5.finish(22);
-
-              case 25:
-                if (!deserialize) {
-                  _context5.next = 47;
-                  break;
-                }
-
-                deserializeCreatedAccounts = [];
-                _iterator2 = _createForOfIteratorHelper(createdAccounts);
-                _context5.prev = 28;
-
-                _iterator2.s();
-
-              case 30:
-                if ((_step2 = _iterator2.n()).done) {
-                  _context5.next = 38;
-                  break;
-                }
-
-                account = _step2.value;
-                _context5.next = 34;
-                return account.getDeserializeInformation();
-
-              case 34:
-                info = _context5.sent;
-                deserializeCreatedAccounts.push(info);
-
-              case 36:
-                _context5.next = 30;
-                break;
-
-              case 38:
-                _context5.next = 43;
-                break;
-
-              case 40:
-                _context5.prev = 40;
-                _context5.t1 = _context5["catch"](28);
-
-                _iterator2.e(_context5.t1);
-
-              case 43:
-                _context5.prev = 43;
-
-                _iterator2.f();
-
-                return _context5.finish(43);
-
-              case 46:
-                createdAccounts = deserializeCreatedAccounts;
-
-              case 47:
-                return _context5.abrupt("return", createdAccounts);
-
-              case 48:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5, this, [[4, 19, 22, 25], [28, 40, 43, 46]]);
-      }));
-
-      function getCreatedAccounts() {
-        return _getCreatedAccounts.apply(this, arguments);
+      try {
+        new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("getAccountIndexByName-accountName", accountName).required().string();
+        var index = this.MasterAccount.child.findIndex(function (item) {
+          return lodash_isEqual__WEBPACK_IMPORTED_MODULE_6___default()(lodash_toLower__WEBPACK_IMPORTED_MODULE_3___default()(item.name), lodash_toLower__WEBPACK_IMPORTED_MODULE_3___default()(accountName));
+        });
+        return index;
+      } catch (error) {
+        throw error;
       }
-
-      return getCreatedAccounts;
-    }()
+    }
   }, {
     key: "hasCreatedAccount",
     value: function () {
@@ -26191,7 +27900,7 @@ var Wallet = /*#__PURE__*/function () {
               case 3:
                 newAccount = _context6.sent;
                 _context6.next = 6;
-                return Object(_common_common__WEBPACK_IMPORTED_MODULE_12__["getChildIdFromChildNumberArray"])(newAccount.key.ChildNumber);
+                return Object(_common_common__WEBPACK_IMPORTED_MODULE_19__["getChildIdFromChildNumberArray"])(newAccount.key.ChildNumber);
 
               case 6:
                 childId = _context6.sent;
@@ -26202,7 +27911,7 @@ var Wallet = /*#__PURE__*/function () {
                 newAccountWithId = _context6.sent;
                 privateKeyOfNewAccountWithID = newAccountWithId.getPrivateKey();
                 privateKeyOfNewAccount = newAccount.getPrivateKey();
-                return _context6.abrupt("return", lodash_isEqual__WEBPACK_IMPORTED_MODULE_2___default()(privateKeyOfNewAccountWithID, privateKeyOfNewAccount));
+                return _context6.abrupt("return", lodash_isEqual__WEBPACK_IMPORTED_MODULE_6___default()(privateKeyOfNewAccountWithID, privateKeyOfNewAccount));
 
               case 13:
               case "end":
@@ -26212,11 +27921,70 @@ var Wallet = /*#__PURE__*/function () {
         }, _callee6, this);
       }));
 
-      function hasCreatedAccount(_x9) {
+      function hasCreatedAccount(_x13) {
         return _hasCreatedAccount.apply(this, arguments);
       }
 
       return hasCreatedAccount;
+    }()
+  }, {
+    key: "measureCreateNewAccount",
+    value: function () {
+      var _measureCreateNewAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(accountName, shardID, excludedIds) {
+        var _this3 = this;
+
+        var newAccount, existed;
+        return regeneratorRuntime.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.prev = 0;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("createNewAccount-accountName", accountName).required().string();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("createNewAccount-shardID", shardID).number();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("createNewAccount-excludedIds", excludedIds).array();
+                _context7.next = 6;
+                return this.measureAsyncFn(function () {
+                  return _this3.createAccount(accountName, shardID, excludedIds);
+                }, "createNewAccount.createAcccount");
+
+              case 6:
+                newAccount = _context7.sent;
+                existed = this.validatePrivateKey(newAccount.getPrivateKey());
+
+                if (existed) {
+                  _context7.next = 12;
+                  break;
+                }
+
+                this.MasterAccount.child.push(newAccount);
+                _context7.next = 13;
+                break;
+
+              case 12:
+                throw new Error("Account was existed!");
+
+              case 13:
+                return _context7.abrupt("return", newAccount);
+
+              case 16:
+                _context7.prev = 16;
+                _context7.t0 = _context7["catch"](0);
+                console.log("createNewAccount ERROR", _context7.t0);
+                throw _context7.t0;
+
+              case 20:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7, this, [[0, 16]]);
+      }));
+
+      function measureCreateNewAccount(_x14, _x15, _x16) {
+        return _measureCreateNewAccount.apply(this, arguments);
+      }
+
+      return measureCreateNewAccount;
     }()
     /**
      * Create and add Account to wallet
@@ -26228,72 +27996,66 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "createNewAccount",
     value: function () {
-      var _createNewAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(accountName) {
+      var _createNewAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(accountName) {
+        var _this4 = this;
+
         var shardID,
             excludedIds,
-            newAccount,
-            _args7 = arguments;
-        return regeneratorRuntime.wrap(function _callee7$(_context7) {
+            account,
+            _args8 = arguments;
+        return regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                shardID = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : null;
-                excludedIds = _args7.length > 2 ? _args7[2] : undefined;
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("accountName", accountName).required().string();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("shardID", shardID).number();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("excludedIds", excludedIds).array();
-                _context7.next = 7;
-                return this.createAccount(accountName, shardID, excludedIds);
+                shardID = _args8.length > 1 && _args8[1] !== undefined ? _args8[1] : 0;
+                excludedIds = _args8.length > 2 ? _args8[2] : undefined;
+                _context8.prev = 2;
+                _context8.next = 5;
+                return this.measureAsyncFn(function () {
+                  return _this4.measureCreateNewAccount(accountName, shardID, excludedIds);
+                }, "createNewAccount.totalTime");
 
-              case 7:
-                newAccount = _context7.sent;
-                this.MasterAccount.child.push(newAccount);
-                _context7.next = 11;
-                return this.save(this.PassPhrase);
+              case 5:
+                account = _context8.sent;
+                return _context8.abrupt("return", account);
 
-              case 11:
-                return _context7.abrupt("return", newAccount);
+              case 9:
+                _context8.prev = 9;
+                _context8.t0 = _context8["catch"](2);
+                throw _context8.t0;
 
               case 12:
               case "end":
-                return _context7.stop();
+                return _context8.stop();
             }
           }
-        }, _callee7, this);
+        }, _callee8, this, [[2, 9]]);
       }));
 
-      function createNewAccount(_x10) {
+      function createNewAccount(_x17) {
         return _createNewAccount.apply(this, arguments);
       }
 
       return createNewAccount;
     }()
   }, {
-    key: "createAccount",
+    key: "measureCreateAccount",
     value: function () {
-      var _createAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(accountName, shardID) {
-        var excludedIds,
-            childKey,
-            createdAccounts,
-            createdIds,
-            possibleIds,
-            newId,
-            createdPrivateKeys,
-            newPrivateKey,
-            lastByte,
-            isExisted,
-            accountWallet,
-            _args8 = arguments;
-        return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      var _measureCreateAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(accountName, shardID, excludedIds) {
+        var childKey, createdAccounts, createdIds, possibleIds, newId, createdPrivateKeys, newPrivateKey, lastByte, isExisted, accountWallet;
+        return regeneratorRuntime.wrap(function _callee9$(_context9) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
-                excludedIds = _args8.length > 2 && _args8[2] !== undefined ? _args8[2] : [];
-                _context8.next = 3;
-                return this.getCreatedAccounts(true);
+                _context9.prev = 0;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("createAccount-accountName", accountName).required().string();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("createAccount-shardID", shardID).required().number();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("createAccount-excludedIds", excludedIds).array();
+                _context9.next = 6;
+                return this.listAccount();
 
-              case 3:
-                createdAccounts = _context8.sent;
+              case 6:
+                createdAccounts = _context9.sent;
                 createdIds = createdAccounts.map(function (item) {
                   return item.ID;
                 });
@@ -26305,42 +28067,95 @@ var Wallet = /*#__PURE__*/function () {
                   return item.PrivateKey;
                 });
 
-              case 8:
+              case 11:
                 if (false) {}
 
-                _context8.next = 11;
-                return Object(_core__WEBPACK_IMPORTED_MODULE_9__["NewKey"])(this.Seed, newId, 0);
+                _context9.next = 14;
+                return Object(_core__WEBPACK_IMPORTED_MODULE_16__["NewKey"])(this.Seed, newId, 0);
 
-              case 11:
-                childKey = _context8.sent;
-                newPrivateKey = childKey.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_9__["PriKeyType"]);
+              case 14:
+                childKey = _context9.sent;
+                newPrivateKey = childKey.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_16__["PriKeyType"]);
                 lastByte = childKey.KeySet.PaymentAddress.Pk[childKey.KeySet.PaymentAddress.Pk.length - 1];
-                isExisted = createdPrivateKeys.includes(newPrivateKey);
+                isExisted = createdPrivateKeys.includes(newPrivateKey) || createdIds.includes(newId);
 
-                if (!(isExisted || lodash_isNumber__WEBPACK_IMPORTED_MODULE_0___default()(shardID) && lastByte !== shardID || excludedIds.includes(newId))) {
-                  _context8.next = 18;
+                if (!(isExisted || lodash_isNumber__WEBPACK_IMPORTED_MODULE_0___default()(shardID) && Object(_common_common__WEBPACK_IMPORTED_MODULE_19__["getShardIDFromLastByte"])(lastByte) !== shardID || excludedIds.includes(newId))) {
+                  _context9.next = 21;
                   break;
                 }
 
                 newId++;
-                return _context8.abrupt("continue", 8);
+                return _context9.abrupt("continue", 11);
 
-              case 18:
-                accountWallet = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_13__["Account"](Wallet);
+              case 21:
+                accountWallet = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_20__["Account"](Wallet);
                 accountWallet.key = childKey;
                 accountWallet.child = [];
                 accountWallet.name = accountName || newId;
-                return _context8.abrupt("return", accountWallet);
+                return _context9.abrupt("return", accountWallet);
 
-              case 25:
+              case 28:
+                _context9.next = 33;
+                break;
+
+              case 30:
+                _context9.prev = 30;
+                _context9.t0 = _context9["catch"](0);
+                throw _context9.t0;
+
+              case 33:
               case "end":
-                return _context8.stop();
+                return _context9.stop();
             }
           }
-        }, _callee8, this);
+        }, _callee9, this, [[0, 30]]);
       }));
 
-      function createAccount(_x11, _x12) {
+      function measureCreateAccount(_x18, _x19, _x20) {
+        return _measureCreateAccount.apply(this, arguments);
+      }
+
+      return measureCreateAccount;
+    }()
+  }, {
+    key: "createAccount",
+    value: function () {
+      var _createAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(accountName, shardID) {
+        var _this5 = this;
+
+        var excludedIds,
+            account,
+            _args10 = arguments;
+        return regeneratorRuntime.wrap(function _callee10$(_context10) {
+          while (1) {
+            switch (_context10.prev = _context10.next) {
+              case 0:
+                excludedIds = _args10.length > 2 && _args10[2] !== undefined ? _args10[2] : [];
+                _context10.prev = 1;
+                _context10.next = 4;
+                return this.measureAsyncFn(function () {
+                  return _this5.measureCreateAccount(accountName, shardID, excludedIds);
+                }, "createAccount.totalTime");
+
+              case 4:
+                account = _context10.sent;
+                return _context10.abrupt("return", account);
+
+              case 8:
+                _context10.prev = 8;
+                _context10.t0 = _context10["catch"](1);
+                console.log("createAccount error", _context10.t0);
+                throw _context10.t0;
+
+              case 12:
+              case "end":
+                return _context10.stop();
+            }
+          }
+        }, _callee10, this, [[1, 8]]);
+      }));
+
+      function createAccount(_x21, _x22) {
         return _createAccount.apply(this, arguments);
       }
 
@@ -26349,53 +28164,53 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "createAccountWithPrivateKey",
     value: function () {
-      var _createAccountWithPrivateKey = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(privakeyStr, accountName) {
+      var _createAccountWithPrivateKey = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11(privakeyStr, accountName) {
         var keyWallet, account;
-        return regeneratorRuntime.wrap(function _callee9$(_context9) {
+        return regeneratorRuntime.wrap(function _callee11$(_context11) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context11.prev = _context11.next) {
               case 0:
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("privakeyStr", privakeyStr).string().required();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("accountName", accountName).string().required();
-                _context9.prev = 2;
-                keyWallet = _core__WEBPACK_IMPORTED_MODULE_9__["KeyWallet"].base58CheckDeserialize(privakeyStr);
-                _context9.next = 9;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("privakeyStr", privakeyStr).string().required();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("accountName", accountName).string().required();
+                _context11.prev = 2;
+                keyWallet = _core__WEBPACK_IMPORTED_MODULE_16__["KeyWallet"].base58CheckDeserialize(privakeyStr);
+                _context11.next = 9;
                 break;
 
               case 6:
-                _context9.prev = 6;
-                _context9.t0 = _context9["catch"](2);
-                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].B58CheckDeserializedErr, "Can not base58 check deserialized private key of importing Account");
+                _context11.prev = 6;
+                _context11.t0 = _context11["catch"](2);
+                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].B58CheckDeserializedErr, "Can not base58 check deserialized private key of importing Account");
 
               case 9:
-                if (!(keyWallet.KeySet.PrivateKey.length !== _common_constants__WEBPACK_IMPORTED_MODULE_17__["ED25519_KEY_SIZE"])) {
-                  _context9.next = 11;
+                if (!(keyWallet.KeySet.PrivateKey.length !== _common_constants__WEBPACK_IMPORTED_MODULE_24__["ED25519_KEY_SIZE"])) {
+                  _context11.next = 11;
                   break;
                 }
 
-                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].PrivateKeyInvalidErr, "Private key is empty");
+                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].PrivateKeyInvalidErr, "Private key is empty");
 
               case 11:
-                _context9.next = 13;
+                _context11.next = 13;
                 return keyWallet.KeySet.importFromPrivateKey(keyWallet.KeySet.PrivateKey);
 
               case 13:
-                account = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_13__["Account"](Wallet);
+                account = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_20__["Account"](Wallet);
                 account.key = keyWallet;
                 account.child = [];
                 account.isImport = true;
                 account.name = accountName;
-                return _context9.abrupt("return", account);
+                return _context11.abrupt("return", account);
 
               case 19:
               case "end":
-                return _context9.stop();
+                return _context11.stop();
             }
           }
-        }, _callee9, null, [[2, 6]]);
+        }, _callee11, null, [[2, 6]]);
       }));
 
-      function createAccountWithPrivateKey(_x13, _x14) {
+      function createAccountWithPrivateKey(_x23, _x24) {
         return _createAccountWithPrivateKey.apply(this, arguments);
       }
 
@@ -26404,32 +28219,32 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "createAccountWithId",
     value: function () {
-      var _createAccountWithId = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(accountId, accountName) {
+      var _createAccountWithId = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12(accountId, accountName) {
         var childKey, accountWallet;
-        return regeneratorRuntime.wrap(function _callee10$(_context10) {
+        return regeneratorRuntime.wrap(function _callee12$(_context12) {
           while (1) {
-            switch (_context10.prev = _context10.next) {
+            switch (_context12.prev = _context12.next) {
               case 0:
-                _context10.next = 2;
-                return Object(_core__WEBPACK_IMPORTED_MODULE_9__["NewKey"])(this.Seed, accountId, 0);
+                _context12.next = 2;
+                return Object(_core__WEBPACK_IMPORTED_MODULE_16__["NewKey"])(this.Seed, accountId, 0);
 
               case 2:
-                childKey = _context10.sent;
-                accountWallet = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_13__["Account"](Wallet);
+                childKey = _context12.sent;
+                accountWallet = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_20__["Account"](Wallet);
                 accountWallet.key = childKey;
                 accountWallet.child = [];
                 accountWallet.name = accountName;
-                return _context10.abrupt("return", accountWallet);
+                return _context12.abrupt("return", accountWallet);
 
               case 8:
               case "end":
-                return _context10.stop();
+                return _context12.stop();
             }
           }
-        }, _callee10, this);
+        }, _callee12, this);
       }));
 
-      function createAccountWithId(_x15, _x16) {
+      function createAccountWithId(_x25, _x26) {
         return _createAccountWithId.apply(this, arguments);
       }
 
@@ -26438,89 +28253,89 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "exportAccountPrivateKey",
     value: function exportAccountPrivateKey(childIndex) {
-      return this.MasterAccount.child[childIndex].key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_9__["PriKeyType"]);
+      return this.MasterAccount.child[childIndex].key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_16__["PriKeyType"]);
     }
   }, {
     key: "exportAccountReadonlyKey",
     value: function exportAccountReadonlyKey(childIndex) {
-      return this.MasterAccount.child[childIndex].key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_9__["ReadonlyKeyType"]);
+      return this.MasterAccount.child[childIndex].key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_16__["ReadonlyKeyType"]);
     }
   }, {
     key: "validateAccountName",
     value: function validateAccountName(name) {
       if (!name) {
-        throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].InvalidAccountName, "Account name is invalid");
+        throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].InvalidAccountName, "Account name is invalid");
       }
 
       for (var i = 0; i < this.MasterAccount.child.length; i++) {
         var account = this.MasterAccount.child[i];
 
-        if (account.name === name) {
-          throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].ExistedAccountErr, "Name of importing Account was existed");
+        var isNameExisted = lodash_isEqual__WEBPACK_IMPORTED_MODULE_6___default()(lodash_toLower__WEBPACK_IMPORTED_MODULE_3___default()(account.name), lodash_toLower__WEBPACK_IMPORTED_MODULE_3___default()(name));
+
+        if (isNameExisted) {
+          throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].ExistedAccountErr, "Name of importing Account was existed");
         }
       }
     }
   }, {
     key: "validatePrivateKey",
     value: function validatePrivateKey(privateKey) {
+      new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("validatePrivateKey-privateKey", privateKey).required().string();
+      var existed = false;
+
       for (var i = 0; i < this.MasterAccount.child.length; i++) {
         var account = this.MasterAccount.child[i];
 
-        if (account.key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_9__["PriKeyType"]) == privateKey) {
-          throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].ExistedAccountErr, "Private key of importing Account was existed");
+        if (lodash_isEqual__WEBPACK_IMPORTED_MODULE_6___default()(account.getPrivateKey(), privateKey)) {
+          existed = true;
         }
       }
+
+      return existed;
     }
   }, {
     key: "removeAccount",
     value: function () {
-      var _removeAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11(accPrivateKeyStr, passPhrase) {
-        var i, account;
-        return regeneratorRuntime.wrap(function _callee11$(_context11) {
+      var _removeAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13(accPrivateKeyStr) {
+        var removed, temp;
+        return regeneratorRuntime.wrap(function _callee13$(_context13) {
           while (1) {
-            switch (_context11.prev = _context11.next) {
+            switch (_context13.prev = _context13.next) {
               case 0:
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("accPrivateKeyStr", accPrivateKeyStr).string().required();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("passPhrase", passPhrase).string();
-                i = 0;
+                removed = false;
+                _context13.prev = 1;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("removeAccount-accPrivateKeyStr", accPrivateKeyStr).string().required();
+                _context13.next = 5;
+                return this.createAccountWithPrivateKey(accPrivateKeyStr, "temp");
 
-              case 3:
-                if (!(i < this.MasterAccount.child.length)) {
-                  _context11.next = 13;
-                  break;
-                }
-
-                account = this.MasterAccount.child[i];
-
-                if (!(account.key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_9__["PriKeyType"]) === accPrivateKeyStr)) {
-                  _context11.next = 10;
-                  break;
-                }
-
-                this.MasterAccount.child.splice(i, 1);
-                _context11.next = 9;
-                return this.save(passPhrase);
-
-              case 9:
-                return _context11.abrupt("return");
-
-              case 10:
-                i++;
-                _context11.next = 3;
+              case 5:
+                temp = _context13.sent;
+                this.MasterAccount.child = this.MasterAccount.child.filter(function (account) {
+                  var result = account.getPrivateKey() !== temp.getPrivateKey();
+                  return result;
+                });
+                removed = true;
+                _context13.next = 14;
                 break;
 
-              case 13:
-                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].UnexpectedErr, "Account need to be removed is not existed");
+              case 10:
+                _context13.prev = 10;
+                _context13.t0 = _context13["catch"](1);
+                console.log("removeAccount error", _context13.t0);
+                throw _context13.t0;
 
               case 14:
+                return _context13.abrupt("return", removed);
+
+              case 15:
               case "end":
-                return _context11.stop();
+                return _context13.stop();
             }
           }
-        }, _callee11, this);
+        }, _callee13, this, [[1, 10]]);
       }));
 
-      function removeAccount(_x17, _x18) {
+      function removeAccount(_x27) {
         return _removeAccount.apply(this, arguments);
       }
 
@@ -26529,169 +28344,304 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "importAccount",
     value: function () {
-      var _importAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12(privakeyStr, accountName) {
-        var passPhrase,
-            account,
-            privateKey,
-            listAccount,
-            _args12 = arguments;
-        return regeneratorRuntime.wrap(function _callee12$(_context12) {
+      var _importAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14(privakeyStr, accountName, passPhrase) {
+        var account, privateKey, listAccount, existed;
+        return regeneratorRuntime.wrap(function _callee14$(_context14) {
           while (1) {
-            switch (_context12.prev = _context12.next) {
+            switch (_context14.prev = _context14.next) {
               case 0:
-                passPhrase = _args12.length > 2 && _args12[2] !== undefined ? _args12[2] : this.passPhrase;
-                _context12.prev = 1;
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("importAccount-privakeyStr", privakeyStr).string().required();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("importAccount-accountName", accountName).string().required();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("importAccount-passPhrase", passPhrase).string();
-                _context12.next = 7;
+                _context14.prev = 0;
+
+                if (!passPhrase) {
+                  passPhrase = this.passPhrase;
+                }
+
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("importAccount-privakeyStr", privakeyStr).string().required();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("importAccount-accountName", accountName).string().required();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("importAccount-passPhrase", passPhrase).string();
+                _context14.next = 7;
                 return this.createAccountWithPrivateKey(privakeyStr, accountName);
 
               case 7:
-                account = _context12.sent;
+                account = _context14.sent;
                 privateKey = account.getPrivateKey();
-                listAccount = _toConsumableArray(this.MasterAccount.child);
+                listAccount = this.MasterAccount.child;
                 listAccount.forEach(function (oldAccount) {
                   var privateKeyOfOldAccount = oldAccount.getPrivateKey();
                   var nameOfOldAccount = oldAccount.getAccountName();
 
-                  if (lodash_isEqual__WEBPACK_IMPORTED_MODULE_2___default()(privateKey, privateKeyOfOldAccount)) {
-                    throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].ExistedAccountErr, "Private key of importing account was existed");
+                  if (lodash_isEqual__WEBPACK_IMPORTED_MODULE_6___default()(privateKey, privateKeyOfOldAccount)) {
+                    throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].ExistedAccountErr, "Private key of importing account was existed");
                   }
 
-                  if (lodash_isEqual__WEBPACK_IMPORTED_MODULE_2___default()(lodash_lowerCase__WEBPACK_IMPORTED_MODULE_1___default()(nameOfOldAccount), lodash_lowerCase__WEBPACK_IMPORTED_MODULE_1___default()(accountName))) {
-                    throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].ExistedAccountErr, "Name of importing account was existed");
+                  if (lodash_isEqual__WEBPACK_IMPORTED_MODULE_6___default()(lodash_lowerCase__WEBPACK_IMPORTED_MODULE_5___default()(nameOfOldAccount), lodash_lowerCase__WEBPACK_IMPORTED_MODULE_5___default()(accountName))) {
+                    throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].ExistedAccountErr, "Name of importing account was existed");
                   }
                 });
-                this.MasterAccount.child.push(account);
-                _context12.next = 14;
-                return this.save(this.PassPhrase || passPhrase);
+                existed = this.validatePrivateKey(privateKey);
 
-              case 14:
-                return _context12.abrupt("return", account);
+                if (existed) {
+                  _context14.next = 16;
+                  break;
+                }
+
+                this.MasterAccount.child.push(account);
+                _context14.next = 17;
+                break;
+
+              case 16:
+                throw new Error("Account was existed!");
 
               case 17:
-                _context12.prev = 17;
-                _context12.t0 = _context12["catch"](1);
-                throw _context12.t0;
+                return _context14.abrupt("return", account);
 
               case 20:
+                _context14.prev = 20;
+                _context14.t0 = _context14["catch"](0);
+                console.log("importAccount error", _context14.t0);
+                throw _context14.t0;
+
+              case 24:
               case "end":
-                return _context12.stop();
+                return _context14.stop();
             }
           }
-        }, _callee12, this, [[1, 17]]);
+        }, _callee14, this, [[0, 20]]);
       }));
 
-      function importAccount(_x19, _x20) {
+      function importAccount(_x28, _x29, _x30) {
         return _importAccount.apply(this, arguments);
       }
 
       return importAccount;
     }()
   }, {
-    key: "importAccountWithId",
+    key: "measureImportAccountWithId",
     value: function () {
-      var _importAccountWithId = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13(accountId, accountName) {
-        var index,
-            account,
-            _args13 = arguments;
-        return regeneratorRuntime.wrap(function _callee13$(_context13) {
+      var _measureImportAccountWithId = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15(accountId, accountName, index) {
+        var account, privateKey, existed;
+        return regeneratorRuntime.wrap(function _callee15$(_context15) {
           while (1) {
-            switch (_context13.prev = _context13.next) {
+            switch (_context15.prev = _context15.next) {
               case 0:
-                index = _args13.length > 2 && _args13[2] !== undefined ? _args13[2] : 0;
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("accountId", accountId).required();
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("accountName", accountName).string().required();
+                _context15.prev = 0;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("importAccountWithId-accountId", accountId).required();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("importAccountWithId-accountName", accountName).string().required();
 
                 try {
                   this.validateAccountName(accountName);
                 } catch (_unused) {
-                  this.importAccountWithId(accountId, accountName + index, index + 1);
+                  this.measureImportAccountWithId(accountId, "".concat(accountName, "-").concat(index), index + 1);
                 }
 
-                _context13.next = 6;
+                _context15.next = 6;
                 return this.createAccountWithId(accountId, accountName);
 
               case 6:
-                account = _context13.sent;
-                this.validatePrivateKey(account.key.base58CheckSerialize(_core__WEBPACK_IMPORTED_MODULE_9__["PriKeyType"]));
+                account = _context15.sent;
+                privateKey = account.getPrivateKey();
+                existed = this.validatePrivateKey(privateKey);
+
+                if (existed) {
+                  _context15.next = 13;
+                  break;
+                }
+
                 this.MasterAccount.child.push(account);
-                _context13.next = 11;
-                return this.save(this.PassPhrase);
+                _context15.next = 14;
+                break;
 
-              case 11:
-                return _context13.abrupt("return", account);
+              case 13:
+                throw new Error("Account was existed!");
 
-              case 12:
+              case 14:
+                return _context15.abrupt("return", account);
+
+              case 17:
+                _context15.prev = 17;
+                _context15.t0 = _context15["catch"](0);
+                throw _context15.t0;
+
+              case 20:
               case "end":
-                return _context13.stop();
+                return _context15.stop();
             }
           }
-        }, _callee13, this);
+        }, _callee15, this, [[0, 17]]);
       }));
 
-      function importAccountWithId(_x21, _x22) {
+      function measureImportAccountWithId(_x31, _x32, _x33) {
+        return _measureImportAccountWithId.apply(this, arguments);
+      }
+
+      return measureImportAccountWithId;
+    }()
+  }, {
+    key: "importAccountWithId",
+    value: function () {
+      var _importAccountWithId = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16(accountId, accountName) {
+        var _this6 = this;
+
+        var index,
+            account,
+            _args16 = arguments;
+        return regeneratorRuntime.wrap(function _callee16$(_context16) {
+          while (1) {
+            switch (_context16.prev = _context16.next) {
+              case 0:
+                index = _args16.length > 2 && _args16[2] !== undefined ? _args16[2] : 0;
+                _context16.prev = 1;
+                _context16.next = 4;
+                return this.measureAsyncFn(function () {
+                  return _this6.measureImportAccountWithId(accountId, accountName, index);
+                }, "importAccountWithID.totalTime-".concat(accountName, "-").concat(accountId));
+
+              case 4:
+                account = _context16.sent;
+                return _context16.abrupt("return", account);
+
+              case 8:
+                _context16.prev = 8;
+                _context16.t0 = _context16["catch"](1);
+                throw _context16.t0;
+
+              case 11:
+              case "end":
+                return _context16.stop();
+            }
+          }
+        }, _callee16, this, [[1, 8]]);
+      }));
+
+      function importAccountWithId(_x34, _x35) {
         return _importAccountWithId.apply(this, arguments);
       }
 
       return importAccountWithId;
     }()
   }, {
+    key: "ellipsisCenter",
+    value: function ellipsisCenter() {
+      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref$str = _ref.str,
+          str = _ref$str === void 0 ? "" : _ref$str,
+          _ref$limit = _ref.limit,
+          limit = _ref$limit === void 0 ? 10 : _ref$limit,
+          _ref$dots = _ref.dots,
+          dots = _ref$dots === void 0 ? "..." : _ref$dots;
+
+      try {
+        var size = str.length;
+
+        if (size < limit * 2 + dots.length) {
+          return str;
+        }
+
+        var leftStr = str.substring(0, limit);
+        var rightStr = str.substring(size - limit, size);
+        return leftStr + dots + rightStr;
+      } catch (_unused2) {
+        return str;
+      }
+    }
+  }, {
+    key: "getAccountWillBeStoraged",
+    value: function getAccountWillBeStoraged(account) {
+      try {
+        var newAccount = Object.assign({}, {
+          name: account.name,
+          child: Array.from(account.child),
+          key: {
+            Depth: account.key.Depth,
+            ChainCode: Array.from(account.key.ChainCode),
+            ChildNumber: Array.from(account.key.ChildNumber),
+            KeySet: {
+              PrivateKey: Array.from(account.key.KeySet.PrivateKey)
+            }
+          },
+          isImport: account.isImport
+        });
+        return newAccount;
+      } catch (error) {
+        console.log("getAccountWillBeStoraged ERROR", error);
+        return account;
+      }
+    }
+  }, {
     key: "save",
     value: function () {
-      var _save = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14() {
+      var _save = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17() {
+        var _this7 = this;
+
         var password,
-            i,
+            legacyEncryption,
+            wallet,
             data,
             cipherText,
-            _args14 = arguments;
-        return regeneratorRuntime.wrap(function _callee14$(_context14) {
+            size,
+            _args17 = arguments;
+        return regeneratorRuntime.wrap(function _callee17$(_context17) {
           while (1) {
-            switch (_context14.prev = _context14.next) {
+            switch (_context17.prev = _context17.next) {
               case 0:
-                password = _args14.length > 0 && _args14[0] !== undefined ? _args14[0] : "";
+                password = _args17.length > 0 && _args17[0] !== undefined ? _args17[0] : "";
+                legacyEncryption = _args17.length > 1 && _args17[1] !== undefined ? _args17[1] : false;
+                _context17.prev = 2;
 
                 if (password === "") {
                   password = this.PassPhrase;
-                } // parse to byte[]
-
-
-                for (i = 0; i < this.MasterAccount.child.length; i++) {
-                  this.MasterAccount.child[i].key.ChainCode = Array.from(this.MasterAccount.child[i].key.ChainCode);
-                  this.MasterAccount.child[i].key.ChildNumber = Array.from(this.MasterAccount.child[i].key.ChildNumber);
-                  this.MasterAccount.child[i].key.KeySet.PrivateKey = Array.from(this.MasterAccount.child[i].key.KeySet.PrivateKey);
-                  this.MasterAccount.child[i].key.KeySet.PaymentAddress.Pk = Array.from(this.MasterAccount.child[i].key.KeySet.PaymentAddress.Pk);
-                  this.MasterAccount.child[i].key.KeySet.PaymentAddress.Tk = Array.from(this.MasterAccount.child[i].key.KeySet.PaymentAddress.Tk);
-                  this.MasterAccount.child[i].key.KeySet.ReadonlyKey.Pk = Array.from(this.MasterAccount.child[i].key.KeySet.ReadonlyKey.Pk);
-                  this.MasterAccount.child[i].key.KeySet.ReadonlyKey.Rk = Array.from(this.MasterAccount.child[i].key.KeySet.ReadonlyKey.Rk);
                 }
 
-                this.MasterAccount.key.ChainCode = Array.from(this.MasterAccount.key.ChainCode);
-                this.MasterAccount.key.ChildNumber = Array.from(this.MasterAccount.key.ChildNumber);
-                this.MasterAccount.key.KeySet.PrivateKey = Array.from(this.MasterAccount.key.KeySet.PrivateKey);
-                this.MasterAccount.key.KeySet.PaymentAddress.Pk = Array.from(this.MasterAccount.key.KeySet.PaymentAddress.Pk);
-                this.MasterAccount.key.KeySet.PaymentAddress.Tk = Array.from(this.MasterAccount.key.KeySet.PaymentAddress.Tk);
-                this.MasterAccount.key.KeySet.ReadonlyKey.Pk = Array.from(this.MasterAccount.key.KeySet.ReadonlyKey.Pk);
-                this.MasterAccount.key.KeySet.ReadonlyKey.Rk = Array.from(this.MasterAccount.key.KeySet.ReadonlyKey.Rk);
-                data = JSON.stringify(this); // encrypt
+                wallet = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(this);
+                wallet.MasterAccount = this.getAccountWillBeStoraged(wallet.MasterAccount);
+                wallet.MasterAccount.child = wallet.MasterAccount.child.map(function (account) {
+                  return _this7.getAccountWillBeStoraged(account);
+                });
+                delete wallet.PassPhrase;
+                delete wallet.Storage;
+                delete wallet.measureStorage;
+                delete wallet.RpcClient;
+                delete wallet.Debug;
+                delete wallet.RpcCoinService;
+                delete wallet.PrivacyVersion;
+                delete wallet.UseLegacyEncoding;
+                delete wallet.PubsubService;
+                delete wallet.RpcRequestService;
+                delete wallet.AuthToken;
+                delete wallet.RpcApiService;
+                data = JSON.stringify(wallet);
 
-                cipherText = crypto_js__WEBPACK_IMPORTED_MODULE_21___default.a.AES.encrypt(data, password); // storage
-
-                if (!(this.Storage != null)) {
-                  _context14.next = 15;
-                  break;
+                if (legacyEncryption) {
+                  cipherText = crypto_js__WEBPACK_IMPORTED_MODULE_8___default.a.AES.encrypt(data, password);
+                } else {
+                  cipherText = _privacy_sjcl__WEBPACK_IMPORTED_MODULE_9___default.a.encrypt(_privacy_sjcl__WEBPACK_IMPORTED_MODULE_9___default.a.codec.hex.toBits(password), data);
                 }
 
-                _context14.next = 15;
-                return this.Storage.setItem(this.Name, cipherText.toString());
+                cipherText = lodash_toString__WEBPACK_IMPORTED_MODULE_2___default()(cipherText);
+                size = cipherText.length / 2 / 1024;
 
-              case 15:
+                lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "saveWallet.size", "".concat(size, "kb"));
+
+                _context17.next = 26;
+                return this.setWalletStorage({
+                  key: this.Name,
+                  value: cipherText
+                });
+
+              case 26:
+                return _context17.abrupt("return", this);
+
+              case 29:
+                _context17.prev = 29;
+                _context17.t0 = _context17["catch"](2);
+                throw _context17.t0;
+
+              case 32:
               case "end":
-                return _context14.stop();
+                return _context17.stop();
             }
           }
-        }, _callee14, this);
+        }, _callee17, this, [[2, 29]]);
       }));
 
       function save() {
@@ -26701,179 +28651,259 @@ var Wallet = /*#__PURE__*/function () {
       return save;
     }()
   }, {
-    key: "clearCached",
-    value: function () {
-      var _clearCached = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15(storage) {
-        var i;
-        return regeneratorRuntime.wrap(function _callee15$(_context15) {
-          while (1) {
-            switch (_context15.prev = _context15.next) {
-              case 0:
-                new _utils_validator__WEBPACK_IMPORTED_MODULE_3__["default"]("storage", storage).required();
-                this.MasterAccount.clearCached(storage);
-
-                for (i = 0; i < this.MasterAccount.child.length; i++) {
-                  this.MasterAccount.child[i].clearCached(storage, "".concat(this.Name, "-").concat(this.MasterAccount.child[i].name, "-cached"));
-                }
-
-                _context15.next = 5;
-                return this.save("");
-
-              case 5:
-              case "end":
-                return _context15.stop();
-            }
-          }
-        }, _callee15, this);
-      }));
-
-      function clearCached(_x23) {
-        return _clearCached.apply(this, arguments);
-      }
-
-      return clearCached;
-    }()
-  }, {
     key: "getHistoryByAccount",
     value: function () {
-      var _getHistoryByAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16(accName) {
+      var _getHistoryByAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee18(accName) {
         var account;
-        return regeneratorRuntime.wrap(function _callee16$(_context16) {
+        return regeneratorRuntime.wrap(function _callee18$(_context18) {
           while (1) {
-            switch (_context16.prev = _context16.next) {
+            switch (_context18.prev = _context18.next) {
               case 0:
                 account = this.getAccountByName(accName);
-                return _context16.abrupt("return", account.getNormalTxHistory());
+                return _context18.abrupt("return", account.getNormalTxHistory());
 
               case 2:
               case "end":
-                return _context16.stop();
+                return _context18.stop();
             }
           }
-        }, _callee16, this);
+        }, _callee18, this);
       }));
 
-      function getHistoryByAccount(_x24) {
+      function getHistoryByAccount(_x36) {
         return _getHistoryByAccount.apply(this, arguments);
       }
 
       return getHistoryByAccount;
-    }() // not pure function
-
+    }()
   }, {
     key: "reImportPrototype",
     value: function () {
-      var _reImportPrototype = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee17(account) {
-        return regeneratorRuntime.wrap(function _callee17$(_context17) {
+      var _reImportPrototype = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee19(account) {
+        var newAccount;
+        return regeneratorRuntime.wrap(function _callee19$(_context19) {
           while (1) {
-            switch (_context17.prev = _context17.next) {
+            switch (_context19.prev = _context19.next) {
               case 0:
-                Object.setPrototypeOf(account, _lib_module_Account__WEBPACK_IMPORTED_MODULE_13__["Account"].prototype);
-                Object.setPrototypeOf(account.key, _core__WEBPACK_IMPORTED_MODULE_9__["KeyWallet"].prototype); // chaincode
+                _context19.prev = 0;
+                newAccount = new _lib_module_Account__WEBPACK_IMPORTED_MODULE_20__["Account"](this);
+                newAccount.name = account.name;
+                newAccount.isImport = account.isImport;
+                newAccount.child = _toConsumableArray(account.child);
+                newAccount.key.Depth = account.key.Depth;
+                newAccount.key.ChainCode = new Uint8Array(account.key.ChainCode);
+                newAccount.key.ChildNumber = new Uint8Array(account.key.ChildNumber);
+                newAccount.key.KeySet.PrivateKey = new Uint8Array(account.key.KeySet.PrivateKey);
+                _context19.next = 11;
+                return newAccount.key.KeySet.importFromPrivateKey(newAccount.key.KeySet.PrivateKey);
 
-                Object.setPrototypeOf(account.key.ChainCode, Array.prototype);
-                account.key.ChainCode = new Uint8Array(account.key.ChainCode); // child num
+              case 11:
+                return _context19.abrupt("return", newAccount);
 
-                Object.setPrototypeOf(account.key.ChildNumber, Array.prototype);
-                account.key.ChildNumber = new Uint8Array(account.key.ChildNumber);
-                Object.setPrototypeOf(account.key.KeySet, _common_keySet__WEBPACK_IMPORTED_MODULE_4__["KeySet"].prototype); // payment address
+              case 14:
+                _context19.prev = 14;
+                _context19.t0 = _context19["catch"](0);
+                console.log("reImportPrototype error", _context19.t0);
+                throw _context19.t0;
 
-                Object.setPrototypeOf(account.key.KeySet.PaymentAddress, _common_key__WEBPACK_IMPORTED_MODULE_5__["PaymentAddress"].prototype);
-                Object.setPrototypeOf(account.key.KeySet.PaymentAddress.Pk, Array.prototype);
-                account.key.KeySet.PaymentAddress.Pk = new Uint8Array(account.key.KeySet.PaymentAddress.Pk);
-                Object.setPrototypeOf(account.key.KeySet.PaymentAddress.Tk, Array.prototype);
-                account.key.KeySet.PaymentAddress.Tk = new Uint8Array(account.key.KeySet.PaymentAddress.Tk); // read only key
-
-                Object.setPrototypeOf(account.key.KeySet.ReadonlyKey, _common_key__WEBPACK_IMPORTED_MODULE_5__["ViewingKey"].prototype);
-                Object.setPrototypeOf(account.key.KeySet.ReadonlyKey.Pk, Array.prototype);
-                account.key.KeySet.ReadonlyKey.Pk = new Uint8Array(account.key.KeySet.ReadonlyKey.Pk);
-                Object.setPrototypeOf(account.key.KeySet.ReadonlyKey.Rk, Array.prototype);
-                account.key.KeySet.ReadonlyKey.Rk = new Uint8Array(account.key.KeySet.ReadonlyKey.Rk); // private key
-
-                Object.setPrototypeOf(account.key.KeySet.PrivateKey, Array.prototype);
-                account.key.KeySet.PrivateKey = new Uint8Array(account.key.KeySet.PrivateKey);
-                _context17.next = 21;
-                return account.key.KeySet.importFromPrivateKey(account.key.KeySet.PrivateKey);
-
-              case 21:
+              case 18:
               case "end":
-                return _context17.stop();
+                return _context19.stop();
             }
           }
-        }, _callee17);
+        }, _callee19, this, [[0, 14]]);
       }));
 
-      function reImportPrototype(_x25) {
+      function reImportPrototype(_x37) {
         return _reImportPrototype.apply(this, arguments);
       }
 
       return reImportPrototype;
     }()
   }, {
-    key: "loadWallet",
+    key: "measureLoadWallet",
     value: function () {
-      var _loadWallet = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee18(password) {
-        var _this = this;
+      var _measureLoadWallet = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20(passphrase) {
+        var _this8 = this;
 
-        var cipherText, data, jsonStr, obj, task;
-        return regeneratorRuntime.wrap(function _callee18$(_context18) {
+        var password, aesKey, selfStorage, shouldReSaveWallet, newMethodDecrypted, cipherText, jsonStr, data, obj, masterAccount, task, implTask;
+        return regeneratorRuntime.wrap(function _callee20$(_context20) {
           while (1) {
-            switch (_context18.prev = _context18.next) {
+            switch (_context20.prev = _context20.next) {
               case 0:
-                if (!(this.Storage != null)) {
-                  _context18.next = 25;
+                _context20.prev = 0;
+                password = passphrase.password, aesKey = passphrase.aesKey;
+                selfStorage = this.Storage;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("loadWallet-password", password).string();
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("loadWallet-aesKey", aesKey).string();
+                shouldReSaveWallet = false;
+                newMethodDecrypted = false;
+
+                if (!this.Storage) {
+                  _context20.next = 49;
                   break;
                 }
 
-                _context18.next = 3;
-                return this.Storage.getItem(this.Name);
+                _context20.next = 10;
+                return this.measureAsyncFn(function () {
+                  return _this8.Storage.getItem(_this8.Name);
+                }, "loadWallet.timeGetCipherText");
 
-              case 3:
-                cipherText = _context18.sent;
+              case 10:
+                cipherText = _context20.sent;
 
                 if (cipherText) {
-                  _context18.next = 6;
+                  _context20.next = 13;
                   break;
                 }
 
-                return _context18.abrupt("return", false);
+                return _context20.abrupt("return", false);
 
-              case 6:
-                data = crypto_js__WEBPACK_IMPORTED_MODULE_21___default.a.AES.decrypt(cipherText, password);
-                jsonStr = data.toString(crypto_js__WEBPACK_IMPORTED_MODULE_21___default.a.enc.Utf8);
-                _context18.prev = 8;
-                obj = JSON.parse(jsonStr);
-                Object.setPrototypeOf(obj, Wallet.prototype);
-                Object.setPrototypeOf(obj.MasterAccount, _lib_module_Account__WEBPACK_IMPORTED_MODULE_13__["Account"].prototype);
-                Object.setPrototypeOf(obj.MasterAccount.key, _core__WEBPACK_IMPORTED_MODULE_9__["KeyWallet"].prototype);
-                Object.setPrototypeOf(obj.MasterAccount.key.KeySet, _common_keySet__WEBPACK_IMPORTED_MODULE_4__["KeySet"].prototype);
-                obj.Seed = Buffer.from(obj.Seed);
-                Object.assign(this, obj);
-                task = [].concat(_toConsumableArray(obj.MasterAccount.child.map(function (account) {
-                  return _this.reImportPrototype(account);
-                })), [this.reImportPrototype(obj.MasterAccount)]);
-                _context18.next = 19;
-                return Promise.all(task);
+              case 13:
+                try {
+                  jsonStr = _privacy_sjcl__WEBPACK_IMPORTED_MODULE_9___default.a.decrypt(_privacy_sjcl__WEBPACK_IMPORTED_MODULE_9___default.a.codec.hex.toBits(aesKey), cipherText);
 
-              case 19:
-                Object.assign(this, obj);
-                _context18.next = 25;
+                  if (!!jsonStr) {
+                    newMethodDecrypted = true;
+                  }
+
+                  console.log("CONVERTED BY sjcl.decrypt");
+                } catch (error) {
+                  console.log("CAN NOT DECRYPT BY sjcl.decrypt", error);
+                }
+
+                if (newMethodDecrypted) {
+                  _context20.next = 24;
+                  break;
+                }
+
+                _context20.prev = 15;
+                data = crypto_js__WEBPACK_IMPORTED_MODULE_8___default.a.AES.decrypt(cipherText, password);
+
+                if (!!data) {
+                  shouldReSaveWallet = true;
+                  jsonStr = data.toString(crypto_js__WEBPACK_IMPORTED_MODULE_8___default.a.enc.Utf8);
+                }
+
+                _context20.next = 24;
                 break;
 
-              case 22:
-                _context18.prev = 22;
-                _context18.t0 = _context18["catch"](8);
-                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].LoadWalletErr, _context18.t0.message || "Error when load wallet");
+              case 20:
+                _context20.prev = 20;
+                _context20.t0 = _context20["catch"](15);
+                console.log("CAN NOT DECRYPT BY CryptoJS.AES.decrypt");
+                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].LoadWalletErr, "Error when load wallet by CryptoJS", _context20.t0);
 
-              case 25:
+              case 24:
+                _context20.prev = 24;
+                obj = JSON.parse(jsonStr);
+                Object.setPrototypeOf(obj, Wallet.prototype);
+                obj.Seed = Buffer.from(obj.Seed);
+                _context20.next = 30;
+                return this.reImportPrototype(obj.MasterAccount);
+
+              case 30:
+                masterAccount = _context20.sent;
+                obj.MasterAccount = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(masterAccount);
+                task = _toConsumableArray(obj.MasterAccount.child.map(function (account) {
+                  return _this8.reImportPrototype(account);
+                }));
+                _context20.next = 35;
+                return Promise.all(task);
+
+              case 35:
+                implTask = _context20.sent;
+                implTask.forEach(function (account, index) {
+                  obj.MasterAccount.child[index] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(account);
+                });
+                obj.MasterAccount.child = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(lodash_uniqBy__WEBPACK_IMPORTED_MODULE_1___default()(obj.MasterAccount.child, function (acc) {
+                  return [acc.name, acc.getPrivateKey()].join();
+                }));
+                Object.assign(this, obj);
+                this.configWallet({
+                  passPhrase: aesKey,
+                  name: this.Name,
+                  mnemonic: this.Mnemonic,
+                  storage: selfStorage
+                });
+
+                if (!shouldReSaveWallet) {
+                  _context20.next = 43;
+                  break;
+                }
+
+                _context20.next = 43;
+                return this.measureAsyncFn(function () {
+                  return _this8.save(aesKey, false);
+                }, "loadWallet.timeSaveWallet");
+
+              case 43:
+                return _context20.abrupt("return", this);
+
+              case 46:
+                _context20.prev = 46;
+                _context20.t1 = _context20["catch"](24);
+                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].LoadWalletErr, "Error when load wallet", _context20.t1);
+
+              case 49:
+                _context20.next = 54;
+                break;
+
+              case 51:
+                _context20.prev = 51;
+                _context20.t2 = _context20["catch"](0);
+                throw _context20.t2;
+
+              case 54:
               case "end":
-                return _context18.stop();
+                return _context20.stop();
             }
           }
-        }, _callee18, this, [[8, 22]]);
+        }, _callee20, this, [[0, 51], [15, 20], [24, 46]]);
       }));
 
-      function loadWallet(_x26) {
+      function measureLoadWallet(_x38) {
+        return _measureLoadWallet.apply(this, arguments);
+      }
+
+      return measureLoadWallet;
+    }() // password
+
+  }, {
+    key: "loadWallet",
+    value: function () {
+      var _loadWallet = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21(passphrase) {
+        var _this9 = this;
+
+        var wallet;
+        return regeneratorRuntime.wrap(function _callee21$(_context21) {
+          while (1) {
+            switch (_context21.prev = _context21.next) {
+              case 0:
+                _context21.prev = 0;
+                _context21.next = 3;
+                return this.measureAsyncFn(function () {
+                  return _this9.measureLoadWallet(passphrase);
+                }, "loadWallet.totalTime");
+
+              case 3:
+                wallet = _context21.sent;
+                return _context21.abrupt("return", wallet);
+
+              case 7:
+                _context21.prev = 7;
+                _context21.t0 = _context21["catch"](0);
+                throw _context21.t0;
+
+              case 10:
+              case "end":
+                return _context21.stop();
+            }
+          }
+        }, _callee21, this, [[0, 7]]);
+      }));
+
+      function loadWallet(_x39) {
         return _loadWallet.apply(this, arguments);
       }
 
@@ -26882,31 +28912,31 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "loadAccountsCached",
     value: function () {
-      var _loadAccountsCached = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee19() {
+      var _loadAccountsCached = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee22() {
         var accName,
             account,
             i,
-            _args19 = arguments;
-        return regeneratorRuntime.wrap(function _callee19$(_context19) {
+            _args22 = arguments;
+        return regeneratorRuntime.wrap(function _callee22$(_context22) {
           while (1) {
-            switch (_context19.prev = _context19.next) {
+            switch (_context22.prev = _context22.next) {
               case 0:
-                accName = _args19.length > 0 && _args19[0] !== undefined ? _args19[0] : null;
+                accName = _args22.length > 0 && _args22[0] !== undefined ? _args22[0] : null;
 
                 if (!accName) {
-                  _context19.next = 6;
+                  _context22.next = 6;
                   break;
                 }
 
                 account = this.getAccountByName(accName);
-                _context19.next = 5;
+                _context22.next = 5;
                 return account.loadAccountCached(this.Storage);
 
               case 5:
-                return _context19.abrupt("return", _context19.sent);
+                return _context22.abrupt("return", _context22.sent);
 
               case 6:
-                _context19.next = 8;
+                _context22.next = 8;
                 return this.MasterAccount.loadAccountCached(this.Storage);
 
               case 8:
@@ -26914,24 +28944,24 @@ var Wallet = /*#__PURE__*/function () {
 
               case 9:
                 if (!(i < this.MasterAccount.child.length)) {
-                  _context19.next = 15;
+                  _context22.next = 15;
                   break;
                 }
 
-                _context19.next = 12;
+                _context22.next = 12;
                 return this.MasterAccount.child[i].loadAccountCached(this.Storage);
 
               case 12:
                 i++;
-                _context19.next = 9;
+                _context22.next = 9;
                 break;
 
               case 15:
               case "end":
-                return _context19.stop();
+                return _context22.stop();
             }
           }
-        }, _callee19, this);
+        }, _callee22, this);
       }));
 
       function loadAccountsCached() {
@@ -26943,45 +28973,40 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "listAccount",
     value: function () {
-      var _listAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20() {
-        var accounts, index, account, info;
-        return regeneratorRuntime.wrap(function _callee20$(_context20) {
+      var _listAccount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee23() {
+        var task, result;
+        return regeneratorRuntime.wrap(function _callee23$(_context23) {
           while (1) {
-            switch (_context20.prev = _context20.next) {
+            switch (_context23.prev = _context23.next) {
               case 0:
-                accounts = [];
-                index = 0;
+                _context23.prev = 0;
+                task = this.MasterAccount.child.map(function (account) {
+                  return account.getDeserializeInformation();
+                });
+                _context23.next = 4;
+                return Promise.all(task);
 
-              case 2:
-                if (!(index < this.MasterAccount.child.length)) {
-                  _context20.next = 11;
-                  break;
-                }
+              case 4:
+                result = _context23.sent;
+                result = result.map(function (info, index) {
+                  return _objectSpread(_objectSpread({}, info), {}, {
+                    Index: index
+                  });
+                });
+                return _context23.abrupt("return", result);
 
-                account = this.MasterAccount.child[index];
-                _context20.next = 6;
-                return account.getDeserializeInformation();
+              case 9:
+                _context23.prev = 9;
+                _context23.t0 = _context23["catch"](0);
+                console.log("listAccount error", _context23.t0);
+                throw _context23.t0;
 
-              case 6:
-                info = _context20.sent;
-                accounts.push(_objectSpread(_objectSpread({}, info), {}, {
-                  Index: index
-                }));
-
-              case 8:
-                index++;
-                _context20.next = 2;
-                break;
-
-              case 11:
-                return _context20.abrupt("return", accounts);
-
-              case 12:
+              case 13:
               case "end":
-                return _context20.stop();
+                return _context23.stop();
             }
           }
-        }, _callee20, this);
+        }, _callee23, this, [[0, 9]]);
       }));
 
       function listAccount() {
@@ -26993,28 +29018,28 @@ var Wallet = /*#__PURE__*/function () {
   }, {
     key: "listAccountWithBLSPubKey",
     value: function () {
-      var _listAccountWithBLSPubKey = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee21() {
+      var _listAccountWithBLSPubKey = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee24() {
         var accounts, i, child, miningSeedKey, blsPublicKey;
-        return regeneratorRuntime.wrap(function _callee21$(_context21) {
+        return regeneratorRuntime.wrap(function _callee24$(_context24) {
           while (1) {
-            switch (_context21.prev = _context21.next) {
+            switch (_context24.prev = _context24.next) {
               case 0:
                 accounts = [];
                 i = 0;
 
               case 2:
                 if (!(i < this.MasterAccount.child.length)) {
-                  _context21.next = 12;
+                  _context24.next = 12;
                   break;
                 }
 
                 child = this.MasterAccount.child[i];
-                miningSeedKey = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_7__["hashSha3BytesToBytes"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_7__["hashSha3BytesToBytes"])(child.key.KeySet.PrivateKey));
-                _context21.next = 7;
-                return Object(_common_committeekey__WEBPACK_IMPORTED_MODULE_19__["generateBLSPubKeyB58CheckEncodeFromSeed"])(miningSeedKey);
+                miningSeedKey = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["hashSha3BytesToBytes"])(Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["hashSha3BytesToBytes"])(child.key.KeySet.PrivateKey));
+                _context24.next = 7;
+                return Object(_common_committeekey__WEBPACK_IMPORTED_MODULE_26__["generateBLSPubKeyB58CheckEncodeFromSeed"])(miningSeedKey);
 
               case 7:
-                blsPublicKey = _context21.sent;
+                blsPublicKey = _context24.sent;
                 accounts[i] = {
                   AccountName: child.name,
                   BLSPublicKey: blsPublicKey,
@@ -27023,18 +29048,18 @@ var Wallet = /*#__PURE__*/function () {
 
               case 9:
                 i++;
-                _context21.next = 2;
+                _context24.next = 2;
                 break;
 
               case 12:
-                return _context21.abrupt("return", accounts);
+                return _context24.abrupt("return", accounts);
 
               case 13:
               case "end":
-                return _context21.stop();
+                return _context24.stop();
             }
           }
-        }, _callee21, this);
+        }, _callee24, this);
       }));
 
       function listAccountWithBLSPubKey() {
@@ -27044,147 +29069,6 @@ var Wallet = /*#__PURE__*/function () {
       return listAccountWithBLSPubKey;
     }()
   }, {
-    key: "updateStatusHistory",
-    value: function () {
-      var _updateStatusHistory = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee22() {
-        var i;
-        return regeneratorRuntime.wrap(function _callee22$(_context22) {
-          while (1) {
-            switch (_context22.prev = _context22.next) {
-              case 0:
-                i = 0;
-
-              case 1:
-                if (!(i < this.MasterAccount.child.length)) {
-                  _context22.next = 7;
-                  break;
-                }
-
-                _context22.next = 4;
-                return this.MasterAccount.child[i].updateAllTransactionsStatus();
-
-              case 4:
-                i++;
-                _context22.next = 1;
-                break;
-
-              case 7:
-              case "end":
-                return _context22.stop();
-            }
-          }
-        }, _callee22, this);
-      }));
-
-      function updateStatusHistory() {
-        return _updateStatusHistory.apply(this, arguments);
-      }
-
-      return updateStatusHistory;
-    }()
-  }, {
-    key: "updateTxStatus",
-    value: function () {
-      var _updateTxStatus = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee23(txId) {
-        var tx, account, _iterator3, _step3, nativeTx, coinTx, response;
-
-        return regeneratorRuntime.wrap(function _callee23$(_context23) {
-          while (1) {
-            switch (_context23.prev = _context23.next) {
-              case 0:
-                _iterator3 = _createForOfIteratorHelper(this.MasterAccount.child);
-                _context23.prev = 1;
-
-                _iterator3.s();
-
-              case 3:
-                if ((_step3 = _iterator3.n()).done) {
-                  _context23.next = 12;
-                  break;
-                }
-
-                account = _step3.value;
-                nativeTx = account.txHistory.NormalTx.find(function (item) {
-                  return item.txID === txId;
-                });
-                coinTx = account.txHistory.PrivacyTokenTx.find(function (item) {
-                  return item.txID === txId;
-                });
-                tx = nativeTx || coinTx;
-
-                if (!tx) {
-                  _context23.next = 10;
-                  break;
-                }
-
-                return _context23.abrupt("break", 12);
-
-              case 10:
-                _context23.next = 3;
-                break;
-
-              case 12:
-                _context23.next = 17;
-                break;
-
-              case 14:
-                _context23.prev = 14;
-                _context23.t0 = _context23["catch"](1);
-
-                _iterator3.e(_context23.t0);
-
-              case 17:
-                _context23.prev = 17;
-
-                _iterator3.f();
-
-                return _context23.finish(17);
-
-              case 20:
-                if (!(!tx || !account)) {
-                  _context23.next = 22;
-                  break;
-                }
-
-                return _context23.abrupt("return");
-
-              case 22:
-                _context23.prev = 22;
-                _context23.next = 25;
-                return Wallet.RpcClient.getTransactionByHash(txId);
-
-              case 25:
-                response = _context23.sent;
-                _context23.next = 31;
-                break;
-
-              case 28:
-                _context23.prev = 28;
-                _context23.t1 = _context23["catch"](22);
-                throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].GetTxByHashErr, _context23.t1.message);
-
-              case 31:
-                if (response.isInBlock) {
-                  tx.status = _core__WEBPACK_IMPORTED_MODULE_9__["ConfirmedTx"];
-                } else if (!response.isInBlock && !response.isInMempool && response.err !== null) {
-                  tx.status = _core__WEBPACK_IMPORTED_MODULE_9__["FailedTx"];
-                }
-
-              case 32:
-              case "end":
-                return _context23.stop();
-            }
-          }
-        }, _callee23, this, [[1, 14, 17, 20], [22, 28]]);
-      }));
-
-      function updateTxStatus(_x27) {
-        return _updateTxStatus.apply(this, arguments);
-      }
-
-      return updateTxStatus;
-    }()
-  }, {
     key: "deleteWallet",
     value: function deleteWallet() {
       try {
@@ -27192,13 +29076,308 @@ var Wallet = /*#__PURE__*/function () {
           this.Storage.removeItem("Wallet");
         }
       } catch (e) {
-        throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_18__["ErrorObject"].DeleteWalletErr, e.message || "Can not remove item in storage");
+        throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].DeleteWalletErr, e.message || "Can not remove item in storage");
       }
+    }
+  }, {
+    key: "getKeyMeasureStorage",
+    value: function getKeyMeasureStorage() {
+      return this.getKeyStorageWallet("MEASURE");
+    }
+  }, {
+    key: "setKeyMeasureStorage",
+    value: function () {
+      var _setKeyMeasureStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee25() {
+        var key, oldMeasureStorage, value;
+        return regeneratorRuntime.wrap(function _callee25$(_context25) {
+          while (1) {
+            switch (_context25.prev = _context25.next) {
+              case 0:
+                _context25.prev = 0;
+                key = this.getKeyMeasureStorage();
+                _context25.next = 4;
+                return this.getMeasureStorageValue();
+
+              case 4:
+                oldMeasureStorage = _context25.sent;
+                value = [];
+                value = oldMeasureStorage.length > 0 ? [this.measureStorage].concat(_toConsumableArray(oldMeasureStorage)) : [this.measureStorage];
+                _context25.next = 9;
+                return this.setWalletStorage({
+                  key: key,
+                  value: value
+                });
+
+              case 9:
+                _context25.next = 14;
+                break;
+
+              case 11:
+                _context25.prev = 11;
+                _context25.t0 = _context25["catch"](0);
+                throw _context25.t0;
+
+              case 14:
+              case "end":
+                return _context25.stop();
+            }
+          }
+        }, _callee25, this, [[0, 11]]);
+      }));
+
+      function setKeyMeasureStorage() {
+        return _setKeyMeasureStorage.apply(this, arguments);
+      }
+
+      return setKeyMeasureStorage;
+    }()
+  }, {
+    key: "getMeasureStorageValue",
+    value: function () {
+      var _getMeasureStorageValue = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee26() {
+        var key, value;
+        return regeneratorRuntime.wrap(function _callee26$(_context26) {
+          while (1) {
+            switch (_context26.prev = _context26.next) {
+              case 0:
+                _context26.prev = 0;
+                key = this.getKeyMeasureStorage();
+                _context26.next = 4;
+                return this.getWalletStorage({
+                  key: key
+                });
+
+              case 4:
+                value = _context26.sent;
+                return _context26.abrupt("return", value || []);
+
+              case 8:
+                _context26.prev = 8;
+                _context26.t0 = _context26["catch"](0);
+                throw _context26.t0;
+
+              case 11:
+              case "end":
+                return _context26.stop();
+            }
+          }
+        }, _callee26, this, [[0, 8]]);
+      }));
+
+      function getMeasureStorageValue() {
+        return _getMeasureStorageValue.apply(this, arguments);
+      }
+
+      return getMeasureStorageValue;
+    }()
+  }, {
+    key: "measureAsyncFn",
+    value: function () {
+      var _measureAsyncFn = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee27(fn, key) {
+        var t, result, e, time;
+        return regeneratorRuntime.wrap(function _callee27$(_context27) {
+          while (1) {
+            switch (_context27.prev = _context27.next) {
+              case 0:
+                _context27.prev = 0;
+
+                if (!this.measureStorage.walletName) {
+                  lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "walletName", this.Name);
+                }
+
+                t = _utils_performance__WEBPACK_IMPORTED_MODULE_33__["performance"].now();
+
+                if (!(typeof fn === "function")) {
+                  _context27.next = 7;
+                  break;
+                }
+
+                _context27.next = 6;
+                return fn();
+
+              case 6:
+                result = _context27.sent;
+
+              case 7:
+                e = _utils_performance__WEBPACK_IMPORTED_MODULE_33__["performance"].now() - t;
+                time = "".concat((e / 1000).toFixed(2), "s");
+
+                lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, key, time);
+
+                return _context27.abrupt("return", result);
+
+              case 13:
+                _context27.prev = 13;
+                _context27.t0 = _context27["catch"](0);
+                console.log("measureAsyncFn error", _context27.t0);
+                throw _context27.t0;
+
+              case 17:
+              case "end":
+                return _context27.stop();
+            }
+          }
+        }, _callee27, this, [[0, 13]]);
+      }));
+
+      function measureAsyncFn(_x40, _x41) {
+        return _measureAsyncFn.apply(this, arguments);
+      }
+
+      return measureAsyncFn;
+    }()
+  }, {
+    key: "setWalletStorage",
+    value: function () {
+      var _setWalletStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee28(params) {
+        var key, value;
+        return regeneratorRuntime.wrap(function _callee28$(_context28) {
+          while (1) {
+            switch (_context28.prev = _context28.next) {
+              case 0:
+                key = params.key, value = params.value;
+                _context28.prev = 1;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("getWalletStorage-key", key).required().string();
+
+                if (!(typeof this.Storage.setItem === "function" && value && key)) {
+                  _context28.next = 6;
+                  break;
+                }
+
+                _context28.next = 6;
+                return this.Storage.setItem(key, typeof value !== "string" ? JSON.stringify(value) : value);
+
+              case 6:
+                _context28.next = 12;
+                break;
+
+              case 8:
+                _context28.prev = 8;
+                _context28.t0 = _context28["catch"](1);
+                console.log("setWalletStorage error", _context28.t0);
+                throw _context28.t0;
+
+              case 12:
+              case "end":
+                return _context28.stop();
+            }
+          }
+        }, _callee28, this, [[1, 8]]);
+      }));
+
+      function setWalletStorage(_x42) {
+        return _setWalletStorage.apply(this, arguments);
+      }
+
+      return setWalletStorage;
+    }()
+  }, {
+    key: "getWalletStorage",
+    value: function () {
+      var _getWalletStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee29(params) {
+        var key, value;
+        return regeneratorRuntime.wrap(function _callee29$(_context29) {
+          while (1) {
+            switch (_context29.prev = _context29.next) {
+              case 0:
+                _context29.prev = 0;
+                key = params.key;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("getWalletStorage-key", key).required().string();
+
+                if (!(typeof this.Storage.getItem === "function")) {
+                  _context29.next = 9;
+                  break;
+                }
+
+                _context29.next = 6;
+                return this.Storage.getItem(key);
+
+              case 6:
+                value = _context29.sent;
+
+                if (Object(_utils_json__WEBPACK_IMPORTED_MODULE_34__["isJsonString"])(value)) {
+                  value = JSON.parse(value);
+                }
+
+                return _context29.abrupt("return", value);
+
+              case 9:
+                _context29.next = 14;
+                break;
+
+              case 11:
+                _context29.prev = 11;
+                _context29.t0 = _context29["catch"](0);
+                throw _context29.t0;
+
+              case 14:
+              case "end":
+                return _context29.stop();
+            }
+          }
+        }, _callee29, this, [[0, 11]]);
+      }));
+
+      function getWalletStorage(_x43) {
+        return _getWalletStorage.apply(this, arguments);
+      }
+
+      return getWalletStorage;
+    }()
+  }, {
+    key: "clearWalletStorage",
+    value: function () {
+      var _clearWalletStorage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee30(params) {
+        var key;
+        return regeneratorRuntime.wrap(function _callee30$(_context30) {
+          while (1) {
+            switch (_context30.prev = _context30.next) {
+              case 0:
+                _context30.prev = 0;
+                key = params.key;
+                new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("key", key).required().string();
+
+                if (!(typeof this.Storage.removeItem === "function")) {
+                  _context30.next = 6;
+                  break;
+                }
+
+                _context30.next = 6;
+                return this.Storage.removeItem(key);
+
+              case 6:
+                _context30.next = 11;
+                break;
+
+              case 8:
+                _context30.prev = 8;
+                _context30.t0 = _context30["catch"](0);
+                throw _context30.t0;
+
+              case 11:
+              case "end":
+                return _context30.stop();
+            }
+          }
+        }, _callee30, this, [[0, 8]]);
+      }));
+
+      function clearWalletStorage(_x44) {
+        return _clearWalletStorage.apply(this, arguments);
+      }
+
+      return clearWalletStorage;
+    }()
+  }, {
+    key: "getKeyStorageWallet",
+    value: function getKeyStorageWallet(key) {
+      new _utils_validator__WEBPACK_IMPORTED_MODULE_11__["default"]("getKeyStorageWallet-key", key).required().string();
+      return "KEY-".concat(key, "-STORAGE-").concat(this.Name);
     }
   }], [{
     key: "setPrivacyUtilRandomBytesFunc",
     value: function setPrivacyUtilRandomBytesFunc(randomBytesFunc) {
-      Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_7__["setRandBytesFunc"])(randomBytesFunc);
+      Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_14__["setRandBytesFunc"])(randomBytesFunc);
     }
   }, {
     key: "sleep",
@@ -27220,7 +29399,7 @@ _defineProperty(Wallet, "Debug", "");
 
 _defineProperty(Wallet, "RpcCoinService", void 0);
 
-_defineProperty(Wallet, "PrivacyVersion", _core_constants__WEBPACK_IMPORTED_MODULE_24__["PrivacyVersion"].ver2);
+_defineProperty(Wallet, "PrivacyVersion", _core_constants__WEBPACK_IMPORTED_MODULE_30__["PrivacyVersion"].ver2);
 
 _defineProperty(Wallet, "UseLegacyEncoding", true);
 
@@ -27242,23 +29421,23 @@ var DefaultStorage = /*#__PURE__*/function () {
   _createClass(DefaultStorage, [{
     key: "setItem",
     value: function () {
-      var _setItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee24(key, value) {
-        return regeneratorRuntime.wrap(function _callee24$(_context24) {
+      var _setItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee31(key, value) {
+        return regeneratorRuntime.wrap(function _callee31$(_context31) {
           while (1) {
-            switch (_context24.prev = _context24.next) {
+            switch (_context31.prev = _context31.next) {
               case 0:
                 this.Data[key] = value;
-                return _context24.abrupt("return", Promise.resolve());
+                return _context31.abrupt("return", Promise.resolve());
 
               case 2:
               case "end":
-                return _context24.stop();
+                return _context31.stop();
             }
           }
-        }, _callee24, this);
+        }, _callee31, this);
       }));
 
-      function setItem(_x28, _x29) {
+      function setItem(_x45, _x46) {
         return _setItem.apply(this, arguments);
       }
 
@@ -27267,22 +29446,22 @@ var DefaultStorage = /*#__PURE__*/function () {
   }, {
     key: "getItem",
     value: function () {
-      var _getItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee25(key) {
-        return regeneratorRuntime.wrap(function _callee25$(_context25) {
+      var _getItem = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee32(key) {
+        return regeneratorRuntime.wrap(function _callee32$(_context32) {
           while (1) {
-            switch (_context25.prev = _context25.next) {
+            switch (_context32.prev = _context32.next) {
               case 0:
-                return _context25.abrupt("return", this.Data[key]);
+                return _context32.abrupt("return", this.Data[key]);
 
               case 1:
               case "end":
-                return _context25.stop();
+                return _context32.stop();
             }
           }
-        }, _callee25, this);
+        }, _callee32, this);
       }));
 
-      function getItem(_x30) {
+      function getItem(_x47) {
         return _getItem.apply(this, arguments);
       }
 
@@ -27292,6 +29471,12 @@ var DefaultStorage = /*#__PURE__*/function () {
 
   return DefaultStorage;
 }();
+
+var setShardNumber = function setShardNumber(shardNum) {
+  Object(_common_constants__WEBPACK_IMPORTED_MODULE_24__["setShardNumber"])(shardNum); // return a Promise
+
+  return _lib_wasm__WEBPACK_IMPORTED_MODULE_10__["wasm"].setShardCount("", shardNum);
+};
 
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node_modules/node-libs-browser/node_modules/buffer/index.js */ "./node_modules/node-libs-browser/node_modules/buffer/index.js").Buffer))
@@ -27367,6 +29552,9 @@ var methods = {
   'hybridEncryptionASM': null,
   'hybridDecryptionASM': null,
   'estimateTxSize': null,
+  'aesEncrypt': null,
+  'aesDecrypt': null,
+  'setShardCount': null,
   'generateBTCMultisigAddress': null
 };
 
@@ -32895,7 +35083,7 @@ module.exports = JSON.parse("[\"ábaco\",\"abdomen\",\"abeja\",\"abierto\",\"ab
 
   var Buffer;
   try {
-    Buffer = __webpack_require__(/*! buffer */ 0).Buffer;
+    Buffer = __webpack_require__(/*! buffer */ 4).Buffer;
   } catch (e) {
   }
 
@@ -62093,7 +64281,7 @@ function _isUint8Array(obj) {
 /*<replacement>*/
 
 
-var debugUtil = __webpack_require__(/*! util */ 1);
+var debugUtil = __webpack_require__(/*! util */ 0);
 
 var debug;
 
@@ -64327,7 +66515,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var _require = __webpack_require__(/*! buffer */ "./node_modules/node-libs-browser/node_modules/buffer/index.js"),
     Buffer = _require.Buffer;
 
-var _require2 = __webpack_require__(/*! util */ 2),
+var _require2 = __webpack_require__(/*! util */ 1),
     inspect = _require2.inspect;
 
 var custom = inspect && inspect.custom || 'inspect';
@@ -68367,6 +70555,31 @@ module.exports = baseGetTag;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/_baseGt.js":
+/*!****************************************!*\
+  !*** ./node_modules/lodash/_baseGt.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * The base implementation of `_.gt` which doesn't coerce arguments.
+ *
+ * @private
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if `value` is greater than `other`,
+ *  else `false`.
+ */
+function baseGt(value, other) {
+  return value > other;
+}
+
+module.exports = baseGt;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/_baseHas.js":
 /*!*****************************************!*\
   !*** ./node_modules/lodash/_baseHas.js ***!
@@ -69105,31 +71318,6 @@ function baseKeysIn(object) {
 }
 
 module.exports = baseKeysIn;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/_baseLt.js":
-/*!****************************************!*\
-  !*** ./node_modules/lodash/_baseLt.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/**
- * The base implementation of `_.lt` which doesn't coerce arguments.
- *
- * @private
- * @param {*} value The value to compare.
- * @param {*} other The other value to compare.
- * @returns {boolean} Returns `true` if `value` is less than `other`,
- *  else `false`.
- */
-function baseLt(value, other) {
-  return value < other;
-}
-
-module.exports = baseLt;
 
 
 /***/ }),
@@ -74901,6 +77089,51 @@ module.exports = map;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/maxBy.js":
+/*!**************************************!*\
+  !*** ./node_modules/lodash/maxBy.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseExtremum = __webpack_require__(/*! ./_baseExtremum */ "./node_modules/lodash/_baseExtremum.js"),
+    baseGt = __webpack_require__(/*! ./_baseGt */ "./node_modules/lodash/_baseGt.js"),
+    baseIteratee = __webpack_require__(/*! ./_baseIteratee */ "./node_modules/lodash/_baseIteratee.js");
+
+/**
+ * This method is like `_.max` except that it accepts `iteratee` which is
+ * invoked for each element in `array` to generate the criterion by which
+ * the value is ranked. The iteratee is invoked with one argument: (value).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Math
+ * @param {Array} array The array to iterate over.
+ * @param {Function} [iteratee=_.identity] The iteratee invoked per element.
+ * @returns {*} Returns the maximum value.
+ * @example
+ *
+ * var objects = [{ 'n': 1 }, { 'n': 2 }];
+ *
+ * _.maxBy(objects, function(o) { return o.n; });
+ * // => { 'n': 2 }
+ *
+ * // The `_.property` iteratee shorthand.
+ * _.maxBy(objects, 'n');
+ * // => { 'n': 2 }
+ */
+function maxBy(array, iteratee) {
+  return (array && array.length)
+    ? baseExtremum(array, baseIteratee(iteratee, 2), baseGt)
+    : undefined;
+}
+
+module.exports = maxBy;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/memoize.js":
 /*!****************************************!*\
   !*** ./node_modules/lodash/memoize.js ***!
@@ -74981,51 +77214,6 @@ function memoize(func, resolver) {
 memoize.Cache = MapCache;
 
 module.exports = memoize;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/minBy.js":
-/*!**************************************!*\
-  !*** ./node_modules/lodash/minBy.js ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var baseExtremum = __webpack_require__(/*! ./_baseExtremum */ "./node_modules/lodash/_baseExtremum.js"),
-    baseIteratee = __webpack_require__(/*! ./_baseIteratee */ "./node_modules/lodash/_baseIteratee.js"),
-    baseLt = __webpack_require__(/*! ./_baseLt */ "./node_modules/lodash/_baseLt.js");
-
-/**
- * This method is like `_.min` except that it accepts `iteratee` which is
- * invoked for each element in `array` to generate the criterion by which
- * the value is ranked. The iteratee is invoked with one argument: (value).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Math
- * @param {Array} array The array to iterate over.
- * @param {Function} [iteratee=_.identity] The iteratee invoked per element.
- * @returns {*} Returns the minimum value.
- * @example
- *
- * var objects = [{ 'n': 1 }, { 'n': 2 }];
- *
- * _.minBy(objects, function(o) { return o.n; });
- * // => { 'n': 1 }
- *
- * // The `_.property` iteratee shorthand.
- * _.minBy(objects, 'n');
- * // => { 'n': 1 }
- */
-function minBy(array, iteratee) {
-  return (array && array.length)
-    ? baseExtremum(array, baseIteratee(iteratee, 2), baseLt)
-    : undefined;
-}
-
-module.exports = minBy;
 
 
 /***/ }),
@@ -75364,6 +77552,45 @@ function toInteger(value) {
 }
 
 module.exports = toInteger;
+
+
+/***/ }),
+
+/***/ "./node_modules/lodash/toLower.js":
+/*!****************************************!*\
+  !*** ./node_modules/lodash/toLower.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var toString = __webpack_require__(/*! ./toString */ "./node_modules/lodash/toString.js");
+
+/**
+ * Converts `string`, as a whole, to lower case just like
+ * [String#toLowerCase](https://mdn.io/toLowerCase).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category String
+ * @param {string} [string=''] The string to convert.
+ * @returns {string} Returns the lower cased string.
+ * @example
+ *
+ * _.toLower('--Foo-Bar--');
+ * // => '--foo-bar--'
+ *
+ * _.toLower('fooBar');
+ * // => 'foobar'
+ *
+ * _.toLower('__FOO_BAR__');
+ * // => '__foo_bar__'
+ */
+function toLower(value) {
+  return toString(value).toLowerCase();
+}
+
+module.exports = toLower;
 
 
 /***/ }),
@@ -79684,7 +81911,7 @@ util.inherits = __webpack_require__(/*! inherits */ "./node_modules/inherits/inh
 /*</replacement>*/
 
 /*<replacement>*/
-var debugUtil = __webpack_require__(/*! util */ 3);
+var debugUtil = __webpack_require__(/*! util */ 2);
 var debug = void 0;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
@@ -81573,7 +83800,7 @@ Writable.prototype._destroy = function (err, cb) {
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Buffer = __webpack_require__(/*! safe-buffer */ "./node_modules/readable-stream/node_modules/safe-buffer/index.js").Buffer;
-var util = __webpack_require__(/*! util */ 4);
+var util = __webpack_require__(/*! util */ 3);
 
 function copyBuffer(src, target, offset) {
   src.copy(target, offset);
@@ -93142,9 +95369,9 @@ module.exports = function(module) {
 /***/ }),
 
 /***/ 0:
-/*!************************!*\
-  !*** buffer (ignored) ***!
-  \************************/
+/*!**********************!*\
+  !*** util (ignored) ***!
+  \**********************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -93197,9 +95424,9 @@ module.exports = function(module) {
 /***/ }),
 
 /***/ 4:
-/*!**********************!*\
-  !*** util (ignored) ***!
-  \**********************/
+/*!************************!*\
+  !*** buffer (ignored) ***!
+  \************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
