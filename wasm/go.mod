@@ -1,6 +1,6 @@
 module wasm
 
-go 1.14
+go 1.15
 
 require incognito-chain v0.2.0
 
