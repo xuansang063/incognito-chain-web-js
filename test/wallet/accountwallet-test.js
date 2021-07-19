@@ -3,30 +3,35 @@ const {
   Wallet,
   Account: AccountWallet,
   constants,
-  utils,
   init,
   StorageServices,
-  getUnspentCoinExceptSpendingCoinV1,
   newMnemonic,
+  isPaymentAddress,
+  isOldPaymentAddress
 } = require("../../");
 const { PaymentAddressType } = constants;
 
 // const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-// const rpcClient = new RpcClient("https://testnet.incognito.org/fullnode");
+const rpcClient = "https://testnet.incognito.org/fullnode";
 // const rpcClient = new RpcClient("http://localhost:9334");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
-const rpcClient = "https://testnet1.incognito.org/fullnode"; //testnet1
+// const rpcClient = "https://testnet1.incognito.org/fullnode"; //testnet1
 // "http://139.162.55.124:8334";
-const rpcCoinService = "https://api-coinservice-staging2.incognito.org"; // testnet1
+
+const rpcCoinService = "https://api-coinservice-staging.incognito.org"; //testnet
+// "https://api-coinservice-staging2.incognito.org"; // testnet1
 // "http://51.161.119.66:9009"; //dev-test-coin-service
-const rpcTxService = "https://api-coinservice-staging2.incognito.org/txservice"; // testnet1
+const rpcTxService = "https://api-coinservice-staging.incognito.org/txservice";
+//  "https://api-coinservice-staging2.incognito.org/txservice"; // testnet1
 //  "http://51.161.119.66:8001"; //dev-test-coin-service
-const rpcRequestService = "http://51.161.119.66:6000"; // testnet-1
+const rpcRequestService = "http://51.161.119.66:4000"; //testnet
+// "http://51.161.119.66:6000"; // testnet-1
 //  "http://51.161.119.66:5000"; //dev-test-coin-service
 const privacyVersion = 2;
-const rpcApiService = "https://privacyv2-api-service.incognito.org";
+const rpcApiService = "https://staging-api-service.incognito.org";
+//  "https://privacyv2-api-service.incognito.org";
 const deviceID = "9AE4B404-3E61-495D-835A-05CEE34BE251";
 let wallet;
 let senderPrivateKeyStr;
@@ -192,6 +197,23 @@ async function TestStakerStatus() {
   console.log("Response status staker: ", response0);
 }
 async function TestCreateAndSendNativeToken() {
+  // const a = await createAccountByPrivateKey(
+  //   // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
+  //   "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
+  // );
+  // const rf = await a.getDeserializeInformation();
+  console.log(
+    "isPaymentAddress1",
+    isOldPaymentAddress(
+      "12RyviD89Vh3vh9iH1maYAY9cAXMEpuycXpDhpcu52AvsMecuvURARJiGW2Ex8VgZX2YsyFuFjyQ4cLN9a4fAq18ZVXy1VU7sqUTJb2"
+    )
+  );
+  // console.log("isPaymentAddress2", isPaymentAddress(rf.PaymentAddress));
+  // console.log(
+  //   "isPaymentAddress3",
+  //   isPaymentAddress(isPaymentAddress(rf.PaymentAddressV1))
+  // );
+  return;
   const version = privacyVersion;
   const tokenID =
     "0000000000000000000000000000000000000000000000000000000000000004";
@@ -199,7 +221,8 @@ async function TestCreateAndSendNativeToken() {
   let info = "SEND 6900 nano PRV";
   let amountTransfer = 6900; // in nano PRV
   const account = await createAccountByPrivateKey(
-    "112t8rnXXD3eyD8wfx7AXmpJHdpafDpHngsWUTJB42FbVzihAyDw1s2dZ56jeSc5ZYC3u1ekjTUjHQHTeR7b58Ru9KLqEgpm5mgcaivLC4Kz"
+    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZC6TgtJPbuLru"
+    // "112t8rnXXD3eyD8wfx7AXmpJHdpafDpHngsWUTJB42FbVzihAyDw1s2dZ56jeSc5ZYC3u1ekjTUjHQHTeR7b58Ru9KLqEgpm5mgcaivLC4Kz"
     // "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
     // "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
     // "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
@@ -216,10 +239,8 @@ async function TestCreateAndSendNativeToken() {
   );
   let paymentInfosParam = [];
   const receverInfo = await receverAccount.getDeserializeInformation();
-  console.log(receverInfo);
   paymentInfosParam[0] = {
-    PaymentAddress:
-      "12smKh2tQ8CSqfXYKYXePDAxok9fb9xxxA6bszbtKGzd2ierpgz93kFfxiRxaSs4dFtUwghEoFW79YTJUyF6mXefiqtjWH2cBuNUSq5oGgG4aEeJj2UmeL9WhvikdsHr16KYpRxsKVGDzpWcG6Ku",
+    PaymentAddress: receverInfo.PaymentAddress,
     Amount: amountTransfer,
     Message: info,
   };
@@ -1029,6 +1050,7 @@ async function MainRoutine() {
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
+  return await TestCreateAndSendNativeToken();
   return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
   // return;
