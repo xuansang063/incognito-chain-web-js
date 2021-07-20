@@ -17,10 +17,14 @@ const { PaymentAddressType } = constants;
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
-const rpcClient = "http://139.162.55.124:8334";
-const rpcCoinService = "http://51.161.119.66:9009"; //dev-test-coin-service
-const rpcTxService = "http://51.161.119.66:8001"; //dev-test-coin-service
-const rpcRequestService = "http://51.161.119.66:5000"; //dev-test-coin-service
+const rpcClient = "https://testnet1.incognito.org/fullnode"; //testnet1
+// "http://139.162.55.124:8334";
+const rpcCoinService = "https://api-coinservice-staging2.incognito.org"; // testnet1
+// "http://51.161.119.66:9009"; //dev-test-coin-service
+const rpcTxService = "https://api-coinservice-staging2.incognito.org/txservice"; // testnet1
+//  "http://51.161.119.66:8001"; //dev-test-coin-service
+const rpcRequestService = "http://51.161.119.66:6000"; // testnet-1
+//  "http://51.161.119.66:5000"; //dev-test-coin-service
 const privacyVersion = 2;
 const rpcApiService = "https://privacyv2-api-service.incognito.org";
 const deviceID = "9AE4B404-3E61-495D-835A-05CEE34BE251";
@@ -145,7 +149,6 @@ async function TestCreateAndSendRewardAmountTx() {
     return response.txId;
   } catch (e) {
     console.log(e);
-    throw e;
   }
 }
 async function TestBurningRequestTx() {
@@ -170,7 +173,7 @@ async function TestBurningRequestTx() {
   } catch (e) {
     // this tx specifically depends on bridge config, so we let it skip and review manually
     console.error(e);
-    // throw e;
+    //
   }
 }
 async function TestStakerStatus() {
@@ -195,12 +198,12 @@ async function TestCreateAndSendNativeToken() {
   let info = "SEND 6900 nano PRV";
   let amountTransfer = 6900; // in nano PRV
   const account = await createAccountByPrivateKey(
-    "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
+    "112t8rnXXD3eyD8wfx7AXmpJHdpafDpHngsWUTJB42FbVzihAyDw1s2dZ56jeSc5ZYC3u1ekjTUjHQHTeR7b58Ru9KLqEgpm5mgcaivLC4Kz"
+    // "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
     // "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
     // "11111119wSSAFZrfkkqUeqnEd7x3X4SG3g6Gwpq26AAAuNA2xo9p6RztR3ZoF5bcGefDyXVy4uvvfsrF7pbqvArRWdnZuZWxLDv6sEJiEYi"
     // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
   );
-  console.log("OTA KEY sender", account.getOTAKey());
   const accountSenderBalance = await account.getBalance({
     tokenID,
     version,
@@ -229,7 +232,6 @@ async function TestCreateAndSendNativeToken() {
     return res;
   } catch (e) {
     console.log("Error when send PRV: ", e);
-    throw e;
   }
 }
 async function TestSendMultiple() {
@@ -254,7 +256,6 @@ async function TestSendMultiple() {
     return res.Response.txId;
   } catch (e) {
     console.log("error:", e);
-    throw e;
   }
 }
 async function TestCreateAndSendConversion() {
@@ -275,7 +276,6 @@ async function TestCreateAndSendConversion() {
     return res.Response.txId;
   } catch (e) {
     console.log("Error when send PRV: ", e);
-    throw e;
   }
 }
 async function TestCreateAndSendTokenConversion() {
@@ -306,7 +306,6 @@ async function TestCreateAndSendTokenConversion() {
     return res.Response.txId;
   } catch (e) {
     console.log("Error when send PRV: ", e);
-    throw e;
   }
 }
 
@@ -351,7 +350,6 @@ async function TestCreateAndSendPrivacyTokenInit() {
     };
   } catch (e) {
     console.log("Error when initing ptoken: ", e);
-    throw e;
   }
 }
 
@@ -385,7 +383,6 @@ async function TestCreateAndSendPrivacyTokenTransfer() {
     return res.txId;
   } catch (e) {
     console.log("Error when transferring ptoken: ", e);
-    throw e;
   }
 }
 
@@ -424,7 +421,6 @@ async function TestMultipleSendPrivacyToken() {
     return res.Response.txId;
   } catch (e) {
     console.log("Error when transferring ptoken: ", e);
-    throw e;
   }
 }
 async function TestCreateAndSendStakingTx() {
@@ -438,7 +434,6 @@ async function TestCreateAndSendStakingTx() {
     return response.txId;
   } catch (e) {
     console.log("Error when staking: ", e);
-    throw e;
   }
 }
 async function TestCreateAndSendStopAutoStakingTx() {
@@ -452,7 +447,6 @@ async function TestCreateAndSendStopAutoStakingTx() {
     return response.txId;
   } catch (e) {
     console.log("Error when staking: ", e);
-    throw e;
   }
 }
 async function TestDefragment() {
@@ -465,7 +459,6 @@ async function TestDefragment() {
     });
   } catch (e) {
     console.log(e);
-    throw e;
   }
 
   console.log("Response defragment: ", response);
@@ -534,7 +527,6 @@ async function TestAddLiquidity() {
     console.log("response add liquidity", response);
   } catch (e) {
     console.log("Error when staking: ", e);
-    throw e;
   }
 }
 
@@ -562,7 +554,6 @@ async function TestWithdrawLiquidity() {
     console.log("response withdraw liquidity", response);
   } catch (e) {
     console.log("Error when staking: ", e);
-    throw e;
   }
 }
 
@@ -590,7 +581,6 @@ async function TestWithdrawFeeLiquidity() {
     console.log("response withdraw fee liquidity", response);
   } catch (e) {
     console.log("Error when staking: ", e);
-    throw e;
   }
 }
 
@@ -632,7 +622,6 @@ async function TestCustomTradeRequest() {
     return res;
   } catch (e) {
     console.log("Error when trading native token: ", e);
-    throw e;
   }
 }
 
@@ -654,7 +643,6 @@ async function TestCreateAndSendPDEWithdrawTx() {
     return res.Response.txId;
   } catch (e) {
     console.log("Error when withdrawing pdex: ", e);
-    throw e;
   }
 }
 async function TestGetOutputCoins() {
@@ -669,9 +657,7 @@ async function GetListReceivedTx() {
   try {
     let receivedTxs = await accountSender.getReceivedTransaction();
     console.log(receivedTxs);
-  } catch (e) {
-    throw e;
-  }
+  } catch (e) {}
 }
 
 async function GetUnspentCoinV1() {
@@ -679,9 +665,7 @@ async function GetUnspentCoinV1() {
   try {
     accountSender.useCoinsService = true;
     await accountSender.getAllUnspentCoinsV1();
-  } catch (e) {
-    throw e;
-  }
+  } catch (e) {}
 }
 
 async function TestCreateAndSendConvertTx() {
@@ -700,7 +684,6 @@ async function TestCreateAndSendConvertTx() {
     // return res.Response.txId;
   } catch (e) {
     console.log("Error when send PRV: ", e);
-    throw e;
   }
 }
 async function TestConvertTokensV1() {
@@ -711,9 +694,7 @@ async function TestConvertTokensV1() {
     accountSender.useCoinsService = true;
     // await accountSender.convertTokensV1();
     await accountSender.clearCacheBalanceV1();
-  } catch (e) {
-    throw e;
-  }
+  } catch (e) {}
 }
 
 function delay(ms) {
@@ -726,6 +707,7 @@ async function createAccountByPrivateKey(privateKey) {
     account.setRPCCoinServices(rpcCoinService);
     account.setRPCClient(rpcClient);
     account.setRPCTxServices(rpcTxService);
+    account.setRPCRequestServices(rpcRequestService);
     const data = {
       DeviceID: deviceID,
     };
@@ -755,7 +737,7 @@ async function TestGetTxsByReceiver() {
 
 async function TestGetTxsHistory() {
   let account = await createAccountByPrivateKey(
-    "112t8rnY4wGSgmY58SCFE8wcpe7batDrUMy1HCTda4ymyMgDWYJotNJzXN4EpgEv8G1u2Was92HeLvuu9DAxnwsfcjnZQooHHDDXwXdQ1htn"
+    // "112t8rnY4wGSgmY58SCFE8wcpe7batDrUMy1HCTda4ymyMgDWYJotNJzXN4EpgEv8G1u2Was92HeLvuu9DAxnwsfcjnZQooHHDDXwXdQ1htn"
     // "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
     // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
@@ -763,26 +745,39 @@ async function TestGetTxsHistory() {
     // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
     // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
     // "112t8rnXMEmCBiwPrKTcryP4ZbjUsdcsTVvZ52HUuCY34C6mCN2MrzymtkfnM5dVDZxTrB3x4b7UhbtUeM38EdSJfnkfEYUqkFsKafDdsqvL"
+    // "112t8rnX96d4eXEvmDwMv4qCCE6zjSsvaMttkUK7ygn9BdNtkFdjKY4PyLt2pvp64b5sPtU5wPFf3FvFhtt7GhdVvDRnte82zqqeYfPvqEdL"
+    // "112t8rnYifHV4UB793i68xgEStbat23eZCkzVng6YkqYXN5ZqGSFgnHvC65ezDvTGtxrFa2kCJsdDxBPVDmbktkzDYaKyygGPkJQ9jPpo3XD"
+    // "112t8rnX96d4eXEvmDwMv4qCCE6zjSsvaMttkUK7ygn9BdNtkFdjKY4PyLt2pvp64b5sPtU5wPFf3FvFhtt7GhdVvDRnte82zqqeYfPvqEdL"
+    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
   );
+  const version = 2;
   const tokenID =
-    // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
-    // "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74"; //usdt
-    "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854"; //eth
-  const balance = await account.getBalance({
+    "1e0b165a96d040f6e1b57a1d7efeb5001cd4803cc9ee43fca812ce085db26c7c";
+  // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
+  // "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74"; //usdt
+  // "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854"; //eth
+  const params = {
     tokenID,
-    version: privacyVersion,
-  });
-  console.log("TestGetTxsHistory-balance", balance);
+    version,
+  };
+  // const balance = await account.getBalance(params);
+  // console.log("balance", balance);
+  // console.log(
+  //   "SIZE OUTPUTS COINS",
+  //   (await account.getListOutputCoinsStorage(params))[0]
+  // );
+
+  // console.log("TestGetTxsHistory-balance", balance);
   const txs = await account.getTxsHistory({
     tokenID,
-    isPToken: true,
-    version: privacyVersion,
+    isPToken: false,
+    version: version,
   });
-  console.log(txs.length);
-  console.log(
-    `\n\n`,
-    await account.getCoinsStorage({ tokenID, version: privacyVersion })
-  );
+  await account.clearTxsHistory(params);
+  // console.log(
+  //   `\n\n`,
+  //   await account.getCoinsStorage({ tokenID, version: privacyVersion })
+  // );
   // console.log("TestGetTxsHistory-txs", txs);
   // const history = txs.txsPToken.find((txp) => txp.id === 8);
   // const tx = await account.handleGetPTokenHistoryById({ history });
@@ -826,32 +821,44 @@ async function TestInitToken() {
 }
 
 async function TestGetContributeHistories() {
-  await accountSender.getContributeHistoriesWithStorage({
-    offset: 0,
-    limit: 100,
-  });
+  try {
+    await accountSender.getContributeHistoriesWithStorage({
+      offset: 0,
+      limit: 100,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function TestGetWithdrawLiquidityHistories() {
-  await accountSender.getLiquidityWithdrawHistoriesWithStorage({
-    offset: 0,
-    limit: 100,
-  });
+  try {
+    await accountSender.getLiquidityWithdrawHistoriesWithStorage({
+      offset: 0,
+      limit: 100,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function TestGetWithdrawFeeLiquidityHistories() {
-  await accountSender.getLiquidityWithdrawFeeHistoriesWithStorage({
-    offset: 0,
-    limit: 100,
-  });
+  try {
+    await accountSender.getLiquidityWithdrawFeeHistoriesWithStorage({
+      offset: 0,
+      limit: 100,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-async function TestGetUnspentCoinsV1() {
+async function TestGetUnspentCoinsByTokenIdV1() {
+  const tokenID = PRVID;
   const account = await createAccountByPrivateKey(
-    "112t8rnfuHwKo5fmeJ1U7gTUVJyXYZ8APAwY86HFvSTV5BaqEXRWhmaNAqMqVkc9ehF95JmE8XBv3XGfPr3r6ooEtWntJrAv9SzybqbQwtoX"
+    "113hagqt552h92LXY6dWPdBGS8pPdLQX5eFBLgsnzbEoU1nUTLGJkkyrTnWCz7XuURtSKzkUKFfKrMPmoNVPAbmryRbMxvNTst9cY5xqiPNN"
   );
-  await account.getUnspentCoinsV1({ fromApi: true });
-  await account.getUnspentCoinsV1({ fromApi: true });
+  await account.getUnspentCoinsByTokenIdV1({ tokenID, version: 1 });
 }
 
 async function TestConvertCoinsV1() {
@@ -926,14 +933,64 @@ async function TestLoadWallet() {
     const mnemonic = newMnemonic();
     console.log("mnemonic", mnemonic);
     await wallet.import(
-      "romance suspect ostrich amount deer crane false concert present evidence atom short",
+      // "romance suspect ostrich amount deer crane false concert present evidence atom short",
+      // mnemonic,
+      "sunny easy talent undo alter giant music slam common glide judge misery",
       aesKey,
       "Masterkey",
       new StorageServices()
     );
+
+    await wallet.createNewAccount("phat1");
+    await wallet.createNewAccount("phat2");
+    console.log(
+      "listAccount",
+      (await wallet.listAccount()).map((account) => account.PrivateKey)
+    );
+    await wallet.save(aesKey, false);
+    await wallet.loadWallet({
+      password: passphrase,
+      aesKey,
+    });
+    console.log(
+      "\n\nlistAccount",
+      (await wallet.listAccount()).map((account) => account.PrivateKey)
+    );
+    // await wallet.save(aesKey, false);
+    // await wallet.loadWallet({
+    //   password: passphrase,
+    //   aesKey,
+    // });
+    // console.log("listAccount", await wallet.listAccount());
+    return;
+    // const prvKey =
+    //   "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
+    // await wallet.loadWallet({
+    //   password: passphrase,
+    //   aesKey,
+    // });
+    // let a = await wallet.importAccount(prvKey, "phat2");
+    // a.setRPCCoinServices(rpcCoinService);
+    // a.setRPCClient(rpcClient);
+    // a.setRPCTxServices(rpcTxService);
+    // await a.addListFollowingToken({
+    //   tokenIDs: ["123", "12345678", "1234567"],
+    // });
+    // await wallet.save(aesKey, false);
+    // await wallet.loadWallet({
+    //   password: passphrase,
+    //   aesKey,
+    // });
+    // console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
+    // const listAccount = await wallet.listAccount();
+    // listAccount.map((account) => console.log("account", account));
+    // let listFollowingTokens = await a.getListFollowingTokens();
+    // console.log("listFollowingTokens after add", listFollowingTokens);
+    // console.log(await wallet.getMeasureStorageValue());
+    return;
     const account = await wallet.createNewAccount("PHAT");
-    const prvKey =
-      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
+    // const prvKey =
+    //   "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h";
     const account2 = await wallet.importAccount(prvKey, "phat2");
     console.log("LIST_ACCOUNT", wallet.MasterAccount.child.length);
     await wallet.removeAccount(prvKey);
@@ -966,11 +1023,10 @@ async function TestLoadWallet() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestLoadWallet();
-  // return await TestGetTxsHistory();
+  // return await TestLoadWallet();
+  return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
-  return await TestGetBalance();
   // await TestConsolidate();
   // return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
@@ -1025,7 +1081,7 @@ async function MainRoutine() {
     await delay(3000);
 
     //Convert
-    await TestGetUnspentCoinsV1();
+    await TestGetUnspentCoinsByTokenIdV1();
     await delay(3000);
     await TestConvertCoinsV1();
 
@@ -1086,7 +1142,6 @@ async function MainRoutine() {
   } catch (e) {
     console.log("Test failed");
     console.error(e);
-    throw e;
   }
   console.log("END WEB WALLET TEST");
 }
@@ -1141,7 +1196,6 @@ async function PDERoutine() {
   } catch (e) {
     console.log("Test failed");
     console.error(e);
-    throw e;
   }
   console.log("END PDE TEST");
 }
@@ -1157,7 +1211,6 @@ async function DefragmentRoutine() {
   } catch (e) {
     console.log("Test failed");
     console.error(e);
-    throw e;
   }
   console.log("END DEFRAG TEST");
 }
