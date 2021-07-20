@@ -16526,10 +16526,38 @@ function _createAndSendWithdrawRewardTx() {
 
 /***/ }),
 
-/***/ "./lib/module/Account/features/Portal/api.js":
-/*!***************************************************!*\
-  !*** ./lib/module/Account/features/Portal/api.js ***!
-  \***************************************************/
+/***/ "./lib/module/Account/features/Portal/index.js":
+/*!*****************************************************!*\
+  !*** ./lib/module/Account/features/Portal/index.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _portal_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./portal.api */ "./lib/module/Account/features/Portal/portal.api.js");
+/* harmony import */ var _portal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./portal */ "./lib/module/Account/features/Portal/portal.js");
+/* harmony import */ var _portal_storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./portal.storage */ "./lib/module/Account/features/Portal/portal.storage.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+var portalPrototype = _objectSpread(_objectSpread(_objectSpread({}, _portal_api__WEBPACK_IMPORTED_MODULE_0__["default"]), _portal__WEBPACK_IMPORTED_MODULE_1__["default"]), _portal_storage__WEBPACK_IMPORTED_MODULE_2__["default"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (portalPrototype);
+
+/***/ }),
+
+/***/ "./lib/module/Account/features/Portal/portal.api.js":
+/*!**********************************************************!*\
+  !*** ./lib/module/Account/features/Portal/portal.api.js ***!
+  \**********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16712,35 +16740,32 @@ function _handleGenerateShieldingAddress() {
           case 7:
             portalParams = _context4.sent;
             console.log("portalParams.MasterPubKeys: ", portalParams.MasterPubKeys);
-            masterPubKeysEncoded = new Array();
-            portalParams.MasterPubKeys[tokenID].forEach(function (item, _index, _array) {
-              masterPubKeysEncoded.push(Object(_lib_privacy_utils__WEBPACK_IMPORTED_MODULE_1__["base64Encode"])(item));
-            });
+            masterPubKeysEncoded = portalParams.MasterPubKeys[tokenID];
             params = {
               MasterPubKeys: masterPubKeysEncoded,
               NumSigsRequired: portalParams.NumRequiredSigs,
               ChainName: chainName,
               ChainCodeSeed: incAddress
             };
-            _context4.next = 14;
+            _context4.next = 13;
             return _lib_wasm__WEBPACK_IMPORTED_MODULE_2__["wasm"].generateBTCMultisigAddress(JSON.stringify(params));
 
-          case 14:
+          case 13:
             resp = _context4.sent;
             return _context4.abrupt("return", String(resp));
 
-          case 18:
-            _context4.prev = 18;
+          case 17:
+            _context4.prev = 17;
             _context4.t0 = _context4["catch"](1);
             console.log("HANDLE GENERATE SHIELDING ADDRESS FAILED", _context4.t0);
             throw _context4.t0;
 
-          case 22:
+          case 21:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, this, [[1, 18]]);
+    }, _callee4, this, [[1, 17]]);
   }));
   return _handleGenerateShieldingAddress.apply(this, arguments);
 }
@@ -17036,36 +17061,10 @@ function _handleGetAverageUnshieldFee() {
 
 /***/ }),
 
-/***/ "./lib/module/Account/features/Portal/index.js":
-/*!*****************************************************!*\
-  !*** ./lib/module/Account/features/Portal/index.js ***!
-  \*****************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "./lib/module/Account/features/Portal/api.js");
-/* harmony import */ var _unshield__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./unshield */ "./lib/module/Account/features/Portal/unshield.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-var portalPrototype = _objectSpread(_objectSpread({}, _api__WEBPACK_IMPORTED_MODULE_0__["default"]), _unshield__WEBPACK_IMPORTED_MODULE_1__["default"]);
-
-/* harmony default export */ __webpack_exports__["default"] = (portalPrototype);
-
-/***/ }),
-
-/***/ "./lib/module/Account/features/Portal/unshield.js":
-/*!********************************************************!*\
-  !*** ./lib/module/Account/features/Portal/unshield.js ***!
-  \********************************************************/
+/***/ "./lib/module/Account/features/Portal/portal.js":
+/*!******************************************************!*\
+  !*** ./lib/module/Account/features/Portal/portal.js ***!
+  \******************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -17246,6 +17245,104 @@ function _createAndSendUnshieldPortalV4RequestTx() {
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   createAndSendUnshieldPortalV4RequestTx: createAndSendUnshieldPortalV4RequestTx
+});
+
+/***/ }),
+
+/***/ "./lib/module/Account/features/Portal/portal.storage.js":
+/*!**************************************************************!*\
+  !*** ./lib/module/Account/features/Portal/portal.storage.js ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+var PORTAL_STORAGE_KEYS = {
+  PORTAL_BTC_SHIELD_ADDRESS: "$PORTAL_BTC_SHIELD_ADDRESS"
+};
+
+function getKeyStoragePortalShieldAddress() {
+  return "".concat(PORTAL_STORAGE_KEYS.PORTAL_BTC_SHIELD_ADDRESS, "-").concat(this.getPaymentAddress());
+}
+
+function getStoragePortalShieldAddress() {
+  return _getStoragePortalShieldAddress.apply(this, arguments);
+}
+
+function _getStoragePortalShieldAddress() {
+  _getStoragePortalShieldAddress = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var key;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            key = this.getKeyStoragePortalShieldAddress();
+            return _context.abrupt("return", this.getAccountStorage(key) || "");
+
+          case 5:
+            _context.prev = 5;
+            _context.t0 = _context["catch"](0);
+            throw _context.t0;
+
+          case 8:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this, [[0, 5]]);
+  }));
+  return _getStoragePortalShieldAddress.apply(this, arguments);
+}
+
+function setStoragePortalShieldAddress(_x) {
+  return _setStoragePortalShieldAddress.apply(this, arguments);
+}
+
+function _setStoragePortalShieldAddress() {
+  _setStoragePortalShieldAddress = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(_ref) {
+    var shieldAddress, key;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            shieldAddress = _ref.shieldAddress;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("setStoragePortalShieldAddress-shieldAddress", shieldAddress).required().string();
+            _context2.prev = 2;
+            key = this.getKeyStoragePortalShieldAddress();
+            _context2.next = 6;
+            return this.setAccountStorage(key, shieldAddress);
+
+          case 6:
+            _context2.next = 11;
+            break;
+
+          case 8:
+            _context2.prev = 8;
+            _context2.t0 = _context2["catch"](2);
+            throw _context2.t0;
+
+          case 11:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this, [[2, 8]]);
+  }));
+  return _setStoragePortalShieldAddress.apply(this, arguments);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  getKeyStoragePortalShieldAddress: getKeyStoragePortalShieldAddress,
+  getStoragePortalShieldAddress: getStoragePortalShieldAddress,
+  setStoragePortalShieldAddress: setStoragePortalShieldAddress
 });
 
 /***/ }),
