@@ -161,7 +161,7 @@ func (tx Tx) MarshalJSON() ([]byte, error){
 		Sig                  []byte `json:"Sig"`       //
 		Proof                privacy.Proof
 		PubKeyLastByteSender int    `json:"PubKeyLastByteSender"`
-		Metadata metadata.Metadata  `json:"Metadata`
+		Metadata metadata.Metadata  `json:"Metadata"`
 	}{
 		Version: tx.Version, 
 		Type: tx.Type,
@@ -298,7 +298,7 @@ func (params *InitParamsAsm) GetGenericParams() *TxPrivacyInitParams{
 type printedPaymentInfo struct {
 	PaymentAddress json.RawMessage 		`json:"PaymentAddress"`
 	Amount         string 				`json:"Amount"`
-	Message        []byte 			 	`json:"Message",omitempty`
+	Message        []byte 			 	`json:"Message"`
 }
 
 func (pp printedPaymentInfo) To() (*privacy.PaymentInfo, error){
@@ -365,7 +365,6 @@ type CoinInter struct {
 	SNDerivator     encodedBytes 	`json:"SNDerivator"`
 	// tag is nil unless confidential asset
 	AssetTag  		encodedBytes 	`json:"AssetTag"`
-	useBase64Encoding bool 			`json:"UseBase64Encoding"`
 }
 func (c CoinInter) ToCoin() (*privacy.CoinV2, uint64, error){
 	var err error
@@ -596,12 +595,13 @@ func (tx Tx) HashWithoutMetadataSig() *common.Hash {
 
 func generateMlsagRing(inputCoins []privacy.PlainCoin, inputIndexes []uint64, outputCoins []*privacy.CoinV2, params *InitParamsAsm, pi int, shardID byte, ringSize int) (*mlsag.Ring, [][]*big.Int, *privacy.Point, error) {
 	coinCache := params.Cache
-	l := len(coinCache.PublicKeys)
-	if len(coinCache.Commitments)!=l || len(coinCache.Indexes)!=l{
-		err := errors.New("Length mismatch in coin cache")
-		return nil, nil, nil, err
+	mutualLen := len(coinCache.PublicKeys)
+	if len(coinCache.Commitments)!=mutualLen || len(coinCache.Indexes)!=mutualLen{
+		return nil, nil, nil, errors.New("Length mismatch in coin cache")
 	}
-	randRange := big.NewInt(0).SetUint64(uint64(l))
+	if mutualLen < len(inputCoins) * (ringSize - 1) {
+		return nil, nil, nil, errors.Errorf("Not enough coins to create ring, need %d", len(inputCoins) * (ringSize - 1))
+	}
 	outputCoinsAsGeneric := make([]privacy.Coin, len(outputCoins))
 	for i:=0;i<len(outputCoins);i++{
 		outputCoinsAsGeneric[i] = outputCoins[i]
@@ -611,6 +611,7 @@ func generateMlsagRing(inputCoins []privacy.PlainCoin, inputIndexes []uint64, ou
 	indexes := make([][]*big.Int, ringSize)
 	ring := make([][]*privacy.Point, ringSize)
 	var commitmentToZero *privacy.Point
+	var currentRingCoinIndex int = 0
 	for i := 0; i < ringSize; i += 1 {
 		sumInputs := new(privacy.Point).Identity()
 		sumInputs.Sub(sumInputs, sumOutputsWithFee)
@@ -626,14 +627,13 @@ func generateMlsagRing(inputCoins []privacy.PlainCoin, inputIndexes []uint64, ou
 			}
 		} else {
 			for j := 0; j < len(inputCoins); j += 1 {
-				temp, _ := RandBigIntMaxRange(randRange)
-				pos := int(temp.Uint64())
-				pkBytes := coinCache.PublicKeys[pos]
-				commitmentBytes := coinCache.Commitments[pos]
-				// key := b58.Encode(pkBytes, common.ZeroByte)
-				rowIndexes[j] = big.NewInt(0).SetUint64(coinCache.Indexes[pos])
-				row[j], _ = new(privacy.Point).FromBytesS(pkBytes)
+				// grab the next coin from the list of decoys to add to ring
+				pkBytes := coinCache.PublicKeys[currentRingCoinIndex]
+				commitmentBytes := coinCache.Commitments[currentRingCoinIndex]
+				rowIndexes[j] = big.NewInt(0).SetUint64(coinCache.Indexes[currentRingCoinIndex])
+				currentRingCoinIndex++
 
+				row[j], _ = new(privacy.Point).FromBytesS(pkBytes)
 				commitment, _ := new(privacy.Point).FromBytesS(commitmentBytes)
 				sumInputs.Add(sumInputs, commitment)
 			}
