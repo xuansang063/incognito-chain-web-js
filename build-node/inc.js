@@ -2587,29 +2587,21 @@ function _getBurningAddress() {
         switch (_context3.prev = _context3.next) {
           case 0:
             beaconHeight = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : 0;
-            _context3.prev = 1;
-            _context3.next = 4;
-            return rpcClient.getBurningAddress(beaconHeight);
 
-          case 4:
-            burningAddress = _context3.sent;
-            _context3.next = 10;
-            break;
+            try {
+              // burningAddress = await rpcClient.getBurningAddress(beaconHeight);
+              burningAddress = _constants__WEBPACK_IMPORTED_MODULE_1__["BurnAddress"];
+            } catch (e) {// burningAddress = BurnAddress;
+            }
 
-          case 7:
-            _context3.prev = 7;
-            _context3.t0 = _context3["catch"](1);
-            burningAddress = _constants__WEBPACK_IMPORTED_MODULE_1__["BurnAddress"];
-
-          case 10:
             return _context3.abrupt("return", burningAddress);
 
-          case 11:
+          case 3:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 7]]);
+    }, _callee3);
   }));
   return _getBurningAddress.apply(this, arguments);
 }
@@ -2707,7 +2699,7 @@ var createAxiosInstance = function createAxiosInstance() {
 /*!********************!*\
   !*** ./lib/lib.js ***!
   \********************/
-/*! exports provided: SimpleWallet, Transactor, Wallet, constants, types, utils, init, Account, StorageServices, wasm, newMnemonic */
+/*! exports provided: SimpleWallet, Transactor, Wallet, constants, types, utils, init, Account, StorageServices, wasm, newMnemonic, isPaymentAddress, isOldPaymentAddress */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2721,41 +2713,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_stable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_stable__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _common_key__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./common/key */ "./lib/common/key.js");
-/* harmony import */ var _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./rpcclient/rpcclient */ "./lib/rpcclient/rpcclient.js");
-/* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./privacy/utils */ "./lib/privacy/utils.js");
-/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./core */ "./lib/core/index.js");
-/* harmony import */ var _tx_constants__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./tx/constants */ "./lib/tx/constants.js");
-/* harmony import */ var _common_base58__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./common/base58 */ "./lib/common/base58.js");
-/* harmony import */ var _common_common__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./common/common */ "./lib/common/common.js");
-/* harmony import */ var _transactor__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./transactor */ "./lib/transactor.js");
-/* harmony import */ var _transactor__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_transactor__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _wallet__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./wallet */ "./lib/wallet.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Wallet", function() { return _wallet__WEBPACK_IMPORTED_MODULE_11__["Wallet"]; });
+/* harmony import */ var _common_key__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./common/key */ "./lib/common/key.js");
+/* harmony import */ var _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./rpcclient/rpcclient */ "./lib/rpcclient/rpcclient.js");
+/* harmony import */ var _privacy_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./privacy/utils */ "./lib/privacy/utils.js");
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./core */ "./lib/core/index.js");
+/* harmony import */ var _tx_constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tx/constants */ "./lib/tx/constants.js");
+/* harmony import */ var _common_base58__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./common/base58 */ "./lib/common/base58.js");
+/* harmony import */ var _common_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./common/common */ "./lib/common/common.js");
+/* harmony import */ var _wallet__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./wallet */ "./lib/wallet.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Wallet", function() { return _wallet__WEBPACK_IMPORTED_MODULE_9__["Wallet"]; });
 
-/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./tx/utils */ "./lib/tx/utils.js");
-/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_tx_utils__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./privacy/ecdsa */ "./lib/privacy/ecdsa.js");
-/* harmony import */ var _privacy_bls__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./privacy/bls */ "./lib/privacy/bls.js");
-/* harmony import */ var _common_constants__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./common/constants */ "./lib/common/constants.js");
-/* harmony import */ var _common_errorhandler__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./common/errorhandler */ "./lib/common/errorhandler.js");
-/* harmony import */ var _common_committeekey__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./common/committeekey */ "./lib/common/committeekey.js");
-/* harmony import */ var _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./privacy/hybridEncryption */ "./lib/privacy/hybridEncryption.js");
-/* harmony import */ var _module_Account__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./module/Account */ "./lib/module/Account/index.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Account", function() { return _module_Account__WEBPACK_IMPORTED_MODULE_19__["Account"]; });
+/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./tx/utils */ "./lib/tx/utils.js");
+/* harmony import */ var _tx_utils__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_tx_utils__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./privacy/ecdsa */ "./lib/privacy/ecdsa.js");
+/* harmony import */ var _privacy_bls__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./privacy/bls */ "./lib/privacy/bls.js");
+/* harmony import */ var _common_committeekey__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./common/committeekey */ "./lib/common/committeekey.js");
+/* harmony import */ var _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./privacy/hybridEncryption */ "./lib/privacy/hybridEncryption.js");
+/* harmony import */ var _module_Account__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./module/Account */ "./lib/module/Account/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Account", function() { return _module_Account__WEBPACK_IMPORTED_MODULE_15__["Account"]; });
 
-/* harmony import */ var _services_storage__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./services/storage */ "./lib/services/storage.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StorageServices", function() { return _services_storage__WEBPACK_IMPORTED_MODULE_20__["default"]; });
+/* harmony import */ var _services_storage__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./services/storage */ "./lib/services/storage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StorageServices", function() { return _services_storage__WEBPACK_IMPORTED_MODULE_16__["default"]; });
 
-/* harmony import */ var _tx_stateless__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./tx/stateless */ "./lib/tx/stateless.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Transactor", function() { return _tx_stateless__WEBPACK_IMPORTED_MODULE_21__["StatelessTransactor"]; });
+/* harmony import */ var _tx_stateless__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./tx/stateless */ "./lib/tx/stateless.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Transactor", function() { return _tx_stateless__WEBPACK_IMPORTED_MODULE_17__["StatelessTransactor"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "wasm", function() { return _tx_stateless__WEBPACK_IMPORTED_MODULE_21__["wasm"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "wasm", function() { return _tx_stateless__WEBPACK_IMPORTED_MODULE_17__["wasm"]; });
 
-/* harmony import */ var _core_mnemonic__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./core/mnemonic */ "./lib/core/mnemonic.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "newMnemonic", function() { return _core_mnemonic__WEBPACK_IMPORTED_MODULE_22__["newMnemonic"]; });
+/* harmony import */ var _core_mnemonic__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./core/mnemonic */ "./lib/core/mnemonic.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "newMnemonic", function() { return _core_mnemonic__WEBPACK_IMPORTED_MODULE_18__["newMnemonic"]; });
+
+/* harmony import */ var _common_constants__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./common/constants */ "./lib/common/constants.js");
+/* harmony import */ var _utils_paymentAddress__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./utils/paymentAddress */ "./lib/utils/paymentAddress.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isPaymentAddress", function() { return _utils_paymentAddress__WEBPACK_IMPORTED_MODULE_20__["isPaymentAddress"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isOldPaymentAddress", function() { return _utils_paymentAddress__WEBPACK_IMPORTED_MODULE_20__["isOldPaymentAddress"]; });
 
 var _constants;
 
@@ -2773,9 +2765,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
 var webJsPath = "./";
-
 
 
 
@@ -2801,8 +2791,8 @@ var coinsToBase64 = function coinsToBase64(coinArray) {
     var result = {};
     Object.keys(c).forEach(function (k) {
       try {
-        var temp = Object(_common_base58__WEBPACK_IMPORTED_MODULE_8__["checkDecode"])(c[k]);
-        result[k] = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_5__["base64Encode"])(temp.bytesDecoded);
+        var temp = Object(_common_base58__WEBPACK_IMPORTED_MODULE_7__["checkDecode"])(c[k]);
+        result[k] = Object(_privacy_utils__WEBPACK_IMPORTED_MODULE_4__["base64Encode"])(temp.bytesDecoded);
       } catch (e) {
         result[k] = c[k];
       } // keep any field that's not in base58 as-is
@@ -2813,65 +2803,65 @@ var coinsToBase64 = function coinsToBase64(coinArray) {
 };
 
 var constants = (_constants = {
-  PaymentAddressType: _core__WEBPACK_IMPORTED_MODULE_6__["PaymentAddressType"],
-  PriKeyType: _core__WEBPACK_IMPORTED_MODULE_6__["PriKeyType"],
-  ReadonlyKeyType: _core__WEBPACK_IMPORTED_MODULE_6__["ReadonlyKeyType"],
-  OTAKeyType: _core__WEBPACK_IMPORTED_MODULE_6__["OTAKeyType"],
-  CustomTokenTransfer: _tx_constants__WEBPACK_IMPORTED_MODULE_7__["CustomTokenTransfer"],
-  CustomTokenInit: _tx_constants__WEBPACK_IMPORTED_MODULE_7__["CustomTokenInit"],
-  PRVIDSTR: _core__WEBPACK_IMPORTED_MODULE_6__["PRVIDSTR"],
-  ENCODE_VERSION: _common_constants__WEBPACK_IMPORTED_MODULE_15__["ENCODE_VERSION"],
-  FailedTx: _core__WEBPACK_IMPORTED_MODULE_6__["FailedTx"],
-  SuccessTx: _core__WEBPACK_IMPORTED_MODULE_6__["SuccessTx"],
-  ConfirmedTx: _core__WEBPACK_IMPORTED_MODULE_6__["ConfirmedTx"],
-  MetaStakingBeacon: _core__WEBPACK_IMPORTED_MODULE_6__["MetaStakingBeacon"],
-  MetaStakingShard: _core__WEBPACK_IMPORTED_MODULE_6__["MetaStakingShard"],
-  BurningRequestMeta: _core__WEBPACK_IMPORTED_MODULE_6__["BurningRequestMeta"],
-  BurningRequestToSCMeta: _core__WEBPACK_IMPORTED_MODULE_6__["BurningRequestToSCMeta"],
-  IssuingETHRequestMeta: _core__WEBPACK_IMPORTED_MODULE_6__["IssuingETHRequestMeta"],
-  WithDrawRewardRequestMeta: _core__WEBPACK_IMPORTED_MODULE_6__["WithDrawRewardRequestMeta"],
-  PDEContributionMeta: _core__WEBPACK_IMPORTED_MODULE_6__["PDEContributionMeta"],
-  PDEPRVRequiredContributionRequestMeta: _core__WEBPACK_IMPORTED_MODULE_6__["PDEPRVRequiredContributionRequestMeta"],
-  PDETradeRequestMeta: _core__WEBPACK_IMPORTED_MODULE_6__["PDETradeRequestMeta"],
-  PDECrossPoolTradeRequestMeta: _core__WEBPACK_IMPORTED_MODULE_6__["PDECrossPoolTradeRequestMeta"],
-  PDEWithdrawalRequestMeta: _core__WEBPACK_IMPORTED_MODULE_6__["PDEWithdrawalRequestMeta"],
-  PortalV4ShieldingRequestMeta: _core__WEBPACK_IMPORTED_MODULE_6__["PortalV4ShieldingRequestMeta"],
-  PortalV4ShieldingResponseMeta: _core__WEBPACK_IMPORTED_MODULE_6__["PortalV4ShieldingResponseMeta"],
-  PortalV4UnshieldRequestMeta: _core__WEBPACK_IMPORTED_MODULE_6__["PortalV4UnshieldRequestMeta"],
-  PortalV4UnshieldingResponseMeta: _core__WEBPACK_IMPORTED_MODULE_6__["PortalV4UnshieldingResponseMeta"]
-}, _defineProperty(_constants, "CustomTokenTransfer", _tx_constants__WEBPACK_IMPORTED_MODULE_7__["CustomTokenTransfer"]), _defineProperty(_constants, "MAX_INPUT_PER_TX", _tx_constants__WEBPACK_IMPORTED_MODULE_7__["MAX_INPUT_PER_TX"]), _constants);
+  PaymentAddressType: _core__WEBPACK_IMPORTED_MODULE_5__["PaymentAddressType"],
+  PriKeyType: _core__WEBPACK_IMPORTED_MODULE_5__["PriKeyType"],
+  ReadonlyKeyType: _core__WEBPACK_IMPORTED_MODULE_5__["ReadonlyKeyType"],
+  OTAKeyType: _core__WEBPACK_IMPORTED_MODULE_5__["OTAKeyType"],
+  CustomTokenTransfer: _tx_constants__WEBPACK_IMPORTED_MODULE_6__["CustomTokenTransfer"],
+  CustomTokenInit: _tx_constants__WEBPACK_IMPORTED_MODULE_6__["CustomTokenInit"],
+  PRVIDSTR: _core__WEBPACK_IMPORTED_MODULE_5__["PRVIDSTR"],
+  ENCODE_VERSION: _common_constants__WEBPACK_IMPORTED_MODULE_19__["ENCODE_VERSION"],
+  FailedTx: _core__WEBPACK_IMPORTED_MODULE_5__["FailedTx"],
+  SuccessTx: _core__WEBPACK_IMPORTED_MODULE_5__["SuccessTx"],
+  ConfirmedTx: _core__WEBPACK_IMPORTED_MODULE_5__["ConfirmedTx"],
+  MetaStakingBeacon: _core__WEBPACK_IMPORTED_MODULE_5__["MetaStakingBeacon"],
+  MetaStakingShard: _core__WEBPACK_IMPORTED_MODULE_5__["MetaStakingShard"],
+  BurningRequestMeta: _core__WEBPACK_IMPORTED_MODULE_5__["BurningRequestMeta"],
+  BurningRequestToSCMeta: _core__WEBPACK_IMPORTED_MODULE_5__["BurningRequestToSCMeta"],
+  IssuingETHRequestMeta: _core__WEBPACK_IMPORTED_MODULE_5__["IssuingETHRequestMeta"],
+  WithDrawRewardRequestMeta: _core__WEBPACK_IMPORTED_MODULE_5__["WithDrawRewardRequestMeta"],
+  PDEContributionMeta: _core__WEBPACK_IMPORTED_MODULE_5__["PDEContributionMeta"],
+  PDEPRVRequiredContributionRequestMeta: _core__WEBPACK_IMPORTED_MODULE_5__["PDEPRVRequiredContributionRequestMeta"],
+  PDETradeRequestMeta: _core__WEBPACK_IMPORTED_MODULE_5__["PDETradeRequestMeta"],
+  PDECrossPoolTradeRequestMeta: _core__WEBPACK_IMPORTED_MODULE_5__["PDECrossPoolTradeRequestMeta"],
+  PDEWithdrawalRequestMeta: _core__WEBPACK_IMPORTED_MODULE_5__["PDEWithdrawalRequestMeta"],
+  PortalV4ShieldingRequestMeta: _core__WEBPACK_IMPORTED_MODULE_5__["PortalV4ShieldingRequestMeta"],
+  PortalV4ShieldingResponseMeta: _core__WEBPACK_IMPORTED_MODULE_5__["PortalV4ShieldingResponseMeta"],
+  PortalV4UnshieldRequestMeta: _core__WEBPACK_IMPORTED_MODULE_5__["PortalV4UnshieldRequestMeta"],
+  PortalV4UnshieldingResponseMeta: _core__WEBPACK_IMPORTED_MODULE_5__["PortalV4UnshieldingResponseMeta"]
+}, _defineProperty(_constants, "CustomTokenTransfer", _tx_constants__WEBPACK_IMPORTED_MODULE_6__["CustomTokenTransfer"]), _defineProperty(_constants, "MAX_INPUT_PER_TX", _tx_constants__WEBPACK_IMPORTED_MODULE_6__["MAX_INPUT_PER_TX"]), _constants);
 var utils = {
-  base58CheckEncode: _common_base58__WEBPACK_IMPORTED_MODULE_8__["checkEncode"],
-  base58CheckDecode: _common_base58__WEBPACK_IMPORTED_MODULE_8__["checkDecode"],
-  base58CheckDeserialize: _core__WEBPACK_IMPORTED_MODULE_6__["KeyWallet"].base58CheckDeserialize,
-  base64Encode: _privacy_utils__WEBPACK_IMPORTED_MODULE_5__["base64Encode"],
-  base64Decode: _privacy_utils__WEBPACK_IMPORTED_MODULE_5__["base64Decode"],
-  getMaxWithdrawAmount: _tx_utils__WEBPACK_IMPORTED_MODULE_12__["getMaxWithdrawAmount"],
-  toNanoPRV: _core__WEBPACK_IMPORTED_MODULE_6__["toNanoPRV"],
-  toPRV: _core__WEBPACK_IMPORTED_MODULE_6__["toPRV"],
-  getShardIDFromLastByte: _common_common__WEBPACK_IMPORTED_MODULE_9__["getShardIDFromLastByte"],
-  generateECDSAKeyPair: _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_13__["generateECDSAKeyPair"],
-  generateBLSKeyPair: _privacy_bls__WEBPACK_IMPORTED_MODULE_14__["generateBLSKeyPair"],
-  encryptMessageOutCoin: _core__WEBPACK_IMPORTED_MODULE_6__["encryptMessageOutCoin"],
-  decryptMessageOutCoin: _core__WEBPACK_IMPORTED_MODULE_6__["decryptMessageOutCoin"],
-  byteToHexString: _common_common__WEBPACK_IMPORTED_MODULE_9__["byteToHexString"],
-  hexStringToByte: _common_common__WEBPACK_IMPORTED_MODULE_9__["hexStringToByte"],
-  generateBLSPubKeyB58CheckEncodeFromSeed: _common_committeekey__WEBPACK_IMPORTED_MODULE_17__["generateBLSPubKeyB58CheckEncodeFromSeed"],
-  generateCommitteeKeyFromHashPrivateKey: _common_committeekey__WEBPACK_IMPORTED_MODULE_17__["generateCommitteeKeyFromHashPrivateKey"],
-  hashSha3BytesToBytes: _privacy_utils__WEBPACK_IMPORTED_MODULE_5__["hashSha3BytesToBytes"],
-  convertHashToStr: _common_common__WEBPACK_IMPORTED_MODULE_9__["convertHashToStr"],
-  hybridEncryption: _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_18__["hybridEncryption"],
-  hybridDecryption: _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_18__["hybridDecryption"],
-  bytesToString: _privacy_utils__WEBPACK_IMPORTED_MODULE_5__["bytesToString"],
-  stringToBytes: _privacy_utils__WEBPACK_IMPORTED_MODULE_5__["stringToBytes"],
+  base58CheckEncode: _common_base58__WEBPACK_IMPORTED_MODULE_7__["checkEncode"],
+  base58CheckDecode: _common_base58__WEBPACK_IMPORTED_MODULE_7__["checkDecode"],
+  base58CheckDeserialize: _core__WEBPACK_IMPORTED_MODULE_5__["KeyWallet"].base58CheckDeserialize,
+  base64Encode: _privacy_utils__WEBPACK_IMPORTED_MODULE_4__["base64Encode"],
+  base64Decode: _privacy_utils__WEBPACK_IMPORTED_MODULE_4__["base64Decode"],
+  getMaxWithdrawAmount: _tx_utils__WEBPACK_IMPORTED_MODULE_10__["getMaxWithdrawAmount"],
+  toNanoPRV: _core__WEBPACK_IMPORTED_MODULE_5__["toNanoPRV"],
+  toPRV: _core__WEBPACK_IMPORTED_MODULE_5__["toPRV"],
+  getShardIDFromLastByte: _common_common__WEBPACK_IMPORTED_MODULE_8__["getShardIDFromLastByte"],
+  generateECDSAKeyPair: _privacy_ecdsa__WEBPACK_IMPORTED_MODULE_11__["generateECDSAKeyPair"],
+  generateBLSKeyPair: _privacy_bls__WEBPACK_IMPORTED_MODULE_12__["generateBLSKeyPair"],
+  encryptMessageOutCoin: _core__WEBPACK_IMPORTED_MODULE_5__["encryptMessageOutCoin"],
+  decryptMessageOutCoin: _core__WEBPACK_IMPORTED_MODULE_5__["decryptMessageOutCoin"],
+  byteToHexString: _common_common__WEBPACK_IMPORTED_MODULE_8__["byteToHexString"],
+  hexStringToByte: _common_common__WEBPACK_IMPORTED_MODULE_8__["hexStringToByte"],
+  generateBLSPubKeyB58CheckEncodeFromSeed: _common_committeekey__WEBPACK_IMPORTED_MODULE_13__["generateBLSPubKeyB58CheckEncodeFromSeed"],
+  generateCommitteeKeyFromHashPrivateKey: _common_committeekey__WEBPACK_IMPORTED_MODULE_13__["generateCommitteeKeyFromHashPrivateKey"],
+  hashSha3BytesToBytes: _privacy_utils__WEBPACK_IMPORTED_MODULE_4__["hashSha3BytesToBytes"],
+  convertHashToStr: _common_common__WEBPACK_IMPORTED_MODULE_8__["convertHashToStr"],
+  hybridEncryption: _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_14__["hybridEncryption"],
+  hybridDecryption: _privacy_hybridEncryption__WEBPACK_IMPORTED_MODULE_14__["hybridDecryption"],
+  bytesToString: _privacy_utils__WEBPACK_IMPORTED_MODULE_4__["bytesToString"],
+  stringToBytes: _privacy_utils__WEBPACK_IMPORTED_MODULE_4__["stringToBytes"],
   coinsToBase64: coinsToBase64
 };
 var types = {
-  TxHistoryInfo: _core__WEBPACK_IMPORTED_MODULE_6__["TxHistoryInfo"],
-  RpcClient: _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_4__["RpcClient"],
-  PaymentInfo: _common_key__WEBPACK_IMPORTED_MODULE_3__["PaymentInfo"],
-  KeyWallet: _core__WEBPACK_IMPORTED_MODULE_6__["KeyWallet"],
-  DefaultStorage: _wallet__WEBPACK_IMPORTED_MODULE_11__["DefaultStorage"]
+  TxHistoryInfo: _core__WEBPACK_IMPORTED_MODULE_5__["TxHistoryInfo"],
+  RpcClient: _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_3__["RpcClient"],
+  PaymentInfo: _common_key__WEBPACK_IMPORTED_MODULE_2__["PaymentInfo"],
+  KeyWallet: _core__WEBPACK_IMPORTED_MODULE_5__["KeyWallet"],
+  DefaultStorage: _wallet__WEBPACK_IMPORTED_MODULE_9__["DefaultStorage"]
 };
 
 var SimpleWallet = /*#__PURE__*/function () {
@@ -2881,13 +2871,13 @@ var SimpleWallet = /*#__PURE__*/function () {
     this.Name = ""; // timeout when waiting for TX confirmations
 
     this.timeout = 200;
-    this.rpc = new _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_4__["RpcClient"]();
+    this.rpc = new _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_3__["RpcClient"]();
   }
 
   _createClass(SimpleWallet, [{
     key: "NewTransactor",
     value: function NewTransactor(privateKey) {
-      var t = new _tx_stateless__WEBPACK_IMPORTED_MODULE_21__["StatelessTransactor"](this, this.rpc.rpcHttpService.url); // by default, Transactors of SimpleWallet does NOT connect to coin service, but normal node instead
+      var t = new _tx_stateless__WEBPACK_IMPORTED_MODULE_17__["StatelessTransactor"](this, this.rpc.rpcHttpService.url); // by default, Transactors of SimpleWallet does NOT connect to coin service, but normal node instead
 
       t.useCoinsService = false;
       return t.setKey(privateKey).then(function (_) {
@@ -2897,7 +2887,7 @@ var SimpleWallet = /*#__PURE__*/function () {
   }, {
     key: "setProvider",
     value: function setProvider(url, user, password) {
-      this.rpc = new _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_4__["RpcClient"](url, user, password);
+      this.rpc = new _rpcclient_rpcclient__WEBPACK_IMPORTED_MODULE_3__["RpcClient"](url, user, password);
     }
   }]);
 
@@ -26931,1683 +26921,6 @@ var StorageServices = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./lib/transactor.js":
-/*!***************************!*\
-  !*** ./lib/transactor.js ***!
-  \***************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// import bn from "bn.js";
-// import {
-//   CustomTokenInit,
-//   TxNormalType,
-//   TxCustomTokenPrivacyType,
-//   CustomTokenTransfer,
-//   MaxInputNumberForDefragment,
-//   MAX_INPUT_PER_TX,
-// } from "./tx/constants";
-// import {
-//   FailedTx,
-//   SuccessTx,
-//   MetaStakingBeacon,
-//   MetaStakingShard,
-//   PaymentAddressType,
-//   ReadonlyKeyType,
-//   PriKeyType,
-//   OTAKeyType,
-//   PDETradeRequestMeta,
-//   PDECrossPoolTradeRequestMeta,
-//   PDEWithdrawalRequestMeta,
-//   StopAutoStakingMeta,
-//   ShardStakingType,
-//   BurningRequestMeta,
-//   IssuingETHRequestMeta,
-//   InitTokenRequestMeta,
-//   WithDrawRewardRequestMeta,
-//   PRVID,
-//   PRVIDSTR,
-//   PercentFeeToReplaceTx,
-//   encryptMessageOutCoin,
-//   decryptMessageOutCoin,
-//   getBurningAddress,
-//   TxHistoryInfo,
-//   KeyWallet,
-//   PDEPRVRequiredContributionRequestMeta,
-// } from "./core";
-// import { checkEncode, checkDecode } from "./common/base58";
-// import {
-//   prepareInputForTxV2,
-//   getUnspentCoin,
-//   newParamTxV2,
-//   newTokenParamV2,
-// } from "./tx/utils";
-// import { ENCODE_VERSION, ED25519_KEY_SIZE } from "./common/constants";
-// import {
-//   convertHashToStr,
-//   getShardIDFromLastByte,
-//   getChildIdFromChildNumberArray,
-// } from "./common/common";
-// import {
-//   generateCommitteeKeyFromHashPrivateKey,
-//   generateBLSPubKeyB58CheckEncodeFromSeed,
-// } from "./common/committeekey";
-// import {
-//   hashSha3BytesToBytes,
-//   base64Decode,
-//   base64Encode,
-//   stringToBytes,
-//   bytesToString,
-//   toHexString,
-//   setRandBytesFunc,
-// } from "./privacy/utils";
-// import { CustomError, ErrorObject } from "./common/errorhandler";
-// import { KeySet, addressAsObject } from "./common/keySet";
-// import { RpcClient } from "./rpcclient/rpcclient";
-// import { wasm } from "./wasm";
-// import { isJsonString } from "./utils/json";
-// import { Account } from "@lib/module/Account";
-// import { isEmpty } from "lodash";
-// import { PrivacyVersion } from "./core/constants";
-// import Validator from '@lib/utils/validator';
-// import { VALIDATOR } from '@lib/module/Account/account';
-// const LIMIT_COINS = 100;
-// class Transactor extends Account {
-//   constructor(w, rpcUrl = null) {
-//     super();
-//     this.updateProgressTx = async (prog, msg = "") => {
-//       if (w.updateProgressTx) {
-//         await w.updateProgressTx(prog);
-//         w.Debug = msg;
-//       }
-//     };
-//     this.rpc = rpcUrl ? new RpcClient(rpcUrl) : w.RpcClient;
-//     this.rpcCoinService = w.RpcCoinService;
-//     this.useCoinsService = true;
-//     this.isSubmitOtaKey = false;
-//     this.offlineMode = false;
-//     // function aliases
-//     this.make = this._transact;
-//     this.prv = this.createAndSendNativeToken;
-//     this.token = this.createAndSendPrivacyToken;
-//     this.newToken = this.createAndSendInitTokenTx;
-//     this.stake = this.createAndSendStakingTx;
-//     this.unstake = this.createAndSendStopAutoStakingTx;
-//     this.withdraw = this.createAndSendWithdrawRewardTx;
-//     this.convert = this.createAndSendConvertTx;
-//     this.convertToken = this.createAndSendTokenConvertTx;
-//     this.contribute = this.createAndSendTxWithContribution;
-//     this.trade = this.createAndSendNativeTokenTradeRequestTx;
-//     this.withdrawDex = this.createAndSendWithdrawDexTx;
-//     this.burn = this.createAndSendBurningRequestTx;
-//     this.shield = this.createAndSendIssuingEthRequestTx;
-//     this.defrag = this.defragmentNativeCoin;
-//     this.coin = this.getUnspentCoins;
-//     this.balance = this.getBalance;
-//     this.waitBalanceChange = this.waitUntilBalanceChange;
-//     this.wasm = wasm;
-//     this.version = w.PrivacyVersion;
-//   }
-//   async setKey(privateKey) {
-//     // transactor needs private key to sign TXs. Read key in encoded or raw form
-//     if (typeof privateKey == "string") {
-//       this.key = KeyWallet.base58CheckDeserialize(privateKey);
-//     } else if (privateKey.length && privateKey.length == 32) {
-//       this.key = KeyWallet.deserialize(privateKey);
-//     } else {
-//       this.key = new KeyWallet();
-//       return this.key;
-//     }
-//     let result = await this.key.KeySet.importFromPrivateKey(
-//       this.key.KeySet.PrivateKey
-//     );
-//     return result;
-//   }
-//   // fetchOutputCoins returns all output coins with tokenID
-//   // for native token: tokenID is null
-//   /**
-//    *
-//    * @param {string} tokenID
-//    * @param {RpcClient} rpcClient
-//    */
-//   async fetchOutputCoins(tokenID, version = 2) {
-//     let paymentAddrSerialize = this.key.base58CheckSerialize(
-//       PaymentAddressType
-//     );
-//     let readOnlyKeySerialize = "";
-//     let otaKeySerialize = this.key.base58CheckSerialize(OTAKeyType);
-//     let privKeySerialize = this.key.base58CheckSerialize(PriKeyType);
-//     const handler = async (response, _privateKey, _version, _prevH, result) => {
-//       // when key was submitted, only send 1 rpc request
-//       let coins = response.outCoins;
-//       for (let i = 0; i < coins.length; i++) {
-//         // match the desired version. Version -1 means any
-//         if (_version == -1 || coins[i].Version == _version) {
-//           let params = {
-//             Coin: coins[i],
-//             KeySet: _privateKey,
-//           };
-//           try {
-//             let coinStr = await wasm.decryptCoin(JSON.stringify(params));
-//             let coin = JSON.parse(coinStr);
-//             // console.log("decrypt coin", coin);
-//             // console.log("from", params.Coin);
-//             if (coins[i].Version == 2 || _prevH == 0) result.push(coin);
-//           } catch (e) {
-//             console.error(e);
-//             console.log("skip coin", params.Coin.PublicKey);
-//           }
-//         }
-//       }
-//       return response.next;
-//     };
-//     const req = async (paymentAddr, roKey, otaKey, tid, toHeight = 0) => {
-//       try {
-//         let res = await this.rpc.getOutputCoin(
-//           paymentAddr,
-//           roKey,
-//           otaKey,
-//           tid,
-//           toHeight,
-//           this.isSubmitOtaKey
-//         );
-//         return res;
-//       } catch (e) {
-//         throw new CustomError(
-//           ErrorObject.GetOutputCoinsErr,
-//           e.message || "Can not get output coins when get unspent token"
-//         );
-//       }
-//     };
-//     let result = [];
-//     let h = 0;
-//     // this client config searches up to 9yrs
-//     for (let i = 0; i < 3000; i++) {
-//       try {
-//         let response = await req(
-//           paymentAddrSerialize,
-//           readOnlyKeySerialize,
-//           otaKeySerialize,
-//           tokenID,
-//           h
-//         );
-//         const nextHeight = await handler(
-//           response,
-//           privKeySerialize,
-//           version,
-//           h,
-//           result
-//         );
-//         if (h == nextHeight || nextHeight == 0) break;
-//         h = nextHeight;
-//       } catch (e) {
-//         console.error(e);
-//         return [];
-//       }
-//     }
-//     return result;
-//   }
-//   async waitUntilBalanceChange(tokenID) {
-//     console.debug(
-//       this.key.base58CheckSerialize(PaymentAddressType),
-//       " => wait for balance change with token",
-//       tokenID
-//     );
-//     let maxWaitTime = this.timeout;
-//     const startBalance = new bn(await this.getBalance(tokenID));
-//     let balance = startBalance;
-//     while (balance.eq(startBalance)) {
-//       try {
-//         maxWaitTime = await this.sleepCapped(1000, maxWaitTime);
-//         balance = new bn(await this.getBalance(tokenID));
-//         // console.debug('balance is', balance);
-//       } catch (e) {
-//         throw new CustomError(ErrorObject.GetTxByHashErr, e.message);
-//       }
-//     }
-//     return {
-//       oldBalance: startBalance.toString(),
-//       balance: balance.toString(),
-//     };
-//   }
-//   // getAllPrivacyTokenBalance returns list of privacy token's balance
-//   /**
-//    *
-//    * @returns [{TokenID: string, Balance: number}]
-//    */
-//   async getAllPrivacyTokenBalance() {
-//     try {
-//       // get list privacy token
-//       let privacyTokens = await this.rpc.listTokens();
-//       let pTokenList = privacyTokens.listPrivacyToken;
-//       // get balance for each privacy token
-//       let tasks = [];
-//       for (let i = 0; i < pTokenList.length; i++) {
-//         let tokenID = pTokenList[i].ID;
-//         const tokenBalanceItemPromise = new Promise((resolve) => {
-//           this.getBalance(tokenID, -1)
-//             .then((balance) => {
-//               resolve({
-//                 TokenID: tokenID,
-//                 Balance: balance,
-//               });
-//             })
-//             .catch(() => null);
-//         });
-//         tasks.push(tokenBalanceItemPromise);
-//       }
-//       const allResult = await Promise.all(tasks);
-//       const hasBalanceResult =
-//         allResult && allResult.filter((r) => r && r.Balance > 0);
-//       return hasBalanceResult;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   /**
-//    *
-//    * @param {{paymentAddressStr: string (B58checkencode), amount: number, message: "" }} prvPayments
-//    * @param {number} fee
-//    * @param {bool} isPrivacy
-//    * @param {string} info
-//    */
-//   async createAndSendNativeToken({
-//     transfer: { prvPayments = [], fee, info = "" },
-//     extra: { metadata = null, isEncryptMessage = false } = {},
-//   } = {}) {
-//     //(prvPayments, fee, info = "", isEncryptMessage = false, metadata = null) {
-//     // check fee
-//     if (fee < 0) {
-//       fee = 0;
-//     }
-//     let messageForNativeToken = "";
-//     if (prvPayments.length > 0) {
-//       messageForNativeToken = prvPayments[0].Message;
-//     }
-//     await this.updateProgressTx(10, "Encrypting Message");
-//     const isEncodeOnly = !isEncryptMessage;
-//     prvPayments = await encryptMessageOutCoin(prvPayments, isEncodeOnly);
-//     try {
-//       let result = await this._transact({
-//         transfer: { prvPayments, fee, info },
-//         extra: { metadata },
-//       });
-//       this.saveTxHistory(result, false, "", messageForNativeToken);
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   async _transact({
-//     transfer: {
-//       prvPayments = [],
-//       fee = 10,
-//       info = "",
-//       tokenID = null,
-//       tokenPayments = null,
-//       tokenParams = null,
-//     } = {},
-//     extra: { metadata = null } = {},
-//   }) {
-//     await this.updateProgressTx(20, "Preparing Your Payments");
-//     info = base64Encode(stringToBytes(info));
-//     let receiverPaymentAddrStr = new Array(prvPayments.length);
-//     let totalAmountTransfer = new bn(0);
-//     for (let i = 0; i < prvPayments.length; i++) {
-//       receiverPaymentAddrStr[i] = prvPayments[i].paymentAddressStr;
-//       totalAmountTransfer = totalAmountTransfer.add(
-//         new bn(prvPayments[i].Amount)
-//       );
-//       prvPayments[i].Amount = new bn(prvPayments[i].Amount).toString();
-//     }
-//     await this.updateProgressTx(30, "Selecting Coins");
-//     let inputForTx;
-//     try {
-//       inputForTx = await prepareInputForTxV2(
-//         totalAmountTransfer,
-//         fee,
-//         null,
-//         this
-//       );
-//     } catch (e) {
-//       console.error(e);
-//       throw new CustomError(
-//         ErrorObject.InitNormalTxErr,
-//         "Error while preparing inputs",
-//         e
-//       );
-//     }
-//     if (inputForTx.inputCoinStrs.length > MAX_INPUT_PER_TX) {
-//       throw new CustomError(ErrorObject.TxSizeExceedErr);
-//     }
-//     await this.updateProgressTx(40, "Packing Parameters");
-//     let txParams = newParamTxV2(
-//       this.key,
-//       prvPayments,
-//       inputForTx.inputCoinStrs,
-//       fee,
-//       null,
-//       metadata,
-//       info,
-//       inputForTx.coinsForRing
-//     );
-//     // handle token transfer
-//     let tokenReceiverPaymentAddrStr = [];
-//     let totalAmountTokenTransfer = new bn(0);
-//     let inputForToken = {
-//       inputCoinStrs: [],
-//       coinsForRing: {},
-//     };
-//     await this.updateProgressTx(50, "Adding Token Info");
-//     // tokenID is non-null when transferring token; tokenParams is non-null when creating new token
-//     if (tokenPayments) {
-//       let isInit = Boolean(tokenParams);
-//       let isTransfer = Boolean(tokenID);
-//       if (!(isInit || isTransfer)) {
-//         throw new CustomError(
-//           ErrorObject.InitNormalTxErr,
-//           "Invalid Token parameters"
-//         );
-//       }
-//       tokenReceiverPaymentAddrStr = new Array(tokenPayments.length);
-//       for (let i = 0; i < tokenPayments.length; i++) {
-//         receiverPaymentAddrStr[i] = tokenPayments[i].paymentAddressStr;
-//         totalAmountTokenTransfer = totalAmountTokenTransfer.add(
-//           new bn(tokenPayments[i].Amount)
-//         );
-//         tokenPayments[i].Amount = new bn(tokenPayments[i].Amount).toString();
-//       }
-//       await this.updateProgressTx(60, "Selecting Token Coins");
-//       if (isTransfer) {
-//         try {
-//           inputForToken = await prepareInputForTxV2(
-//             totalAmountTokenTransfer,
-//             0,
-//             tokenID,
-//             this
-//           );
-//         } catch (e) {
-//           console.error(e);
-//           throw new CustomError(
-//             ErrorObject.InitNormalTxErr,
-//             `Error while preparing inputs ${e}`
-//           );
-//         }
-//       }
-//       await this.updateProgressTx(70, "Decorating Parameters");
-//       tokenParams = newTokenParamV2(
-//         tokenPayments,
-//         inputForToken.inputCoinStrs,
-//         tokenID,
-//         inputForToken.coinsForRing,
-//         tokenParams || {}
-//       );
-//       txParams.TokenParams = tokenParams;
-//     }
-//     let txParamsJson = JSON.stringify(txParams);
-//     await this.updateProgressTx(80, "Signing Transaction");
-//     let theirTime = await this.rpc.getNodeTime();
-//     let wasmResult = await wasm.createTransaction(txParamsJson, theirTime);
-//     let { b58EncodedTx, hash, outputs } = JSON.parse(wasmResult);
-//     // console.log(`Encoded TX : ${b58EncodedTx}, Hash : ${hash}`);
-//     if (b58EncodedTx === null || b58EncodedTx === "") {
-//       throw new CustomError(
-//         ErrorObject.InitNormalTxErr,
-//         "Can not init transaction tranfering PRV"
-//       );
-//     }
-//     let tempBuf = checkDecode(b58EncodedTx).bytesDecoded;
-//     let theString = new TextDecoder("utf-8").decode(tempBuf);
-//     let txObj = JSON.parse(theString);
-//     txObj.Encoded = b58EncodedTx;
-//     // console.log("TX: ", txObj);
-//     // console.log("Encoded: ", b58EncodedTx)
-//     await this.updateProgressTx(90, "Submitting Transaction");
-//     let response;
-//     try {
-//       response = await this.send(b58EncodedTx, Boolean(tokenPayments));
-//     } catch (e) {
-//       console.error(e);
-//       throw new CustomError(
-//         ErrorObject.SendTxErr,
-//         "Can not send PRV transaction",
-//         e
-//       );
-//     }
-//     if (response.TokenID && response.TokenID.length > 0) {
-//       tokenID = response.TokenID;
-//     }
-//     await this.updateProgressTx(95, "Saving Records");
-//     return {
-//       Response: response,
-//       Tx: txObj,
-//       Hash: hash,
-//       Outputs: outputs,
-//       Amount: totalAmountTransfer.toString(),
-//       Inputs: inputForTx.inputCoinStrs,
-//       Receivers: receiverPaymentAddrStr,
-//       TokenID: tokenID,
-//       TokenAmount: totalAmountTokenTransfer.toString(),
-//       TokenInputs: inputForToken.inputCoinStrs,
-//       TokenReceivers: tokenReceiverPaymentAddrStr,
-//       IsPrivacy: true,
-//       Metadata: metadata,
-//     };
-//   }
-//   // async createAndSendTokenConvertTx({
-//   //   transfer: {
-//   //     prvPayments = [],
-//   //     fee,
-//   //     info = "",
-//   //     tokenID = null,
-//   //     tokenPayments = [],
-//   //   },
-//   //   extra: { isEncryptMessage = false, isEncryptMessageToken = false } = {},
-//   // }) {
-//   //   // (tokenID, prvPayments, tokenPayments, fee, info = "", isEncryptMessage = false, isEncryptMessageToken = false) {
-//   //   // check fee
-//   //   if (fee < 0) {
-//   //     fee = 0;
-//   //   }
-//   //   let messageForNativeToken = "";
-//   //   if (prvPayments.length > 0) {
-//   //     messageForNativeToken = prvPayments[0].Message;
-//   //   }
-//   //   await this.updateProgressTx(10, "Encrypting Message");
-//   //   let isEncodeOnly = !isEncryptMessage;
-//   //   prvPayments = await encryptMessageOutCoin(prvPayments, isEncodeOnly);
-//   //   isEncodeOnly = !isEncryptMessageToken;
-//   //   tokenPayments = await encryptMessageOutCoin(tokenPayments, isEncodeOnly);
-//   //
-//   //   try {
-//   //     let result = await this._transactConvert({
-//   //       transfer: { prvPayments, fee, info, tokenID, tokenPayments },
-//   //     });
-//   //     // prvPayments, fee, info, tokenID, tokenPayments);
-//   //     this.saveTxHistory(result, false, "", messageForNativeToken);
-//   //     await this.updateProgressTx(100, "Completed");
-//   //     return result;
-//   //   } catch (e) {
-//   //     throw e;
-//   //   }
-//   // }
-//   // async createAndSendConvertTx({
-//   //   transfer: { prvPayments = [], fee = 10, info = "" } = {},
-//   //   extra: { isEncryptMessage = false } = {},
-//   // } = {}) {
-//   //   //(prvPayments, fee, info = "", isEncryptMessage = false) {
-//   //   // check fee
-//   //   if (fee < 0) {
-//   //     fee = 0;
-//   //   }
-//   //   let messageForNativeToken = "";
-//   //   if (prvPayments.length > 0) {
-//   //     messageForNativeToken = prvPayments[0].Message;
-//   //   }
-//   //   await this.updateProgressTx(10, "Encrypting Message");
-//   //   const isEncodeOnly = !isEncryptMessage;
-//   //   prvPayments = await encryptMessageOutCoin(prvPayments, isEncodeOnly);
-//   //
-//   //   try {
-//   //     let result = await this._transactConvert({
-//   //       transfer: { prvPayments, fee, info },
-//   //     });
-//   //     // prvPayments, fee, info);
-//   //     this.saveTxHistory(result, false, "", messageForNativeToken);
-//   //     await this.updateProgressTx(100, "Completed");
-//   //     return result;
-//   //   } catch (e) {
-//   //     throw e;
-//   //   }
-//   // }
-//   // async _transactConvert({
-//   //   transfer: {
-//   //     prvPayments = [],
-//   //     fee,
-//   //     info = "",
-//   //     tokenID = null,
-//   //     tokenPayments,
-//   //   } = {},
-//   //   extra: { numOfDefragInputs = 0 } = {},
-//   // }) {
-//   //   // (prvPayments, fee, info, tokenID = null, tokenPayments = null, numOfDefragInputs = 0) {
-//   //   await this.updateProgressTx(20, "Preparing Your Payments");
-//   //   info = base64Encode(stringToBytes(info));
-//   //
-//   //   let metadata = null;
-//   //   let receiverPaymentAddrStr = new Array(prvPayments.length);
-//   //   let totalAmountTransfer = new bn(0);
-//   //   for (let i = 0; i < prvPayments.length; i++) {
-//   //     receiverPaymentAddrStr[i] = prvPayments[i].paymentAddressStr;
-//   //     totalAmountTransfer = totalAmountTransfer.add(
-//   //       new bn(prvPayments[i].Amount)
-//   //     );
-//   //     prvPayments[i].Amount = new bn(prvPayments[i].Amount).toString();
-//   //   }
-//   //   let isTokenConvert = tokenID && tokenPayments;
-//   //   let isDefrag = numOfDefragInputs > 0;
-//   //   if (isDefrag && isTokenConvert) {
-//   //     throw new CustomError(
-//   //       ErrorObject.SendTxErr,
-//   //       "Error: token defragment is not supported"
-//   //     );
-//   //   }
-//   //   await this.updateProgressTx(35, "Selecting Coins");
-//   //   let inputForTx;
-//   //   try {
-//   //     if (isTokenConvert) {
-//   //       // converting token. We need v2 PRV coins
-//   //       inputForTx = await prepareInputForTxV2(
-//   //         totalAmountTransfer,
-//   //         fee,
-//   //         null,
-//   //         this
-//   //       );
-//   //     } else {
-//   //       // 0 means convert, otherwise we defrag
-//   //       if (isDefrag) {
-//   //         inputForTx = await prepareInputForTxV2(
-//   //           -1,
-//   //           fee,
-//   //           null,
-//   //           this,
-//   //           2,
-//   //           20,
-//   //           numOfDefragInputs
-//   //         );
-//   //       } else {
-//   //         inputForTx = await prepareInputForTxV2(-1, fee, null, this, 1, 0);
-//   //       }
-//   //     }
-//   //   } catch (e) {
-//   //     throw new CustomError(ErrorObject.SendTxErr, "Can not prepare inputs", e);
-//   //   }
-//   //   if (inputForTx.inputCoinStrs.length > MAX_INPUT_PER_TX) {
-//   //     throw new CustomError(ErrorObject.TxSizeExceedErr);
-//   //   }
-//   //
-//   //   await this.updateProgressTx(50, "Packing Parameters");
-//   //   let txParams = newParamTxV2(
-//   //     this.key,
-//   //     prvPayments,
-//   //     inputForTx.inputCoinStrs,
-//   //     fee,
-//   //     null,
-//   //     null,
-//   //     info,
-//   //     inputForTx.coinsForRing
-//   //   );
-//   //   // handle token transfer
-//   //   let tokenReceiverPaymentAddrStr = [];
-//   //   let totalAmountTokenTransfer = new bn(0);
-//   //   let inputForToken = {};
-//   //   if (isTokenConvert) {
-//   //     tokenReceiverPaymentAddrStr = new Array(tokenPayments.length);
-//   //     for (let i = 0; i < tokenPayments.length; i++) {
-//   //       receiverPaymentAddrStr[i] = tokenPayments[i].paymentAddressStr;
-//   //       totalAmountTokenTransfer = totalAmountTokenTransfer.add(
-//   //         new bn(tokenPayments[i].Amount)
-//   //       );
-//   //       tokenPayments[i].Amount = new bn(tokenPayments[i].Amount).toString();
-//   //     }
-//   //     inputForToken = await prepareInputForTxV2(-1, 0, tokenID, this, 1, 0);
-//   //     let tokenParams = newTokenParamV2(
-//   //       tokenPayments,
-//   //       inputForToken.inputCoinStrs,
-//   //       tokenID,
-//   //       inputForToken.coinsForRing
-//   //     );
-//   //     txParams.TokenParams = tokenParams;
-//   //   }
-//   //   let txParamsJson = JSON.stringify(txParams);
-//   //   let wasmResult;
-//   //   await this.updateProgressTx(80, "Signing Transaction");
-//   //   let theirTime = await this.rpc.getNodeTime();
-//   //   if (isDefrag) {
-//   //     wasmResult = await wasm.createTransaction(txParamsJson, theirTime);
-//   //   } else {
-//   //     wasmResult = await wasm.createConvertTx(txParamsJson, theirTime);
-//   //   }
-//   //   let { b58EncodedTx, hash } = JSON.parse(wasmResult);
-//   //   if (b58EncodedTx === null || b58EncodedTx === "") {
-//   //     throw new CustomError(
-//   //       ErrorObject.InitNormalTxErr,
-//   //       "Can not init transaction tranfering PRV"
-//   //     );
-//   //   }
-//   //   let tempBuf = checkDecode(b58EncodedTx).bytesDecoded;
-//   //   let theString = new TextDecoder("utf-8").decode(tempBuf);
-//   //   let txObj = JSON.parse(theString);
-//   //   txObj.Encoded = b58EncodedTx;
-//   //
-//   //   await this.updateProgressTx(90, "Submitting Transaction");
-//   //   let response;
-//   //   try {
-//   //     response = await this.send(b58EncodedTx, tokenID && tokenPayments);
-//   //   } catch (e) {
-//   //     throw new CustomError(
-//   //       ErrorObject.SendTxErr,
-//   //       "Can not send PRV transaction",
-//   //       e
-//   //     );
-//   //   }
-//   //   await this.updateProgressTx(95, "Saving Records");
-//   //   return {
-//   //     Response: response,
-//   //     Tx: txObj,
-//   //     Hash: hash,
-//   //     Amount: totalAmountTransfer.toNumber(),
-//   //     Inputs: inputForTx.inputCoinStrs,
-//   //     Receivers: receiverPaymentAddrStr,
-//   //     TokenAmount: totalAmountTokenTransfer.toNumber(),
-//   //     TokenInputs: inputForToken.inputCoinStrs,
-//   //     TokenReceivers: tokenReceiverPaymentAddrStr,
-//   //     IsPrivacy: true,
-//   //     Metadata: metadata,
-//   //   };
-//   // }
-//   async _transactConvert({ transfer: {
-//     fee,
-//     info = "",
-//     tokenID = null,
-//     prvPayments = [],
-//     tokenPayments,
-//   } = {}, extra: {
-//     numOfDefragInputs = 0
-//   } = {}}) {
-//     await this.updateProgressTx(20, 'Preparing Your Payments');
-//     info = base64Encode(stringToBytes(info));
-//     const metadata = null;
-//     const receiverPaymentAddrStr = new Array(prvPayments.length);
-//     let totalAmountTransfer = new bn(0);
-//     for (let i = 0; i < prvPayments.length; i++) {
-//       receiverPaymentAddrStr[i] = prvPayments[i].paymentAddressStr;
-//       totalAmountTransfer = totalAmountTransfer.add(new bn(prvPayments[i].Amount));
-//       prvPayments[i].Amount = new bn(prvPayments[i].Amount).toString();
-//     }
-//     let isTokenConvert = (tokenID && tokenPayments);
-//     let isDefrag = numOfDefragInputs > 0;
-//     if (isDefrag && isTokenConvert){
-//       throw new CustomError(ErrorObject.SendTxErr, "Error: token defragment is not supported");
-//     }
-//     await this.updateProgressTx(35, 'Selecting Coins');
-//     /** Prepare Input For Tx */
-//     let inputForTx;
-//     try{
-//       if (isTokenConvert){
-//         // converting token. We need v2 PRV coins
-//         // inputForTx = await prepareInputForTxV2(totalAmountTransfer, fee, null, this);
-//       }else{
-//         // 0 means convert, otherwise we defrag
-//         if (isDefrag){
-//           // inputForTx = await prepareInputForTxV2(-1, fee, null, this, 2, 20, numOfDefragInputs);
-//         }else{
-//           inputForTx = await prepareInputForTxV2(-1, fee, null, this, 1, 0);
-//         }
-//       }
-//     }catch(e){
-//       throw new CustomError(ErrorObject.SendTxErr, "Can not prepare inputs", e);
-//     }
-//   }
-//   async createAndSendConvertTx({
-//     transfer: { prvPayments = [], fee = 10, info = '' } = {},
-//     extra: { isEncryptMessage = false } = {},
-//   } = {}) {
-//     let messageForNativeToken = "";
-//     if (prvPayments.length > 0) {
-//       messageForNativeToken = prvPayments[0].Message;
-//     }
-//     await this.updateProgressTx(10, "Encrypting Message");
-//     const isEncodeOnly = !isEncryptMessage;
-//     prvPayments = await encryptMessageOutCoin(prvPayments, isEncodeOnly);
-//     try {
-//       let result = await this._transactConvert({
-//         transfer: { prvPayments, fee, info },
-//       });
-//       // // prvPayments, fee, info);
-//       // this.saveTxHistory(result, false, "", messageForNativeToken);
-//       // await this.updateProgressTx(100, "Completed");
-//       // return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//     try {
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   // staking tx always send PRV to burning address with no privacy
-//   // type: 0 for shard
-//   // type: 1 for beacon
-//   /**
-//    *
-//    * @param {{type: number}} param
-//    * @param {number} fee
-//    * @param {string} candidatePaymentAddress
-//    * @param {string} candidateMiningSeedKey
-//    * @param {string} rewardReceiverPaymentAddress
-//    * @param {bool} autoReStaking
-//    */
-//   async createAndSendStakingTx({
-//     transfer: { fee },
-//     extra: {
-//       candidatePaymentAddress,
-//       candidateMiningSeedKey,
-//       rewardReceiverPaymentAddress,
-//       autoReStaking = true,
-//       stakingType = ShardStakingType,
-//     } = {},
-//   }) {
-//     // (param, fee, candidatePaymentAddress, candidateMiningSeedKey, rewardReceiverPaymentAddress, autoReStaking = true) {
-//     await this.updateProgressTx(10, "Generating Metadata");
-//     // check fee
-//     if (fee < 0) {
-//       fee = 0;
-//     }
-//     // get amount staking
-//     let amountBN = new bn("1750000000000", 10);
-//     let feeBN = new bn(fee);
-//     // generate committee key
-//     let candidateKeyWallet = KeyWallet.base58CheckDeserialize(
-//       candidatePaymentAddress
-//     );
-//     let publicKeyBytes = candidateKeyWallet.KeySet.PaymentAddress.Pk;
-//     let candidateHashPrivateKeyBytes = checkDecode(candidateMiningSeedKey)
-//       .bytesDecoded;
-//     let committeeKey;
-//     try {
-//       committeeKey = await generateCommitteeKeyFromHashPrivateKey(
-//         candidateHashPrivateKeyBytes,
-//         publicKeyBytes
-//       );
-//     } catch (e) {
-//       throw e;
-//     }
-//     let paymentAddressStr = this.key.base58CheckSerialize(PaymentAddressType);
-//     let type =
-//       stakingType === ShardStakingType ? MetaStakingShard : MetaStakingBeacon;
-//     let meta = {
-//       Type: type,
-//       FunderPaymentAddress: paymentAddressStr,
-//       RewardReceiverPaymentAddress: rewardReceiverPaymentAddress,
-//       StakingAmountShard: amountBN.toNumber(),
-//       CommitteePublicKey: committeeKey,
-//       AutoReStaking: autoReStaking,
-//     };
-//     let burningAddress = await getBurningAddress(this.rpc);
-//     let prvPayments = [
-//       {
-//         PaymentAddress: burningAddress,
-//         Amount: amountBN.toString(),
-//         Message: "",
-//       },
-//     ];
-//     let messageForNativeToken = prvPayments[0].Message;
-//     try {
-//       let result = await this._transact({
-//         transfer: { prvPayments, fee },
-//         extra: { metadata: meta },
-//       });
-//       // prvPayments, fee, meta, "");
-//       this.saveTxHistory(result, false, "", messageForNativeToken);
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   // staking tx always send PRV to burning address with no privacy
-//   // type: 0 for shard
-//   // type: 1 for beacon
-//   /**
-//    *
-//    * @param {{type: number}} param
-//    * @param {number} fee
-//    * @param {string} candidatePaymentAddress
-//    * @param {string} candidateMiningSeedKey
-//    * @param {string} rewardReceiverPaymentAddress
-//    * @param {bool} autoReStaking
-//    */
-//   async createAndSendStopAutoStakingTx({
-//     transfer: { fee },
-//     extra: { candidatePaymentAddress, candidateMiningSeedKey } = {},
-//   }) {
-//     // (fee, candidatePaymentAddress, candidateMiningSeedKey) {
-//     // check fee
-//     if (fee < 0) {
-//       fee = 0;
-//     }
-//     let amountBN = new bn(0);
-//     let feeBN = new bn(fee);
-//     await this.updateProgressTx(10, "Generating Metadata");
-//     // generate committee key
-//     let candidateKeyWallet = KeyWallet.base58CheckDeserialize(
-//       candidatePaymentAddress
-//     );
-//     let publicKeyBytes = candidateKeyWallet.KeySet.PaymentAddress.Pk;
-//     let candidateHashPrivateKeyBytes = checkDecode(candidateMiningSeedKey)
-//       .bytesDecoded;
-//     const committeeKey = await generateCommitteeKeyFromHashPrivateKey(
-//       candidateHashPrivateKeyBytes,
-//       publicKeyBytes
-//     );
-//     let meta = {
-//       Type: StopAutoStakingMeta,
-//       CommitteePublicKey: committeeKey,
-//     };
-//     let burningAddress = await getBurningAddress(this.rpc);
-//     let prvPayments = [
-//       {
-//         PaymentAddress: burningAddress,
-//         Amount: "0",
-//         Message: "",
-//       },
-//     ];
-//     let messageForNativeToken = prvPayments[0].Message;
-//     try {
-//       let result = await this._transact({
-//         transfer: { prvPayments, fee },
-//         extra: { metadata: meta },
-//       });
-//       // prvPayments, fee, meta, "");
-//       this.saveTxHistory(result, false, "", messageForNativeToken);
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   /**
-//    *
-//    * @param {{paymentAddressStr: string, amount: number, message: string}} prvPaymentsForNativeToken
-//    * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : [{PaymentAddress: string, Amount: number, Message: string}]}} submitParam
-//    * @param {number} fee
-//    * @param {number} feePToken
-//    * @param {bool} hasPrivacyForNativeToken
-//    * @param {bool} hasPrivacyForPToken
-//    * @param {string} info
-//    */
-//   async createAndSendPrivacyToken({
-//     transfer: {
-//       prvPayments = [],
-//       fee,
-//       info = "",
-//       tokenID,
-//       tokenPayments = [],
-//       tokenParams = {},
-//     },
-//     extra: {
-//       metadata = null,
-//       isEncryptMessage = false,
-//       isEncryptMessageToken = false,
-//     } = {},
-//   }) {
-//     if (fee < 0) {
-//       fee = 0;
-//     }
-//     await this.updateProgressTx(10, "Encrypting Message");
-//     let messageForNativeToken = "";
-//     if (prvPayments.length > 0) {
-//       messageForNativeToken = prvPayments[0].Message;
-//     }
-//     let messageForPToken = tokenPayments[0].Message;
-//     let isEncodeOnly = !isEncryptMessage;
-//     prvPayments = await encryptMessageOutCoin(prvPayments, isEncodeOnly);
-//     isEncodeOnly = !isEncryptMessageToken;
-//     tokenPayments = await encryptMessageOutCoin(tokenPayments, isEncodeOnly);
-//     try {
-//       let result = await this._transact({
-//         transfer: {
-//           prvPayments,
-//           fee,
-//           info,
-//           tokenID,
-//           tokenPayments,
-//           tokenParams,
-//         },
-//         extra: { metadata },
-//       });
-//       // prvPayments, fee, metadata, info, tokenID, tokenPayments, tokenParams);
-//       this.saveTxHistory(result, false, "", messageForNativeToken);
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   async createAndSendInitTokenTx({
-//     transfer: { fee, info = "", tokenPayments },
-//     extra: { tokenName = "", tokenSymbol = "" } = {},
-//   }) {
-//     // (tokenPayments, fee, tokenName = "", tokenSymbol = "", info = "") {
-//     // only the 1st payment info is relevant
-//     if (tokenPayments.length) tokenPayments = tokenPayments[0];
-//     const prvPaymentInfos = [];
-//     if (fee < 0) {
-//       fee = 0;
-//     }
-//     await this.updateProgressTx(10, "Generating Metadata");
-//     let messageForNativeToken = null;
-//     let newCoin;
-//     try {
-//       // since we only use the PublicKey and TxRandom fields, the tokenID is irrelevant
-//       let temp = await wasm.createCoin(
-//         JSON.stringify({ PaymentInfo: tokenPayments, TokenID: null })
-//       );
-//       newCoin = JSON.parse(temp);
-//     } catch (e) {
-//       throw e;
-//     }
-//     // prepare meta data for tx. It is normal trade request at first
-//     let metadata = {
-//       Type: InitTokenRequestMeta,
-//       Amount: new bn(tokenPayments.Amount).toString(),
-//       OTAStr: newCoin.PublicKey,
-//       TxRandomStr: newCoin.TxRandom,
-//       TokenName: tokenName,
-//       TokenSymbol: tokenSymbol,
-//     };
-//     try {
-//       let result = await this._transact({
-//         transfer: { prvPaymentInfos, fee, info },
-//         extra: { metadata },
-//       });
-//       // prvPaymentInfos, fee, metadata, info);
-//       // re-compute token ID
-//       console.log("TX Hash is", result.Hash);
-//       const shardID = getShardIDFromLastByte(
-//         this.key.KeySet.PaymentAddress.Pk[
-//           this.key.KeySet.PaymentAddress.Pk.length - 1
-//         ]
-//       );
-//       console.log("Shard ID is", shardID);
-//       // concatenate, then hash the raw bytes
-//       const content = stringToBytes(result.Hash + shardID);
-//       console.log("Data to hash :", content);
-//       // swap the endian to match Go code
-//       let hashed = hashSha3BytesToBytes(content);
-//       hashed.reverse();
-//       result.TokenID = toHexString(hashed);
-//       this.saveTxHistory(result, false, "", messageForNativeToken);
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   // recursively sweep up everything into one UTXO
-//   async defragmentNativeCoin({
-//     transfer: { fee } = {},
-//     extra: { noOfInputPerTx = MaxInputNumberForDefragment } = {},
-//   }) {
-//     const info = "defragment";
-//     // loop up to 30 times
-//     const MAX_ITERATIONS = 100;
-//     for (let i = 0; i < MAX_ITERATIONS; i++) {
-//       await this.updateProgressTx(i + 1, `Combining UTXOs - TX #${i}`);
-//       try {
-//         let inputForTx;
-//         try {
-//           inputForTx = await prepareInputForTxV2(
-//             -1,
-//             fee,
-//             null,
-//             this,
-//             2,
-//             0,
-//             noOfInputPerTx
-//           );
-//         } catch (e) {
-//           throw new CustomError(
-//             ErrorObject.InitNormalTxErr,
-//             "Error while preparing inputs",
-//             e
-//           );
-//         }
-//         if (inputForTx.inputCoinStrs.length == 1) {
-//           break;
-//         }
-//         console.log(
-//           "Now combining",
-//           inputForTx.inputCoinStrs.length,
-//           "coins in 1 send"
-//         );
-//         try {
-//           let result = await this._transactConvert({
-//             transfer: { fee, info, tokenID: null, tokenPayments: null },
-//             extra: { noOfInputPerTx },
-//           });
-//           //[], fee, info, null, null, noOfInputPerTx);
-//           console.log("Sent Defrag TX: ", result.Response.TxID);
-//           const confs = 2;
-//           console.log(`Waiting for ${confs} block confirmation`);
-//           await this.waitTx(result.Response.TxID, confs);
-//         } catch (e) {
-//           throw e;
-//         }
-//       } catch (e) {
-//         throw e;
-//       }
-//     }
-//   }
-//   // createAndSendBurningRequestTx create and send tx burning ptoken when withdraw
-//   // remoteAddress (string) is an ETH/BTC address which users want to receive ETH/BTC (without 0x)
-//   /**
-//    *
-//    * @param {...{paymentAddressStr: string, amount: number, message: string}} prvPaymentsForNativeToken
-//    * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : {PaymentAddress: string, Amount: number, Message: string}}} submitParam
-//    * @param {number} fee
-//    * @param {number} feePToken
-//    * @param {string} remoteAddress
-//    */
-//   async createAndSendBurningRequestTx({
-//     transfer: { prvPayments = [], fee, info = "", tokenID = null },
-//     extra: {
-//       burningType = BurningRequestMeta,
-//       isEncryptMessage = false,
-//       isEncryptMessageToken = false,
-//       burnAmount,
-//       remoteAddress,
-//     } = {},
-//   }) {
-//     const burningTokenID = tokenID;
-//     if (remoteAddress.startsWith("0x")) {
-//       remoteAddress = remoteAddress.slice(2);
-//     }
-//     if (fee < 0) {
-//       fee = 0;
-//     }
-//     await this.updateProgressTx(10, "Encrypting Message");
-//     let burningAddress = await getBurningAddress(this.rpc);
-//     let tokenPayments = [
-//       {
-//         PaymentAddress: burningAddress,
-//         Amount: new bn(burnAmount).toString(),
-//         Message: "",
-//       },
-//     ];
-//     let messageForNativeToken = "";
-//     if (prvPayments.length > 0) {
-//       messageForNativeToken = prvPayments[0].Message;
-//     }
-//     let isEncodeOnly = !isEncryptMessage;
-//     prvPayments = await encryptMessageOutCoin(prvPayments, isEncodeOnly);
-//     isEncodeOnly = !isEncryptMessageToken;
-//     tokenPayments = await encryptMessageOutCoin(tokenPayments, isEncodeOnly);
-//     // use an empty payment address
-//     let emptyKeySet = new KeySet();
-//     await emptyKeySet.importFromPrivateKey(new Uint8Array(32));
-//     let addrForMd = addressAsObject(emptyKeySet.PaymentAddress);
-//     const paymentAddressStr = this.key.base58CheckSerialize(PaymentAddressType);
-//     await this.updateProgressTx(15, "Generating Metadata");
-//     // prepare meta data for tx
-//     let burningReqMetadata = {
-//       BurnerAddress: addrForMd,
-//       BurningAmount: burnAmount,
-//       TokenID: burningTokenID,
-//       RemoteAddress: remoteAddress,
-//       Type: burningType,
-//     };
-//     try {
-//       let result = await this._transact({
-//         transfer: {
-//           prvPayments,
-//           fee,
-//           info,
-//           tokenID: burningTokenID,
-//           tokenPayments,
-//         },
-//         extra: { metadata: burningReqMetadata },
-//       });
-//       // prvPayments, fee, burningReqMetadata, info, burningTokenID, tokenPayments);
-//       this.saveTxHistory(result, false, "", messageForNativeToken);
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   // createAndSendIssuingEthRequestTx makes an issuing request based on a Deposit event from ETH bridge
-//   /**
-//    *
-//    * @param {...{paymentAddressStr: string, amount: number, message: string}} prvPaymentsForNativeToken
-//    * @param {{Privacy: bool, TokenID: string, TokenName: string, TokenSymbol: string, TokenTxType: bool, TokenAmount: number, TokenReceivers : {PaymentAddress: string, Amount: number, Message: string}}} submitParam
-//    * @param {number} fee
-//    * @param {number} feePToken
-//    * @param {string} remoteAddress
-//    */
-//   async createAndSendIssuingEthRequestTx({
-//     transfer: { prvPayments = [], fee, info = "", tokenID = null },
-//     extra: {
-//       isEncryptMessage = false,
-//       isEncryptMessageToken = false,
-//       ethBlockHash,
-//       ethDepositProof,
-//       txIndex,
-//     } = {},
-//   }) {
-//     // (prvPayments = [], fee, tokenID, ethBlockHash, ethDepositProof, txIndex, info = "", isEncryptMessage = false,     isEncryptMessageToken = false) {
-//     if (!ethBlockHash.startsWith("0x")) {
-//       ethBlockHash = "0x" + ethBlockHash;
-//     }
-//     if (fee < 0) {
-//       fee = 0;
-//     }
-//     await this.updateProgressTx(10, "Encrypting Message");
-//     let messageForNativeToken = "";
-//     if (prvPayments.length > 0) {
-//       messageForNativeToken = prvPayments[0].Message;
-//     }
-//     let isEncodeOnly = !isEncryptMessage;
-//     prvPayments = await encryptMessageOutCoin(prvPayments, isEncodeOnly);
-//     isEncodeOnly = !isEncryptMessageToken;
-//     await this.updateProgressTx(15, "Generating Metadata");
-//     // prepare meta data for tx
-//     let metadata = {
-//       BlockHash: ethBlockHash,
-//       TxIndex: txIndex,
-//       ProofStrs: ethDepositProof,
-//       IncTokenID: tokenID,
-//       Type: IssuingETHRequestMeta,
-//     };
-//     try {
-//       let result = await this._transact({
-//         transfer: { prvPayments, fee, info },
-//         extra: { metadata },
-//       });
-//       // prvPayments, fee, metadata, info);
-//       this.saveTxHistory(result, false, "", messageForNativeToken);
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   // getRewardAmount returns amount rewards
-//   // if isGetAll is true: return all of reward types (such as PRV, pToken,..)
-//   /**
-//    *
-//    * @param {string} paymentAddrStr
-//    * @param {bool} isGetAll
-//    * @param {string} tokenID
-//    * @returns {number} (if isGetAll = false)
-//    * @returns {map[TokenID] : number} (if isGetAll = true)
-//    */
-//   async getRewardAmount(paymentAddrStr, isGetAll = true, tokenID = "") {
-//     let resp;
-//     try {
-//       resp = await this.rpc.getRewardAmount(paymentAddrStr);
-//     } catch (e) {
-//       throw new CustomError(
-//         ErrorObject.GetRewardAmountErr,
-//         "Can not get reward amount"
-//       );
-//     }
-//     if (isGetAll) {
-//       return resp.rewards;
-//     } else {
-//       if (tokenID === "") {
-//         tokenID = "PRV";
-//       }
-//       return resp.rewards[tokenID];
-//     }
-//   }
-//   // createAndSendWithdrawRewardTx create and send tx withdraw reward amount
-//   /**
-//    *
-//    * @param {string} tokenID
-//    */
-//   async createAndSendWithdrawRewardTx({ transfer: { fee, tokenID = null } }) {
-//     await this.updateProgressTx(10, "Generating Metadata");
-//     if (!tokenID || tokenID === "") {
-//       tokenID = convertHashToStr(PRVID);
-//     }
-//     let addrForMd = addressAsObject(this.key.KeySet.PaymentAddress);
-//     let md = {
-//       Type: WithDrawRewardRequestMeta,
-//       PaymentAddress: addrForMd,
-//       TokenID: tokenID,
-//       Version: 1,
-//     };
-//     try {
-//       let result = await this._transact({
-//         transfer: { fee, info: "" },
-//         extra: { metadata: md },
-//       });
-//       // [], fee, md, "");
-//       this.saveTxHistory(result, false, "", "");
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   /*
-//    * @param {number} fee
-//    * @param {string} pairID
-//    * @param {number} sellAmount
-//    * @param {string} info
-//    */
-//   async createAndSendWithdrawDexTx({
-//     transfer: { fee, info = "" },
-//     extra: { tokenIDs = [], withdrawalShareAmt } = {},
-//   }) {
-//     // (fee, withdrawalToken1IDStr, withdrawalToken2IDStr, withdrawalShareAmt, info = "") {
-//     let [withdrawalToken1IDStr, withdrawalToken2IDStr] = tokenIDs;
-//     await this.updateProgressTx(10, "Generating Metadata");
-//     if (!withdrawalToken1IDStr || withdrawalToken1IDStr === "") {
-//       withdrawalToken1IDStr = convertHashToStr(PRVID);
-//     }
-//     if (!withdrawalToken2IDStr || withdrawalToken2IDStr === "") {
-//       withdrawalToken2IDStr = convertHashToStr(PRVID);
-//     }
-//     // let addrForMd = addressAsObject(this.key.KeySet.PaymentAddress);
-//     let md = {
-//       WithdrawerAddressStr: this.key.base58CheckSerialize(PaymentAddressType),
-//       WithdrawalToken1IDStr: withdrawalToken1IDStr,
-//       WithdrawalToken2IDStr: withdrawalToken2IDStr,
-//       WithdrawalShareAmt: new bn(withdrawalShareAmt).toString(),
-//       Type: PDEWithdrawalRequestMeta,
-//     };
-//     try {
-//       let result = await this._transact({
-//         transfer: { fee, info: "" },
-//         extra: { metadata: md },
-//       });
-//       // [], fee, md, "");
-//       this.saveTxHistory(result, false, "", "");
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   /**
-//    *
-//    */
-//   // stakerStatus return status of staker
-//   // return object {{Role: int, ShardID: int}}
-//   // Role: -1: is not staked, 0: candidate, 1: validator
-//   // ShardID: beacon: -1, shardID: 0->MaxShardNumber
-//   async stakerStatus() {
-//     let blsPubKeyB58CheckEncode = await this.key.getBLSPublicKeyB58CheckEncode();
-//     let reps;
-//     try {
-//       reps = await this.rpc.getPublicKeyRole("bls:" + blsPubKeyB58CheckEncode);
-//     } catch (e) {
-//       throw e;
-//     }
-//     return reps.status;
-//   }
-//   /********************** DEX **********************/
-//   /**
-//    *
-//    * @param {number} fee
-//    * @param {string} pairID
-//    * @param {number} contributedAmount
-//    * @param {string} info
-//    */
-//   async createAndSendTxWithContribution({
-//     transfer: { fee, info = "", tokenID = null },
-//     extra: { pairID, contributedAmount } = {},
-//   }) {
-//     // (fee, pairID, contributedAmount, info = "", tokenIDStr = null) {
-//     if (fee < 0) {
-//       fee = 0;
-//     }
-//     await this.updateProgressTx(10, "Generating Metadata");
-//     let burningAddress = await getBurningAddress(this.rpc);
-//     let burningPayments = [
-//       {
-//         PaymentAddress: burningAddress,
-//         Amount: new bn(contributedAmount).toString(),
-//         Message: "",
-//       },
-//     ];
-//     let messageForNativeToken = burningPayments[0].Message;
-//     let contributorAddressStr = this.key.base58CheckSerialize(
-//       PaymentAddressType
-//     );
-//     let isToken = true;
-//     let tokenIDStr = tokenID;
-//     if (!tokenIDStr) {
-//       isToken = false;
-//       tokenIDStr = convertHashToStr(PRVID);
-//     }
-//     // prepare meta data for tx
-//     let metadata = {
-//       PDEContributionPairID: pairID,
-//       ContributorAddressStr: contributorAddressStr,
-//       ContributedAmount: contributedAmount,
-//       TokenIDStr: tokenIDStr,
-//       Type: PDEPRVRequiredContributionRequestMeta,
-//     };
-//     try {
-//       let result;
-//       if (isToken) {
-//         result = await this._transact({
-//           transfer: {
-//             fee,
-//             info,
-//             tokenID: tokenIDStr,
-//             tokenPayments: burningPayments,
-//           },
-//           extra: { metadata },
-//         });
-//         // [], fee, metadata, info, tokenIDStr, burningPayments);
-//       } else {
-//         result = await this._transact({
-//           transfer: { prvPayments: burningPayments, fee, info },
-//           extra: { metadata },
-//         });
-//         // burningPayments, fee, metadata, info);
-//       }
-//       this.saveTxHistory(result, false, "", messageForNativeToken);
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   /**
-//    *
-//    * @param {number} fee
-//    * @param {string} pairID
-//    * @param {number} sellAmount
-//    * @param {number} minAcceptableAmount
-//    * @param {number} tradingFee
-//    * @param {string} info
-//    */
-//   async createAndSendNativeTokenTradeRequestTx({
-//     transfer: { fee, info = "", tokenID = null },
-//     extra: {
-//       tokenIDToBuy = null,
-//       sellAmount,
-//       minAcceptableAmount,
-//       tradingFee,
-//       tokenIDToSell = null,
-//     } = {},
-//   }) {
-//     // (fee, tokenIDToBuy, sellAmount, minAcceptableAmount, tradingFee, info = "", tokenIDToSell = null) {
-//     if (fee < 0) {
-//       fee = 0;
-//     }
-//     await this.updateProgressTx(10, "Generating Metadata");
-//     let prv = convertHashToStr(PRVID);
-//     let sellPRV = false;
-//     if (!tokenIDToSell || tokenIDToSell == prv) {
-//       sellPRV = true;
-//       tokenIDToSell = prv;
-//     }
-//     let buyPRV = false;
-//     if (!tokenIDToBuy || tokenIDToBuy == prv) {
-//       buyPRV = true;
-//       tokenIDToBuy = prv;
-//     }
-//     const burningAddress = await getBurningAddress(this.rpc);
-//     let amount = tradingFee;
-//     let tokenPaymentInfos = [];
-//     if (sellPRV) {
-//       amount += sellAmount;
-//     } else {
-//       tokenPaymentInfos = [
-//         {
-//           PaymentAddress: burningAddress,
-//           Amount: sellAmount,
-//           Message: "",
-//         },
-//       ];
-//     }
-//     const prvPaymentInfos = [
-//       {
-//         PaymentAddress: burningAddress,
-//         Amount: amount,
-//         Message: "",
-//       },
-//     ];
-//     let messageForNativeToken = prvPaymentInfos[0].Message;
-//     let myAddressStr = this.key.base58CheckSerialize(PaymentAddressType);
-//     let pInf = {
-//       PaymentAddress: myAddressStr,
-//       Amount: "0",
-//     };
-//     let newCoin;
-//     try {
-//       // since we only use the PublicKey and TxRandom fields, the tokenID is irrelevant
-//       let temp = await wasm.createCoin(
-//         JSON.stringify({ PaymentInfo: pInf, TokenID: null })
-//       );
-//       newCoin = JSON.parse(temp);
-//     } catch (e) {
-//       throw e;
-//     }
-//     let newCoinForSub;
-//     try {
-//       let temp = await wasm.createCoin(
-//         JSON.stringify({ PaymentInfo: pInf, TokenID: null })
-//       );
-//       newCoinForSub = JSON.parse(temp);
-//     } catch (e) {
-//       throw e;
-//     }
-//     // prepare meta data for tx. It is normal trade request at first
-//     let metadata = {
-//       TokenIDToBuyStr: tokenIDToBuy,
-//       TokenIDToSellStr: tokenIDToSell,
-//       SellAmount: sellAmount,
-//       Type: PDECrossPoolTradeRequestMeta,
-//       MinAcceptableAmount: minAcceptableAmount,
-//       TradingFee: tradingFee,
-//       TraderAddressStr: newCoin.PublicKey,
-//       TxRandomStr: newCoin.TxRandom,
-//       SubTraderAddressStr: newCoinForSub.PublicKey,
-//       SubTxRandomStr: newCoinForSub.TxRandom,
-//     };
-//     try {
-//       let result;
-//       if (sellPRV) {
-//         result = await this._transact({
-//           transfer: { prvPayments: prvPaymentInfos, fee, info },
-//           extra: { metadata },
-//         });
-//         // prvPaymentInfos, fee, metadata, info);
-//       } else {
-//         result = await this._transact({
-//           transfer: {
-//             prvPayments: prvPaymentInfos,
-//             fee,
-//             info,
-//             tokenID: tokenIDToSell,
-//             tokenPayments: tokenPaymentInfos,
-//           },
-//           extra: { metadata },
-//         });
-//         // prvPaymentInfos, fee, metadata, info, tokenIDToSell, tokenPaymentInfos);
-//       }
-//       this.saveTxHistory(result, false, "", messageForNativeToken);
-//       await this.updateProgressTx(100, "Completed");
-//       return result;
-//     } catch (e) {
-//       throw e;
-//     }
-//   }
-//   async getReceivedTransaction() {
-//     let rpcClient = this.rpc;
-//     // call api to get info from node
-//     const paymentAddress = this.key.base58CheckSerialize(PaymentAddressType);
-//     const viewingKey = this.key.base58CheckSerialize(ReadonlyKeyType);
-//     // cal rpc to get data
-//     let txs = await this.rpc.getTransactionByReceiver(
-//       paymentAddress,
-//       viewingKey
-//     );
-//     txs = txs.receivedTransactions;
-//     if (txs.length > 0) {
-//       this.txReceivedHistory.NormalTx = [];
-//       this.txReceivedHistory.PrivacyTokenTx = [];
-//       this.txReceivedHistory.CustomTokenTx = [];
-//     }
-//     for (let i = 0; i < txs.length; i++) {
-//       // loop and parse into history tx object
-//       const tx = txs[i].TransactionDetail;
-//       let messageForNativeToken = "";
-//       let messageForPToken = "";
-//       if (txs[i].ReceivedAmounts[PRVIDSTR]) {
-//         try {
-//           messageForNativeToken = await decryptMessageOutCoin(
-//             this,
-//             txs[i].TransactionDetail.ProofDetail.OutputCoins[0].Info
-//           );
-//         } catch (e) {
-//           messageForNativeToken =
-//             txs[i].TransactionDetail.ProofDetail.OutputCoins[0].Info;
-//           console.log("Skipping message because", e); // skip
-//         }
-//       }
-//       if (txs[i].ReceivedAmounts[tx.PrivacyCustomTokenID]) {
-//         console.log(txs[i].TransactionDetail.PrivacyCustomTokenProofDetail);
-//         try {
-//           messageForPToken = await decryptMessageOutCoin(
-//             this,
-//             this,
-//             txs[i].TransactionDetail.PrivacyCustomTokenProofDetail
-//               .OutputCoins[0].Info
-//           );
-//         } catch (e) {
-//           messageForPToken =
-//             txs[i].TransactionDetail.PrivacyCustomTokenProofDetail
-//               .OutputCoins[0].Info;
-//           console.log("Skipping message because", e); // skip
-//         }
-//       }
-//       let infoDecode = tx.Info;
-//       if (infoDecode) {
-//         infoDecode = checkDecode(tx.Info).bytesDecoded;
-//         infoDecode = bytesToString(infoDecode);
-//       }
-//       // console.log("TX", tx);
-//       try {
-//         const historyObj = {
-//           txID: tx.Hash,
-//           amountNativeToken: txs[i].ReceivedAmounts[PRVIDSTR], // in nano PRV
-//           amountPToken: txs[i].ReceivedAmounts[tx.PrivacyCustomTokenID],
-//           feeNativeToken: tx.Fee, // in nano PRV
-//           feePToken: tx.PrivacyCustomTokenFee,
-//           typeTx: tx.Type,
-//           receivers: null,
-//           tokenName: tx.PrivacyCustomTokenName,
-//           tokenID: tx.PrivacyCustomTokenID,
-//           tokenSymbol: tx.PrivacyCustomTokenIDSymbol,
-//           isIn: true,
-//           time: new Date(tx.LockTime).getTime(), // in mili-second
-//           status: null,
-//           isPrivacyNativeToken: true,
-//           isPrivacyForPToken: true,
-//           listUTXOForPRV: [],
-//           listUTXOForPToken: [],
-//           hashOriginalTx: "",
-//           metaData: tx.Metadata,
-//           info: infoDecode,
-//           messageForNativeToken: messageForNativeToken,
-//           messageForPToken: messageForPToken,
-//         };
-//         let txHistoryInfo = new TxHistoryInfo();
-//         txHistoryInfo.setHistoryInfo(historyObj);
-//         switch (tx.Type) {
-//           case TxNormalType: {
-//             this.txReceivedHistory.NormalTx.push(txHistoryInfo);
-//             break;
-//           }
-//           case TxCustomTokenPrivacyType: {
-//             this.txReceivedHistory.PrivacyTokenTx.push(txHistoryInfo);
-//             break;
-//           }
-//         }
-//       } catch (e) {
-//         throw e;
-//       }
-//     }
-//     return this.txReceivedHistory;
-//   }
-//   sleep(ms) {
-//     return new Promise((resolve) => setTimeout(resolve, ms));
-//   }
-//   sleepCapped(ms, maxSeconds) {
-//     // console.debug("Wait up to", maxSeconds);
-//     if (maxSeconds <= 0) {
-//       throw new CustomError(ErrorObject.UnexpectedErr, "wait time depleted");
-//     }
-//     maxSeconds -= ms / 1000;
-//     return this.sleep(ms).then((_) => maxSeconds);
-//   }
-//   async waitTx(txId, confirmations = 5) {
-//     console.debug(txId, " => wait for", confirmations, "confirmations");
-//     let maxWaitTime = this.timeout;
-//     let blockHash = null;
-//     let response;
-//     while (!blockHash) {
-//       try {
-//         response = await this.rpc.getTransactionByHash(txId);
-//         if (response.blockHash && response.blockHash.length == 64) {
-//           blockHash = response.blockHash;
-//         } else {
-//           maxWaitTime = await this.sleepCapped(1000, maxWaitTime);
-//         }
-//       } catch (e) {
-//         throw new CustomError(ErrorObject.GetTxByHashErr, e.message);
-//       }
-//     }
-//     maxWaitTime = 200;
-//     let currentConfs = 0;
-//     while (currentConfs < confirmations) {
-//       try {
-//         response = await this.rpc.getBlockByHash(blockHash);
-//         let c = response.Confirmations;
-//         // console.debug(c, "confirmations");
-//         if (c) {
-//           currentConfs = c;
-//         }
-//         maxWaitTime = await this.sleepCapped(1000, maxWaitTime);
-//       } catch (e) {
-//         throw new CustomError(ErrorObject.GetTxByHashErr, e.message);
-//       }
-//     }
-//     console.debug("Confirmed !");
-//   }
-//   async waitHeight(height = 10) {
-//     console.debug("Waiting for beacon height to reach", height);
-//     let maxWaitTime = this.timeout;
-//     let done = false;
-//     let response;
-//     while (!done) {
-//       try {
-//         response = await this.rpc.getBeaconBestState();
-//         if (response.bestState.BeaconHeight >= height) {
-//           done = true;
-//         } else {
-//           maxWaitTime = await this.sleepCapped(1000, maxWaitTime);
-//         }
-//       } catch (e) {
-//         throw new CustomError(ErrorObject.GetTxByHashErr, e.message);
-//       }
-//     }
-//     console.debug("Completed !");
-//   }
-//   async submitKeyAndSync(tokenIDs = [PRVIDSTR]) {
-//     const otaKey = this.key.base58CheckSerialize(OTAKeyType);
-//     await this.rpc.submitKey(otaKey);
-//     await Promise.all(tokenIDs.map((t) => this.fetchOutputCoins(t)));
-//     this.isSubmitOtaKey = true;
-//   }
-//   getPrivateKey() {
-//     return this.key.base58CheckSerialize(PriKeyType);
-//   }
-// }
-// export { Transactor };
-
-/***/ }),
-
 /***/ "./lib/tx/constants.js":
 /*!*****************************!*\
   !*** ./lib/tx/constants.js ***!
@@ -33254,6 +31567,66 @@ var isJsonString = function isJsonString(str) {
 
 /***/ }),
 
+/***/ "./lib/utils/paymentAddress.js":
+/*!*************************************!*\
+  !*** ./lib/utils/paymentAddress.js ***!
+  \*************************************/
+/*! exports provided: isPaymentAddress, isOldPaymentAddress */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isPaymentAddress", function() { return isPaymentAddress; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isOldPaymentAddress", function() { return isOldPaymentAddress; });
+/* harmony import */ var _lib_common_base58__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/common/base58 */ "./lib/common/base58.js");
+/* harmony import */ var _lib_common_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/common/constants */ "./lib/common/constants.js");
+/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
+
+
+
+var isPaymentAddress = function isPaymentAddress(paymentAddr) {
+  if (paymentAddr === _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["BurnAddress"]) {
+    return true;
+  }
+
+  if (typeof paymentAddr !== "string") {
+    return false;
+  }
+
+  var result = false;
+
+  try {
+    var decodeBase58 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkDecode"])(paymentAddr);
+    result = [_lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeAddCheckSumSize"] + _lib_common_constants__WEBPACK_IMPORTED_MODULE_1__["PUBLIC_KEY_SIZE"] + 1].includes(decodeBase58.bytesDecoded.length);
+  } catch (error) {
+    console.log("isPaymentAddress error", error);
+  }
+
+  return result;
+};
+var isOldPaymentAddress = function isOldPaymentAddress(paymentAddr) {
+  if (paymentAddr === _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["BurnAddress"]) {
+    return true;
+  }
+
+  if (typeof paymentAddr !== "string") {
+    return false;
+  }
+
+  var result = false;
+
+  try {
+    var decodeBase58 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkDecode"])(paymentAddr);
+    result = [_lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeAddCheckSumSize"]].includes(decodeBase58.bytesDecoded.length);
+  } catch (error) {
+    console.log("isOldPaymentAddress error", error);
+  }
+
+  return result;
+};
+
+/***/ }),
+
 /***/ "./lib/utils/performance.js":
 /*!**********************************!*\
   !*** ./lib/utils/performance.js ***!
@@ -33281,12 +31654,11 @@ var performance = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _lib_common_base58__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/common/base58 */ "./lib/common/base58.js");
-/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var lodash_isArray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/isArray */ "./node_modules/lodash/isArray.js");
-/* harmony import */ var lodash_isArray__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_isArray__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash_isArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/isArray */ "./node_modules/lodash/isArray.js");
+/* harmony import */ var lodash_isArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_isArray__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _paymentAddress__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./paymentAddress */ "./lib/utils/paymentAddress.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33298,20 +31670,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
-
-var isPaymentAddress = function isPaymentAddress(paymentAddr) {
-  return true;
-  var result = false;
-
-  try {
-    var decodeBase58 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkDecode"])(paymentAddr);
-    result = [PaymentAddrSerializeAddCheckSumSize, PaymentAddrSerializeAddCheckSumSize + 33].includes(decodeBase58.length);
-  } catch (_unused) {//
-  }
-
-  return result;
-};
 
 var Validator = /*#__PURE__*/function () {
   function Validator(label, value) {
@@ -33511,7 +31869,7 @@ var Validator = /*#__PURE__*/function () {
 
       var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Invalid payment address";
       return this._onCondition(function () {
-        return _this17.string() && isPaymentAddress(_this17.value);
+        return _this17.string() && Object(_paymentAddress__WEBPACK_IMPORTED_MODULE_2__["isPaymentAddress"])(_this17.value);
       }, message);
     }
   }, {
@@ -33547,7 +31905,7 @@ var Validator = /*#__PURE__*/function () {
 
       var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Invalid amount";
       return this._onCondition(function () {
-        return new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(_this20.value).toNumber() >= 0;
+        return new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(_this20.value).toNumber() >= 0;
       }, message);
     }
   }, {
@@ -33586,7 +31944,7 @@ var Validator = /*#__PURE__*/function () {
 
       var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Invalid paymentInfoList, must be array of payment info "{ paymentAddressStr: string, amount: number, message: string }" (max 30 payment info)';
       return this._onCondition(function () {
-        if (!lodash_isArray__WEBPACK_IMPORTED_MODULE_3___default()(_this21.value) || _this21.value.length > 30) return false;
+        if (!lodash_isArray__WEBPACK_IMPORTED_MODULE_1___default()(_this21.value) || _this21.value.length > 30) return false;
         return _this21.value.every(function (paymentInfo) {
           return _this21.paymentInfo(paymentInfo);
         });
@@ -33605,7 +31963,7 @@ var Validator = /*#__PURE__*/function () {
 /*!***********************!*\
   !*** ./lib/wallet.js ***!
   \***********************/
-/*! exports provided: Wallet, Account, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, PaymentAddressType, CustomTokenTransfer, CustomTokenInit, PRVIDSTR, ENCODE_VERSION, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, BurningPBSCRequestMeta, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDEPRVRequiredContributionRequestMeta, PDETradeRequestMeta, PDECrossPoolTradeRequestMeta, PDEWithdrawalRequestMeta, PortalV4ShieldingRequestMeta, PortalV4ShieldingResponseMeta, PortalV4UnshieldRequestMeta, PortalV4UnshieldingResponseMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin, constants, coinChooser, newMnemonic, newSeed, validateMnemonic, RpcHTTPCoinServiceClient, PrivacyVersion, Validator, ACCOUNT_CONSTANT, byteToHexString, hexStringToByte, TX_STATUS, ErrorObject, setShardNumber */
+/*! exports provided: Wallet, Account, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, PaymentAddressType, CustomTokenTransfer, CustomTokenInit, PRVIDSTR, ENCODE_VERSION, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, BurningPBSCRequestMeta, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDEPRVRequiredContributionRequestMeta, PDETradeRequestMeta, PDECrossPoolTradeRequestMeta, PDEWithdrawalRequestMeta, PortalV4ShieldingRequestMeta, PortalV4ShieldingResponseMeta, PortalV4UnshieldRequestMeta, PortalV4UnshieldingResponseMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin, constants, coinChooser, newMnemonic, newSeed, validateMnemonic, RpcHTTPCoinServiceClient, PrivacyVersion, Validator, ACCOUNT_CONSTANT, byteToHexString, hexStringToByte, TX_STATUS, ErrorObject, setShardNumber, isPaymentAddress, isOldPaymentAddress */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33764,6 +32122,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_storage__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./services/storage */ "./lib/services/storage.js");
 /* harmony import */ var _utils_performance__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./utils/performance */ "./lib/utils/performance.js");
 /* harmony import */ var _utils_json__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./utils/json */ "./lib/utils/json.js");
+/* harmony import */ var _utils_paymentAddress__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./utils/paymentAddress */ "./lib/utils/paymentAddress.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isPaymentAddress", function() { return _utils_paymentAddress__WEBPACK_IMPORTED_MODULE_35__["isPaymentAddress"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isOldPaymentAddress", function() { return _utils_paymentAddress__WEBPACK_IMPORTED_MODULE_35__["isOldPaymentAddress"]; });
+
 
 
 
@@ -33800,6 +32163,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -34829,7 +33193,8 @@ var Wallet = /*#__PURE__*/function () {
                   password = this.PassPhrase;
                 }
 
-                wallet = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(this);
+                wallet = {};
+                Object.assign(wallet, this);
                 wallet.MasterAccount = this.getAccountWillBeStoraged(wallet.MasterAccount);
                 wallet.MasterAccount.child = wallet.MasterAccount.child.map(function (account) {
                   return _this7.getAccountWillBeStoraged(account);
@@ -34848,6 +33213,8 @@ var Wallet = /*#__PURE__*/function () {
                 delete wallet.RpcApiService;
                 data = JSON.stringify(wallet);
 
+                lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "saveWallet.data", data);
+
                 if (legacyEncryption) {
                   cipherText = crypto_js__WEBPACK_IMPORTED_MODULE_8___default.a.AES.encrypt(data, password);
                 } else {
@@ -34855,30 +33222,33 @@ var Wallet = /*#__PURE__*/function () {
                 }
 
                 cipherText = lodash_toString__WEBPACK_IMPORTED_MODULE_2___default()(cipherText);
+
+                lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "saveWallet.cipherText", cipherText);
+
                 size = cipherText.length / 2 / 1024;
 
                 lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "saveWallet.size", "".concat(size, "kb"));
 
-                _context17.next = 26;
+                _context17.next = 29;
                 return this.setWalletStorage({
                   key: this.Name,
                   value: cipherText
                 });
 
-              case 26:
+              case 29:
                 return _context17.abrupt("return", this);
 
-              case 29:
-                _context17.prev = 29;
+              case 32:
+                _context17.prev = 32;
                 _context17.t0 = _context17["catch"](2);
                 throw _context17.t0;
 
-              case 32:
+              case 35:
               case "end":
                 return _context17.stop();
             }
           }
-        }, _callee17, this, [[2, 29]]);
+        }, _callee17, this, [[2, 32]]);
       }));
 
       function save() {
@@ -34963,7 +33333,7 @@ var Wallet = /*#__PURE__*/function () {
       var _measureLoadWallet = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20(passphrase) {
         var _this8 = this;
 
-        var password, aesKey, selfStorage, shouldReSaveWallet, newMethodDecrypted, cipherText, jsonStr, data, obj, masterAccount, task, implTask;
+        var password, aesKey, selfStorage, shouldReSaveWallet, newMethodDecrypted, cipherText, jsonStr, data, obj, masterAccount, task, implTask, sub;
         return regeneratorRuntime.wrap(function _callee20$(_context20) {
           while (1) {
             switch (_context20.prev = _context20.next) {
@@ -34977,7 +33347,7 @@ var Wallet = /*#__PURE__*/function () {
                 newMethodDecrypted = false;
 
                 if (!this.Storage) {
-                  _context20.next = 49;
+                  _context20.next = 52;
                   break;
                 }
 
@@ -34989,14 +33359,16 @@ var Wallet = /*#__PURE__*/function () {
               case 10:
                 cipherText = _context20.sent;
 
+                lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "loadWalletData.cipherText", cipherText);
+
                 if (cipherText) {
-                  _context20.next = 13;
+                  _context20.next = 14;
                   break;
                 }
 
                 return _context20.abrupt("return", false);
 
-              case 13:
+              case 14:
                 try {
                   jsonStr = _privacy_sjcl__WEBPACK_IMPORTED_MODULE_9___default.a.decrypt(_privacy_sjcl__WEBPACK_IMPORTED_MODULE_9___default.a.codec.hex.toBits(aesKey), cipherText);
 
@@ -35010,11 +33382,11 @@ var Wallet = /*#__PURE__*/function () {
                 }
 
                 if (newMethodDecrypted) {
-                  _context20.next = 24;
+                  _context20.next = 25;
                   break;
                 }
 
-                _context20.prev = 15;
+                _context20.prev = 16;
                 data = crypto_js__WEBPACK_IMPORTED_MODULE_8___default.a.AES.decrypt(cipherText, password);
 
                 if (!!data) {
@@ -35022,33 +33394,33 @@ var Wallet = /*#__PURE__*/function () {
                   jsonStr = data.toString(crypto_js__WEBPACK_IMPORTED_MODULE_8___default.a.enc.Utf8);
                 }
 
-                _context20.next = 24;
+                _context20.next = 25;
                 break;
 
-              case 20:
-                _context20.prev = 20;
-                _context20.t0 = _context20["catch"](15);
+              case 21:
+                _context20.prev = 21;
+                _context20.t0 = _context20["catch"](16);
                 console.log("CAN NOT DECRYPT BY CryptoJS.AES.decrypt");
                 throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].LoadWalletErr, "Error when load wallet by CryptoJS", _context20.t0);
 
-              case 24:
-                _context20.prev = 24;
+              case 25:
+                _context20.prev = 25;
                 obj = JSON.parse(jsonStr);
                 Object.setPrototypeOf(obj, Wallet.prototype);
                 obj.Seed = Buffer.from(obj.Seed);
-                _context20.next = 30;
+                _context20.next = 31;
                 return this.reImportPrototype(obj.MasterAccount);
 
-              case 30:
+              case 31:
                 masterAccount = _context20.sent;
                 obj.MasterAccount = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(masterAccount);
                 task = _toConsumableArray(obj.MasterAccount.child.map(function (account) {
                   return _this8.reImportPrototype(account);
                 }));
-                _context20.next = 35;
+                _context20.next = 36;
                 return Promise.all(task);
 
-              case 35:
+              case 36:
                 implTask = _context20.sent;
                 implTask.forEach(function (account, index) {
                   obj.MasterAccount.child[index] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(account);
@@ -35057,6 +33429,7 @@ var Wallet = /*#__PURE__*/function () {
                   return [acc.name, acc.getPrivateKey()].join();
                 }));
                 Object.assign(this, obj);
+                this.Mnemonic = (obj === null || obj === void 0 ? void 0 : obj.Mnemonic) || this.Mnemonic;
                 this.configWallet({
                   passPhrase: aesKey,
                   name: this.Name,
@@ -35064,39 +33437,51 @@ var Wallet = /*#__PURE__*/function () {
                   storage: selfStorage
                 });
 
+                try {
+                  sub = {
+                    oldName: obj === null || obj === void 0 ? void 0 : obj.Name,
+                    oldMnemonic: obj === null || obj === void 0 ? void 0 : obj.Mnemonic,
+                    newMnemonic: this.Mnemonic,
+                    newName: this === null || this === void 0 ? void 0 : this.Name
+                  };
+
+                  lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "loadWalletData", sub);
+                } catch (_unused3) {//
+                }
+
                 if (!shouldReSaveWallet) {
-                  _context20.next = 43;
+                  _context20.next = 46;
                   break;
                 }
 
-                _context20.next = 43;
+                _context20.next = 46;
                 return this.measureAsyncFn(function () {
                   return _this8.save(aesKey, false);
                 }, "loadWallet.timeSaveWallet");
 
-              case 43:
+              case 46:
                 return _context20.abrupt("return", this);
 
-              case 46:
-                _context20.prev = 46;
-                _context20.t1 = _context20["catch"](24);
+              case 49:
+                _context20.prev = 49;
+                _context20.t1 = _context20["catch"](25);
                 throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].LoadWalletErr, "Error when load wallet", _context20.t1);
 
-              case 49:
-                _context20.next = 54;
+              case 52:
+                _context20.next = 57;
                 break;
 
-              case 51:
-                _context20.prev = 51;
+              case 54:
+                _context20.prev = 54;
                 _context20.t2 = _context20["catch"](0);
                 throw _context20.t2;
 
-              case 54:
+              case 57:
               case "end":
                 return _context20.stop();
             }
           }
-        }, _callee20, this, [[0, 51], [15, 20], [24, 46]]);
+        }, _callee20, this, [[0, 54], [16, 21], [25, 49]]);
       }));
 
       function measureLoadWallet(_x38) {
@@ -36010,7 +34395,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   }
 
   if (!global.fs && global.require) {
-    global.fs = __webpack_require__(/*! fs */ "fs");
+    var _fs = __webpack_require__(/*! fs */ "fs");
+
+    if (Object.keys(_fs) !== 0) {
+      global.fs = _fs;
+    }
   }
 
   var enosys = function enosys() {
@@ -36154,16 +34543,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     };
   }
 
-  var cr = global.crypto;
+  if (!global.crypto) {
+    var nodeCrypto = __webpack_require__(/*! crypto */ "crypto");
 
-  if (!cr) {
-    global.crypto = {};
-    cr = __webpack_require__(/*! crypto */ "crypto");
-  }
-
-  if (!global.crypto.getRandomValues) {
-    global.crypto.getRandomValues = function (b) {
-      cr.randomFillSync(b);
+    global.crypto = {
+      getRandomValues: function getRandomValues(b) {
+        nodeCrypto.randomFillSync(b);
+      }
     };
   }
 
@@ -36247,19 +34633,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var storeValue = function storeValue(addr, v) {
         var nanHead = 0x7FF80000;
 
-        if (typeof v === "number") {
+        if (typeof v === "number" && v !== 0) {
           if (isNaN(v)) {
             _this.mem.setUint32(addr + 4, nanHead, true);
 
             _this.mem.setUint32(addr, 0, true);
-
-            return;
-          }
-
-          if (v === 0) {
-            _this.mem.setUint32(addr + 4, nanHead, true);
-
-            _this.mem.setUint32(addr, 1, true);
 
             return;
           }
@@ -36269,32 +34647,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           return;
         }
 
-        switch (v) {
-          case undefined:
-            _this.mem.setFloat64(addr, 0, true);
+        if (v === undefined) {
+          _this.mem.setFloat64(addr, 0, true);
 
-            return;
-
-          case null:
-            _this.mem.setUint32(addr + 4, nanHead, true);
-
-            _this.mem.setUint32(addr, 2, true);
-
-            return;
-
-          case true:
-            _this.mem.setUint32(addr + 4, nanHead, true);
-
-            _this.mem.setUint32(addr, 3, true);
-
-            return;
-
-          case false:
-            _this.mem.setUint32(addr + 4, nanHead, true);
-
-            _this.mem.setUint32(addr, 4, true);
-
-            return;
+          return;
         }
 
         var id = _this._ids.get(v);
@@ -36313,9 +34669,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
 
         _this._goRefCounts[id]++;
-        var typeFlag = 1;
+        var typeFlag = 0;
 
         switch (_typeof(v)) {
+          case "object":
+            if (v !== null) {
+              typeFlag = 1;
+            }
+
+            break;
+
           case "string":
             typeFlag = 2;
             break;
@@ -36545,14 +34908,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           },
           // func valueInstanceOf(v ref, t ref) bool
           "syscall/js.valueInstanceOf": function syscallJsValueInstanceOf(sp) {
-            _this.mem.setUint8(sp + 24, loadValue(sp + 8) instanceof loadValue(sp + 16));
+            _this.mem.setUint8(sp + 24, loadValue(sp + 8) instanceof loadValue(sp + 16) ? 1 : 0);
           },
           // func copyBytesToGo(dst []byte, src ref) (int, bool)
           "syscall/js.copyBytesToGo": function syscallJsCopyBytesToGo(sp) {
             var dst = loadSlice(sp + 8);
             var src = loadValue(sp + 32);
 
-            if (!(src instanceof Uint8Array)) {
+            if (!(src instanceof Uint8Array || src instanceof Uint8ClampedArray)) {
               _this.mem.setUint8(sp + 48, 0);
 
               return;
@@ -36569,7 +34932,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             var dst = loadValue(sp + 8);
             var src = loadSlice(sp + 16);
 
-            if (!(dst instanceof Uint8Array)) {
+            if (!(dst instanceof Uint8Array || dst instanceof Uint8ClampedArray)) {
               _this.mem.setUint8(sp + 48, 0);
 
               return;
@@ -36603,10 +34966,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                   this.mem = new DataView(this._inst.exports.mem.buffer);
                   this._values = [// JS values that Go currently has references to, indexed by reference id
                   NaN, 0, null, true, false, global, this];
-                  this._goRefCounts = []; // number of references that Go has to a JS value, indexed by reference id
+                  this._goRefCounts = new Array(this._values.length).fill(Infinity); // number of references that Go has to a JS value, indexed by reference id
 
-                  this._ids = new Map(); // mapping from JS values to reference ids
-
+                  this._ids = new Map([// mapping from JS values to reference ids
+                  [0, 1], [null, 2], [true, 3], [false, 4], [global, 5], [this, 6]]);
                   this._idPool = []; // unused ids that have been garbage collected
 
                   this.exited = false; // whether the Go program has exited

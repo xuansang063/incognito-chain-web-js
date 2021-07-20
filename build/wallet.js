@@ -2564,29 +2564,21 @@ function _getBurningAddress() {
         switch (_context3.prev = _context3.next) {
           case 0:
             beaconHeight = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : 0;
-            _context3.prev = 1;
-            _context3.next = 4;
-            return rpcClient.getBurningAddress(beaconHeight);
 
-          case 4:
-            burningAddress = _context3.sent;
-            _context3.next = 10;
-            break;
+            try {
+              // burningAddress = await rpcClient.getBurningAddress(beaconHeight);
+              burningAddress = _constants__WEBPACK_IMPORTED_MODULE_1__["BurnAddress"];
+            } catch (e) {// burningAddress = BurnAddress;
+            }
 
-          case 7:
-            _context3.prev = 7;
-            _context3.t0 = _context3["catch"](1);
-            burningAddress = _constants__WEBPACK_IMPORTED_MODULE_1__["BurnAddress"];
-
-          case 10:
             return _context3.abrupt("return", burningAddress);
 
-          case 11:
+          case 3:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 7]]);
+    }, _callee3);
   }));
   return _getBurningAddress.apply(this, arguments);
 }
@@ -27017,6 +27009,66 @@ var isJsonString = function isJsonString(str) {
 
 /***/ }),
 
+/***/ "./lib/utils/paymentAddress.js":
+/*!*************************************!*\
+  !*** ./lib/utils/paymentAddress.js ***!
+  \*************************************/
+/*! exports provided: isPaymentAddress, isOldPaymentAddress */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isPaymentAddress", function() { return isPaymentAddress; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isOldPaymentAddress", function() { return isOldPaymentAddress; });
+/* harmony import */ var _lib_common_base58__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/common/base58 */ "./lib/common/base58.js");
+/* harmony import */ var _lib_common_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/common/constants */ "./lib/common/constants.js");
+/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
+
+
+
+var isPaymentAddress = function isPaymentAddress(paymentAddr) {
+  if (paymentAddr === _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["BurnAddress"]) {
+    return true;
+  }
+
+  if (typeof paymentAddr !== "string") {
+    return false;
+  }
+
+  var result = false;
+
+  try {
+    var decodeBase58 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkDecode"])(paymentAddr);
+    result = [_lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeAddCheckSumSize"] + _lib_common_constants__WEBPACK_IMPORTED_MODULE_1__["PUBLIC_KEY_SIZE"] + 1].includes(decodeBase58.bytesDecoded.length);
+  } catch (error) {
+    console.log("isPaymentAddress error", error);
+  }
+
+  return result;
+};
+var isOldPaymentAddress = function isOldPaymentAddress(paymentAddr) {
+  if (paymentAddr === _lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["BurnAddress"]) {
+    return true;
+  }
+
+  if (typeof paymentAddr !== "string") {
+    return false;
+  }
+
+  var result = false;
+
+  try {
+    var decodeBase58 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkDecode"])(paymentAddr);
+    result = [_lib_core_constants__WEBPACK_IMPORTED_MODULE_2__["PaymentAddrSerializeAddCheckSumSize"]].includes(decodeBase58.bytesDecoded.length);
+  } catch (error) {
+    console.log("isOldPaymentAddress error", error);
+  }
+
+  return result;
+};
+
+/***/ }),
+
 /***/ "./lib/utils/performance.js":
 /*!**********************************!*\
   !*** ./lib/utils/performance.js ***!
@@ -27044,12 +27096,11 @@ var performance = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _lib_common_base58__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/common/base58 */ "./lib/common/base58.js");
-/* harmony import */ var _lib_core_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/core/constants */ "./lib/core/constants.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
-/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var lodash_isArray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/isArray */ "./node_modules/lodash/isArray.js");
-/* harmony import */ var lodash_isArray__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_isArray__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bn.js */ "./node_modules/bn.js/lib/bn.js");
+/* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash_isArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/isArray */ "./node_modules/lodash/isArray.js");
+/* harmony import */ var lodash_isArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_isArray__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _paymentAddress__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./paymentAddress */ "./lib/utils/paymentAddress.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27061,20 +27112,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
-
-var isPaymentAddress = function isPaymentAddress(paymentAddr) {
-  return true;
-  var result = false;
-
-  try {
-    var decodeBase58 = Object(_lib_common_base58__WEBPACK_IMPORTED_MODULE_0__["checkDecode"])(paymentAddr);
-    result = [PaymentAddrSerializeAddCheckSumSize, PaymentAddrSerializeAddCheckSumSize + 33].includes(decodeBase58.length);
-  } catch (_unused) {//
-  }
-
-  return result;
-};
 
 var Validator = /*#__PURE__*/function () {
   function Validator(label, value) {
@@ -27274,7 +27311,7 @@ var Validator = /*#__PURE__*/function () {
 
       var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Invalid payment address";
       return this._onCondition(function () {
-        return _this17.string() && isPaymentAddress(_this17.value);
+        return _this17.string() && Object(_paymentAddress__WEBPACK_IMPORTED_MODULE_2__["isPaymentAddress"])(_this17.value);
       }, message);
     }
   }, {
@@ -27310,7 +27347,7 @@ var Validator = /*#__PURE__*/function () {
 
       var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Invalid amount";
       return this._onCondition(function () {
-        return new bn_js__WEBPACK_IMPORTED_MODULE_2___default.a(_this20.value).toNumber() >= 0;
+        return new bn_js__WEBPACK_IMPORTED_MODULE_0___default.a(_this20.value).toNumber() >= 0;
       }, message);
     }
   }, {
@@ -27349,7 +27386,7 @@ var Validator = /*#__PURE__*/function () {
 
       var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Invalid paymentInfoList, must be array of payment info "{ paymentAddressStr: string, amount: number, message: string }" (max 30 payment info)';
       return this._onCondition(function () {
-        if (!lodash_isArray__WEBPACK_IMPORTED_MODULE_3___default()(_this21.value) || _this21.value.length > 30) return false;
+        if (!lodash_isArray__WEBPACK_IMPORTED_MODULE_1___default()(_this21.value) || _this21.value.length > 30) return false;
         return _this21.value.every(function (paymentInfo) {
           return _this21.paymentInfo(paymentInfo);
         });
@@ -27368,7 +27405,7 @@ var Validator = /*#__PURE__*/function () {
 /*!***********************!*\
   !*** ./lib/wallet.js ***!
   \***********************/
-/*! exports provided: Wallet, Account, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, PaymentAddressType, CustomTokenTransfer, CustomTokenInit, PRVIDSTR, ENCODE_VERSION, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, BurningPBSCRequestMeta, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDEPRVRequiredContributionRequestMeta, PDETradeRequestMeta, PDECrossPoolTradeRequestMeta, PDEWithdrawalRequestMeta, PortalV4ShieldingRequestMeta, PortalV4ShieldingResponseMeta, PortalV4UnshieldRequestMeta, PortalV4UnshieldingResponseMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin, constants, coinChooser, newMnemonic, newSeed, validateMnemonic, RpcHTTPCoinServiceClient, PrivacyVersion, Validator, ACCOUNT_CONSTANT, byteToHexString, hexStringToByte, TX_STATUS, ErrorObject, setShardNumber */
+/*! exports provided: Wallet, Account, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, PaymentAddressType, CustomTokenTransfer, CustomTokenInit, PRVIDSTR, ENCODE_VERSION, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, BurningPBSCRequestMeta, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDEPRVRequiredContributionRequestMeta, PDETradeRequestMeta, PDECrossPoolTradeRequestMeta, PDEWithdrawalRequestMeta, PortalV4ShieldingRequestMeta, PortalV4ShieldingResponseMeta, PortalV4UnshieldRequestMeta, PortalV4UnshieldingResponseMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin, constants, coinChooser, newMnemonic, newSeed, validateMnemonic, RpcHTTPCoinServiceClient, PrivacyVersion, Validator, ACCOUNT_CONSTANT, byteToHexString, hexStringToByte, TX_STATUS, ErrorObject, setShardNumber, isPaymentAddress, isOldPaymentAddress */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27527,6 +27564,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_storage__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./services/storage */ "./lib/services/storage.js");
 /* harmony import */ var _utils_performance__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./utils/performance */ "./lib/utils/performance.js");
 /* harmony import */ var _utils_json__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./utils/json */ "./lib/utils/json.js");
+/* harmony import */ var _utils_paymentAddress__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./utils/paymentAddress */ "./lib/utils/paymentAddress.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isPaymentAddress", function() { return _utils_paymentAddress__WEBPACK_IMPORTED_MODULE_35__["isPaymentAddress"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isOldPaymentAddress", function() { return _utils_paymentAddress__WEBPACK_IMPORTED_MODULE_35__["isOldPaymentAddress"]; });
+
 
 
 
@@ -27563,6 +27605,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -28592,7 +28635,8 @@ var Wallet = /*#__PURE__*/function () {
                   password = this.PassPhrase;
                 }
 
-                wallet = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(this);
+                wallet = {};
+                Object.assign(wallet, this);
                 wallet.MasterAccount = this.getAccountWillBeStoraged(wallet.MasterAccount);
                 wallet.MasterAccount.child = wallet.MasterAccount.child.map(function (account) {
                   return _this7.getAccountWillBeStoraged(account);
@@ -28611,6 +28655,8 @@ var Wallet = /*#__PURE__*/function () {
                 delete wallet.RpcApiService;
                 data = JSON.stringify(wallet);
 
+                lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "saveWallet.data", data);
+
                 if (legacyEncryption) {
                   cipherText = crypto_js__WEBPACK_IMPORTED_MODULE_8___default.a.AES.encrypt(data, password);
                 } else {
@@ -28618,30 +28664,33 @@ var Wallet = /*#__PURE__*/function () {
                 }
 
                 cipherText = lodash_toString__WEBPACK_IMPORTED_MODULE_2___default()(cipherText);
+
+                lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "saveWallet.cipherText", cipherText);
+
                 size = cipherText.length / 2 / 1024;
 
                 lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "saveWallet.size", "".concat(size, "kb"));
 
-                _context17.next = 26;
+                _context17.next = 29;
                 return this.setWalletStorage({
                   key: this.Name,
                   value: cipherText
                 });
 
-              case 26:
+              case 29:
                 return _context17.abrupt("return", this);
 
-              case 29:
-                _context17.prev = 29;
+              case 32:
+                _context17.prev = 32;
                 _context17.t0 = _context17["catch"](2);
                 throw _context17.t0;
 
-              case 32:
+              case 35:
               case "end":
                 return _context17.stop();
             }
           }
-        }, _callee17, this, [[2, 29]]);
+        }, _callee17, this, [[2, 32]]);
       }));
 
       function save() {
@@ -28726,7 +28775,7 @@ var Wallet = /*#__PURE__*/function () {
       var _measureLoadWallet = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee20(passphrase) {
         var _this8 = this;
 
-        var password, aesKey, selfStorage, shouldReSaveWallet, newMethodDecrypted, cipherText, jsonStr, data, obj, masterAccount, task, implTask;
+        var password, aesKey, selfStorage, shouldReSaveWallet, newMethodDecrypted, cipherText, jsonStr, data, obj, masterAccount, task, implTask, sub;
         return regeneratorRuntime.wrap(function _callee20$(_context20) {
           while (1) {
             switch (_context20.prev = _context20.next) {
@@ -28740,7 +28789,7 @@ var Wallet = /*#__PURE__*/function () {
                 newMethodDecrypted = false;
 
                 if (!this.Storage) {
-                  _context20.next = 49;
+                  _context20.next = 52;
                   break;
                 }
 
@@ -28752,14 +28801,16 @@ var Wallet = /*#__PURE__*/function () {
               case 10:
                 cipherText = _context20.sent;
 
+                lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "loadWalletData.cipherText", cipherText);
+
                 if (cipherText) {
-                  _context20.next = 13;
+                  _context20.next = 14;
                   break;
                 }
 
                 return _context20.abrupt("return", false);
 
-              case 13:
+              case 14:
                 try {
                   jsonStr = _privacy_sjcl__WEBPACK_IMPORTED_MODULE_9___default.a.decrypt(_privacy_sjcl__WEBPACK_IMPORTED_MODULE_9___default.a.codec.hex.toBits(aesKey), cipherText);
 
@@ -28773,11 +28824,11 @@ var Wallet = /*#__PURE__*/function () {
                 }
 
                 if (newMethodDecrypted) {
-                  _context20.next = 24;
+                  _context20.next = 25;
                   break;
                 }
 
-                _context20.prev = 15;
+                _context20.prev = 16;
                 data = crypto_js__WEBPACK_IMPORTED_MODULE_8___default.a.AES.decrypt(cipherText, password);
 
                 if (!!data) {
@@ -28785,33 +28836,33 @@ var Wallet = /*#__PURE__*/function () {
                   jsonStr = data.toString(crypto_js__WEBPACK_IMPORTED_MODULE_8___default.a.enc.Utf8);
                 }
 
-                _context20.next = 24;
+                _context20.next = 25;
                 break;
 
-              case 20:
-                _context20.prev = 20;
-                _context20.t0 = _context20["catch"](15);
+              case 21:
+                _context20.prev = 21;
+                _context20.t0 = _context20["catch"](16);
                 console.log("CAN NOT DECRYPT BY CryptoJS.AES.decrypt");
                 throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].LoadWalletErr, "Error when load wallet by CryptoJS", _context20.t0);
 
-              case 24:
-                _context20.prev = 24;
+              case 25:
+                _context20.prev = 25;
                 obj = JSON.parse(jsonStr);
                 Object.setPrototypeOf(obj, Wallet.prototype);
                 obj.Seed = Buffer.from(obj.Seed);
-                _context20.next = 30;
+                _context20.next = 31;
                 return this.reImportPrototype(obj.MasterAccount);
 
-              case 30:
+              case 31:
                 masterAccount = _context20.sent;
                 obj.MasterAccount = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(masterAccount);
                 task = _toConsumableArray(obj.MasterAccount.child.map(function (account) {
                   return _this8.reImportPrototype(account);
                 }));
-                _context20.next = 35;
+                _context20.next = 36;
                 return Promise.all(task);
 
-              case 35:
+              case 36:
                 implTask = _context20.sent;
                 implTask.forEach(function (account, index) {
                   obj.MasterAccount.child[index] = lodash_cloneDeep__WEBPACK_IMPORTED_MODULE_7___default()(account);
@@ -28820,6 +28871,7 @@ var Wallet = /*#__PURE__*/function () {
                   return [acc.name, acc.getPrivateKey()].join();
                 }));
                 Object.assign(this, obj);
+                this.Mnemonic = (obj === null || obj === void 0 ? void 0 : obj.Mnemonic) || this.Mnemonic;
                 this.configWallet({
                   passPhrase: aesKey,
                   name: this.Name,
@@ -28827,39 +28879,51 @@ var Wallet = /*#__PURE__*/function () {
                   storage: selfStorage
                 });
 
+                try {
+                  sub = {
+                    oldName: obj === null || obj === void 0 ? void 0 : obj.Name,
+                    oldMnemonic: obj === null || obj === void 0 ? void 0 : obj.Mnemonic,
+                    newMnemonic: this.Mnemonic,
+                    newName: this === null || this === void 0 ? void 0 : this.Name
+                  };
+
+                  lodash_set__WEBPACK_IMPORTED_MODULE_4___default()(this.measureStorage, "loadWalletData", sub);
+                } catch (_unused3) {//
+                }
+
                 if (!shouldReSaveWallet) {
-                  _context20.next = 43;
+                  _context20.next = 46;
                   break;
                 }
 
-                _context20.next = 43;
+                _context20.next = 46;
                 return this.measureAsyncFn(function () {
                   return _this8.save(aesKey, false);
                 }, "loadWallet.timeSaveWallet");
 
-              case 43:
+              case 46:
                 return _context20.abrupt("return", this);
 
-              case 46:
-                _context20.prev = 46;
-                _context20.t1 = _context20["catch"](24);
+              case 49:
+                _context20.prev = 49;
+                _context20.t1 = _context20["catch"](25);
                 throw new _common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["CustomError"](_common_errorhandler__WEBPACK_IMPORTED_MODULE_25__["ErrorObject"].LoadWalletErr, "Error when load wallet", _context20.t1);
 
-              case 49:
-                _context20.next = 54;
+              case 52:
+                _context20.next = 57;
                 break;
 
-              case 51:
-                _context20.prev = 51;
+              case 54:
+                _context20.prev = 54;
                 _context20.t2 = _context20["catch"](0);
                 throw _context20.t2;
 
-              case 54:
+              case 57:
               case "end":
                 return _context20.stop();
             }
           }
-        }, _callee20, this, [[0, 51], [15, 20], [24, 46]]);
+        }, _callee20, this, [[0, 54], [16, 21], [25, 49]]);
       }));
 
       function measureLoadWallet(_x38) {
