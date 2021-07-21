@@ -12128,395 +12128,6 @@ function _handleGetPTokenHistoryById() {
 
 /***/ }),
 
-/***/ "./lib/module/Account/features/History/history.portal.js":
-/*!***************************************************************!*\
-  !*** ./lib/module/Account/features/History/history.portal.js ***!
-  \***************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _lib_utils_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/utils/json */ "./lib/utils/json.js");
-/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
-/* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
-/* harmony import */ var _lib_core_constants_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lib/core/constants.js */ "./lib/core/constants.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-
-
-
-
-var TXS_PORTAL_KEY = "TXS_PORTAL_KEY";
-var TX_TYPE = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["default"].TX_TYPE,
-    TX_TYPE_STR = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["default"].TX_TYPE_STR,
-    STATUS_CODE_UNSHIELD_PORTAL = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["default"].STATUS_CODE_UNSHIELD_PORTAL,
-    STATUS_STR_SHIELD_PORTAL = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["default"].STATUS_STR_SHIELD_PORTAL,
-    STATUS_STR_UNSHIELD_PORTAL = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["default"].STATUS_STR_UNSHIELD_PORTAL;
-
-function getKeyTxsPortalStorage(params) {
-  try {
-    var tokenID = params.tokenID,
-        version = params.version;
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeyTxsPortalStorage-tokenID", tokenID).required().string();
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getKeyTxsPortalStorage-version", version).required().number();
-    return this.getKeySetKeysStorageByTokenId({
-      tokenID: tokenID,
-      prefixName: TXS_PORTAL_KEY,
-      version: version
-    });
-  } catch (error) {
-    throw error;
-  }
-}
-
-function updateStatusPortalTxs(_x, _x2) {
-  return _updateStatusPortalTxs.apply(this, arguments);
-}
-
-function _updateStatusPortalTxs() {
-  _updateStatusPortalTxs = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(newPortalShieldTxs, newPortalUnShieldTxs) {
-    var _this = this;
-
-    var shieldTasks, unshieldTasks;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            shieldTasks = newPortalShieldTxs.map( /*#__PURE__*/function () {
-              var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(shieldTx) {
-                var newShieldTx, shieldStatus, ExternalTxID, Status;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                  while (1) {
-                    switch (_context.prev = _context.next) {
-                      case 0:
-                        newShieldTx = _objectSpread({}, shieldTx);
-                        _context.next = 3;
-                        return _this.handleGetPortalShieldStatusByTxID({
-                          txID: newShieldTx.reqTxID
-                        });
-
-                      case 3:
-                        shieldStatus = _context.sent;
-                        ExternalTxID = shieldStatus.ExternalTxID, Status = shieldStatus.Status;
-                        newShieldTx.externalTxID = ExternalTxID;
-                        newShieldTx.status = Status;
-                        newShieldTx.statusStr = STATUS_STR_SHIELD_PORTAL[Status];
-                        return _context.abrupt("return", newShieldTx);
-
-                      case 9:
-                      case "end":
-                        return _context.stop();
-                    }
-                  }
-                }, _callee);
-              }));
-
-              return function (_x6) {
-                return _ref2.apply(this, arguments);
-              };
-            }());
-            unshieldTasks = newPortalUnShieldTxs.map( /*#__PURE__*/function () {
-              var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(unshieldTx) {
-                var newUnShieldTx, unshieldStatus, ExternalTxID, Status, ExternalFee, RemoteAddress;
-                return regeneratorRuntime.wrap(function _callee2$(_context2) {
-                  while (1) {
-                    switch (_context2.prev = _context2.next) {
-                      case 0:
-                        newUnShieldTx = _objectSpread({}, unshieldTx);
-                        _context2.next = 3;
-                        return _this.handleGetPortalUnShieldStatusByTxID({
-                          txID: newUnShieldTx.txId
-                        });
-
-                      case 3:
-                        unshieldStatus = _context2.sent;
-                        ExternalTxID = unshieldStatus.ExternalTxID, Status = unshieldStatus.Status, ExternalFee = unshieldStatus.ExternalFee, RemoteAddress = unshieldStatus.RemoteAddress;
-                        newUnShieldTx.externalTxID = ExternalTxID;
-                        newUnShieldTx.status = Status;
-                        newUnShieldTx.statusStr = STATUS_STR_UNSHIELD_PORTAL[Status];
-                        newUnShieldTx.externalFee = ExternalFee;
-                        newUnShieldTx.externalAddress = RemoteAddress;
-                        return _context2.abrupt("return", newUnShieldTx);
-
-                      case 11:
-                      case "end":
-                        return _context2.stop();
-                    }
-                  }
-                }, _callee2);
-              }));
-
-              return function (_x7) {
-                return _ref3.apply(this, arguments);
-              };
-            }());
-            return _context3.abrupt("return", Promise.all([].concat(_toConsumableArray(shieldTasks), _toConsumableArray(unshieldTasks))));
-
-          case 3:
-          case "end":
-            return _context3.stop();
-        }
-      }
-    }, _callee3);
-  }));
-  return _updateStatusPortalTxs.apply(this, arguments);
-}
-
-function getTxsPortal(_x3, _x4, _x5) {
-  return _getTxsPortal.apply(this, arguments);
-} //
-
-
-function _getTxsPortal() {
-  _getTxsPortal = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(params, txsReceiver, txsTransactor) {
-    var tokenID, key, oldDetailPortalTxs, _yield$this$handleFil, newTxsReceiver, newTxsTransactor, txsPortalShield, txsPortalUnShield, finishedShieldTxs, finishedShieldTxIDs, newPortalShieldTxs, finishedUnshieldTxs, finishedUnshieldTxIDs, newPortalUnShieldTxs, allPortalTxs, portalTxs;
-
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.prev = 0;
-            tokenID = params.tokenID;
-            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsPortal-tokenID", tokenID).required().string(); // get old portal txs from local storage
-
-            key = this.getKeyTxsPortalStorage(params);
-            _context4.next = 6;
-            return this.getSetKeysStorage({
-              key: key
-            });
-
-          case 6:
-            oldDetailPortalTxs = _context4.sent;
-            _context4.next = 9;
-            return this.handleFilterTxsPortal({
-              txsReceiver: txsReceiver,
-              txsTransactor: txsTransactor
-            });
-
-          case 9:
-            _yield$this$handleFil = _context4.sent;
-            newTxsReceiver = _yield$this$handleFil.txsReceiver;
-            newTxsTransactor = _yield$this$handleFil.txsTransactor;
-            txsPortalShield = _yield$this$handleFil.txsPortalShield;
-            txsPortalUnShield = _yield$this$handleFil.txsPortalUnShield;
-
-            if (!(txsPortalShield.length === 0 && txsPortalUnShield.length === 0)) {
-              _context4.next = 16;
-              break;
-            }
-
-            return _context4.abrupt("return", oldDetailPortalTxs);
-
-          case 16:
-            // filter shield portal txs that don't have detail infos before
-            finishedShieldTxs = oldDetailPortalTxs.filter(function (tx) {
-              return tx.txType === TX_TYPE.SHIELDPORTAL;
-            });
-            finishedShieldTxIDs = finishedShieldTxs.map(function (tx) {
-              return tx.txId;
-            });
-            newPortalShieldTxs = txsPortalShield.filter(function (tx) {
-              return !finishedShieldTxIDs.includes(tx.txId);
-            }); // filter unshield portal txs that don't have detail infos before
-
-            finishedUnshieldTxs = oldDetailPortalTxs.filter(function (tx) {
-              return tx.txType === TX_TYPE.UNSHIELDPORTAL && (tx.status === STATUS_CODE_UNSHIELD_PORTAL.COMPLETE || STATUS_CODE_UNSHIELD_PORTAL.REFUND);
-            });
-            finishedUnshieldTxIDs = finishedUnshieldTxs.map(function (tx) {
-              return tx.txId;
-            });
-            newPortalUnShieldTxs = txsPortalUnShield.filter(function (tx) {
-              return !finishedUnshieldTxIDs.includes(tx.txId);
-            }); // update status of portal txs
-
-            _context4.next = 24;
-            return this.updateStatusPortalTxs(newPortalShieldTxs, newPortalUnShieldTxs);
-
-          case 24:
-            newPortalShieldTxs = _context4.sent;
-            // merge new portal txs and old portal txs from storage
-            allPortalTxs = [].concat(_toConsumableArray(newPortalShieldTxs), _toConsumableArray(newPortalUnShieldTxs), _toConsumableArray(oldDetailPortalTxs));
-            portalTxs = allPortalTxs.filter(function (tx, index) {
-              return allPortalTxs.findIndex(function (currentTx) {
-                return tx.txId === currentTx.txId;
-              }) === index;
-            }); // store updated portal txs into storage
-
-            _context4.next = 29;
-            return this.setSetKeysStorage({
-              tokenID: tokenID,
-              setKeys: portalTxs,
-              key: key
-            });
-
-          case 29:
-            return _context4.abrupt("return", {
-              txsPortal: portalTxs,
-              txsReceiver: newTxsReceiver,
-              txsTransactor: newTxsTransactor
-            });
-
-          case 32:
-            _context4.prev = 32;
-            _context4.t0 = _context4["catch"](0);
-            console.log("GET TXS PORTAL FAILED", _context4.t0);
-            return _context4.abrupt("return", {
-              txsPortal: [],
-              txsReceiver: txsReceiver,
-              txsTransactor: txsTransactor
-            });
-
-          case 36:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4, this, [[0, 32]]);
-  }));
-  return _getTxsPortal.apply(this, arguments);
-}
-
-function handleFilterTxsPortal(_ref) {
-  var txsReceiver = _ref.txsReceiver,
-      txsTransactor = _ref.txsTransactor;
-  var txsPortalShield = []; // list of shield response txs
-
-  var txsPortalUnShield = []; // list of unshield request txs
-
-  try {
-    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("txsReceiver", txsReceiver).required().array();
-
-    var _txsReceiver = _toConsumableArray(txsReceiver);
-
-    var _txsTransactor = _toConsumableArray(txsTransactor);
-
-    _txsReceiver = _txsReceiver.filter(function (txr) {
-      var metaData = txr.metaData;
-
-      if (Object(_lib_utils_json__WEBPACK_IMPORTED_MODULE_0__["isJsonString"])(metaData)) {
-        var parse = JSON.parse(metaData);
-        var type = parse === null || parse === void 0 ? void 0 : parse.Type;
-
-        switch (type) {
-          case _lib_core_constants_js__WEBPACK_IMPORTED_MODULE_3__["PortalV4ShieldingResponseMeta"]:
-            // filter shield txs
-            {
-              txr.txType = TX_TYPE.SHIELDPORTAL;
-              txr.txTypeStr = TX_TYPE_STR[TX_TYPE.SHIELDPORTAL];
-              var requestTxId = parse === null || parse === void 0 ? void 0 : parse.ReqTxID;
-              txr.reqTxID = requestTxId; // assign tx request id
-
-              txsPortalShield.push(txr);
-
-              var foundIndex = _txsTransactor.findIndex(function (txp) {
-                return txp.txId === requestTxId;
-              });
-
-              if (foundIndex > -1) {
-                _txsTransactor.splice(foundIndex, 1);
-              }
-
-              return false;
-            }
-
-          case _lib_core_constants_js__WEBPACK_IMPORTED_MODULE_3__["PortalV4UnshieldingResponseMeta"]:
-            // filter unshield txs (refunded)
-            {
-              var _requestTxId = parse === null || parse === void 0 ? void 0 : parse.ReqTxID;
-
-              var _foundIndex = _txsTransactor.findIndex(function (txp) {
-                return txp.txId === _requestTxId;
-              });
-
-              if (_foundIndex > -1) {
-                var unshieldReqTx = _txsTransactor[_foundIndex];
-                unshieldReqTx.txType = TX_TYPE.UNSHIELDPORTAL;
-                unshieldReqTx.txTypeStr = TX_TYPE_STR[TX_TYPE.UNSHIELDPORTAL];
-                txsPortalUnShield.push(_txsTransactor[_foundIndex]);
-
-                _txsTransactor.splice(_foundIndex, 1);
-
-                return false;
-              }
-            }
-
-          default:
-            break;
-        }
-      }
-
-      return true;
-    });
-    _txsTransactor = _txsTransactor.filter(function (txr) {
-      var metaData = txr.metaData;
-
-      if (Object(_lib_utils_json__WEBPACK_IMPORTED_MODULE_0__["isJsonString"])(metaData)) {
-        var parse = JSON.parse(metaData);
-        var type = parse === null || parse === void 0 ? void 0 : parse.Type;
-
-        switch (type) {
-          case _lib_core_constants_js__WEBPACK_IMPORTED_MODULE_3__["PortalV4UnshieldRequestMeta"]:
-            // filter unshield txs (success)
-            {
-              txr.txType = TX_TYPE.UNSHIELDPORTAL, txr.txTypeStr = TX_TYPE_STR[TX_TYPE.UNSHIELDPORTAL], txsPortalUnShield.push(txr);
-              return false;
-            }
-
-          default:
-            break;
-        }
-      }
-
-      return true;
-    });
-    return {
-      txsReceiver: _txsReceiver,
-      txsTransactor: _txsTransactor,
-      txsPortalShield: txsPortalShield,
-      txsPortalUnShield: txsPortalUnShield
-    };
-  } catch (error) {
-    console.log("FILTER TXS PORTAL FROM TXS RECEIVER AND TXS TRANSACTOR FAILED", error);
-  }
-
-  return {
-    txsReceiver: txsReceiver,
-    txsTransactor: txsTransactor,
-    txsPortalShield: txsPortalShield,
-    txsPortalUnShield: txsPortalUnShield
-  };
-}
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  handleFilterTxsPortal: handleFilterTxsPortal,
-  getTxsPortal: getTxsPortal,
-  getKeyTxsPortalStorage: getKeyTxsPortalStorage,
-  updateStatusPortalTxs: updateStatusPortalTxs
-});
-
-/***/ }),
-
 /***/ "./lib/module/Account/features/History/history.receiver.js":
 /*!*****************************************************************!*\
   !*** ./lib/module/Account/features/History/history.receiver.js ***!
@@ -13801,7 +13412,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _history_transactor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./history.transactor */ "./lib/module/Account/features/History/history.transactor.js");
 /* harmony import */ var _history_receiver__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./history.receiver */ "./lib/module/Account/features/History/history.receiver.js");
 /* harmony import */ var _history_pToken__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./history.pToken */ "./lib/module/Account/features/History/history.pToken.js");
-/* harmony import */ var _history_portal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./history.portal */ "./lib/module/Account/features/History/history.portal.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -13814,8 +13424,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-var historyPrototype = _objectSpread(_objectSpread(_objectSpread(_objectSpread(_objectSpread({}, _history__WEBPACK_IMPORTED_MODULE_1__["default"]), _history_transactor__WEBPACK_IMPORTED_MODULE_2__["default"]), _history_receiver__WEBPACK_IMPORTED_MODULE_3__["default"]), _history_pToken__WEBPACK_IMPORTED_MODULE_4__["default"]), _history_portal__WEBPACK_IMPORTED_MODULE_5__["default"]);
+var historyPrototype = _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, _history__WEBPACK_IMPORTED_MODULE_1__["default"]), _history_transactor__WEBPACK_IMPORTED_MODULE_2__["default"]), _history_receiver__WEBPACK_IMPORTED_MODULE_3__["default"]), _history_pToken__WEBPACK_IMPORTED_MODULE_4__["default"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (historyPrototype);
 
@@ -16538,6 +16147,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _portal_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./portal.api */ "./lib/module/Account/features/Portal/portal.api.js");
 /* harmony import */ var _portal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./portal */ "./lib/module/Account/features/Portal/portal.js");
 /* harmony import */ var _portal_storage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./portal.storage */ "./lib/module/Account/features/Portal/portal.storage.js");
+/* harmony import */ var _portal_histories__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./portal.histories */ "./lib/module/Account/features/Portal/portal.histories.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16548,7 +16158,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var portalPrototype = _objectSpread(_objectSpread(_objectSpread({}, _portal_api__WEBPACK_IMPORTED_MODULE_0__["default"]), _portal__WEBPACK_IMPORTED_MODULE_1__["default"]), _portal_storage__WEBPACK_IMPORTED_MODULE_2__["default"]);
+
+var portalPrototype = _objectSpread(_objectSpread(_objectSpread(_objectSpread({}, _portal_api__WEBPACK_IMPORTED_MODULE_0__["default"]), _portal__WEBPACK_IMPORTED_MODULE_1__["default"]), _portal_storage__WEBPACK_IMPORTED_MODULE_2__["default"]), _portal_histories__WEBPACK_IMPORTED_MODULE_3__["default"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (portalPrototype);
 
@@ -16739,7 +16350,6 @@ function _handleGenerateShieldingAddress() {
 
           case 7:
             portalParams = _context4.sent;
-            console.log("portalParams.MasterPubKeys: ", portalParams.MasterPubKeys);
             masterPubKeysEncoded = portalParams.MasterPubKeys[tokenID];
             params = {
               MasterPubKeys: masterPubKeysEncoded,
@@ -16747,25 +16357,25 @@ function _handleGenerateShieldingAddress() {
               ChainName: chainName,
               ChainCodeSeed: incAddress
             };
-            _context4.next = 13;
+            _context4.next = 12;
             return _lib_wasm__WEBPACK_IMPORTED_MODULE_2__["wasm"].generateBTCMultisigAddress(JSON.stringify(params));
 
-          case 13:
+          case 12:
             resp = _context4.sent;
             return _context4.abrupt("return", String(resp));
 
-          case 17:
-            _context4.prev = 17;
+          case 16:
+            _context4.prev = 16;
             _context4.t0 = _context4["catch"](1);
             console.log("HANDLE GENERATE SHIELDING ADDRESS FAILED", _context4.t0);
             throw _context4.t0;
 
-          case 21:
+          case 20:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, this, [[1, 17]]);
+    }, _callee4, this, [[1, 16]]);
   }));
   return _handleGenerateShieldingAddress.apply(this, arguments);
 }
@@ -17061,6 +16671,377 @@ function _handleGetAverageUnshieldFee() {
 
 /***/ }),
 
+/***/ "./lib/module/Account/features/Portal/portal.histories.js":
+/*!****************************************************************!*\
+  !*** ./lib/module/Account/features/Portal/portal.histories.js ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _lib_utils_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lib/utils/json */ "./lib/utils/json.js");
+/* harmony import */ var _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lib/utils/validator */ "./lib/utils/validator.js");
+/* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
+/* harmony import */ var _lib_core_constants_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lib/core/constants.js */ "./lib/core/constants.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+var TX_TYPE = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["default"].TX_TYPE,
+    TX_TYPE_STR = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["default"].TX_TYPE_STR,
+    STATUS_CODE_UNSHIELD_PORTAL = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["default"].STATUS_CODE_UNSHIELD_PORTAL,
+    STATUS_STR_SHIELD_PORTAL = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["default"].STATUS_STR_SHIELD_PORTAL,
+    STATUS_STR_UNSHIELD_PORTAL = _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_2__["default"].STATUS_STR_UNSHIELD_PORTAL;
+
+function updateStatusPortalTxs(_x, _x2) {
+  return _updateStatusPortalTxs.apply(this, arguments);
+}
+
+function _updateStatusPortalTxs() {
+  _updateStatusPortalTxs = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(newPortalShieldTxs, newPortalUnShieldTxs) {
+    var _this2 = this;
+
+    var shieldTasks, unshieldTasks;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            shieldTasks = newPortalShieldTxs.map( /*#__PURE__*/function () {
+              var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(shieldTx) {
+                var newShieldTx, shieldStatus, ExternalTxID, Status;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        newShieldTx = _objectSpread({}, shieldTx);
+                        _context.next = 3;
+                        return _this2.handleGetPortalShieldStatusByTxID({
+                          txID: newShieldTx.reqTxID
+                        });
+
+                      case 3:
+                        shieldStatus = _context.sent;
+                        ExternalTxID = shieldStatus.ExternalTxID, Status = shieldStatus.Status;
+                        newShieldTx.externalTxID = ExternalTxID;
+                        newShieldTx.status = Status;
+                        newShieldTx.statusStr = STATUS_STR_SHIELD_PORTAL[Status];
+                        return _context.abrupt("return", newShieldTx);
+
+                      case 9:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee);
+              }));
+
+              return function (_x6) {
+                return _ref2.apply(this, arguments);
+              };
+            }());
+            unshieldTasks = newPortalUnShieldTxs.map( /*#__PURE__*/function () {
+              var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(unshieldTx) {
+                var newUnShieldTx, unshieldStatus, ExternalTxID, Status, ExternalFee, RemoteAddress;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                  while (1) {
+                    switch (_context2.prev = _context2.next) {
+                      case 0:
+                        newUnShieldTx = _objectSpread({}, unshieldTx);
+                        _context2.next = 3;
+                        return _this2.handleGetPortalUnShieldStatusByTxID({
+                          txID: newUnShieldTx.txId
+                        });
+
+                      case 3:
+                        unshieldStatus = _context2.sent;
+                        ExternalTxID = unshieldStatus.ExternalTxID, Status = unshieldStatus.Status, ExternalFee = unshieldStatus.ExternalFee, RemoteAddress = unshieldStatus.RemoteAddress;
+                        newUnShieldTx.externalTxID = ExternalTxID;
+                        newUnShieldTx.status = Status;
+                        newUnShieldTx.statusStr = STATUS_STR_UNSHIELD_PORTAL[Status];
+                        newUnShieldTx.externalFee = ExternalFee;
+                        newUnShieldTx.externalAddress = RemoteAddress;
+                        return _context2.abrupt("return", newUnShieldTx);
+
+                      case 11:
+                      case "end":
+                        return _context2.stop();
+                    }
+                  }
+                }, _callee2);
+              }));
+
+              return function (_x7) {
+                return _ref3.apply(this, arguments);
+              };
+            }());
+            return _context3.abrupt("return", Promise.all([].concat(_toConsumableArray(shieldTasks), _toConsumableArray(unshieldTasks))));
+
+          case 3:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+  return _updateStatusPortalTxs.apply(this, arguments);
+}
+
+function getTxsPortal(_x3, _x4, _x5) {
+  return _getTxsPortal.apply(this, arguments);
+} //
+
+
+function _getTxsPortal() {
+  _getTxsPortal = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(params, txsReceiver, txsTransactor) {
+    var tokenID, oldDetailPortalTxs, _yield$this$handleFil, newTxsReceiver, newTxsTransactor, txsPortalShield, txsPortalUnShield, finishedShieldTxs, finishedShieldTxIDs, newPortalShieldTxs, finishedUnshieldTxs, finishedUnshieldTxIDs, newPortalUnShieldTxs, allPortalTxs, portalTxs;
+
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
+            tokenID = params.tokenID;
+            new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("getTxsPortal-tokenID", tokenID).required().string(); // get old portal txs from local storage
+
+            _context4.next = 5;
+            return this.getTxsPortalStorage(params);
+
+          case 5:
+            oldDetailPortalTxs = _context4.sent;
+            _context4.next = 8;
+            return this.handleFilterTxsPortal({
+              txsReceiver: txsReceiver,
+              txsTransactor: txsTransactor
+            });
+
+          case 8:
+            _yield$this$handleFil = _context4.sent;
+            newTxsReceiver = _yield$this$handleFil.txsReceiver;
+            newTxsTransactor = _yield$this$handleFil.txsTransactor;
+            txsPortalShield = _yield$this$handleFil.txsPortalShield;
+            txsPortalUnShield = _yield$this$handleFil.txsPortalUnShield;
+
+            if (!(txsPortalShield.length === 0 && txsPortalUnShield.length === 0)) {
+              _context4.next = 15;
+              break;
+            }
+
+            return _context4.abrupt("return", oldDetailPortalTxs);
+
+          case 15:
+            // filter shield portal txs that don't have detail infos before
+            finishedShieldTxs = oldDetailPortalTxs.filter(function (tx) {
+              return tx.txType === TX_TYPE.SHIELDPORTAL;
+            });
+            finishedShieldTxIDs = finishedShieldTxs.map(function (tx) {
+              return tx.txId;
+            });
+            newPortalShieldTxs = txsPortalShield.filter(function (tx) {
+              return !finishedShieldTxIDs.includes(tx.txId);
+            }); // filter unshield portal txs that don't have detail infos before
+
+            finishedUnshieldTxs = oldDetailPortalTxs.filter(function (tx) {
+              return tx.txType === TX_TYPE.UNSHIELDPORTAL && (tx.status === STATUS_CODE_UNSHIELD_PORTAL.COMPLETE || STATUS_CODE_UNSHIELD_PORTAL.REFUND);
+            });
+            finishedUnshieldTxIDs = finishedUnshieldTxs.map(function (tx) {
+              return tx.txId;
+            });
+            newPortalUnShieldTxs = txsPortalUnShield.filter(function (tx) {
+              return !finishedUnshieldTxIDs.includes(tx.txId);
+            }); // update status of portal txs
+
+            _context4.next = 23;
+            return this.updateStatusPortalTxs(newPortalShieldTxs, newPortalUnShieldTxs);
+
+          case 23:
+            newPortalShieldTxs = _context4.sent;
+            // merge new portal txs and old portal txs from storage
+            allPortalTxs = [].concat(_toConsumableArray(newPortalShieldTxs), _toConsumableArray(newPortalUnShieldTxs), _toConsumableArray(oldDetailPortalTxs));
+            portalTxs = allPortalTxs.filter(function (tx, index) {
+              return allPortalTxs.findIndex(function (currentTx) {
+                return tx.txId === currentTx.txId;
+              }) === index;
+            }); // store updated portal txs into storage
+
+            _context4.next = 28;
+            return this.setTxsPortalStorage(params, portalTxs);
+
+          case 28:
+            return _context4.abrupt("return", {
+              txsPortal: portalTxs,
+              txsReceiver: newTxsReceiver,
+              txsTransactor: newTxsTransactor
+            });
+
+          case 31:
+            _context4.prev = 31;
+            _context4.t0 = _context4["catch"](0);
+            console.log("GET TXS PORTAL FAILED", _context4.t0);
+            return _context4.abrupt("return", {
+              txsPortal: [],
+              txsReceiver: txsReceiver,
+              txsTransactor: txsTransactor
+            });
+
+          case 35:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this, [[0, 31]]);
+  }));
+  return _getTxsPortal.apply(this, arguments);
+}
+
+function handleFilterTxsPortal(_ref) {
+  var _this = this;
+
+  var txsReceiver = _ref.txsReceiver,
+      txsTransactor = _ref.txsTransactor;
+  var txsPortalShield = []; // list of shield response txs
+
+  var txsPortalUnShield = []; // list of unshield request txs
+
+  try {
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_1__["default"]("txsReceiver", txsReceiver).required().array();
+
+    var _txsReceiver = _toConsumableArray(txsReceiver);
+
+    var _txsTransactor = _toConsumableArray(txsTransactor);
+
+    _txsReceiver = _txsReceiver.filter(function (txr) {
+      var metaData = txr.metaData;
+
+      if (Object(_lib_utils_json__WEBPACK_IMPORTED_MODULE_0__["isJsonString"])(metaData)) {
+        var parse = JSON.parse(metaData);
+        var type = parse === null || parse === void 0 ? void 0 : parse.Type;
+
+        switch (type) {
+          case _lib_core_constants_js__WEBPACK_IMPORTED_MODULE_3__["PortalV4ShieldingResponseMeta"]:
+            // filter shield txs
+            {
+              txr.txType = TX_TYPE.SHIELDPORTAL;
+              txr.txTypeStr = TX_TYPE_STR[TX_TYPE.SHIELDPORTAL];
+              var requestTxId = parse === null || parse === void 0 ? void 0 : parse.ReqTxID;
+              txr.reqTxID = requestTxId; // assign tx request id
+
+              txr.incognitoAddress = _this.getPaymentAddress();
+              txsPortalShield.push(txr);
+
+              var foundIndex = _txsTransactor.findIndex(function (txp) {
+                return txp.txId === requestTxId;
+              });
+
+              if (foundIndex > -1) {
+                _txsTransactor.splice(foundIndex, 1);
+              }
+
+              return false;
+            }
+
+          case _lib_core_constants_js__WEBPACK_IMPORTED_MODULE_3__["PortalV4UnshieldingResponseMeta"]:
+            // filter unshield txs (refunded)
+            {
+              var _requestTxId = parse === null || parse === void 0 ? void 0 : parse.ReqTxID;
+
+              var _foundIndex = _txsTransactor.findIndex(function (txp) {
+                return txp.txId === _requestTxId;
+              });
+
+              if (_foundIndex > -1) {
+                var unshieldReqTx = _txsTransactor[_foundIndex];
+                unshieldReqTx.txType = TX_TYPE.UNSHIELDPORTAL;
+                unshieldReqTx.txTypeStr = TX_TYPE_STR[TX_TYPE.UNSHIELDPORTAL];
+                unshieldReqTx.incognitoAddress = _this.getPaymentAddress();
+                txsPortalUnShield.push(unshieldReqTx);
+
+                _txsTransactor.splice(_foundIndex, 1);
+
+                return false;
+              }
+            }
+
+          default:
+            break;
+        }
+      }
+
+      return true;
+    });
+    _txsTransactor = _txsTransactor.filter(function (txr) {
+      var metaData = txr.metaData;
+
+      if (Object(_lib_utils_json__WEBPACK_IMPORTED_MODULE_0__["isJsonString"])(metaData)) {
+        var parse = JSON.parse(metaData);
+        var type = parse === null || parse === void 0 ? void 0 : parse.Type;
+
+        switch (type) {
+          case _lib_core_constants_js__WEBPACK_IMPORTED_MODULE_3__["PortalV4UnshieldRequestMeta"]:
+            // filter unshield txs (success)
+            {
+              txr.txType = TX_TYPE.UNSHIELDPORTAL;
+              txr.txTypeStr = TX_TYPE_STR[TX_TYPE.UNSHIELDPORTAL];
+              txr.incognitoAddress = _this.getPaymentAddress();
+              txsPortalUnShield.push(txr);
+              return false;
+            }
+
+          default:
+            break;
+        }
+      }
+
+      return true;
+    });
+    return {
+      txsReceiver: _txsReceiver,
+      txsTransactor: _txsTransactor,
+      txsPortalShield: txsPortalShield,
+      txsPortalUnShield: txsPortalUnShield
+    };
+  } catch (error) {
+    console.log("FILTER TXS PORTAL FROM TXS RECEIVER AND TXS TRANSACTOR FAILED", error);
+  }
+
+  return {
+    txsReceiver: txsReceiver,
+    txsTransactor: txsTransactor,
+    txsPortalShield: txsPortalShield,
+    txsPortalUnShield: txsPortalUnShield
+  };
+}
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  handleFilterTxsPortal: handleFilterTxsPortal,
+  getTxsPortal: getTxsPortal,
+  updateStatusPortalTxs: updateStatusPortalTxs
+});
+
+/***/ }),
+
 /***/ "./lib/module/Account/features/Portal/portal.js":
 /*!******************************************************!*\
   !*** ./lib/module/Account/features/Portal/portal.js ***!
@@ -17265,7 +17246,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 var PORTAL_STORAGE_KEYS = {
-  PORTAL_BTC_SHIELD_ADDRESS: "$PORTAL_BTC_SHIELD_ADDRESS"
+  PORTAL_BTC_SHIELD_ADDRESS: "$PORTAL_BTC_SHIELD_ADDRESS",
+  PORTAL_TXS: "$PORTAL_TXS"
 };
 
 function getKeyStoragePortalShieldAddress() {
@@ -17339,10 +17321,62 @@ function _setStoragePortalShieldAddress() {
   return _setStoragePortalShieldAddress.apply(this, arguments);
 }
 
+function getKeyTxsPortalStorage(params) {
+  try {
+    var tokenID = params.tokenID,
+        version = params.version;
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("getKeyTxsPortalStorage-tokenID", tokenID).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("getKeyTxsPortalStorage-version", version).required().number();
+    return this.getKeySetKeysStorageByTokenId({
+      tokenID: tokenID,
+      prefixName: "".concat(PORTAL_STORAGE_KEYS.PORTAL_TXS),
+      version: version
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+
+function setTxsPortalStorage(params, portalTxs) {
+  try {
+    var tokenID = params.tokenID,
+        version = params.version;
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("setTxsPortalStorage-tokenID", tokenID).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("setTxsPortalStorage-version", version).required().number();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("setTxsPortalStorage-portalTxs", portalTxs).required().array();
+    var key = this.getKeyTxsPortalStorage(params);
+    return this.setSetKeysStorage({
+      tokenID: tokenID,
+      setKeys: portalTxs,
+      key: key
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+
+function getTxsPortalStorage(params) {
+  try {
+    var tokenID = params.tokenID,
+        version = params.version;
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("setTxsPortalStorage-tokenID", tokenID).required().string();
+    new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("setTxsPortalStorage-version", version).required().number();
+    var key = this.getKeyTxsPortalStorage(params);
+    return this.getSetKeysStorage({
+      key: key
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   getKeyStoragePortalShieldAddress: getKeyStoragePortalShieldAddress,
   getStoragePortalShieldAddress: getStoragePortalShieldAddress,
-  setStoragePortalShieldAddress: setStoragePortalShieldAddress
+  setStoragePortalShieldAddress: setStoragePortalShieldAddress,
+  getKeyTxsPortalStorage: getKeyTxsPortalStorage,
+  getTxsPortalStorage: getTxsPortalStorage,
+  setTxsPortalStorage: setTxsPortalStorage
 });
 
 /***/ }),
