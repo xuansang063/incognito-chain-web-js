@@ -528,26 +528,24 @@ async function TestMakeFragments() {
 async function TestAddLiquidity() {
   try {
     const account = await createAccountByPrivateKey(
-      "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+      "112t8rnXUbFHzsnX7zdQouzxXEWArruE4rYzeswrEtvL3iBkcgXAXsQk4kQk23XfLNU6wMknyKk8UAu8fLBfkcUVMgxTNsfrYZURAnPqhffA"
     );
     const tokenID1 =
       "0000000000000000000000000000000000000000000000000000000000000004";
     const tokenID2 =
-      "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74";
-    const pairID = account.createPairId({
+      "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
+    const symbol1 = "PRV";
+    const symbol2 = "ETH";
+    const contributedAmount = 100;
+    let response = await account.createAndSendTxsWithContributions({
       tokenID1,
       tokenID2,
-      symbol1: "PRV",
-      symbol2: "ETH",
-    });
-    const contributedAmount = 100;
-    let response = await account.createAndSendTxWithContribution({
-      transfer: {
-        fee: 100,
-        info: "Add liquidity for token",
-        tokenID: tokenID2,
-      },
-      extra: { pairID, contributedAmount, version: privacyVersion },
+      symbol1,
+      symbol2,
+      fee: 100,
+      contributedAmount1: contributedAmount,
+      contributedAmount2: contributedAmount,
+      version: privacyVersion,
     });
     console.log("response add liquidity", response);
   } catch (e) {
