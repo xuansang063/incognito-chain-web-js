@@ -776,7 +776,8 @@ async function TestGetTxsHistory() {
     // "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
     // "112t8rnXeqsyrBC9CN4QLxpQ9Z6AVBFUhg72NbvpHYGSBogWn4mRvyZ2LeKBmRSxQCcVfiVuM6jw7PgeCFqB99Bsmqhp9T6b1MxroKENS9UG"
     // "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
-    "112t8rnXgy4Jwj2w8tWqncvzsSjpuAi2quWZZJHCD9EFMZLHAdbF6DPbKLitBdjE7TcgTLSpumHEUb2h3xJhqfR59ihVU71bNTazFzWM6MFP"
+    // "112t8rnXgy4Jwj2w8tWqncvzsSjpuAi2quWZZJHCD9EFMZLHAdbF6DPbKLitBdjE7TcgTLSpumHEUb2h3xJhqfR59ihVU71bNTazFzWM6MFP"
+    "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
   );
   const version = 2;
   const tokenID = PRVID;
@@ -800,7 +801,14 @@ async function TestGetTxsHistory() {
     isPToken: false,
     ...params,
   });
-  console.log("txs", txs);
+  const tx = txs.txsTransactor.find(
+    (t) =>
+      t.txId ===
+      "5a682b797ee0fff093a9a7c14d705d82bc2210a0a4e4cf6e5aad4155401bc1cf"
+  );
+  console.log("tx", tx);
+  const txt = await account.getTxHistoryByTxID({ ...params, txId: tx.txId });
+  console.log("txt", txt);
   // console.log(
   //   `\n\n`,
   //   await account.getCoinsStorage({ tokenID, version: privacyVersion })
@@ -1059,10 +1067,10 @@ async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
   // return await TestLoadWallet();
-  // return await TestGetTxsHistory();
+  return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
-  await TestConsolidate();
+  // await TestConsolidate();
   // return await TestCreateAndSendNativeToken();
   return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
