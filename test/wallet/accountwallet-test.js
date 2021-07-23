@@ -216,7 +216,7 @@ async function TestCreateAndSendNativeToken() {
   //   "isPaymentAddress3",
   //   isPaymentAddress(isPaymentAddress(rf.PaymentAddressV1))
   // );
-  return;
+  // return;
   const version = privacyVersion;
   const tokenID =
     "0000000000000000000000000000000000000000000000000000000000000004";
@@ -1065,11 +1065,11 @@ async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
   // return await TestLoadWallet();
-  return await TestGetTxsHistory();
+  // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
-  // return await TestCreateAndSendNativeToken();
+  return await TestCreateAndSendNativeToken();
   return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
   // return;
