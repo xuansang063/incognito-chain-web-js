@@ -8,6 +8,7 @@ const {
   newMnemonic,
   isPaymentAddress,
   isOldPaymentAddress,
+  VerifierTx,
 } = require("../../");
 const { PaymentAddressType } = constants;
 
@@ -222,9 +223,10 @@ async function TestCreateAndSendNativeToken() {
     "0000000000000000000000000000000000000000000000000000000000000004";
   let fee = 100;
   let info = "SEND 6900 nano PRV";
-  let amountTransfer = 6900; // in nano PRV
+  let amountTransfer = 1e9; // in nano PRV
   const account = await createAccountByPrivateKey(
-    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZC6TgtJPbuLru"
+    "112t8rnYU5yDsbyr2RGvUYxvLf1a6FozJovLryicMY9Qoxawnnv42pXKQgnTTmiuCuXi5ccBghjuhPnpRZ4iDMV7a9GNDbVoSyCvc82GFJsr"
+    // "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZC6TgtJPbuLru"
     // "112t8rnXXD3eyD8wfx7AXmpJHdpafDpHngsWUTJB42FbVzihAyDw1s2dZ56jeSc5ZYC3u1ekjTUjHQHTeR7b58Ru9KLqEgpm5mgcaivLC4Kz"
     // "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
     // "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
@@ -253,7 +255,7 @@ async function TestCreateAndSendNativeToken() {
       transfer: { prvPayments: paymentInfosParam, fee, info },
       extra: { isEncryptMessage: true, txType: 0, version },
     });
-    console.log("Send tx succesfully with TxID: ", res.txId);
+    console.log("Send tx succesfully with TxID: ", res);
     return res;
   } catch (e) {
     console.log("Error when send PRV: ", e);
@@ -1059,17 +1061,47 @@ async function TestLoadWallet() {
   }
 }
 
+async function TestVerifierTx() {
+  try {
+    const insVerifiterTx = new VerifierTx();
+    insVerifiterTx.setRPCClient(rpcClient);
+    const txId =
+      "e77043447f1993ecc92ff2be219b87ccc90e84454dc70fe914d949485450fea2";
+    const senderSeal =
+      "d99071adad109362780b6d4b025dceeb7e84d065112b3302c57dbce1d3706a0200000001";
+    const paymentAddress =
+      "12snj4DSGwAHfeTh5mxpfqgjRRogVtuej3A9rVBHvXWxwM8Zb4GFgEuhbxrxJBHvnzB4KPsnsVP7s3cQAr77usYFdGeMEJ17bTCCrnMLzGZAX8uLK2ejK1naJinAtetqGJkHujFN1HuFJGUzeoEr";
+    const otaKey =
+      "14yCTpkbAxREZ7GPVBe7hF3U71F9vjVBrEf8fjTbx7efRWfsYQd7bEzHuAjqu1JBUgyCfpYWdDzdi2iocw3sK7Ekvfua4wNuQJW3npC";
+    const reVerifierSentTx = await insVerifiterTx.verifySentTx({
+      txId,
+      senderSeal,
+      paymentAddress,
+    });
+    console.log("reVerifierSentTx", reVerifierSentTx);
+    const reVerifierReceiverTx = await insVerifiterTx.verifyReceivedTx({
+      txId,
+      otaKey,
+    });
+    console.log("reVerifierReceiverTx", reVerifierReceiverTx);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
+  // return await TestCreateAndSendNativeToken();
+  return TestVerifierTx();
   // return await TestLoadWallet();
   // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
-  return await TestCreateAndSendNativeToken();
+  // return await TestCreateAndSendNativeToken();
   return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
   // return;
