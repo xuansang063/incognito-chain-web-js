@@ -3,81 +3,91 @@ const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 
 const optimization = {
-  minimize: true,
-  minimizer: [
-    new TerserPlugin({
-      terserOptions: {
-        warnings: false,
-        compress: {
-          comparisons: false,
-          drop_console: false,
-        },
-        parse: {},
-        mangle: true,
-        output: {
-          comments: false,
-          ascii_only: true,
-        },
-      },
-      parallel: true,
-      cache: true,
-      sourceMap: false,
-    }),
-  ],
-  nodeEnv: "production",
+    minimize: true,
+    minimizer: [
+        new TerserPlugin({
+            terserOptions: {
+                warnings: false,
+                compress: {
+                    comparisons: false,
+                    drop_console: false,
+                },
+                parse: {},
+                mangle: true,
+                output: {
+                    comments: false,
+                    ascii_only: true,
+                },
+            },
+            parallel: true,
+            cache: true,
+            sourceMap: false,
+        }),
+    ],
+    nodeEnv: "production",
 };
 
 const devConfig = {
-  mode: "development",
+    mode: "development",
 };
 
 const prodConfig = {
-  mode: "production",
-  optimization,
+    mode: "production",
+    optimization,
 };
 
 const aliasConfig = {
-  resolve: {
-    alias: {
-      "@lib": path.resolve(__dirname, "lib"),
+    resolve: {
+        alias: {
+            "@lib": path.resolve(__dirname, "lib"),
+        },
     },
-  },
 };
 
 module.exports = (env, argv) => {
-  const isProduction = argv.mode === "production";
+    const isProduction = argv.mode === "production";
 
-  const cfg = {
-    devtool: "source-map",
-    entry: {
-      verifier: "./lib/verifier/index.js",
-    },
-    output: {
-      path: path.resolve(__dirname, 'lib/verifier/build'),
-      filename: "[name].js",
-      library: "",
-      libraryTarget: "umd",
-    },
-    target: "web",
-    node: {
-      fs: "empty",
-    },
-    module: {
-      rules: [{
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "babel-loader",
-        options: {
-          plugins: ["lodash", "@babel/plugin-proposal-class-properties", ["@babel/plugin-transform-runtime", {
-            "regenerator": true
-          }]],
-          presets: ["@babel/preset-env"],
+    const cfg = {
+        devtool: "source-map",
+        entry: {
+            verifier: "./lib/verifier/index.js",
         },
-      }, ],
-    },
-    ...(isProduction ? prodConfig : devConfig),
-    ...aliasConfig,
-  };
+        output: {
+            path: path.resolve(__dirname, 'lib/verifier/build'),
+            filename: "[name].js",
+            library: "",
+            libraryTarget: "umd",
+        },
+        target: "web",
+        node: {
+            fs: "empty",
+        },
+        module: {
+            defaultRules: [{
+                type: "javascript/auto",
+                resolve: {}
+            }, {
+                test: /\.json$/i,
+                type: "json"
+            }, ],
+            rules: [{
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: "babel-loader",
+                options: {
+                    plugins: ["lodash", "@babel/plugin-proposal-class-properties", ["@babel/plugin-transform-runtime", {
+                        "regenerator": true
+                    }]],
+                    presets: ["@babel/preset-env"],
+                },
+            }, {
+                test: /\.wasm$/,
+                loaders: ['wasm-loader']
+            }],
+        },
+        ...(isProduction ? prodConfig : devConfig),
+        ...aliasConfig,
+    };
 
-  return cfg;
+    return cfg;
 };
