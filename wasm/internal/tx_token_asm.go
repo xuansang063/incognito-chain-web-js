@@ -327,12 +327,13 @@ func createPrivKeyMlsagCA(inputCoins []privacy.PlainCoin, outputCoins []*privacy
 
 func generateMlsagRingCA(inputCoins []privacy.PlainCoin, inputIndexes []uint64, outputCoins []*privacy.CoinV2, params *TokenInnerParams, pi int, shardID byte, ringSize int) (*mlsag.Ring, [][]*big.Int, []*privacy.Point, error) {
 	coinCache := params.TokenCache
-	l := len(coinCache.PublicKeys)
-	if len(coinCache.Commitments)!=l || len(coinCache.AssetTags)!=l{
-		err := errors.Errorf("Length mismatch in coin cache")
-		return nil, nil, nil, err
+	mutualLen := len(coinCache.PublicKeys)
+	if len(coinCache.Commitments)!=mutualLen || len(coinCache.AssetTags)!=mutualLen{
+		return nil, nil, nil, errors.Errorf("Length mismatch in coin cache")
 	}
-	randRange := big.NewInt(0).SetUint64(uint64(l))
+	if mutualLen < len(inputCoins) * (ringSize - 1) {
+		return nil, nil, nil, errors.Errorf("Not enough coins to create ring, need %d", len(inputCoins) * (ringSize - 1))
+	}
 	outputCoinsAsGeneric := make([]privacy.Coin, len(outputCoins))
 	for i:=0;i<len(outputCoins);i++{
 		outputCoinsAsGeneric[i] = outputCoins[i]
@@ -349,6 +350,7 @@ func generateMlsagRingCA(inputCoins []privacy.PlainCoin, inputIndexes []uint64, 
 	indexes := make([][]*big.Int, ringSize)
 	ring := make([][]*privacy.Point, ringSize)
 	var lastTwoColumnsCommitmentToZero []*privacy.Point
+	var currentRingCoinIndex int = 0
 	for i := 0; i < ringSize; i += 1 {
 		sumInputs := new(privacy.Point).Identity()
 		sumInputs.Sub(sumInputs, sumOutputsWithFee)
@@ -370,17 +372,18 @@ func generateMlsagRingCA(inputCoins []privacy.PlainCoin, inputIndexes []uint64, 
 			}
 		} else {
 			for j := 0; j < len(inputCoins); j += 1 {
-				temp, _ := RandBigIntMaxRange(randRange)
-				pos := int(temp.Uint64())
-				pkBytes := coinCache.PublicKeys[pos]
-				rowIndexes[j] = big.NewInt(0).SetUint64(coinCache.Indexes[pos])
-				row[j], _ = new(privacy.Point).FromBytesS(pkBytes)
+				// grab the next coin from the list of decoys to add to ring
+				pkBytes := coinCache.PublicKeys[currentRingCoinIndex]
+				rowIndexes[j] = big.NewInt(0).SetUint64(coinCache.Indexes[currentRingCoinIndex])
+				commitmentBytes := coinCache.Commitments[currentRingCoinIndex]
+				assetTagBytes := coinCache.AssetTags[currentRingCoinIndex]
+				currentRingCoinIndex++
 
-				commitmentBytes := coinCache.Commitments[pos]
+				row[j], _ = new(privacy.Point).FromBytesS(pkBytes)
 				commitment, _ := new(privacy.Point).FromBytesS(commitmentBytes)
-				sumInputs.Add(sumInputs, commitment)
-				assetTagBytes := coinCache.AssetTags[pos]
 				assetTag, _ := new(privacy.Point).FromBytesS(assetTagBytes)
+
+				sumInputs.Add(sumInputs, commitment)
 				sumInputAssetTags.Add(sumInputAssetTags, assetTag)
 			}
 		}
