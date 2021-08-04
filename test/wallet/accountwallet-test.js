@@ -12,8 +12,9 @@ const {
 } = require("../../");
 const { PaymentAddressType } = constants;
 
-// const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-const rpcClient = "https://testnet.incognito.org/fullnode";
+const rpcClient = "https://lb-fullnode.incognito.org/fullnode";
+//  new RpcClient("https://mainnet.incognito.org/fullnode");
+// const rpcClient = "https://testnet.incognito.org/fullnode";
 // const rpcClient = new RpcClient("http://localhost:9334");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
@@ -21,17 +22,22 @@ const rpcClient = "https://testnet.incognito.org/fullnode";
 // const rpcClient = "https://testnet1.incognito.org/fullnode"; //testnet1
 // "http://139.162.55.124:8334";
 
-const rpcCoinService = "https://api-coinservice-staging.incognito.org"; //testnet
+const rpcCoinService = "https://api-coinservice.incognito.org";
+// ("https://api-coinservice-staging.incognito.org"); //testnet
 // "https://api-coinservice-staging2.incognito.org"; // testnet1
 // "http://51.161.119.66:9009"; //dev-test-coin-service
-const rpcTxService = "https://api-coinservice-staging.incognito.org/txservice";
+const rpcTxService = "https://api-coinservice.incognito.org/txservice";
+// "https://api-coinservice-staging.incognito.org/txservice";
 //  "https://api-coinservice-staging2.incognito.org/txservice"; // testnet1
 //  "http://51.161.119.66:8001"; //dev-test-coin-service
-const rpcRequestService = "http://51.161.119.66:4000"; //testnet
+const rpcRequestService =
+  "https://api-coinservice.incognito.org/airdrop-service";
+// "http://51.161.119.66:4000"; //testnet
 // "http://51.161.119.66:6000"; // testnet-1
 //  "http://51.161.119.66:5000"; //dev-test-coin-service
 const privacyVersion = 2;
-const rpcApiService = "https://staging-api-service.incognito.org";
+const rpcApiService = "https://api-service.incognito.org";
+//  "https://staging-api-service.incognito.org";
 //  "https://privacyv2-api-service.incognito.org";
 const deviceID = "9AE4B404-3E61-495D-835A-05CEE34BE251";
 let wallet;
@@ -777,10 +783,12 @@ async function TestGetTxsHistory() {
     // "112t8rnXeqsyrBC9CN4QLxpQ9Z6AVBFUhg72NbvpHYGSBogWn4mRvyZ2LeKBmRSxQCcVfiVuM6jw7PgeCFqB99Bsmqhp9T6b1MxroKENS9UG"
     // "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
     // "112t8rnXgy4Jwj2w8tWqncvzsSjpuAi2quWZZJHCD9EFMZLHAdbF6DPbKLitBdjE7TcgTLSpumHEUb2h3xJhqfR59ihVU71bNTazFzWM6MFP"
-    "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
+    // "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
+    "112t8rne4kpmGQe6KCjTe4JqqsvjTPxHQsw9FWaxY65XqHxUueJuLGxJvoH872vxGmbkz1gkcYgtQ1VnrCjw2wSDgtJzCVyt8nRGFHjcEfpV"
   );
   const version = 2;
-  const tokenID = PRVID;
+  const tokenID =
+    "b832e5d3b1f01a4f0623f7fe91d6673461e1f5d37d91fe78c5c2e6183ff39696";
   // "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
   // "1e0b165a96d040f6e1b57a1d7efeb5001cd4803cc9ee43fca812ce085db26c7c";
   // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
@@ -798,17 +806,18 @@ async function TestGetTxsHistory() {
   // );
   // console.log("TestGetTxsHistory-balance", balance);
   const txs = await account.getTxsHistory({
-    isPToken: false,
+    isPToken: true,
     ...params,
   });
-  const tx = txs.txsTransactor.find(
-    (t) =>
-      t.txId ===
-      "5a682b797ee0fff093a9a7c14d705d82bc2210a0a4e4cf6e5aad4155401bc1cf"
-  );
-  console.log("tx", tx);
-  const txt = await account.getTxHistoryByTxID({ ...params, txId: tx.txId });
-  console.log("txt", txt);
+  console.log(txs.txsPToken);
+  // const tx = txs.txsTransactor.find(
+  //   (t) =>
+  //     t.txId ===
+  //     "5a682b797ee0fff093a9a7c14d705d82bc2210a0a4e4cf6e5aad4155401bc1cf"
+  // );
+  // console.log("tx", tx);
+  // const txt = await account.getTxHistoryByTxID({ ...params, txId: tx.txId });
+  // console.log("txt", txt);
   // console.log(
   //   `\n\n`,
   //   await account.getCoinsStorage({ tokenID, version: privacyVersion })
@@ -1095,14 +1104,14 @@ async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
   // return await TestCreateAndSendNativeToken();
-  return TestVerifierTx();
+  // return TestVerifierTx();
   // return await TestLoadWallet();
-  // return await TestGetTxsHistory();
+  return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
   // return await TestCreateAndSendNativeToken();
-  return await TestGetBalance();
+  // return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
   // return;
   // sequential execution of tests; the wait might still be too short
