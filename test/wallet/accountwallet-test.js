@@ -8,11 +8,13 @@ const {
   newMnemonic,
   isPaymentAddress,
   isOldPaymentAddress,
+  VerifierTx,
 } = require("../../");
 const { PaymentAddressType } = constants;
 
-// const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-const rpcClient = "https://testnet.incognito.org/fullnode";
+const rpcClient = "https://lb-fullnode.incognito.org/fullnode";
+//  new RpcClient("https://mainnet.incognito.org/fullnode");
+// const rpcClient = "https://testnet.incognito.org/fullnode";
 // const rpcClient = new RpcClient("http://localhost:9334");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
@@ -20,17 +22,22 @@ const rpcClient = "https://testnet.incognito.org/fullnode";
 // const rpcClient = "https://testnet1.incognito.org/fullnode"; //testnet1
 // "http://139.162.55.124:8334";
 
-const rpcCoinService = "https://api-coinservice-staging.incognito.org"; //testnet
+const rpcCoinService = "https://api-coinservice.incognito.org";
+// ("https://api-coinservice-staging.incognito.org"); //testnet
 // "https://api-coinservice-staging2.incognito.org"; // testnet1
 // "http://51.161.119.66:9009"; //dev-test-coin-service
-const rpcTxService = "https://api-coinservice-staging.incognito.org/txservice";
+const rpcTxService = "https://api-coinservice.incognito.org/txservice";
+// "https://api-coinservice-staging.incognito.org/txservice";
 //  "https://api-coinservice-staging2.incognito.org/txservice"; // testnet1
 //  "http://51.161.119.66:8001"; //dev-test-coin-service
-const rpcRequestService = "http://51.161.119.66:4000"; //testnet
+const rpcRequestService =
+  "https://api-coinservice.incognito.org/airdrop-service";
+// "http://51.161.119.66:4000"; //testnet
 // "http://51.161.119.66:6000"; // testnet-1
 //  "http://51.161.119.66:5000"; //dev-test-coin-service
 const privacyVersion = 2;
-const rpcApiService = "https://staging-api-service.incognito.org";
+const rpcApiService = "https://api-service.incognito.org";
+//  "https://staging-api-service.incognito.org";
 //  "https://privacyv2-api-service.incognito.org";
 const deviceID = "9AE4B404-3E61-495D-835A-05CEE34BE251";
 let wallet;
@@ -216,15 +223,16 @@ async function TestCreateAndSendNativeToken() {
   //   "isPaymentAddress3",
   //   isPaymentAddress(isPaymentAddress(rf.PaymentAddressV1))
   // );
-  return;
+  // return;
   const version = privacyVersion;
   const tokenID =
     "0000000000000000000000000000000000000000000000000000000000000004";
   let fee = 100;
   let info = "SEND 6900 nano PRV";
-  let amountTransfer = 6900; // in nano PRV
+  let amountTransfer = 1e9; // in nano PRV
   const account = await createAccountByPrivateKey(
-    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZC6TgtJPbuLru"
+    "112t8rnYU5yDsbyr2RGvUYxvLf1a6FozJovLryicMY9Qoxawnnv42pXKQgnTTmiuCuXi5ccBghjuhPnpRZ4iDMV7a9GNDbVoSyCvc82GFJsr"
+    // "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZC6TgtJPbuLru"
     // "112t8rnXXD3eyD8wfx7AXmpJHdpafDpHngsWUTJB42FbVzihAyDw1s2dZ56jeSc5ZYC3u1ekjTUjHQHTeR7b58Ru9KLqEgpm5mgcaivLC4Kz"
     // "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
     // "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
@@ -253,7 +261,7 @@ async function TestCreateAndSendNativeToken() {
       transfer: { prvPayments: paymentInfosParam, fee, info },
       extra: { isEncryptMessage: true, txType: 0, version },
     });
-    console.log("Send tx succesfully with TxID: ", res.txId);
+    console.log("Send tx succesfully with TxID: ", res);
     return res;
   } catch (e) {
     console.log("Error when send PRV: ", e);
@@ -528,26 +536,24 @@ async function TestMakeFragments() {
 async function TestAddLiquidity() {
   try {
     const account = await createAccountByPrivateKey(
-      "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h"
+      "112t8rnXUbFHzsnX7zdQouzxXEWArruE4rYzeswrEtvL3iBkcgXAXsQk4kQk23XfLNU6wMknyKk8UAu8fLBfkcUVMgxTNsfrYZURAnPqhffA"
     );
     const tokenID1 =
       "0000000000000000000000000000000000000000000000000000000000000004";
     const tokenID2 =
-      "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74";
-    const pairID = account.createPairId({
+      "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
+    const symbol1 = "PRV";
+    const symbol2 = "ETH";
+    const contributedAmount = 100;
+    let response = await account.createAndSendTxsWithContributions({
       tokenID1,
       tokenID2,
-      symbol1: "PRV",
-      symbol2: "ETH",
-    });
-    const contributedAmount = 100;
-    let response = await account.createAndSendTxWithContribution({
-      transfer: {
-        fee: 100,
-        info: "Add liquidity for token",
-        tokenID: tokenID2,
-      },
-      extra: { pairID, contributedAmount, version: privacyVersion },
+      symbol1,
+      symbol2,
+      fee: 100,
+      contributedAmount1: contributedAmount,
+      contributedAmount2: contributedAmount,
+      version: privacyVersion,
     });
     console.log("response add liquidity", response);
   } catch (e) {
@@ -774,11 +780,16 @@ async function TestGetTxsHistory() {
     // "112t8rnYifHV4UB793i68xgEStbat23eZCkzVng6YkqYXN5ZqGSFgnHvC65ezDvTGtxrFa2kCJsdDxBPVDmbktkzDYaKyygGPkJQ9jPpo3XD"
     // "112t8rnX96d4eXEvmDwMv4qCCE6zjSsvaMttkUK7ygn9BdNtkFdjKY4PyLt2pvp64b5sPtU5wPFf3FvFhtt7GhdVvDRnte82zqqeYfPvqEdL"
     // "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
-    "112t8rnXeqsyrBC9CN4QLxpQ9Z6AVBFUhg72NbvpHYGSBogWn4mRvyZ2LeKBmRSxQCcVfiVuM6jw7PgeCFqB99Bsmqhp9T6b1MxroKENS9UG"
+    // "112t8rnXeqsyrBC9CN4QLxpQ9Z6AVBFUhg72NbvpHYGSBogWn4mRvyZ2LeKBmRSxQCcVfiVuM6jw7PgeCFqB99Bsmqhp9T6b1MxroKENS9UG"
+    // "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
+    // "112t8rnXgy4Jwj2w8tWqncvzsSjpuAi2quWZZJHCD9EFMZLHAdbF6DPbKLitBdjE7TcgTLSpumHEUb2h3xJhqfR59ihVU71bNTazFzWM6MFP"
+    // "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
+    "112t8rne4kpmGQe6KCjTe4JqqsvjTPxHQsw9FWaxY65XqHxUueJuLGxJvoH872vxGmbkz1gkcYgtQ1VnrCjw2wSDgtJzCVyt8nRGFHjcEfpV"
   );
-  const version = 1;
+  const version = 2;
   const tokenID =
-    "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
+    "b832e5d3b1f01a4f0623f7fe91d6673461e1f5d37d91fe78c5c2e6183ff39696";
+  // "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
   // "1e0b165a96d040f6e1b57a1d7efeb5001cd4803cc9ee43fca812ce085db26c7c";
   // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
   // "ef80ac984c6367c9c45f8e3b89011d00e76a6f17bd782e939f649fcf95a05b74"; //usdt
@@ -795,10 +806,18 @@ async function TestGetTxsHistory() {
   // );
   // console.log("TestGetTxsHistory-balance", balance);
   const txs = await account.getTxsHistory({
-    isPToken: false,
+    isPToken: true,
     ...params,
   });
-  console.log("txs", txs);
+  console.log(txs.txsPToken);
+  // const tx = txs.txsTransactor.find(
+  //   (t) =>
+  //     t.txId ===
+  //     "5a682b797ee0fff093a9a7c14d705d82bc2210a0a4e4cf6e5aad4155401bc1cf"
+  // );
+  // console.log("tx", tx);
+  // const txt = await account.getTxHistoryByTxID({ ...params, txId: tx.txId });
+  // console.log("txt", txt);
   // console.log(
   //   `\n\n`,
   //   await account.getCoinsStorage({ tokenID, version: privacyVersion })
@@ -899,7 +918,8 @@ async function TestConsolidate() {
       // "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKhzbNJkxpJU6"
       // "112t8rne7fpTVvSgZcSgyFV23FYEv3sbRRJZzPscRcTo8DsdZwstgn6UyHbnKHmyLJrSkvF13fzkZ4e8YD5A2wg8jzUZx6Yscdr4NuUUQDAt"
       // "112t8rnXoBXrThDTACHx2rbEq7nBgrzcZhVZV4fvNEcGJetQ13spZRMuW5ncvsKA1KvtkauZuK2jV8pxEZLpiuHtKX3FkKv2uC5ZeRC8L6we"
-      "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+      // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
+      "112t8rnXgy4Jwj2w8tWqncvzsSjpuAi2quWZZJHCD9EFMZLHAdbF6DPbKLitBdjE7TcgTLSpumHEUb2h3xJhqfR59ihVU71bNY6Ev3kyL9jQ"
     );
     const result = await account.consolidate({
       transfer: {
@@ -1050,18 +1070,48 @@ async function TestLoadWallet() {
   }
 }
 
+async function TestVerifierTx() {
+  try {
+    const insVerifiterTx = new VerifierTx();
+    insVerifiterTx.setRPCClient(rpcClient);
+    const txId =
+      "e77043447f1993ecc92ff2be219b87ccc90e84454dc70fe914d949485450fea2";
+    const senderSeal =
+      "d99071adad109362780b6d4b025dceeb7e84d065112b3302c57dbce1d3706a0200000001";
+    const paymentAddress =
+      "12snj4DSGwAHfeTh5mxpfqgjRRogVtuej3A9rVBHvXWxwM8Zb4GFgEuhbxrxJBHvnzB4KPsnsVP7s3cQAr77usYFdGeMEJ17bTCCrnMLzGZAX8uLK2ejK1naJinAtetqGJkHujFN1HuFJGUzeoEr";
+    const otaKey =
+      "14yCTpkbAxREZ7GPVBe7hF3U71F9vjVBrEf8fjTbx7efRWfsYQd7bEzHuAjqu1JBUgyCfpYWdDzdi2iocw3sK7Ekvfua4wNuQJW3npC";
+    const reVerifierSentTx = await insVerifiterTx.verifySentTx({
+      txId,
+      senderSeal,
+      paymentAddress,
+    });
+    console.log("reVerifierSentTx", reVerifierSentTx);
+    const reVerifierReceiverTx = await insVerifiterTx.verifyReceivedTx({
+      txId,
+      otaKey,
+    });
+    console.log("reVerifierReceiverTx", reVerifierReceiverTx);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestLoadWallet();
-  // return await TestGetTxsHistory();
+  // return await TestCreateAndSendNativeToken();
+  // return TestVerifierTx();
+  // return await TestLoadWallet();
+  return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
   // return await TestCreateAndSendNativeToken();
-  return await TestGetBalance();
+  // return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
   // return;
   // sequential execution of tests; the wait might still be too short

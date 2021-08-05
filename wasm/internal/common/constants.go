@@ -67,7 +67,7 @@ var (
 	PRVCoinName           = "PRV"   // To send PRV in custom token
 	ConfidentialAssetID   = Hash{5}
 	ConfidentialAssetName = "CA"
-	MaxShardNumber        = 2 //programmatically config based on networkID
+	MaxShardNumber        = 8 //programmatically config based on networkID
 )
 
 // CONSENSUS

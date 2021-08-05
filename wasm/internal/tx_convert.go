@@ -42,7 +42,10 @@ func initializeTxConversion(tx *Tx, params *TxPrivacyInitParams, paymentsPtr *[]
 	tx.Version = 2
 	tx.Type = common.TxConversionType
 	tx.pubKeyLastByteSender = common.GetShardIDFromLastByte(senderPaymentAddress.Pk[len(senderPaymentAddress.Pk)-1])
-	tx.LockTime = time.Now().Unix()
+	// non-zero means it was set before
+	if tx.LockTime==0{
+		tx.LockTime = time.Now().Unix()
+	}
 	tx.Info = params.Info
 	// Params: update balance if overbalance
 	if err = updateParamsWhenOverBalance(paymentsPtr, params, senderPaymentAddress); err != nil {
@@ -160,7 +163,7 @@ func (txToken *TxToken) initPRVFeeConversion(feeTx *Tx, params *InitParamsAsm) (
 	if err != nil {
 		return nil, nil, nil, err
 	}
-
+	txToken.Tx = *feeTx
 	return inps, inputIndexes, outs, nil
 }
 
@@ -180,7 +183,7 @@ func InitTokenConversionASM(txToken *TxToken, params *InitParamsAsm, theirTime i
 	if err != nil {
 		return err
 	}
-	txn := makeTxToken(tx, nil, nil, nil)
+	txn := makeTxToken(&txToken.Tx, nil, nil, nil)
 	// Init Token
 	if err := txToken.initTokenConversion(txn, params); err != nil {
 		return err
@@ -189,11 +192,11 @@ func InitTokenConversionASM(txToken *TxToken, params *InitParamsAsm, theirTime i
 	if err!=nil{
 		return err
 	}
-	message := common.HashH(append(tx.Hash()[:], tdh[:]...))
-	err = tx.sign(inps, inputIndexes, outs, params, message[:])
+	
+	message := common.HashH(append(txToken.Tx.Hash()[:], tdh[:]...))
+	err = txToken.Tx.sign(inps, inputIndexes, outs, params, message[:])
 	if err!=nil{
 		return err
 	}
-	txToken.Tx = *tx
 	return nil
 }
