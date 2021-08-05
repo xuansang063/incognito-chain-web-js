@@ -12,9 +12,9 @@ const {
 } = require("../../");
 const { PaymentAddressType } = constants;
 
-const rpcClient = "https://lb-fullnode.incognito.org/fullnode";
+// const rpcClient = "https://lb-fullnode.incognito.org/fullnode";
 //  new RpcClient("https://mainnet.incognito.org/fullnode");
-// const rpcClient = "https://testnet.incognito.org/fullnode";
+const rpcClient = "https://testnet.incognito.org/fullnode";
 // const rpcClient = new RpcClient("http://localhost:9334");
 // const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
@@ -22,22 +22,27 @@ const rpcClient = "https://lb-fullnode.incognito.org/fullnode";
 // const rpcClient = "https://testnet1.incognito.org/fullnode"; //testnet1
 // "http://139.162.55.124:8334";
 
-const rpcCoinService = "https://api-coinservice.incognito.org";
-// ("https://api-coinservice-staging.incognito.org"); //testnet
+const stagingServices = "https://api-coinservice-staging.incognito.org";
+
+const rpcCoinService =
+  // "https://api-coinservice.incognito.org"; //mainnet
+  stagingServices; //testnet
 // "https://api-coinservice-staging2.incognito.org"; // testnet1
 // "http://51.161.119.66:9009"; //dev-test-coin-service
-const rpcTxService = "https://api-coinservice.incognito.org/txservice";
+const rpcTxService = `${stagingServices}/txservice`;
+//  "https://api-coinservice.incognito.org/txservice"; mainnet
 // "https://api-coinservice-staging.incognito.org/txservice";
 //  "https://api-coinservice-staging2.incognito.org/txservice"; // testnet1
 //  "http://51.161.119.66:8001"; //dev-test-coin-service
-const rpcRequestService =
-  "https://api-coinservice.incognito.org/airdrop-service";
+const rpcRequestService = `${stagingServices}/airdrop-service`;
+// "https://api-coinservice.incognito.org/airdrop-service"; // mainnet
 // "http://51.161.119.66:4000"; //testnet
 // "http://51.161.119.66:6000"; // testnet-1
 //  "http://51.161.119.66:5000"; //dev-test-coin-service
 const privacyVersion = 2;
-const rpcApiService = "https://api-service.incognito.org";
-//  "https://staging-api-service.incognito.org";
+const rpcApiService =
+  //  "https://api-service.incognito.org"; // mainnet
+  "https://staging-api-service.incognito.org"; // testnet
 //  "https://privacyv2-api-service.incognito.org";
 const deviceID = "9AE4B404-3E61-495D-835A-05CEE34BE251";
 let wallet;
@@ -784,11 +789,13 @@ async function TestGetTxsHistory() {
     // "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
     // "112t8rnXgy4Jwj2w8tWqncvzsSjpuAi2quWZZJHCD9EFMZLHAdbF6DPbKLitBdjE7TcgTLSpumHEUb2h3xJhqfR59ihVU71bNTazFzWM6MFP"
     // "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
-    "112t8rne4kpmGQe6KCjTe4JqqsvjTPxHQsw9FWaxY65XqHxUueJuLGxJvoH872vxGmbkz1gkcYgtQ1VnrCjw2wSDgtJzCVyt8nRGFHjcEfpV"
+    // "112t8rne4kpmGQe6KCjTe4JqqsvjTPxHQsw9FWaxY65XqHxUueJuLGxJvoH872vxGmbkz1gkcYgtQ1VnrCjw2wSDgtJzCVyt8nRGFHjcEfpV"
+    "112t8rnaoYv9FppLCA7u84ay2K6ybXcCwykzCLoLT1bD9jXiSpbh8DpTKuaJD8t9Myvk2yR1hHxAu7Ac9gmox1NpKqX5ooTefprXjE1s1nd3"
   );
   const version = 2;
   const tokenID =
-    "b832e5d3b1f01a4f0623f7fe91d6673461e1f5d37d91fe78c5c2e6183ff39696";
+    "a61df4d870c17a7dc62d7e4c16c6f4f847994403842aaaf21c994d1a0024b032"; //BUSD
+  // "b832e5d3b1f01a4f0623f7fe91d6673461e1f5d37d91fe78c5c2e6183ff39696";
   // "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
   // "1e0b165a96d040f6e1b57a1d7efeb5001cd4803cc9ee43fca812ce085db26c7c";
   // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
@@ -809,7 +816,7 @@ async function TestGetTxsHistory() {
     isPToken: true,
     ...params,
   });
-  console.log(txs.txsPToken);
+  console.log(txs);
   // const tx = txs.txsTransactor.find(
   //   (t) =>
   //     t.txId ===
