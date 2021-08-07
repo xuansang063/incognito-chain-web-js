@@ -1107,21 +1107,34 @@ async function TestVerifierTx() {
 async function TestTradeService() {
   //Trade services
   let pDexV3Instance = new PDexV3();
+  console.log("pDexV3Instance", pDexV3Instance);
   pDexV3Instance.setRPCTradeService(
     "https://54ed4c3d-993b-4fc1-accd-7e7e72122248.mock.pstmn.io"
   );
-  // const volume = await pDexV3Instance.getTradingVolume24h("all");
-  // console.log("volume", volume);
-  // const listPools = await pDexV3Instance.getListPools();
-  // console.log(listPools);
-  // const listPoolsIDs = listPools.map((pool) => pool.poolId);
-  // console.log("\n\nlistPoolsIDs", listPoolsIDs);
-  // const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(listPoolsIDs);
-  // console.log(listPoolsDetail);
-  const listShare = await pDexV3Instance.getListShare(
+  pDexV3Instance.setStorageServices(new StorageServices());
+  pDexV3Instance.setOTAKey(
     "14yCTpkbAxREZ7GPVBe7hF3U71F9vjVBrEf8fjTbx7efRWfsYQd7bEzHuAjqu1JBUgyCfpYWdDzdi2iocw3sK7Ekvfua4wNuQJW3npC"
   );
-  console.log("listShare", listShare);
+  const volume = await pDexV3Instance.getTradingVolume24h("all");
+  console.log("volume", volume);
+  const listPools = await pDexV3Instance.getListPools();
+  const poolsIDs = listPools.map((pool) => pool.poolId);
+  console.log("\npoolsIDs", poolsIDs);
+  await pDexV3Instance.followingDefaultPools({ poolsIDs });
+  const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolsIDs);
+  const isFollowedDefaultPools = await pDexV3Instance.isFollowedDefaultPools();
+  const getListFollowingPools = await pDexV3Instance.getListFollowingPools();
+  console.log(
+    "isFollowedDefaultPools",
+    isFollowedDefaultPools,
+    "getListFollowingPools",
+    getListFollowingPools
+  );
+  // console.log(listPoolsDetail);
+  // const listShare = await pDexV3Instance.getListShare(
+  //   "14yCTpkbAxREZ7GPVBe7hF3U71F9vjVBrEf8fjTbx7efRWfsYQd7bEzHuAjqu1JBUgyCfpYWdDzdi2iocw3sK7Ekvfua4wNuQJW3npC"
+  // );
+  // console.log("listShare", listShare);
 }
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
