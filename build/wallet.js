@@ -16584,7 +16584,7 @@ function _updateStatusPortalTxs() {
             }());
             unshieldTasks = newPortalUnShieldTxs.map( /*#__PURE__*/function () {
               var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(unshieldTx) {
-                var newUnShieldTx, unshieldStatus, ExternalTxID, Status, ExternalFee, RemoteAddress;
+                var newUnShieldTx, unshieldStatus, ExternalTxID, Status, ExternalFee, RemoteAddress, UnshieldAmount;
                 return regeneratorRuntime.wrap(function _callee2$(_context2) {
                   while (1) {
                     switch (_context2.prev = _context2.next) {
@@ -16597,15 +16597,16 @@ function _updateStatusPortalTxs() {
 
                       case 3:
                         unshieldStatus = _context2.sent;
-                        ExternalTxID = unshieldStatus.ExternalTxID, Status = unshieldStatus.Status, ExternalFee = unshieldStatus.ExternalFee, RemoteAddress = unshieldStatus.RemoteAddress;
+                        ExternalTxID = unshieldStatus.ExternalTxID, Status = unshieldStatus.Status, ExternalFee = unshieldStatus.ExternalFee, RemoteAddress = unshieldStatus.RemoteAddress, UnshieldAmount = unshieldStatus.UnshieldAmount;
                         newUnShieldTx.externalTxID = ExternalTxID;
                         newUnShieldTx.status = Status;
                         newUnShieldTx.statusStr = STATUS_STR_UNSHIELD_PORTAL[Status];
                         newUnShieldTx.externalFee = ExternalFee;
                         newUnShieldTx.externalAddress = RemoteAddress;
+                        newUnShieldTx.amount = UnshieldAmount;
                         return _context2.abrupt("return", newUnShieldTx);
 
-                      case 11:
+                      case 12:
                       case "end":
                         return _context2.stop();
                     }
@@ -16636,7 +16637,7 @@ function getTxsPortal(_x3, _x4, _x5) {
 
 function _getTxsPortal() {
   _getTxsPortal = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(params, txsReceiver, txsTransactor) {
-    var tokenID, oldDetailPortalTxs, _yield$this$handleFil, newTxsReceiver, newTxsTransactor, txsPortalShield, txsPortalUnShield, finishedShieldTxs, finishedShieldTxIDs, newPortalShieldTxs, finishedUnshieldTxs, finishedUnshieldTxIDs, newPortalUnShieldTxs, allPortalTxs, portalTxs;
+    var tokenID, oldDetailPortalTxs, _yield$this$handleFil, newTxsReceiver, newTxsTransactor, txsPortalShield, txsPortalUnShield, finishedShieldTxs, finishedShieldTxIDs, newPortalShieldTxs, finishedUnshieldTxs, finishedUnshieldTxIDs, newPortalUnShieldTxs, newPortalTxs, allPortalTxs, portalTxs;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
@@ -16684,7 +16685,7 @@ function _getTxsPortal() {
             }); // filter unshield portal txs that don't have detail infos before
 
             finishedUnshieldTxs = oldDetailPortalTxs.filter(function (tx) {
-              return tx.txType === TX_TYPE.UNSHIELDPORTAL && (tx.status === STATUS_CODE_UNSHIELD_PORTAL.COMPLETE || STATUS_CODE_UNSHIELD_PORTAL.REFUND);
+              return tx.txType === TX_TYPE.UNSHIELDPORTAL && (tx.status === STATUS_CODE_UNSHIELD_PORTAL.COMPLETE || tx.status === STATUS_CODE_UNSHIELD_PORTAL.REFUND);
             });
             finishedUnshieldTxIDs = finishedUnshieldTxs.map(function (tx) {
               return tx.txId;
@@ -16697,9 +16698,9 @@ function _getTxsPortal() {
             return this.updateStatusPortalTxs(newPortalShieldTxs, newPortalUnShieldTxs);
 
           case 23:
-            newPortalShieldTxs = _context4.sent;
+            newPortalTxs = _context4.sent;
             // merge new portal txs and old portal txs from storage
-            allPortalTxs = [].concat(_toConsumableArray(newPortalShieldTxs), _toConsumableArray(newPortalUnShieldTxs), _toConsumableArray(oldDetailPortalTxs));
+            allPortalTxs = [].concat(_toConsumableArray(newPortalTxs), _toConsumableArray(oldDetailPortalTxs));
             portalTxs = allPortalTxs.filter(function (tx, index) {
               return allPortalTxs.findIndex(function (currentTx) {
                 return tx.txId === currentTx.txId;
@@ -16878,9 +16879,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bn_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bn_js__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _lib_module_Account_account_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @lib/module/Account/account.constants */ "./lib/module/Account/account.constants.js");
 /* harmony import */ var _lib_wasm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @lib/wasm */ "./lib/wasm/index.js");
+/* harmony import */ var _lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @lib/module/Account//account.utils */ "./lib/module/Account/account.utils.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -16910,7 +16913,7 @@ function createAndSendUnshieldPortalV4RequestTx(_x) {
 
 function _createAndSendUnshieldPortalV4RequestTx() {
   _createAndSendUnshieldPortalV4RequestTx = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref) {
-    var _ref$transfer, fee, tokenID, _ref$transfer$info, info, _ref$transfer$prvPaym, prvPayments, _ref$extra, _ref$extra2, _ref$extra2$burningTy, burningType, _ref$extra2$isEncrypt, isEncryptMessageToken, unshieldAmount, remoteAddress, _ref$extra2$txHashHan, txHashHandler, version, burningTokenID, burningAddress, tokenPayments, isEncodeOnly, emptyKeySet, addrForMd, myAddressStr, pInf, newCoin, temp, portalUnshieldRequest, tx;
+    var _ref$transfer, fee, tokenID, _ref$transfer$info, info, _ref$transfer$prvPaym, prvPayments, _ref$extra, _ref$extra2, _ref$extra2$burningTy, burningType, _ref$extra2$isEncrypt, isEncryptMessageToken, unshieldAmount, remoteAddress, _ref$extra2$txHashHan, txHashHandler, version, burningTokenID, burningAddress, tokenPayments, isEncodeOnly, emptyKeySet, myAddressStr, pInf, newCoin, portalUnshieldRequest, tx;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -16966,35 +16969,24 @@ function _createAndSendUnshieldPortalV4RequestTx() {
             return emptyKeySet.importFromPrivateKey(new Uint8Array(32));
 
           case 29:
-            addrForMd = Object(_lib_common_keySet__WEBPACK_IMPORTED_MODULE_0__["addressAsObject"])(emptyKeySet.PaymentAddress);
-            _context.next = 32;
+            _context.next = 31;
             return this.updateProgressTx(15, "Generating Metadata");
 
-          case 32:
+          case 31:
             myAddressStr = this.key.base58CheckSerialize(_lib_core__WEBPACK_IMPORTED_MODULE_1__["PaymentAddressType"]);
             pInf = {
               PaymentAddress: myAddressStr,
               Amount: "0"
-            };
-            _context.prev = 34;
-            _context.next = 37;
-            return _lib_wasm__WEBPACK_IMPORTED_MODULE_5__["wasm"].createCoin(JSON.stringify({
-              PaymentInfo: pInf,
-              TokenID: null
-            }));
+            }; // since we only use the PublicKey and TxRandom fields, the tokenID is irrelevant
 
-          case 37:
-            temp = _context.sent;
-            newCoin = JSON.parse(temp);
-            _context.next = 44;
-            break;
+            _context.next = 35;
+            return Object(_lib_module_Account_account_utils__WEBPACK_IMPORTED_MODULE_6__["createCoin"])({
+              paymentInfo: pInf,
+              tokenID: null
+            });
 
-          case 41:
-            _context.prev = 41;
-            _context.t0 = _context["catch"](34);
-            throw _context.t0;
-
-          case 44:
+          case 35:
+            newCoin = _context.sent;
             // prepare meta data for tx
             portalUnshieldRequest = {
               OTAPubKeyStr: newCoin.PublicKey,
@@ -17004,7 +16996,7 @@ function _createAndSendUnshieldPortalV4RequestTx() {
               UnshieldAmount: unshieldAmount,
               Type: burningType
             };
-            _context.next = 47;
+            _context.next = 39;
             return this.transact({
               transfer: {
                 prvPayments: prvPayments,
@@ -17021,25 +17013,25 @@ function _createAndSendUnshieldPortalV4RequestTx() {
               }
             });
 
-          case 47:
+          case 39:
             tx = _context.sent;
-            _context.next = 50;
+            _context.next = 42;
             return this.updateProgressTx(100, "Completed");
 
-          case 50:
+          case 42:
             return _context.abrupt("return", tx);
 
-          case 53:
-            _context.prev = 53;
-            _context.t1 = _context["catch"](1);
-            throw _context.t1;
+          case 45:
+            _context.prev = 45;
+            _context.t0 = _context["catch"](1);
+            throw _context.t0;
 
-          case 56:
+          case 48:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[1, 53], [34, 41]]);
+    }, _callee, this, [[1, 45]]);
   }));
   return _createAndSendUnshieldPortalV4RequestTx.apply(this, arguments);
 }
@@ -17165,11 +17157,7 @@ function setTxsPortalStorage(params, portalTxs) {
     new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("setTxsPortalStorage-version", version).required().number();
     new _lib_utils_validator__WEBPACK_IMPORTED_MODULE_0__["default"]("setTxsPortalStorage-portalTxs", portalTxs).required().array();
     var key = this.getKeyTxsPortalStorage(params);
-    return this.setSetKeysStorage({
-      tokenID: tokenID,
-      setKeys: portalTxs,
-      key: key
-    });
+    return this.setAccountStorage(key, portalTxs);
   } catch (error) {
     throw error;
   }
