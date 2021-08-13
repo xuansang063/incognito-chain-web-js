@@ -122,6 +122,9 @@ const (
 	IssuingBSCResponseMeta = 251
 	BurningPBSCRequestMeta = 252
 	BurningBSCConfirmMeta  = 253
+
+	// portal v4
+	PortalV4UnshieldRequestMeta = 262
 )
 
 var minerCreatedMetaTypes = []int{

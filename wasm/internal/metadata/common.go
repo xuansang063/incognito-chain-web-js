@@ -2,8 +2,9 @@ package metadata
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"strconv"
+
+	"github.com/pkg/errors"
 )
 
 func CalculateSize(meta Metadata) uint64 {
@@ -96,6 +97,8 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &IssuingEVMResponse{}
 	case BurningPBSCRequestMeta:
 		md = &BurningRequest{}
+	case PortalV4UnshieldRequestMeta:
+		md = &PortalUnshieldRequest{}
 	default:
 		return nil, errors.Errorf("Could not parse metadata with type: %d", theType)
 	}
