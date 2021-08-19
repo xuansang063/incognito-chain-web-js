@@ -72,7 +72,7 @@ async function setup() {
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rnZ9qPE7C6RbrK6Ygat1H94kEkYGSd84fAGiU396yQHu8CBHmV1DDHE947d7orfHnDtKA9WCffDk7NS5zUu5CMCUHK8nkRtrv4nw6uu";
+    "112t8rnaoYv9FppLCA7u84ay2K6ybXcCwykzCLoLT1bD9jXiSpbh8DpTKuaJD8t9Myvk2yR1hHxAu7Ac9gmox1NpKqX5ooTegDFuvwGt9mYe";
   // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
@@ -1153,11 +1153,46 @@ async function TestTradeService() {
   console.log("orders", orders);
 }
 
+async function TestLiquidityHistoriesService() {
+  //Trade services
+  let pDexV3Instance = new PDexV3();
+  console.log("pDexV3Instance", pDexV3Instance);
+  pDexV3Instance.setRPCTradeService(
+    "https://54ed4c3d-993b-4fc1-accd-7e7e72122248.mock.pstmn.io"
+  );
+  pDexV3Instance.setStorageServices(new StorageServices());
+  pDexV3Instance.setOTAKey(
+    "14yCTpkbAxREZ7GPVBe7hF3U71F9vjVBrEf8fjTbx7efRWfsYQd7bEzHuAjqu1JBUgyCfpYWdDzdi2iocw3sK7Ekvfua4wNuQJW3npC"
+  );
+  pDexV3Instance.setRPCCoinServices(
+    "https://api-coinservice-staging2.incognito.org"
+  );
+  // 12st1MwAGSiPzvJbvxHacoXyCxjGVhZdKaR9xzPaLeohZGEhMGe5FTF2a6k7sBBFodiEz4rKUTps5ohac8bypSCQR9cxsBvQX1tnPekLTy5vWmjeAdPrB2T6GKM3v1M4vBrRKQXEZefNHi8bpoRc
+  pDexV3Instance.setPaymentAddress(
+    "12sbwQdYxWEZbHprFMMUAJqumJfyHsabtK88sHewPEubPituiedwuDr6htzp37DuQLcPydszNLhE8GsJv2Htxe2kikmmQHhV46J1G6qKb6PpZRSsgKjsouiLrhmGd88rtodvTqyoVKPQQowtxtrW"
+  );
+  // const contributeHistories = await pDexV3Instance.getContributeHistories({
+  //   accountInst: accountSender,
+  // });
+
+  // const removePoolHistories = await pDexV3Instance.getRemovePoolHistories({
+  //   accountInst: accountSender,
+  // });
+
+  const withdrawRewardHistories = await pDexV3Instance.getWithdrawRewardHistories({
+    accountInst: accountSender,
+  });
+
+  console.log('removePoolHistories: ', withdrawRewardHistories)
+}
+
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
+  return await TestLiquidityHistoriesService()
   await TestTradeService();
   return;
   // return await TestCreateAndSendNativeToken();
