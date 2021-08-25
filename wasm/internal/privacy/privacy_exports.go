@@ -75,6 +75,7 @@ type PrivateKey = key.PrivateKey
 type OTAKey = key.OTAKey
 type PaymentInfo = key.PaymentInfo
 type PaymentAddress = key.PaymentAddress
+type OTAReceiver = coin.OTAReceiver
 
 func GeneratePrivateKey(seed []byte) PrivateKey {
 	return key.GeneratePrivateKey(seed)
