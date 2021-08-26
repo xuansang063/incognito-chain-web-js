@@ -990,31 +990,31 @@ async function TestLoadWallet() {
     // const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
     // const mnemonic = newMnemonic();
     // console.log("mnemonic", mnemonic);
-    // await wallet.import(
-    //   // "romance suspect ostrich amount deer crane false concert present evidence atom short",
-    //   // mnemonic,
-    //   "sunny easy talent undo alter giant music slam common glide judge misery",
-    //   aesKey,
-    //   "Masterkey",
-    //   new StorageServices()
-    // );
+    await wallet.import(
+      // "romance suspect ostrich amount deer crane false concert present evidence atom short",
+      // mnemonic,
+      "sunny easy talent undo alter giant music slam common glide judge misery",
+      aesKey,
+      "Masterkey",
+      new StorageServices()
+    );
 
-    // await wallet.createNewAccount("phat1");
-    // await wallet.createNewAccount("phat2");
-    // console.log(
-    //   "listAccount",
-    //   (await wallet.listAccount()).map((account) => account.PrivateKey)
-    // );
-    // await wallet.save(aesKey, false);
-    // await wallet.loadWallet({
-    //   password: passphrase,
-    //   aesKey,
-    // });
-    // console.log(
-    //   "\n\nlistAccount",
-    //   (await wallet.listAccount()).map((account) => account.PrivateKey)
-    // );
-    // await wallet.save(aesKey, false);
+    await wallet.createNewAccount("phat1");
+    await wallet.createNewAccount("phat2");
+    console.log(
+      "listAccount",
+      (await wallet.listAccount()).map((account) => account.PrivateKey)
+    );
+    await wallet.save(aesKey, false);
+    await wallet.loadWallet({
+      password: passphrase,
+      aesKey,
+    });
+    console.log(
+      "\n\nlistAccount",
+      (await wallet.listAccount()).map((account) => account.PrivateKey)
+    );
+    await wallet.save(aesKey, false);
     // await wallet.loadWallet({
     //   password: passphrase,
     //   aesKey,
@@ -1153,13 +1153,96 @@ async function TestTradeService() {
   console.log("orders", orders);
 }
 
+async function TestWalletBackup() {
+  const passphrase = "$as90_jasLsS";
+  const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
+  let network = "mainnet";
+  let storage = new StorageServices();
+  let wallet2 = new Wallet();
+  let wallet = new Wallet();
+  wallet.Network = network;
+  wallet2.Network = network;
+  let wallet2RootName = "Phat-masterkey";
+  let walletRootName = "masterless";
+  wallet2.RootName = wallet2RootName;
+  wallet.RootName = walletRootName;
+  await wallet2.init(aesKey, storage, "phat", "Anon");
+  let oldMnemonic = wallet2.Mnemonic;
+  await wallet2.createNewAccount("phat1");
+  await wallet2.createNewAccount("phat2");
+  await wallet2.save(aesKey, false);
+  let list = (await wallet2.getListStorageBackup({ aesKey })) || [];
+  console.log(JSON.stringify(list));
+  await wallet2.loadWallet({
+    password: passphrase,
+    aesKey,
+  });
+  list = (await wallet2.getListStorageBackup({ aesKey })) || [];
+  await wallet2.clearWalletStorage({ key: wallet2RootName });
+  await wallet2.import(
+    // "romance suspect ostrich amount deer crane false concert present evidence atom short",
+    // mnemonic,
+    oldMnemonic,
+    aesKey,
+    "masterKey",
+    storage
+  );
+  await wallet2.loadWallet({
+    password: passphrase,
+    aesKey,
+  });
+  list = (await wallet2.getListStorageBackup({ aesKey })) || [];
+  try {
+    await wallet.import(
+      // "romance suspect ostrich amount deer crane false concert present evidence atom short",
+      // mnemonic,
+      "sunny easy talent undo alter giant music slam common glide judge misery",
+      aesKey,
+      "masterKey",
+      storage
+    );
+    await wallet.createNewAccount("phat1");
+    await wallet.createNewAccount("phat2");
+    await wallet.save(aesKey, false);
+    await wallet.clearWalletStorage({ key: "masterKey" });
+    await wallet.init(aesKey, storage, "masterless", "Anon");
+    await wallet.createNewAccount("phat3");
+    await wallet.createNewAccount("phat4");
+    await wallet.save(aesKey, false);
+    //   await wallet.import(
+    //     // "romance suspect ostrich amount deer crane false concert present evidence atom short",
+    //     // mnemonic,
+    //     "sunny easy talent undo alter giant music slam common glide judge misery",
+    //     aesKey,
+    //     "masterless",
+    //     storage
+    //   );
+    //   await wallet.importAccount(
+    //     "112t8rnX2MPqXQc9q5cMvPRnj73BC6m4AnqesSGBTPwsqVGWxRuSPmJDfcPMDhrt5h4UhJCusQo1RBQUSLL5R8XnEL3tGnjHMNeeUeX38Qpz",
+    //     "phat3"
+    //   );
+    //   await wallet.save(aesKey, false);
+
+    const list = (await wallet2.getListStorageBackup({ aesKey })) || [];
+    console.log(JSON.stringify(list));
+    // await wallet.createNewAccount("phat3");
+    // await wallet.save(aesKey, false);
+    // await wallet.loadWallet({
+    //   password: passphrase,
+    //   aesKey,
+    // });
+    // console.log("list backup 2", await wallet3.getListStorageBackup({ aesKey }));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  await TestTradeService();
-  return;
+  return await TestWalletBackup();
   // return await TestCreateAndSendNativeToken();
   // return TestVerifierTx();
   // return await TestLoadWallet();
