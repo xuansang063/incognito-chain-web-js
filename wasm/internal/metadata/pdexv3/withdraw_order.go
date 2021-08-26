@@ -46,15 +46,3 @@ func (req WithdrawOrderRequest) Hash() *common.Hash {
 	hash := common.HashH([]byte(rawBytes))
 	return &hash
 }
-
-func (req *WithdrawOrderRequest) GetOTADeclarations() []metadataCommon.OTADeclaration {
-	var result []metadataCommon.OTADeclaration
-	tokenID := req.TokenID
-	if tokenID != common.PRVCoinID {
-		tokenID = common.ConfidentialAssetID
-	}
-	result = append(result, metadataCommon.OTADeclaration{
-		PublicKey: req.Receiver.PublicKey.ToBytes(), TokenID: tokenID,
-	})
-	return result
-}

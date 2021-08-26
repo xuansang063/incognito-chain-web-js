@@ -114,8 +114,8 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &metadataPdexv3.WithdrawOrderRequest{}
 	case metadataCommon.Pdexv3WithdrawOrderResponseMeta:
 		md = &metadataPdexv3.WithdrawOrderResponse{}
-	case metadataCommon.Pdexv3MintNft:
-		md = &metadataPdexv3.MintNft{}
+	case metadataCommon.Pdexv3UserMintNftRequestMeta:
+		md = &metadataPdexv3.UserMintNftRequest{}
 	default:
 		return nil, errors.Errorf("Could not parse metadata with type: %d", theType)
 	}

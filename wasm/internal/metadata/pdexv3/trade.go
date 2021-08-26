@@ -47,16 +47,3 @@ func (req TradeRequest) Hash() *common.Hash {
 	hash := common.HashH([]byte(rawBytes))
 	return &hash
 }
-
-func (req TradeRequest) GetOTADeclarations() []metadataCommon.OTADeclaration {
-	var result []metadataCommon.OTADeclaration
-	for currentTokenID, val := range req.Receiver {
-		if currentTokenID != common.PRVCoinID {
-			currentTokenID = common.ConfidentialAssetID
-		}
-		result = append(result, metadataCommon.OTADeclaration{
-			PublicKey: val.PublicKey.ToBytes(), TokenID: currentTokenID,
-		})
-	}
-	return result
-}

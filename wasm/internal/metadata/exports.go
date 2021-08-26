@@ -76,13 +76,6 @@ const (
 	PDEFeeWithdrawalRequestMeta           = metadataCommon.PDEFeeWithdrawalRequestMeta
 	PDEFeeWithdrawalResponseMeta          = metadataCommon.PDEFeeWithdrawalResponseMeta
 	PDETradingFeesDistributionMeta        = metadataCommon.PDETradingFeesDistributionMeta
-	// pDEX v3
-	Pdexv3TradeRequestMeta          = metadataCommon.Pdexv3TradeRequestMeta
-	Pdexv3TradeResponseMeta         = metadataCommon.Pdexv3TradeResponseMeta
-	Pdexv3AddOrderRequestMeta       = metadataCommon.Pdexv3AddOrderRequestMeta
-	Pdexv3AddOrderResponseMeta      = metadataCommon.Pdexv3AddOrderResponseMeta
-	Pdexv3WithdrawOrderRequestMeta  = metadataCommon.Pdexv3WithdrawOrderRequestMeta
-	Pdexv3WithdrawOrderResponseMeta = metadataCommon.Pdexv3WithdrawOrderResponseMeta
 	// portal
 	PortalCustodianDepositMeta                  = metadataCommon.PortalCustodianDepositMeta
 	PortalRequestPortingMeta                    = metadataCommon.PortalRequestPortingMeta
