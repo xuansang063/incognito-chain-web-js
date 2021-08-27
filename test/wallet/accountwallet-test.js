@@ -1107,14 +1107,36 @@ async function TestVerifierTx() {
 async function TestTradeService() {
   //Trade services
   let pDexV3Instance = new PDexV3();
-  console.log("pDexV3Instance", pDexV3Instance);
+  const account = await createAccountByPrivateKey(
+    "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
+  );
+  const accountInfo = await account.getDeserializeInformation();
+  console.log("accountInfo", accountInfo);
+  pDexV3Instance.setAccount(accountInfo);
   pDexV3Instance.setRPCTradeService(
     "https://54ed4c3d-993b-4fc1-accd-7e7e72122248.mock.pstmn.io"
   );
   pDexV3Instance.setStorageServices(new StorageServices());
-  pDexV3Instance.setOTAKey(
-    "14yCTpkbAxREZ7GPVBe7hF3U71F9vjVBrEf8fjTbx7efRWfsYQd7bEzHuAjqu1JBUgyCfpYWdDzdi2iocw3sK7Ekvfua4wNuQJW3npC"
-  );
+  const poolid = "1234";
+  const txCancel = {
+    cancelTxId: "1",
+    requesttx: "1",
+    status: -1,
+  };
+  const txCancel2 = {
+    cancelTxId: "2",
+    requesttx: "2",
+    status: -1,
+  };
+  await pDexV3Instance.setCancelingOrderTx({
+    poolid,
+    txCancel,
+  });
+  const cancelingTxs = await pDexV3Instance.getCancelingOrderTxs({
+    poolid,
+  });
+  console.log("cancelingTxs", cancelingTxs);
+  return;
   // const volume = await pDexV3Instance.getTradingVolume24h("all");
   // console.log("volume", volume);
   // const listPools = await pDexV3Instance.getListPools();
@@ -1242,7 +1264,7 @@ async function TestWalletBackup() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestWalletBackup();
+  return await TestTradeService();
   // return await TestCreateAndSendNativeToken();
   // return TestVerifierTx();
   // return await TestLoadWallet();
