@@ -3,6 +3,8 @@ package metadata
 import (
 	"encoding/json"
 	"errors"
+
+	metadataCommon "incognito-chain/metadata/common"
 )
 
 type StakingMetadata struct {
@@ -53,23 +55,23 @@ func (stakingMetadata StakingMetadata) GetShardStateAmount() uint64 {
 	return stakingMetadata.StakingAmountShard
 }
 
-func (sm *StakingMetadata) UnmarshalJSON(raw []byte) error{
-	var temp struct{
+func (sm *StakingMetadata) UnmarshalJSON(raw []byte) error {
+	var temp struct {
 		MetadataBase
 		FunderPaymentAddress         string
 		RewardReceiverPaymentAddress string
-		StakingAmountShard           uintMaybeString
+		StakingAmountShard           metadataCommon.Uint64Reader
 		AutoReStaking                bool
 		CommitteePublicKey           string
 	}
 	err := json.Unmarshal(raw, &temp)
 	*sm = StakingMetadata{
-		MetadataBase: temp.MetadataBase,
-		FunderPaymentAddress: temp.FunderPaymentAddress,
+		MetadataBase:                 temp.MetadataBase,
+		FunderPaymentAddress:         temp.FunderPaymentAddress,
 		RewardReceiverPaymentAddress: temp.RewardReceiverPaymentAddress,
-		StakingAmountShard: uint64(temp.StakingAmountShard),
-		AutoReStaking: temp.AutoReStaking,
-		CommitteePublicKey: temp.CommitteePublicKey,
+		StakingAmountShard:           uint64(temp.StakingAmountShard),
+		AutoReStaking:                temp.AutoReStaking,
+		CommitteePublicKey:           temp.CommitteePublicKey,
 	}
 	return err
 }

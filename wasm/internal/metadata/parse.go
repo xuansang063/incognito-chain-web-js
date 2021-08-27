@@ -2,18 +2,11 @@ package metadata
 
 import (
 	"encoding/json"
-	"strconv"
 
 	"github.com/pkg/errors"
+	metadataCommon "incognito-chain/metadata/common"
+	metadataPdexv3 "incognito-chain/metadata/pdexv3"
 )
-
-func CalculateSize(meta Metadata) uint64 {
-	metaBytes, err := json.Marshal(meta)
-	if err != nil {
-		return 0
-	}
-	return uint64(len(metaBytes))
-}
 
 func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 	var err error
@@ -99,6 +92,30 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &BurningRequest{}
 	case PortalV4UnshieldRequestMeta:
 		md = &PortalUnshieldRequest{}
+	case metadataCommon.Pdexv3ModifyParamsMeta:
+		md = &metadataPdexv3.ParamsModifyingRequest{}
+	case metadataCommon.Pdexv3AddLiquidityRequestMeta:
+		md = &metadataPdexv3.AddLiquidityRequest{}
+	case metadataCommon.Pdexv3AddLiquidityResponseMeta:
+		md = &metadataPdexv3.AddLiquidityResponse{}
+	case metadataCommon.Pdexv3WithdrawLiquidityRequestMeta:
+		md = &metadataPdexv3.WithdrawLiquidityRequest{}
+	case metadataCommon.Pdexv3WithdrawLiquidityResponseMeta:
+		md = &metadataPdexv3.WithdrawLiquidityResponse{}
+	case metadataCommon.Pdexv3TradeRequestMeta:
+		md = &metadataPdexv3.TradeRequest{}
+	case metadataCommon.Pdexv3TradeResponseMeta:
+		md = &metadataPdexv3.TradeResponse{}
+	case metadataCommon.Pdexv3AddOrderRequestMeta:
+		md = &metadataPdexv3.AddOrderRequest{}
+	case metadataCommon.Pdexv3AddOrderResponseMeta:
+		md = &metadataPdexv3.AddOrderResponse{}
+	case metadataCommon.Pdexv3WithdrawOrderRequestMeta:
+		md = &metadataPdexv3.WithdrawOrderRequest{}
+	case metadataCommon.Pdexv3WithdrawOrderResponseMeta:
+		md = &metadataPdexv3.WithdrawOrderResponse{}
+	case metadataCommon.Pdexv3UserMintNftRequestMeta:
+		md = &metadataPdexv3.UserMintNftRequest{}
 	default:
 		return nil, errors.Errorf("Could not parse metadata with type: %d", theType)
 	}
@@ -109,44 +126,4 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		return nil, err
 	}
 	return md, nil
-}
-
-var bridgeMetas = []string{
-	strconv.Itoa(BeaconSwapConfirmMeta),
-	strconv.Itoa(BridgeSwapConfirmMeta),
-	strconv.Itoa(BurningConfirmMeta),
-	strconv.Itoa(BurningConfirmForDepositToSCMeta),
-	strconv.Itoa(BurningConfirmMetaV2),
-	strconv.Itoa(BurningConfirmForDepositToSCMetaV2),
-	strconv.Itoa(BurningBSCConfirmMeta),
-}
-
-func HasBridgeInstructions(instructions [][]string) bool {
-	for _, inst := range instructions {
-		for _, meta := range bridgeMetas {
-			if len(inst) > 0 && inst[0] == meta {
-				return true
-			}
-		}
-	}
-	return false
-}
-
-type uintMaybeString uint64
-
-func (u uintMaybeString) MarshalJSON() ([]byte, error) {
-	return json.Marshal(u)
-}
-func (u *uintMaybeString) UnmarshalJSON(raw []byte) error {
-	var theNum uint64
-	err := json.Unmarshal(raw, &theNum)
-	if err != nil {
-		var theStr string
-		json.Unmarshal(raw, &theStr)
-		temp, err := strconv.ParseUint(theStr, 10, 64)
-		*u = uintMaybeString(temp)
-		return err
-	}
-	*u = uintMaybeString(theNum)
-	return err
 }

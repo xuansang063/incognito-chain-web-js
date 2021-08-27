@@ -2,8 +2,10 @@ package metadata
 
 import (
 	"encoding/json"
-	"incognito-chain/common"
 	"strconv"
+
+	"incognito-chain/common"
+	metadataCommon "incognito-chain/metadata/common"
 )
 
 // PDETradeRequest - privacy dex trade
@@ -83,28 +85,27 @@ func (pc PDETradeRequest) Hash() *common.Hash {
 	return &hash
 }
 
-func (pc *PDETradeRequest) UnmarshalJSON(raw []byte) error{
-	var temp struct{
+func (pc *PDETradeRequest) UnmarshalJSON(raw []byte) error {
+	var temp struct {
 		TokenIDToBuyStr     string
 		TokenIDToSellStr    string
-		SellAmount          uintMaybeString
-		MinAcceptableAmount uintMaybeString
-		TradingFee          uintMaybeString
+		SellAmount          metadataCommon.Uint64Reader
+		MinAcceptableAmount metadataCommon.Uint64Reader
+		TradingFee          metadataCommon.Uint64Reader
 		TraderAddressStr    string
 		TxRandomStr         string
 		MetadataBase
 	}
 	err := json.Unmarshal(raw, &temp)
 	*pc = PDETradeRequest{
-		TokenIDToBuyStr: temp.TokenIDToBuyStr,
-		TokenIDToSellStr: temp.TokenIDToSellStr,
-		SellAmount: uint64(temp.SellAmount),
+		TokenIDToBuyStr:     temp.TokenIDToBuyStr,
+		TokenIDToSellStr:    temp.TokenIDToSellStr,
+		SellAmount:          uint64(temp.SellAmount),
 		MinAcceptableAmount: uint64(temp.MinAcceptableAmount),
-		TradingFee: uint64(temp.TradingFee),
-		TraderAddressStr: temp.TraderAddressStr,
-		TxRandomStr: temp.TxRandomStr,
-		MetadataBase: temp.MetadataBase,
+		TradingFee:          uint64(temp.TradingFee),
+		TraderAddressStr:    temp.TraderAddressStr,
+		TxRandomStr:         temp.TxRandomStr,
+		MetadataBase:        temp.MetadataBase,
 	}
 	return err
 }
-

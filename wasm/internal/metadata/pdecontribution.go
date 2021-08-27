@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"incognito-chain/common"
+	metadataCommon "incognito-chain/metadata/common"
 )
 
 // PDEContribution - privacy dex contribution
@@ -103,7 +104,7 @@ func (pc *PDEContribution) UnmarshalJSON(raw []byte) error{
 	var temp struct{
 		PDEContributionPairID string
 		ContributorAddressStr string
-		ContributedAmount     uintMaybeString
+		ContributedAmount     metadataCommon.Uint64Reader
 		TokenIDStr            string
 		MetadataBase
 	}

@@ -1,4 +1,8 @@
-package metadata
+package common
+
+import (
+	"strconv"
+)
 
 const (
 	InvalidMeta = 1
@@ -47,6 +51,23 @@ const (
 	PDEFeeWithdrawalRequestMeta           = 207
 	PDEFeeWithdrawalResponseMeta          = 208
 	PDETradingFeesDistributionMeta        = 209
+
+	// pDEX v3
+	Pdexv3ModifyParamsMeta              = 270
+	Pdexv3AddLiquidityRequestMeta       = 271
+	Pdexv3AddLiquidityResponseMeta      = 272
+	Pdexv3WithdrawLiquidityRequestMeta  = 273
+	Pdexv3WithdrawLiquidityResponseMeta = 274
+	Pdexv3TradeRequestMeta              = 275
+	Pdexv3TradeResponseMeta             = 276
+	Pdexv3AddOrderRequestMeta           = 277
+	Pdexv3AddOrderResponseMeta          = 278
+	Pdexv3WithdrawOrderRequestMeta      = 279
+	Pdexv3WithdrawOrderResponseMeta     = 280
+	Pdexv3UserMintNftRequestMeta        = 281
+	Pdexv3UserMintNftResponseMeta       = 282
+	Pdexv3MintNftRequestMeta            = 283
+	Pdexv3MintNftResponseMeta           = 284
 
 	// portal
 	PortalCustodianDepositMeta                  = 100
@@ -153,6 +174,12 @@ var minerCreatedMetaTypes = []int{
 	PortalTopUpWaitingPortingResponseMeta,
 	PortalRedeemFromLiquidationPoolResponseMetaV3,
 	InitTokenResponseMeta,
+	Pdexv3AddLiquidityResponseMeta,
+	Pdexv3MintNftResponseMeta,
+	Pdexv3WithdrawLiquidityResponseMeta,
+	Pdexv3TradeResponseMeta,
+	Pdexv3AddOrderResponseMeta,
+	Pdexv3WithdrawOrderResponseMeta,
 }
 
 // Special rules for shardID: stored as 2nd param of instruction of BeaconBlock
@@ -232,4 +259,14 @@ var portalMetaTypesV3 = []int{
 var portalRelayingMetaTypes = []int{
 	RelayingBNBHeaderMeta,
 	RelayingBTCHeaderMeta,
+}
+
+var bridgeMetas = []string{
+	strconv.Itoa(BeaconSwapConfirmMeta),
+	strconv.Itoa(BridgeSwapConfirmMeta),
+	strconv.Itoa(BurningConfirmMeta),
+	strconv.Itoa(BurningConfirmForDepositToSCMeta),
+	strconv.Itoa(BurningConfirmMetaV2),
+	strconv.Itoa(BurningConfirmForDepositToSCMetaV2),
+	strconv.Itoa(BurningBSCConfirmMeta),
 }
