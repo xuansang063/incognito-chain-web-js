@@ -10,12 +10,12 @@ import (
 
 // WithdrawOrderRequest
 type WithdrawOrderRequest struct {
-	PoolPairID string              `json:"PoolPairID"`
-	OrderID    string              `json:"OrderID"`
-	TokenID    common.Hash         `json:"TokenID"`
-	Amount     uint64              `json:"Amount"`
-	Receiver   privacy.OTAReceiver `json:"Receiver"`
-	NftID      common.Hash         `json:"NftID"`
+	PoolPairID string                              `json:"PoolPairID"`
+	OrderID    string                              `json:"OrderID"`
+	TokenID    common.Hash                         `json:"TokenID"`
+	Amount     uint64                              `json:"Amount"`
+	Receiver   map[common.Hash]privacy.OTAReceiver `json:"Receiver"`
+	NftID      common.Hash                         `json:"NftID"`
 	metadataCommon.MetadataBase
 }
 
@@ -23,7 +23,7 @@ func NewWithdrawOrderRequest(
 	pairID, orderID string,
 	tokenID common.Hash,
 	amount uint64,
-	recv privacy.OTAReceiver,
+	recv map[common.Hash]privacy.OTAReceiver,
 	nftID common.Hash,
 	metaType int,
 ) (*WithdrawOrderRequest, error) {
