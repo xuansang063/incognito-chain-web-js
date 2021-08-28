@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"incognito-chain/common"
+	metadataCommon "incognito-chain/metadata/common"
 )
 
 // PDECrossPoolTradeRequest - privacy dex cross pool trade
@@ -107,9 +108,9 @@ func (pc *PDECrossPoolTradeRequest) UnmarshalJSON(raw []byte) error{
 	var temp struct{
 		TokenIDToBuyStr     string
 		TokenIDToSellStr    string
-		SellAmount          uintMaybeString
-		MinAcceptableAmount uintMaybeString
-		TradingFee          uintMaybeString
+		SellAmount          metadataCommon.Uint64Reader
+		MinAcceptableAmount metadataCommon.Uint64Reader
+		TradingFee          metadataCommon.Uint64Reader
 		TraderAddressStr    string
 		TxRandomStr         string
 		SubTraderAddressStr string

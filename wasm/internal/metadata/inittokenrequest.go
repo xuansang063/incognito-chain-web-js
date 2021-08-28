@@ -5,6 +5,7 @@ import (
 	"strconv"
 
     "incognito-chain/common"
+    metadataCommon "incognito-chain/metadata/common"
 )
 
 type InitTokenRequest struct {
@@ -64,7 +65,7 @@ func (iReq *InitTokenRequest) UnmarshalJSON(raw []byte) error{
 	var temp struct{
 		OTAStr      string
 	    TxRandomStr string
-	    Amount      uintMaybeString
+	    Amount      metadataCommon.Uint64Reader
 	    TokenName   string
 	    TokenSymbol string
 	    MetadataBase

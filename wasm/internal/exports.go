@@ -538,48 +538,6 @@ func VerifyReceivedTx(paramsJson string) (int64, error) {
 	return recvTxIndex, err
 }
 
-const AES_BLOCK_SIZE = 16
-
-func AesEncrypt(args string) (string, error) {
-	raw, err := hex.DecodeString(args)
-	if err != nil {
-		return "", err
-	}
-	if len(raw) < AES_BLOCK_SIZE {
-		return "", errors.New("Invalid size for symmetric key")
-	}
-	symmetricKey := raw[0:AES_BLOCK_SIZE]
-	msgBytes := raw[AES_BLOCK_SIZE:]
-	aesScheme := &common.AES{
-		Key: symmetricKey,
-	}
-	ct, err := aesScheme.Encrypt(msgBytes)
-	if err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(ct), nil
-}
-
-func AesDecrypt(args string) (string, error) {
-	raw, err := hex.DecodeString(args)
-	if err != nil {
-		return "", err
-	}
-	if len(raw) < AES_BLOCK_SIZE {
-		return "", errors.New("Invalid size for symmetric key")
-	}
-	symmetricKey := raw[0:AES_BLOCK_SIZE]
-	ct := raw[AES_BLOCK_SIZE:]
-	aesScheme := &common.AES{
-		Key: symmetricKey,
-	}
-	pt, err := aesScheme.Decrypt(ct)
-	if err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(pt), nil
-}
-
 func SetShardCount(_ string, num int64) (string, error) {
 	common.MaxShardNumber = int(num)
 	return "", nil
@@ -651,4 +609,18 @@ func GenerateBTCMultisigAddress(args string) (string, error) {
 	addrStr := addr.EncodeAddress()
 
 	return addrStr, nil
+}
+
+func CreateOTAReceiver(paramStr string) (string, error) {
+	kw, err := wallet.Base58CheckDeserialize(paramStr)
+	if err != nil {
+		return "", err
+	}
+
+	var recv privacy.OTAReceiver
+	err = recv.FromAddress(kw.KeySet.PaymentAddress)
+	if err != nil {
+		return "", err
+	}
+	return recv.String()
 }

@@ -2,8 +2,10 @@ package metadata
 
 import (
 	"encoding/json"
-	"incognito-chain/common"
 	"strconv"
+
+	"incognito-chain/common"
+	metadataCommon "incognito-chain/metadata/common"
 )
 
 // PDEFeeWithdrawalRequest - privacy dex withdrawal request
@@ -69,7 +71,7 @@ func (pc *PDEFeeWithdrawalRequest) UnmarshalJSON(raw []byte) error {
 		WithdrawerAddressStr  string
 		WithdrawalToken1IDStr string
 		WithdrawalToken2IDStr string
-		WithdrawalFeeAmt      uintMaybeString
+		WithdrawalFeeAmt      metadataCommon.Uint64Reader
 		MetadataBaseWithSignature
 	}
 	err := json.Unmarshal(raw, &temp)
