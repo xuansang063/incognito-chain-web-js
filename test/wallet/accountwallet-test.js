@@ -751,11 +751,9 @@ async function createAccountByPrivateKey(privateKey) {
       data
     );
     const authToken = authTokenDt.data.Result.Token;
-    console.log("authToken", authToken);
     account.setAuthToken(authToken);
     account.setRPCApiServices(rpcApiService, authToken);
     await account.setKey(privateKey);
-    console.log("INFO", await account.getDeserializeInformation());
     return account;
   } catch (error) {
     console.log("ERROR CREATE ACCOUNT", privateKey, error);
@@ -1104,71 +1102,201 @@ async function TestVerifierTx() {
   }
 }
 
+async function TestFollowDefaultPool(pDexV3Instance) {
+  const listPools = await pDexV3Instance.getListPools();
+  const poolsIDs = listPools.map((pool) => pool.poolId);
+  console.log("\npoolsIDs", poolsIDs);
+  const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolsIDs);
+  console.log("listPoolsDetail", listPoolsDetail);
+  await pDexV3Instance.followingDefaultPools({ poolsIDs });
+  const isFollowedDefaultPools = await pDexV3Instance.isFollowedDefaultPools();
+  let getListFollowingPools = await pDexV3Instance.getListFollowingPools();
+  console.log(
+    "isFollowedDefaultPools",
+    isFollowedDefaultPools,
+    "getListFollowingPools",
+    getListFollowingPools
+  );
+  await pDexV3Instance.removeFollowingPool({ poolId: "111" });
+  getListFollowingPools = await pDexV3Instance.getListFollowingPools();
+  console.log("getListFollowingPools", getListFollowingPools);
+}
+
+async function TestNFToken(pDexV3Instance) {
+  try {
+    // const tx = await pDexV3Instance.createAndMintNftTx({
+    //   transfer: {},
+    //   extra: { version: privacyVersion },
+    // });
+    // console.log("tx", tx);
+    const nftTokenData = await pDexV3Instance.getNFTTokenData({
+      version: privacyVersion,
+    });
+    console.log("nftTokenData", nftTokenData);
+  } catch (error) {
+    console.log("error-TestNFToken", error);
+  }
+}
+
+const ETHID =
+  "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
+
+async function TestSwap(pDexV3Instance) {
+  try {
+    const tokenIDToSell = ETHID;
+    const sellAmount = 1e9;
+    const tokenIDToBuy = PRVID;
+    const tradingFee = 1e3;
+    const feeToken = PRVID;
+    const tradePath = "PRV->USDT->ETH";
+    const isTradingFeeInPRV = feeToken === PRVID;
+    const txSwap = await pDexV3Instance.createAndSendSwapRequestTx({
+      transfer: { fee: 100, info: "Swap" },
+      extra: {
+        tokenIDToSell,
+        sellAmount,
+        tokenIDToBuy,
+        tradingFee,
+        tradePath,
+        isTradingFeeInPRV,
+        version: privacyVersion,
+      },
+    });
+    console.log("txSwap", txSwap);
+  } catch (error) {
+    console.log("error-TestSwap", error);
+  }
+}
+
+async function TestOrderLimit(pDexV3Instance) {
+  try {
+    // try {
+    //   const tx = await pDexV3Instance.createAndSendOrderRequestTx({
+    //     transfer: { fee: 100 },
+    //     extra: {
+    //       tokenIDToSell: PRVID,
+    //       poolPairID: "111",
+    //       sellAmount: 1e9,
+    //       nftID: "nfttokenid",
+    //       version: privacyVersion,
+    //     },
+    //   });
+    //   console.log("tx", tx);
+    // } catch (error) {
+    //   console.log("error", error);
+    // }
+    try {
+      const txCancel = await pDexV3Instance.createAndSendCancelOrderRequestTx({
+        transfer: { fee: 100 },
+        extra: {
+          withdrawTokenID: "123456",
+          poolPairID: "111",
+          orderID: "1234",
+          amount: 1e9,
+          nftID: "nftid",
+          version: privacyVersion,
+        },
+      });
+      console.log("txCancel", txCancel);
+    } catch (error) {
+      console.log("error", error);
+    }
+  } catch (error) {
+    console.log("TestOrderLimit", error);
+  }
+}
+
+async function TestApiTradeServices(pDexV3Instance) {
+  try {
+    const poolid = "111";
+    // const tradingVolume24h = await pDexV3Instance.getTradingVolume24h(poolid);
+    // console.log("tradingVolume24h", tradingVolume24h);
+    // const listPools = await pDexV3Instance.getListPools();
+    // console.log("listPools", listPools);
+    // const poolIDS = listPools.map((pool) => pool.poolId);
+    // console.log("poolIDS", poolIDS);
+    // const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolIDS);
+    // console.log("listPoolsDetail", listPoolsDetail);
+    // const listPair = await pDexV3Instance.getListPair();
+    // console.log(listPair);
+    // const estTrade = await pDexV3Instance.getEstimateTrade({
+    //   selltoken: "1",
+    //   buytoken: "2",
+    //   amount: 1,
+    //   feetoken: "feetoken",
+    // });
+    // console.log(estTrade);
+    // const orderBook = await pDexV3Instance.getOrderBook({
+    //   poolid: "1",
+    //   decimal: 0.1,
+    // });
+    // console.log(orderBook);
+    // const pricehistory = await pDexV3Instance.getPriceHistory({
+    //   poolid: "1",
+    //   period: "15m",
+    //   datapoint: 20,
+    //   fromtime: new Date().getTime(),
+    // });
+    // console.log(pricehistory);
+    // const history = await pDexV3Instance.getHistory({
+    //   poolid: "1",
+    // });
+    // console.log(history);
+  } catch (error) {
+    console.log("error here", error);
+  }
+}
+
 async function TestTradeService() {
   //Trade services
   let pDexV3Instance = new PDexV3();
   const account = await createAccountByPrivateKey(
-    "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
+    "112t8rnYU5yDsbyr2RGvUYxvLf1a6FozJovLryicMY9Qoxawnnv42pXKQgnTTmiuCuXi5ccBghjuhPnpRZ4iDMV7a9GNDbVoSyCvc82GFJsr"
   );
-  const accountInfo = await account.getDeserializeInformation();
-  console.log("accountInfo", accountInfo);
-  pDexV3Instance.setAccount(accountInfo);
+  pDexV3Instance.setAccount(account);
   pDexV3Instance.setRPCTradeService(
     "https://54ed4c3d-993b-4fc1-accd-7e7e72122248.mock.pstmn.io"
   );
   pDexV3Instance.setStorageServices(new StorageServices());
-  const poolid = "1234";
-  const txCancel = {
-    cancelTxId: "1",
-    requesttx: "1",
-    status: -1,
-  };
-  const txCancel2 = {
-    cancelTxId: "2",
-    requesttx: "2",
-    status: -1,
-  };
-  await pDexV3Instance.setCancelingOrderTx({
-    poolid,
-    txCancel,
-  });
-  const cancelingTxs = await pDexV3Instance.getCancelingOrderTxs({
-    poolid,
-  });
-  console.log("cancelingTxs", cancelingTxs);
-  return;
+  // const keyInfo = await accoun\t.getKeyInfo({
+  //   version: privacyVersion,
+  // });
+  return await TestNFToken(pDexV3Instance);
+  // return await TestFollowDefaultPool(pDexV3Instance)
+  // return await TestSwap(pDexV3Instance);
+  // return await TestOrderLimit(pDexV3Instance);
+  return await TestApiTradeServices(pDexV3Instance);
+  // const poolid = "1234";
+  // const txCancel = {
+  //   cancelTxId: "1",
+  //   requesttx: "1",
+  //   status: -1,
+  // };
+  // const txCancel2 = {
+  //   cancelTxId: "2",
+  //   requesttx: "2",
+  //   status: -1,
+  // };
+  // await pDexV3Instance.setCancelingOrderTx({
+  //   poolid,
+  //   txCancel,
+  // });
+  // const cancelingTxs = await pDexV3Instance.getCancelingOrderTxs({
+  //   poolid,
+  // });
+  // console.log("cancelingTxs", cancelingTxs);
   // const volume = await pDexV3Instance.getTradingVolume24h("all");
   // console.log("volume", volume);
-  // const listPools = await pDexV3Instance.getListPools();
-  // const poolsIDs = listPools.map((pool) => pool.poolId);
-  // console.log("\npoolsIDs", poolsIDs);
-  // await pDexV3Instance.followingDefaultPools({ poolsIDs });
-  // const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolsIDs);
-  // console.log("listPoolsDetail", listPoolsDetail);
-  // const isFollowedDefaultPools = await pDexV3Instance.isFollowedDefaultPools();
-  // let getListFollowingPools = await pDexV3Instance.getListFollowingPools();
-  // console.log(
-  //   "isFollowedDefaultPools",
-  //   isFollowedDefaultPools,
-  //   "getListFollowingPools",
-  //   getListFollowingPools
-  // );
-  // await pDexV3Instance.removeFollowingPool({ poolId: "111" });
-  // getListFollowingPools = await pDexV3Instance.getListFollowingPools();
-  // console.log(listPoolsDetail);
-  // const listShare = await pDexV3Instance.getListShare(
-  //   "14yCTpkbAxREZ7GPVBe7hF3U71F9vjVBrEf8fjTbx7efRWfsYQd7bEzHuAjqu1JBUgyCfpYWdDzdi2iocw3sK7Ekvfua4wNuQJW3npC"
-  // );
-  // console.log("listShare", listShare);
 
-  const listState = await pDexV3Instance.getListState();
-  console.log(listState);
+  // const listShare = await pDexV3Instance.getListShare();
+  // console.log("listShare", listShare);
+  // const listState = await pDexV3Instance.getListState();
+  // console.log("listState", listState);
   const estTrade = await pDexV3Instance.getEstimateTrade({
     selltoken: PRVID,
     buytoken: "0fff",
     amount: 1e5,
     feetoken: PRVID,
-    poolid: "prv-eth",
   });
   console.log("estTrade", estTrade);
   const orders = await pDexV3Instance.getOpenOrders({ poolid: "prv-eth" });
@@ -1259,11 +1387,30 @@ async function TestWalletBackup() {
   }
 }
 
+const keyboardNumberArr = () => {
+  const keyboard = ["", "AB", "DE"];
+  const input = 234;
+  let result = "";
+  const findAllString = (arrStr, result) => {
+    for (str of arrStr) {
+      // A B C
+    }
+  };
+  const findString = (str) => {
+    for (i of str) {
+      console.log("i", i);
+      findString(ke);
+    }
+  };
+  findAllString(keyboard); // ["ABC", "DEF", "GHI"]
+};
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
+  // return keyboardNumberArr();
   return await TestTradeService();
   // return await TestCreateAndSendNativeToken();
   // return TestVerifierTx();
