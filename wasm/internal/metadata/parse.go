@@ -116,6 +116,16 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &metadataPdexv3.WithdrawOrderResponse{}
 	case metadataCommon.Pdexv3UserMintNftRequestMeta:
 		md = &metadataPdexv3.UserMintNftRequest{}
+		case metadataCommon.Pdexv3StakingRequestMeta:
+		md = &metadataPdexv3.StakingRequest{}
+	case metadataCommon.Pdexv3UnstakingRequestMeta:
+		md = &metadataPdexv3.UnstakingRequest{}
+	case metadataCommon.Pdexv3WithdrawLPFeeRequestMeta:
+		md = &metadataPdexv3.WithdrawalLPFeeRequest{}
+	case metadataCommon.Pdexv3WithdrawProtocolFeeRequestMeta:
+		md = &metadataPdexv3.WithdrawalProtocolFeeRequest{}
+	case metadataCommon.Pdexv3WithdrawStakingRewardRequestMeta:
+		md = &metadataPdexv3.WithdrawalStakingRewardRequest{}
 	default:
 		return nil, errors.Errorf("Could not parse metadata with type: %d", theType)
 	}

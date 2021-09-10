@@ -2,17 +2,14 @@ package pdexv3
 
 import (
 	"encoding/json"
-	"strconv"
 
-	"incognito-chain/common"
 	metadataCommon "incognito-chain/metadata/common"
 )
 
 type AddLiquidityRequest struct {
 	poolPairID  string // only "" for the first contribution of pool
 	pairHash    string
-	otaReceive  string // receive nfct
-	otaRefund   string // refund pToken
+	otaReceiver string // receive nfct
 	tokenID     string
 	nftID       string
 	tokenAmount uint64
@@ -26,7 +23,7 @@ func NewAddLiquidity() *AddLiquidityRequest {
 
 func NewAddLiquidityRequestWithValue(
 	poolPairID, pairHash,
-	otaReceive, otaRefund,
+	otaReceiver,
 	tokenID, nftID string, tokenAmount uint64, amplifier uint,
 ) *AddLiquidityRequest {
 	metadataBase := metadataCommon.MetadataBase{
@@ -35,8 +32,7 @@ func NewAddLiquidityRequestWithValue(
 	return &AddLiquidityRequest{
 		poolPairID:   poolPairID,
 		pairHash:     pairHash,
-		otaReceive:   otaReceive,
-		otaRefund:    otaRefund,
+		otaReceiver:  otaReceiver,
 		tokenID:      tokenID,
 		nftID:        nftID,
 		tokenAmount:  tokenAmount,
@@ -45,27 +41,11 @@ func NewAddLiquidityRequestWithValue(
 	}
 }
 
-func (request *AddLiquidityRequest) Hash() *common.Hash {
-	record := request.MetadataBase.Hash().String()
-	record += request.poolPairID
-	record += request.pairHash
-	record += request.otaReceive
-	record += request.otaRefund
-	record += request.tokenID
-	record += request.nftID
-	record += strconv.FormatUint(uint64(request.amplifier), 10)
-	record += strconv.FormatUint(request.tokenAmount, 10)
-	// final hash
-	hash := common.HashH([]byte(record))
-	return &hash
-}
-
 func (request *AddLiquidityRequest) MarshalJSON() ([]byte, error) {
 	data, err := json.Marshal(struct {
 		PoolPairID  string `json:"PoolPairID"` // only "" for the first contribution of pool
 		PairHash    string `json:"PairHash"`
-		OtaReceive  string `json:"OtaReceive"` // receive nfct
-		OtaRefund   string `json:"OtaRefund"`  // refund pToken
+		OtaReceiver string `json:"OtaReceiver"` // receive nfct
 		TokenID     string `json:"TokenID"`
 		NftID       string `json:"NftID"`
 		TokenAmount uint64 `json:"TokenAmount"`
@@ -74,8 +54,7 @@ func (request *AddLiquidityRequest) MarshalJSON() ([]byte, error) {
 	}{
 		PoolPairID:   request.poolPairID,
 		PairHash:     request.pairHash,
-		OtaReceive:   request.otaReceive,
-		OtaRefund:    request.otaRefund,
+		OtaReceiver:  request.otaReceiver,
 		TokenID:      request.tokenID,
 		NftID:        request.nftID,
 		TokenAmount:  request.tokenAmount,
@@ -92,8 +71,7 @@ func (request *AddLiquidityRequest) UnmarshalJSON(data []byte) error {
 	temp := struct {
 		PoolPairID  string `json:"PoolPairID"` // only "" for the first contribution of pool
 		PairHash    string `json:"PairHash"`
-		OtaReceive  string `json:"OtaReceive"` // receive nfct
-		OtaRefund   string `json:"OtaRefund"`  // refund pToken
+		OtaReceiver string `json:"OtaReceiver"` // receive nfct
 		TokenID     string `json:"TokenID"`
 		NftID       string `json:"NftID"`
 		TokenAmount uint64 `json:"TokenAmount"`
@@ -106,8 +84,7 @@ func (request *AddLiquidityRequest) UnmarshalJSON(data []byte) error {
 	}
 	request.poolPairID = temp.PoolPairID
 	request.pairHash = temp.PairHash
-	request.otaReceive = temp.OtaReceive
-	request.otaRefund = temp.OtaRefund
+	request.otaReceiver = temp.OtaReceiver
 	request.tokenID = temp.TokenID
 	request.nftID = temp.NftID
 	request.tokenAmount = temp.TokenAmount
@@ -124,12 +101,8 @@ func (request *AddLiquidityRequest) PairHash() string {
 	return request.pairHash
 }
 
-func (request *AddLiquidityRequest) OtaReceive() string {
-	return request.otaReceive
-}
-
-func (request *AddLiquidityRequest) OtaRefund() string {
-	return request.otaRefund
+func (request *AddLiquidityRequest) OtaReceiver() string {
+	return request.otaReceiver
 }
 
 func (request *AddLiquidityRequest) TokenID() string {

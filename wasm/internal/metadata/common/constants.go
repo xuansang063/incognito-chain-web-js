@@ -53,21 +53,34 @@ const (
 	PDETradingFeesDistributionMeta        = 209
 
 	// pDEX v3
-	Pdexv3ModifyParamsMeta              = 270
-	Pdexv3AddLiquidityRequestMeta       = 271
-	Pdexv3AddLiquidityResponseMeta      = 272
-	Pdexv3WithdrawLiquidityRequestMeta  = 273
-	Pdexv3WithdrawLiquidityResponseMeta = 274
-	Pdexv3TradeRequestMeta              = 275
-	Pdexv3TradeResponseMeta             = 276
-	Pdexv3AddOrderRequestMeta           = 277
-	Pdexv3AddOrderResponseMeta          = 278
-	Pdexv3WithdrawOrderRequestMeta      = 279
-	Pdexv3WithdrawOrderResponseMeta     = 280
-	Pdexv3UserMintNftRequestMeta        = 281
-	Pdexv3UserMintNftResponseMeta       = 282
-	Pdexv3MintNftRequestMeta            = 283
-	Pdexv3MintNftResponseMeta           = 284
+	Pdexv3ModifyParamsMeta                  = 270
+	Pdexv3AddLiquidityRequestMeta           = 271
+	Pdexv3AddLiquidityResponseMeta          = 272
+	Pdexv3WithdrawLiquidityRequestMeta      = 273
+	Pdexv3WithdrawLiquidityResponseMeta     = 274
+	Pdexv3TradeRequestMeta                  = 275
+	Pdexv3TradeResponseMeta                 = 276
+	Pdexv3AddOrderRequestMeta               = 277
+	Pdexv3AddOrderResponseMeta              = 278
+	Pdexv3WithdrawOrderRequestMeta          = 279
+	Pdexv3WithdrawOrderResponseMeta         = 280
+	Pdexv3UserMintNftRequestMeta            = 281
+	Pdexv3UserMintNftResponseMeta           = 282
+	Pdexv3MintNftRequestMeta                = 283
+	Pdexv3MintNftResponseMeta               = 284
+	Pdexv3StakingRequestMeta                = 285
+	Pdexv3StakingResponseMeta               = 286
+	Pdexv3UnstakingRequestMeta              = 287
+	Pdexv3UnstakingResponseMeta             = 288
+	Pdexv3WithdrawLPFeeRequestMeta          = 289
+	Pdexv3WithdrawLPFeeResponseMeta         = 290
+	Pdexv3WithdrawProtocolFeeRequestMeta    = 291
+	Pdexv3WithdrawProtocolFeeResponseMeta   = 292
+	Pdexv3MintPDEXGenesisMeta               = 293
+	Pdexv3MintBlockRewardMeta               = 294
+	Pdexv3DistributeStakingRewardMeta       = 295
+	Pdexv3WithdrawStakingRewardRequestMeta  = 296
+	Pdexv3WithdrawStakingRewardResponseMeta = 297
 
 	// portal
 	PortalCustodianDepositMeta                  = 100
