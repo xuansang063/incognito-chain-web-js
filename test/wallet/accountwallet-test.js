@@ -1211,21 +1211,21 @@ async function TestApiTradeServices(pDexV3Instance) {
     const poolid = "111";
     // const tradingVolume24h = await pDexV3Instance.getTradingVolume24h(poolid);
     // console.log("tradingVolume24h", tradingVolume24h);
-    // const listPools = await pDexV3Instance.getListPools();
-    // console.log("listPools", listPools);
-    // const poolIDS = listPools.map((pool) => pool.poolId);
-    // console.log("poolIDS", poolIDS);
-    // const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolIDS);
-    // console.log("listPoolsDetail", listPoolsDetail);
-    // const listPair = await pDexV3Instance.getListPair();
-    // console.log(listPair);
-    // const estTrade = await pDexV3Instance.getEstimateTrade({
-    //   selltoken: "1",
-    //   buytoken: "2",
-    //   amount: 1,
-    //   feetoken: "feetoken",
-    // });
-    // console.log(estTrade);
+    const listPools = await pDexV3Instance.getListPools();
+    console.log("listPools", listPools);
+    const poolIDS = listPools.map((pool) => pool.poolId);
+    console.log("poolIDS", poolIDS);
+    const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolIDS);
+    console.log("listPoolsDetail", listPoolsDetail);
+    const listPair = await pDexV3Instance.getListPair();
+    console.log(listPair);
+    const estTrade = await pDexV3Instance.getEstimateTrade({
+      selltoken: "1",
+      buytoken: "2",
+      amount: 1,
+      feetoken: "feetoken",
+    });
+    console.log(estTrade);
     // const orderBook = await pDexV3Instance.getOrderBook({
     //   poolid: "1",
     //   decimal: 0.1,
@@ -1261,7 +1261,7 @@ async function TestTradeService() {
   // const keyInfo = await accoun\t.getKeyInfo({
   //   version: privacyVersion,
   // });
-  return await TestNFToken(pDexV3Instance);
+  // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
   // return await TestSwap(pDexV3Instance);
   // return await TestOrderLimit(pDexV3Instance);
