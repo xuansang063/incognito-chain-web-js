@@ -282,9 +282,9 @@ func (params *InitParamsAsm) GetGenericParams() *TxPrivacyInitParams{
 
 	md, err := metadata.ParseMetadata(params.Metadata)
 	if err!=nil{
+		println("Cannot parse metadata")
 		println(string(params.Metadata))
 		println(err.Error())
-		println("BAD MD")
 		return nil
 	}
 	var info []byte = []byte("")

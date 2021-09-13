@@ -89,7 +89,7 @@
 - (nonnull instancetype)init;
 @property (nonatomic) long numInputCoins;
 @property (nonatomic) long numPayments;
-// skipped field EstimateTxSizeParam.Metadata with unsupported type: incognito-chain/metadata.Metadata
+// skipped field EstimateTxSizeParam.Metadata with unsupported type: incognito-chain/metadata/common.Metadata
 
 @property (nonatomic) GomobileTokenInnerParams* _Nullable privacyCustomTokenParams;
 @end
@@ -207,7 +207,7 @@
 @property (nonatomic) NSData* _Nullable sig;
 // skipped field Tx.Proof with unsupported type: incognito-chain/privacy/proof.Proof
 
-// skipped field Tx.Metadata with unsupported type: incognito-chain/metadata.Metadata
+// skipped field Tx.Metadata with unsupported type: incognito-chain/metadata/common.Metadata
 
 // skipped method Tx.Hash with unsupported parameter or return types
 
@@ -235,7 +235,7 @@
 @property (nonatomic) BOOL hasPrivacy;
 // skipped field TxPrivacyInitParams.TokenID with unsupported type: *incognito-chain/common.Hash
 
-// skipped field TxPrivacyInitParams.Metadata with unsupported type: incognito-chain/metadata.Metadata
+// skipped field TxPrivacyInitParams.Metadata with unsupported type: incognito-chain/metadata/common.Metadata
 
 @property (nonatomic) NSData* _Nullable info;
 @end
@@ -309,12 +309,11 @@
 @property (nonatomic) GomobileTokenParam* _Nullable tokenParams;
 @property (nonatomic) BOOL hasPrivacyCoin;
 @property (nonatomic) BOOL hasPrivacyToken;
-// skipped field TxTokenParams.Metadata with unsupported type: incognito-chain/metadata.Metadata
+// skipped field TxTokenParams.Metadata with unsupported type: incognito-chain/metadata/common.Metadata
 
 @property (nonatomic) NSData* _Nullable info;
 @end
 
-FOUNDATION_EXPORT const int64_t GomobileAES_BLOCK_SIZE;
 FOUNDATION_EXPORT const int64_t GomobileCustomTokenCrossShard;
 FOUNDATION_EXPORT const int64_t GomobileCustomTokenInit;
 FOUNDATION_EXPORT const int64_t GomobileCustomTokenTransfer;
@@ -337,13 +336,11 @@ FOUNDATION_EXPORT NSString* _Nonnull const GomobileTxTokenConversionType;
 
 @end
 
-FOUNDATION_EXPORT NSString* _Nonnull GomobileAesDecrypt(NSString* _Nullable args, NSError* _Nullable* _Nullable error);
-
-FOUNDATION_EXPORT NSString* _Nonnull GomobileAesEncrypt(NSString* _Nullable args, NSError* _Nullable* _Nullable error);
-
 FOUNDATION_EXPORT NSString* _Nonnull GomobileCreateCoin(NSString* _Nullable paramStr, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSString* _Nonnull GomobileCreateConvertTx(NSString* _Nullable args, int64_t num, NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT NSString* _Nonnull GomobileCreateOTAReceiver(NSString* _Nullable paramStr, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSString* _Nonnull GomobileCreateTransaction(NSString* _Nullable args, int64_t num, NSError* _Nullable* _Nullable error);
 

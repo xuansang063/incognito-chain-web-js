@@ -12,7 +12,6 @@ import (
 type WithdrawOrderRequest struct {
 	PoolPairID string                              `json:"PoolPairID"`
 	OrderID    string                              `json:"OrderID"`
-	TokenID    common.Hash                         `json:"TokenID"`
 	Amount     uint64                              `json:"Amount"`
 	Receiver   map[common.Hash]privacy.OTAReceiver `json:"Receiver"`
 	NftID      common.Hash                         `json:"NftID"`
@@ -21,7 +20,6 @@ type WithdrawOrderRequest struct {
 
 func NewWithdrawOrderRequest(
 	pairID, orderID string,
-	tokenID common.Hash,
 	amount uint64,
 	recv map[common.Hash]privacy.OTAReceiver,
 	nftID common.Hash,
@@ -30,7 +28,6 @@ func NewWithdrawOrderRequest(
 	r := &WithdrawOrderRequest{
 		PoolPairID: pairID,
 		OrderID:    orderID,
-		TokenID:    tokenID,
 		Amount:     amount,
 		Receiver:   recv,
 		NftID:      nftID,
