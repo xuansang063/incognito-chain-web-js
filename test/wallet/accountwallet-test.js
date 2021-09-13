@@ -1405,13 +1405,29 @@ const keyboardNumberArr = () => {
   findAllString(keyboard); // ["ABC", "DEF", "GHI"]
 };
 
+async function TestStakingServices() {
+  //Trade services
+  let pDexV3Instance = new PDexV3();
+  const account = await createAccountByPrivateKey(
+    "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
+  );
+  const accountInfo = await account.getDeserializeInformation();
+  console.log("accountInfo", accountInfo);
+  pDexV3Instance.setAccount(accountInfo);
+  pDexV3Instance.setRPCTradeService(
+    "https://54ed4c3d-993b-4fc1-accd-7e7e72122248.mock.pstmn.io"
+  );
+  pDexV3Instance.setStorageServices(new StorageServices());
+  const histories = await pDexV3Instance.getStakingHistories({ tokenID: '0004', nftID: '124' });
+  // const stakingInfo = await pDexV3Instance.getStakingData();
+  // console.log('histories', histories)
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
-  await setup();
-  // return keyboardNumberArr();
-  return await TestTradeService();
+  return await setup();
   // return await TestCreateAndSendNativeToken();
   // return TestVerifierTx();
   // return await TestLoadWallet();
