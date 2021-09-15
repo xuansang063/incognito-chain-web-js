@@ -1148,21 +1148,23 @@ async function TestSwap(pDexV3Instance) {
     const tokenIDToBuy = PRVID;
     const tradingFee = 1e3;
     const feeToken = PRVID;
-    const tradePath = "PRV->USDT->ETH";
+    const tradePath = ["1-2", "3-4"];
     const isTradingFeeInPRV = feeToken === PRVID;
-    const txSwap = await pDexV3Instance.createAndSendSwapRequestTx({
-      transfer: { fee: 100, info: "Swap" },
-      extra: {
-        tokenIDToSell,
-        sellAmount,
-        tokenIDToBuy,
-        tradingFee,
-        tradePath,
-        isTradingFeeInPRV,
-        version: privacyVersion,
-      },
-    });
-    console.log("txSwap", txSwap);
+    // const txSwap = await pDexV3Instance.createAndSendSwapRequestTx({
+    //   transfer: { fee: 100, info: "Swap" },
+    //   extra: {
+    //     tokenIDToSell,
+    //     sellAmount,
+    //     tokenIDToBuy,
+    //     tradingFee,
+    //     tradePath,
+    //     isTradingFeeInPRV,
+    //     version: privacyVersion,
+    //   },
+    // });
+    // console.log("txSwap", txSwap);
+    const history = await pDexV3Instance.getHistory();
+    console.log("history", history);
   } catch (error) {
     console.log("error-TestSwap", error);
   }
@@ -1259,6 +1261,7 @@ async function TestTradeService() {
     "http://51.161.119.66:7001"
   );
   pDexV3Instance.setStorageServices(new StorageServices());
+  return console.log(await pDexV3Instance.getListPair());
   // const keyInfo = await accoun\t.getKeyInfo({
   //   version: privacyVersion,
   // });
@@ -1419,7 +1422,10 @@ async function TestStakingServices() {
     "https://54ed4c3d-993b-4fc1-accd-7e7e72122248.mock.pstmn.io"
   );
   pDexV3Instance.setStorageServices(new StorageServices());
-  const histories = await pDexV3Instance.getStakingHistories({ tokenID: '0004', nftID: '124' });
+  const histories = await pDexV3Instance.getStakingHistories({
+    tokenID: "0004",
+    nftID: "124",
+  });
   // const stakingInfo = await pDexV3Instance.getStakingData();
   // console.log('histories', histories)
 }
