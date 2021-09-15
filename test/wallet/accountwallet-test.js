@@ -1209,14 +1209,15 @@ async function TestOrderLimit(pDexV3Instance) {
 async function TestApiTradeServices(pDexV3Instance) {
   try {
     const poolid = "111";
+    const pairId = '0000000000000000000000000000000000000000000000000000000000000004-1411bdcae86863b0c09d94de0c6617d6729f0c5b550f6aac236931b8989207c1'
     // const tradingVolume24h = await pDexV3Instance.getTradingVolume24h(poolid);
     // console.log("tradingVolume24h", tradingVolume24h);
-    const listPools = await pDexV3Instance.getListPools();
-    console.log("listPools", listPools);
-    const poolIDS = listPools.map((pool) => pool.poolId);
-    console.log("poolIDS", poolIDS);
-    const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolIDS);
-    console.log("listPoolsDetail", listPoolsDetail);
+    // const listPools = await pDexV3Instance.getListPools(pairId);
+    // console.log("listPools", listPools);
+    // const poolIDS = listPools.map((pool) => pool.poolId);
+    // console.log("poolIDS", poolIDS);
+    // const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolIDS);
+    // console.log("listPoolsDetail", listPoolsDetail);
     const listPair = await pDexV3Instance.getListPair();
     console.log(listPair);
     const estTrade = await pDexV3Instance.getEstimateTrade({
@@ -1255,7 +1256,7 @@ async function TestTradeService() {
   );
   pDexV3Instance.setAccount(account);
   pDexV3Instance.setRPCTradeService(
-    "https://54ed4c3d-993b-4fc1-accd-7e7e72122248.mock.pstmn.io"
+    "http://51.161.119.66:7001"
   );
   pDexV3Instance.setStorageServices(new StorageServices());
   // const keyInfo = await accoun\t.getKeyInfo({
@@ -1288,8 +1289,8 @@ async function TestTradeService() {
   // const volume = await pDexV3Instance.getTradingVolume24h("all");
   // console.log("volume", volume);
 
-  // const listShare = await pDexV3Instance.getListShare();
-  // console.log("listShare", listShare);
+  const listShare = await pDexV3Instance.getListShare();
+  console.log("listShare", listShare);
   // const listState = await pDexV3Instance.getListState();
   // console.log("listState", listState);
   const estTrade = await pDexV3Instance.getEstimateTrade({
@@ -1423,11 +1424,39 @@ async function TestStakingServices() {
   // console.log('histories', histories)
 }
 
+async function TestLiquidity() {
+  //Liquidity services
+  let pDexV3Instance = new PDexV3();
+  const account = await createAccountByPrivateKey(
+    "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
+  );
+  pDexV3Instance.setAccount(account);
+  pDexV3Instance.setRPCTradeService("http://51.161.119.66:7001");
+  pDexV3Instance.setRPCClient("http://139.162.55.124:18334")
+  pDexV3Instance.setStorageServices(new StorageServices());
+  const poolId =
+    '0000000000000000000000000000000000000000000000000000000000000004-92f9e5aa0683568d041af306d8b029f919bb1cd432241fd751b6f0a8ac0ccc98-69f37874ad8a7ceefb29854a9306c425d26727ad4910497c6cf6de0232293227'
+  const now = new Date().getTime()
+  const res = await pDexV3Instance.createAndSendContributeRequestTx({
+    transfer: { fee: 100, info: "", tokenID: PRVID },
+    extra: {
+      pairID: poolId,
+      pairHash: `${now}`,
+      contributedAmount: 100,
+      nftID: "1234",
+      amplifier: 20000,
+      version: privacyVersion
+    }
+  })
+  console.log('res', res)
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
-  return await setup();
+  await setup();
+  return TestLiquidity();
   // return await TestCreateAndSendNativeToken();
   // return TestVerifierTx();
   // return await TestLoadWallet();
