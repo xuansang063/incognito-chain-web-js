@@ -739,9 +739,11 @@ function delay(ms) {
 async function createAccountByPrivateKey(privateKey) {
   try {
     let account = new AccountWallet(Wallet);
-    account.setRPCCoinServices(rpcCoinService);
-    account.setRPCClient(rpcClient);
-    account.setRPCTxServices(rpcTxService);
+    const fullNode = 'http://139.162.55.124:18334';
+    const coinService = 'http://51.161.119.66:7001';
+    account.setRPCCoinServices(coinService);
+    account.setRPCClient(fullNode);
+    account.setRPCTxServices(`${coinService}/txservice`);
     account.setRPCRequestServices(rpcRequestService);
     const data = {
       DeviceID: deviceID,
@@ -1434,22 +1436,28 @@ async function TestLiquidity() {
   //Liquidity services
   let pDexV3Instance = new PDexV3();
   const account = await createAccountByPrivateKey(
-    "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
+    "112t8rnaoYv9FppLCA7u84ay2K6ybXcCwykzCLoLT1bD9jXiSpbh8DpTKuaJD8t9Myvk2yR1hHxAu7Ac9gmox1NpKqX5ooTefprXjE1s1nd3"
   );
   pDexV3Instance.setAccount(account);
   pDexV3Instance.setRPCTradeService("http://51.161.119.66:7001");
   pDexV3Instance.setRPCClient("http://139.162.55.124:18334")
   pDexV3Instance.setStorageServices(new StorageServices());
+  const balance = await account.getBalance({
+    tokenID: PRVID,
+    version: privacyVersion,
+  })
+  console.log('balance: ', balance)
   const poolId =
     '0000000000000000000000000000000000000000000000000000000000000004-92f9e5aa0683568d041af306d8b029f919bb1cd432241fd751b6f0a8ac0ccc98-69f37874ad8a7ceefb29854a9306c425d26727ad4910497c6cf6de0232293227'
+
   const now = new Date().getTime()
   const res = await pDexV3Instance.createAndSendContributeRequestTx({
-    transfer: { fee: 100, info: "", tokenID: PRVID },
+    transfer: { fee: 100, info: "", tokenID: '7a9dc93436cb29ba733ad03d3bdb841f6c7b8f6eba30b86217320b7be21cf9cb' },
     extra: {
-      pairID: poolId,
+      pairID: '',
       pairHash: `${now}`,
       contributedAmount: 100,
-      nftID: "1234",
+      nftID: "54cf112cbff508de73c33ab7544af0555dd7bc44dc4bfc61fedcc680b66cdba7",
       amplifier: 20000,
       version: privacyVersion
     }
