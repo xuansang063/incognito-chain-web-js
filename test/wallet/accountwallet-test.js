@@ -8,14 +8,15 @@ const {
   isOldPaymentAddress,
   VerifierTx,
   PDexV3,
+  setShardNumber,
 } = require("../../");
 const { PaymentAddressType } = constants;
 
 // const rpcClient = "https://lb-fullnode.incognito.org/fullnode";
 //  new RpcClient("https://mainnet.incognito.org/fullnode");
-const rpcClient = "https://testnet.incognito.org/fullnode";
+// const rpcClient = "https://testnet.incognito.org/fullnode";
 // const rpcClient = new RpcClient("http://localhost:9334");
-// const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
+const rpcClient = "http://139.162.55.124:18334";
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
 // const rpcClient = "https://testnet1.incognito.org/fullnode"; //testnet1
@@ -25,14 +26,15 @@ const stagingServices = "https://api-coinservice-staging.incognito.org";
 
 const rpcCoinService =
   // "https://api-coinservice.incognito.org"; //mainnet
-  stagingServices; //testnet
-// "https://api-coinservice-staging2.incognito.org"; // testnet1
-// "http://51.161.119.66:9009"; //dev-test-coin-service
-const rpcTxService = `${stagingServices}/txservice`;
+  // stagingServices; //testnet
+  // "https://api-coinservice-staging2.incognito.org"; // testnet1
+  "http://51.161.119.66:7001"; //dev-test-coin-service
+const rpcTxService = "http://51.161.119.66:7003";
+// `${stagingServices}/txservice`;
 //  "https://api-coinservice.incognito.org/txservice"; mainnet
 // "https://api-coinservice-staging.incognito.org/txservice";
 //  "https://api-coinservice-staging2.incognito.org/txservice"; // testnet1
-//  "http://51.161.119.66:8001"; //dev-test-coin-service
+
 const rpcRequestService = `${stagingServices}/airdrop-service`;
 // "https://api-coinservice.incognito.org/airdrop-service"; // mainnet
 // "http://51.161.119.66:4000"; //testnet
@@ -107,7 +109,8 @@ async function TestGetBalance() {
       // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
       // "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKoESjDGbF2J7"
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
-      "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
+      // "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
+      "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
     );
     const tokenID1 =
       "0000000000000000000000000000000000000000000000000000000000000004";
@@ -118,6 +121,7 @@ async function TestGetBalance() {
       //  tokenID2,
       // ETH
     ];
+    return console.log(typeof account.getOTAReceive());
     const keyInfo = await account.getKeyInfo({
       version: privacyVersion,
     });
@@ -739,11 +743,11 @@ function delay(ms) {
 async function createAccountByPrivateKey(privateKey) {
   try {
     let account = new AccountWallet(Wallet);
-    const fullNode = 'http://139.162.55.124:18334';
-    const coinService = 'http://51.161.119.66:7001';
+    const fullNode = rpcClient;
+    const coinService = rpcCoinService;
     account.setRPCCoinServices(coinService);
     account.setRPCClient(fullNode);
-    account.setRPCTxServices(`${coinService}/txservice`);
+    account.setRPCTxServices(rpcTxService);
     account.setRPCRequestServices(rpcRequestService);
     const data = {
       DeviceID: deviceID,
@@ -1213,7 +1217,8 @@ async function TestOrderLimit(pDexV3Instance) {
 async function TestApiTradeServices(pDexV3Instance) {
   try {
     const poolid = "111";
-    const pairId = '0000000000000000000000000000000000000000000000000000000000000004-1411bdcae86863b0c09d94de0c6617d6729f0c5b550f6aac236931b8989207c1'
+    const pairId =
+      "0000000000000000000000000000000000000000000000000000000000000004-1411bdcae86863b0c09d94de0c6617d6729f0c5b550f6aac236931b8989207c1";
     // const tradingVolume24h = await pDexV3Instance.getTradingVolume24h(poolid);
     // console.log("tradingVolume24h", tradingVolume24h);
     // const listPools = await pDexV3Instance.getListPools(pairId);
@@ -1259,9 +1264,7 @@ async function TestTradeService() {
     "112t8rnYU5yDsbyr2RGvUYxvLf1a6FozJovLryicMY9Qoxawnnv42pXKQgnTTmiuCuXi5ccBghjuhPnpRZ4iDMV7a9GNDbVoSyCvc82GFJsr"
   );
   pDexV3Instance.setAccount(account);
-  pDexV3Instance.setRPCTradeService(
-    "http://51.161.119.66:7001"
-  );
+  pDexV3Instance.setRPCTradeService("http://51.161.119.66:7001");
   pDexV3Instance.setStorageServices(new StorageServices());
   return console.log(await pDexV3Instance.getListPair());
   // const keyInfo = await accoun\t.getKeyInfo({
@@ -1435,34 +1438,64 @@ async function TestStakingServices() {
 async function TestLiquidity() {
   //Liquidity services
   let pDexV3Instance = new PDexV3();
+  // await setShardNumber(2);
   const account = await createAccountByPrivateKey(
-    "112t8rnaoYv9FppLCA7u84ay2K6ybXcCwykzCLoLT1bD9jXiSpbh8DpTKuaJD8t9Myvk2yR1hHxAu7Ac9gmox1NpKqX5ooTefprXjE1s1nd3"
+    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
   );
   pDexV3Instance.setAccount(account);
-  pDexV3Instance.setRPCTradeService("http://51.161.119.66:7001");
-  pDexV3Instance.setRPCClient("http://139.162.55.124:18334")
+  pDexV3Instance.setRPCTradeService(rpcCoinService);
+  pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
   const balance = await account.getBalance({
     tokenID: PRVID,
     version: privacyVersion,
-  })
-  console.log('balance: ', balance)
-  const poolId =
-    '0000000000000000000000000000000000000000000000000000000000000004-92f9e5aa0683568d041af306d8b029f919bb1cd432241fd751b6f0a8ac0ccc98-69f37874ad8a7ceefb29854a9306c425d26727ad4910497c6cf6de0232293227'
-
-  const now = new Date().getTime()
-  const res = await pDexV3Instance.createAndSendContributeRequestTx({
-    transfer: { fee: 100, info: "", tokenID: '7a9dc93436cb29ba733ad03d3bdb841f6c7b8f6eba30b86217320b7be21cf9cb' },
+  });
+  console.log("balance: ", balance);
+  // const txMin = await pDexV3Instance.createAndMintNftTx({
+  //   extra: { version: privacyVersion },
+  // });
+  // console.log("txMin", txMin);
+  const { nftToken: nftID } = await pDexV3Instance.getNFTTokenData({
+    version: privacyVersion,
+  });
+  console.log("nftData", nftID);
+  const now = new Date().getTime();
+  const pairID =
+    "0000000000000000000000000000000000000000000000000000000000000004-7a9dc93436cb29ba733ad03d3bdb841f6c7b8f6eba30b86217320b7be21cf9cb";
+  const pairHash = `${pairID}-PAIR-CREATE-BY-JAYCE`;
+  // const res = await pDexV3Instance.createAndSendContributeRequestTx({
+  //   transfer: {
+  //     fee: 100,
+  //     info: "",
+  //     tokenID: PRVID,
+  //   },
+  //   extra: {
+  //     pairID,
+  //     pairHash,
+  //     contributedAmount: 10e9,
+  //     nftID,
+  //     amplifier: 20000,
+  //     version: privacyVersion,
+  //   },
+  // });
+  // console.log("res", res);
+  const res2 = await pDexV3Instance.createAndSendContributeRequestTx({
+    transfer: {
+      fee: 100,
+      info: "",
+      tokenID:
+        "d422bc5132e650047265233c4774ff27e4b3bc78425b8c8f2c1fd8129a3adf36",
+    },
     extra: {
-      pairID: '',
-      pairHash: `${now}`,
-      contributedAmount: 100,
-      nftID: "54cf112cbff508de73c33ab7544af0555dd7bc44dc4bfc61fedcc680b66cdba7",
+      pairID,
+      pairHash,
+      contributedAmount: 5,
+      nftID,
       amplifier: 20000,
-      version: privacyVersion
-    }
-  })
-  console.log('res', res)
+      version: privacyVersion,
+    },
+  });
+  console.log("res2", res2);
 }
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
@@ -1486,9 +1519,9 @@ async function MainRoutine() {
   try {
     // return await TestGetTxsHistory();
     //Liquidity
-    await TestGetBalance();
+    return await TestGetBalance();
     await delay(3000);
-    await TestGetContributeHistories();
+    stGetContributeHistories();
     await delay(3000);
     await TestGetWithdrawLiquidityHistories();
     await delay(3000);
