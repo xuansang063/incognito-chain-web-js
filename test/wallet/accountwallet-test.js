@@ -1450,52 +1450,38 @@ async function TestLiquidity() {
     tokenID: PRVID,
     version: privacyVersion,
   });
+  // await pDexV3Instance.setStorageWithdrawLPWithPool({
+  //   poolId: '111111',
+  //   nftId: '22222',
+  //   txId: '9e167bad6b35370e715c204cddb79561c80d1fb20d240992d2f02cf5614dacf7',
+  // })
+  // const tsx = await pDexV3Instance.updateStatusStorageWithdrawLP();p
+  // console.log('SANG TEST: ', tsx)
   console.log("balance: ", balance);
   // const txMin = await pDexV3Instance.createAndMintNftTx({
   //   extra: { version: privacyVersion },
   // });
   // console.log("txMin", txMin);
-  const { nftToken: nftID } = await pDexV3Instance.getNFTTokenData({
+  const nft = await pDexV3Instance.getNFTTokenData({
     version: privacyVersion,
   });
-  console.log("nftData", nftID);
-  const now = new Date().getTime();
-  const pairID =
-    "0000000000000000000000000000000000000000000000000000000000000004-7a9dc93436cb29ba733ad03d3bdb841f6c7b8f6eba30b86217320b7be21cf9cb";
-  const pairHash = `${pairID}-PAIR-CREATE-BY-JAYCE`;
-  // const res = await pDexV3Instance.createAndSendContributeRequestTx({
-  //   transfer: {
-  //     fee: 100,
-  //     info: "",
-  //     tokenID: PRVID,
-  //   },
-  //   extra: {
-  //     pairID,
-  //     pairHash,
-  //     contributedAmount: 10e9,
-  //     nftID,
-  //     amplifier: 20000,
-  //     version: privacyVersion,
-  //   },
-  // });
-  // console.log("res", res);
-  const res2 = await pDexV3Instance.createAndSendContributeRequestTx({
-    transfer: {
-      fee: 100,
-      info: "",
-      tokenID:
-        "d422bc5132e650047265233c4774ff27e4b3bc78425b8c8f2c1fd8129a3adf36",
-    },
-    extra: {
-      pairID,
-      pairHash,
-      contributedAmount: 5,
-      nftID,
-      amplifier: 20000,
-      version: privacyVersion,
-    },
-  });
-  console.log("res2", res2);
+  console.log('SANG TEST: ', nft)
+  return;
+  const { nftToken: nftID } = nft;
+  const tokenId1 = PRVID;
+  const tokenId2 = '6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47';
+  const poolPairID = '0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-336821fb92dd5035beb71c94be07fe429af040e7ae25e058d5972e9bcfcc1d5d'
+  const res = await pDexV3Instance.createContributeTxs({
+    fee: 100,
+    tokenId1,
+    tokenId2,
+    amount1: 100,
+    amount2: 1000,
+    poolPairID,
+    nftID,
+    amp: 20000,
+  })
+  console.log("res", res);
 }
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
