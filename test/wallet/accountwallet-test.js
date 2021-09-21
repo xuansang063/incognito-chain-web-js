@@ -1281,7 +1281,7 @@ async function TestTradeService() {
   console.log("balance: ", balance);
   //   version: privacyVersion,
   // });
-  return await TestNFToken(pDexV3Instance);
+  // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
   // return await TestSwap(pDexV3Instance);
   return await TestOrderLimit(pDexV3Instance, account);
