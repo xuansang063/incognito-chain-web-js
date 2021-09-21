@@ -1467,7 +1467,6 @@ async function TestLiquidity() {
     await pDexV3Instance.getRemoveLPHistories(),
     await pDexV3Instance.getWithdrawFeeLPHistories(),
   ])
-  return;
   const nft = await pDexV3Instance.getNFTTokenData({
     version: privacyVersion,
   });
