@@ -1462,11 +1462,15 @@ async function TestLiquidity() {
   //   extra: { version: privacyVersion },
   // });
   // console.log("txMin", txMin);
+  await Promise.all([
+    await pDexV3Instance.getContributeHistories(),
+    await pDexV3Instance.getRemoveLPHistories(),
+    await pDexV3Instance.getWithdrawFeeLPHistories(),
+  ])
+  return;
   const nft = await pDexV3Instance.getNFTTokenData({
     version: privacyVersion,
   });
-  console.log('SANG TEST: ', nft)
-  return;
   const { nftToken: nftID } = nft;
   const tokenId1 = PRVID;
   const tokenId2 = '6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47';
