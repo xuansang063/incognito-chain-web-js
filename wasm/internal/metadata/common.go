@@ -43,9 +43,9 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &ContractingRequest{}
 	case BeaconSalaryResponseMeta:
 		md = &BeaconBlockSalaryRes{}
-	case BurningRequestMeta:
-		md = &BurningRequest{}
-	case BurningRequestMetaV2:
+	case BurningRequestMeta, BurningRequestMetaV2,
+		BurningForDepositToSCRequestMeta, BurningForDepositToSCRequestMetaV2,
+		BurningPBSCRequestMeta, BurningPRVERC20RequestMeta, BurningPRVBEP20RequestMeta:
 		md = &BurningRequest{}
 	case ShardStakingMeta:
 		md = &StakingMetadata{}
@@ -85,18 +85,12 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &RelayingHeader{}
 	case RelayingBTCHeaderMeta:
 		md = &RelayingHeader{}
-	case BurningForDepositToSCRequestMeta:
-		md = &BurningRequest{}
-	case BurningForDepositToSCRequestMetaV2:
-		md = &BurningRequest{}
 	case UnStakingMeta:
 		md = &UnStakingMetadata{}
 	case IssuingBSCRequestMeta:
 		md = &IssuingEVMRequest{}
 	case IssuingBSCResponseMeta:
 		md = &IssuingEVMResponse{}
-	case BurningPBSCRequestMeta:
-		md = &BurningRequest{}
 	case PortalV4UnshieldRequestMeta:
 		md = &PortalUnshieldRequest{}
 	default:

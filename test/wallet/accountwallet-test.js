@@ -73,7 +73,7 @@ async function setup() {
   // senderPrivateKeyStr =
   //   "1139jtfTYJysjtddB4gFs6n3iW8YiDeFKWcKyufRmsb2fsDssj3BWCYXSmNtTR277MqQgHeiXpTWGit9r9mBUJfoyob5besrF9AW9HpLC4Nf";
   senderPrivateKeyStr =
-    "112t8rnZ9qPE7C6RbrK6Ygat1H94kEkYGSd84fAGiU396yQHu8CBHmV1DDHE947d7orfHnDtKA9WCffDk7NS5zUu5CMCUHK8nkRtrv4nw6uu";
+    "112t8roacy7omk8D74mRc1AkC9R6LUxuPC2ni4i3Xi9vn3SPbjhXFPAfZcYvtBjWVt96ELrs86stFK7NPnskJMBuK7oarFygKKM7it8VeUju";
   // "112t8rniqSuDK8vdvHXGzkDzthVG6tsNtvZpvJEvZc5fUg1ts3GDPLWMZWFNbVEpNHeGx8vPLLoyaJRCUikMDqPFY1VzyRbLmLyWi4YDrS7h";
   accountSender = new AccountWallet(Wallet);
   accountSender.setRPCCoinServices(rpcCoinService);
@@ -190,6 +190,41 @@ async function TestBurningRequestTx() {
       },
     });
     console.log("Response createAndSendBurningRequestTx: ", response);
+    return response.txId;
+  } catch (e) {
+    // this tx specifically depends on bridge config, so we let it skip and review manually
+    console.error(e);
+    //
+  }
+}
+async function TestBurningPegPRVRequestTx() {
+  const BurningPRVERC20RequestMeta = 274;
+  const	BurningPRVBEP20RequestMeta = 275;
+  let fee = 100;
+  let unshieldFee = 2000;
+  let paymentAddressReceiveFee = "12shR6fDe7ZcprYn6rjLwiLcL7oJRiek66ozzYu3B3rBxYXkqJeZYj6ZWeYy4qR4UHgaztdGYQ9TgHEueRXN7VExNRGB5t4auo3jTgXVBiLJmnTL5LzqmTXezhwmQvyrRjCbED5xW7yMMeeWarKa";
+  let burningType = BurningPRVBEP20RequestMeta;
+  // create and send burning request tx
+  let response;
+  try {
+    response = await accountSender.createAndSendBurningPegPRVRequestTx({
+      transfer: {
+        fee,
+        tokenID: PRVID,
+        //unshield fee - send to wallet receive unshield fee
+        prvPayments: [{
+          paymentAddress: paymentAddressReceiveFee,
+          amount: unshieldFee,
+        }]
+      },
+      extra: {
+        burningType: burningType, 
+        remoteAddress: "d5808Ba261c91d640a2D4149E8cdb3fD4512efe4",
+        burnAmount: 69000,
+        version: privacyVersion,
+      },
+    });
+    console.log("Response createAndSendBurningPegPRVRequestTx: ", response);
     return response.txId;
   } catch (e) {
     // this tx specifically depends on bridge config, so we let it skip and review manually
@@ -1194,7 +1229,9 @@ async function TestWalletBackup() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestWalletBackup();
+  // return await TestWalletBackup();
+  // ======= test burning peg PRV =======
+  return await TestBurningPegPRVRequestTx();
   // return await TestCreateAndSendNativeToken();
   // return TestVerifierTx();
   // return await TestLoadWallet();

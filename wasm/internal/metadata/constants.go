@@ -125,6 +125,10 @@ const (
 
 	// portal v4
 	PortalV4UnshieldRequestMeta = 262
+
+	// peg PRV
+	BurningPRVERC20RequestMeta = 274
+	BurningPRVBEP20RequestMeta = 275
 )
 
 var minerCreatedMetaTypes = []int{
