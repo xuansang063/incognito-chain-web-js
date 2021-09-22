@@ -13,7 +13,7 @@
     "build:dev": "webpack --config webpack.config.js --mode development",
     "build:verifier": "./lib/verifier/build-wasm.sh && webpack --config verifier-webpack.config.js --mode development",
     "test": "yarn build:wasm; mocha \"test/**/*.spec.js\"",
-    "test-account": "clear && yarn build:dev && node ./test/wallet/accountwallet-test",
+    "test-account": "clear && yarn build && node ./test/wallet/accountwallet-test",
     "test-portal": "clear && yarn build:dev && node ./test/wallet/portal-test",
     "build:gomobile-ios": "cd wasm/internal && gomobile bind -x -v -target=ios",
     "build:gomobile-android": "cd wasm/internal && gomobile bind -x -v -target=android",

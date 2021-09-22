@@ -1131,7 +1131,6 @@ async function TestFollowDefaultPool(pDexV3Instance) {
 async function TestNFToken(pDexV3Instance) {
   try {
     // const tx = await pDexV3Instance.createAndMintNftTx({
-    //   transfer: {},
     //   extra: { version: privacyVersion },
     // });
     // console.log("tx", tx);
@@ -1178,37 +1177,44 @@ async function TestSwap(pDexV3Instance) {
 
 async function TestOrderLimit(pDexV3Instance) {
   try {
+    // const tx = await pDexV3Instance.createAndSendOrderRequestTx({
+    //   extra: {
+    //     tokenIDToSell:
+    //       "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47",
+    //     poolPairID:
+    //       "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
+    //     sellAmount: 1,
+    //     version: privacyVersion,
+    //     minAcceptableAmount: 4e9,
+    //   },
+    // });
+    // console.log("tx", tx);
+    const { nftToken: nftid } = await pDexV3Instance.getNFTTokenData({
+      version: privacyVersion,
+    });
+    console.log("nftid", nftid);
+    let history = await pDexV3Instance.getOrderLimitHistory({
+      poolid:
+        "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
+      version: privacyVersion,
+    });
+    console.log("history", history);
     // try {
-    //   const tx = await pDexV3Instance.createAndSendOrderRequestTx({
+    //   const txCancel = await pDexV3Instance.createAndSendCancelOrderRequestTx({
     //     transfer: { fee: 100 },
     //     extra: {
-    //       tokenIDToSell: PRVID,
+    //       withdrawTokenID: "123456",
     //       poolPairID: "111",
-    //       sellAmount: 1e9,
-    //       nftID: "nfttokenid",
+    //       orderID: "1234",
+    //       amount: 1e9,
+    //       nftID: "nftid",
     //       version: privacyVersion,
     //     },
     //   });
-    //   console.log("tx", tx);
+    //   console.log("txCancel", txCancel);
     // } catch (error) {
     //   console.log("error", error);
     // }
-    try {
-      const txCancel = await pDexV3Instance.createAndSendCancelOrderRequestTx({
-        transfer: { fee: 100 },
-        extra: {
-          withdrawTokenID: "123456",
-          poolPairID: "111",
-          orderID: "1234",
-          amount: 1e9,
-          nftID: "nftid",
-          version: privacyVersion,
-        },
-      });
-      console.log("txCancel", txCancel);
-    } catch (error) {
-      console.log("error", error);
-    }
   } catch (error) {
     console.log("TestOrderLimit", error);
   }
@@ -1260,21 +1266,26 @@ async function TestApiTradeServices(pDexV3Instance) {
 async function TestTradeService() {
   //Trade services
   let pDexV3Instance = new PDexV3();
+  await setShardNumber(2);
   const account = await createAccountByPrivateKey(
-    "112t8rnYU5yDsbyr2RGvUYxvLf1a6FozJovLryicMY9Qoxawnnv42pXKQgnTTmiuCuXi5ccBghjuhPnpRZ4iDMV7a9GNDbVoSyCvc82GFJsr"
+    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
   );
   pDexV3Instance.setAccount(account);
-  pDexV3Instance.setRPCTradeService("http://51.161.119.66:7001");
+  pDexV3Instance.setRPCTradeService(rpcCoinService);
+  pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
-  return console.log(await pDexV3Instance.getListPair());
-  // const keyInfo = await accoun\t.getKeyInfo({
+  const balance = await account.getBalance({
+    tokenID: PRVID,
+    version: privacyVersion,
+  });
+  console.log("balance: ", balance);
   //   version: privacyVersion,
   // });
   // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
   // return await TestSwap(pDexV3Instance);
-  // return await TestOrderLimit(pDexV3Instance);
-  return await TestApiTradeServices(pDexV3Instance);
+  return await TestOrderLimit(pDexV3Instance, account);
+  // return await TestApiTradeServices(pDexV3Instance);
   // const poolid = "1234";
   // const txCancel = {
   //   cancelTxId: "1",
@@ -1484,7 +1495,6 @@ async function TestLiquidity() {
     nftID,
     amp: 20000,
   })
-  console.log("res", res);
 }
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
@@ -1492,7 +1502,8 @@ async function TestLiquidity() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return TestLiquidity();
+  return await TestTradeService();
+  // return TestLiquidity();
   // return await TestCreateAndSendNativeToken();
   // return TestVerifierTx();
   // return await TestLoadWallet();
