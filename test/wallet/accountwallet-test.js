@@ -1457,10 +1457,10 @@ async function TestLiquidity() {
   pDexV3Instance.setRPCTradeService(rpcCoinService);
   pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
-  const balance = await account.getBalance({
-    tokenID: PRVID,
-    version: privacyVersion,
-  });
+  // const balance = await account.getBalance({
+  //   tokenID: PRVID,
+  //   version: privacyVersion,
+  // });
   // await pDexV3Instance.setStorageWithdrawLPWithPool({
   //   poolId: '111111',
   //   nftId: '22222',
@@ -1468,11 +1468,17 @@ async function TestLiquidity() {
   // })
   // const tsx = await pDexV3Instance.updateStatusStorageWithdrawLP();p
   // console.log('SANG TEST: ', tsx)
-  console.log("balance: ", balance);
+  // console.log("balance: ", balance);
   // const txMin = await pDexV3Instance.createAndMintNftTx({
   //   extra: { version: privacyVersion },
   // });
   // console.log("txMin", txMin);
+  // const listShare = await pDexV3Instance.getListShare();
+  // console.log("listShare: ", listShare);
+  const poolIds = ["0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35","0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-1437fbee7030f8e0d52ddb157edb2d4f61d4ca851a161f5f716d754951e57337","0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-336821fb92dd5035beb71c94be07fe429af040e7ae25e058d5972e9bcfcc1d5d","0000000000000000000000000000000000000000000000000000000000000004-7a9dc93436cb29ba733ad03d3bdb841f6c7b8f6eba30b86217320b7be21cf9cb-097251ed10c56d6e01d009d7f4b033d1e23154642c3d5c0a050f812be636aeed"]
+  const histories = await pDexV3Instance.getRemoveLPHistories();
+  console.log("histories: ", histories);
+  return;
   await Promise.all([
     await pDexV3Instance.getContributeHistories(),
     await pDexV3Instance.getRemoveLPHistories(),
@@ -1502,7 +1508,7 @@ async function TestLiquidity() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestTradeService();
+  return await TestLiquidity();
   // return TestLiquidity();
   // return await TestCreateAndSendNativeToken();
   // return TestVerifierTx();
