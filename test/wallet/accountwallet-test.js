@@ -1177,26 +1177,30 @@ async function TestSwap(pDexV3Instance) {
 
 async function TestOrderLimit(pDexV3Instance) {
   try {
-    // const tx = await pDexV3Instance.createAndSendOrderRequestTx({
-    //   extra: {
-    //     tokenIDToSell:
-    //       "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47",
-    //     poolPairID:
-    //       "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
-    //     sellAmount: 1,
-    //     version: privacyVersion,
-    //     minAcceptableAmount: 4e9,
-    //   },
-    // });
-    // console.log("tx", tx);
-    const { nftToken: nftid } = await pDexV3Instance.getNFTTokenData({
-      version: privacyVersion,
+    const tx = await pDexV3Instance.createAndSendOrderRequestTx({
+      extra: {
+        tokenIDToSell:
+          // "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47",
+          "0000000000000000000000000000000000000000000000000000000000000004",
+        poolPairID:
+          "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
+        sellAmount: 1,
+        version: privacyVersion,
+        minAcceptableAmount: 6e9,
+      },
     });
-    console.log("nftid", nftid);
+    console.log("transaction", tx);
+    // const { nftToken: nftid } = await pDexV3Instance.getNFTTokenData({
+    //   version: privacyVersion,
+    // });
+    // console.log("nftid", nftid);
     let history = await pDexV3Instance.getOrderLimitHistory({
       poolid:
         "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
       version: privacyVersion,
+      token1ID: PRVID,
+      token2ID:
+        "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47",
     });
     console.log("history", history);
     // try {
@@ -1215,6 +1219,12 @@ async function TestOrderLimit(pDexV3Instance) {
     // } catch (error) {
     //   console.log("error", error);
     // }
+
+    // const order = await pDexV3Instance.getOrderLimitDetail({
+    //   requestTx:
+    //     "220bf33f0d6db3037f1cbe99acdeb2c6735450a94becb65fb671e2293894112b",
+    // });
+    // console.log("order", order);
   } catch (error) {
     console.log("TestOrderLimit", error);
   }
@@ -1268,7 +1278,7 @@ async function TestTradeService() {
   let pDexV3Instance = new PDexV3();
   await setShardNumber(2);
   const account = await createAccountByPrivateKey(
-    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
+    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZC6TgtJPbuLru"
   );
   pDexV3Instance.setAccount(account);
   pDexV3Instance.setRPCTradeService(rpcCoinService);
