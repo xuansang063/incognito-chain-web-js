@@ -1148,24 +1148,24 @@ const ETHID =
 
 async function TestSwap(pDexV3Instance) {
   try {
-    const pairs = await pDexV3Instance.getListPair();
-    let tasks = pairs.map(
-      async ({ tokenId1: selltoken, tokenId2: buytoken }) => {
-        if (selltoken === PRVID) {
-          const payload = {
-            selltoken,
-            buytoken,
-            feetoken: PRVID,
-            amount: 1e9,
-            slippagetolerance: 0.01,
-          };
-          const data = await pDexV3Instance.getEstimateTrade(payload);
-          if (data.maxGet > 0) {
-            console.log("\nbuytoken", buytoken);
-          }
-        }
-      }
-    );
+    // const pairs = await pDexV3Instance.getListPair();
+    // let tasks = pairs.map(
+    //   async ({ tokenId1: selltoken, tokenId2: buytoken }) => {
+    //     if (selltoken === PRVID) {
+    //       const payload = {
+    //         selltoken,
+    //         buytoken,
+    //         feetoken: PRVID,
+    //         amount: 1e9,
+    //         slippagetolerance: 0.01,
+    //       };
+    //       const data = await pDexV3Instance.getEstimateTrade(payload);
+    //       if (data.maxGet > 0) {
+    //         console.log("\nbuytoken", buytoken);
+    //       }
+    //     }
+    //   }
+    // );
     // const tokenIDToSell = ETHID;
     // const sellAmount = 1e9;
     // const tokenIDToBuy = PRVID;
@@ -1173,21 +1173,33 @@ async function TestSwap(pDexV3Instance) {
     // const feeToken = PRVID;
     // const tradePath = ["1-2", "3-4"];
     // const isTradingFeeInPRV = feeToken === PRVID;
-    // const txSwap = await pDexV3Instance.createAndSendSwapRequestTx({
-    //   transfer: { fee: 100, info: "Swap" },
-    //   extra: {
-    //     tokenIDToSell,
-    //     sellAmount,
-    //     tokenIDToBuy,
-    //     tradingFee,
-    //     tradePath,
-    //     isTradingFeeInPRV,
-    //     version: privacyVersion,
-    //   },
-    // });
-    // console.log("txSwap", txSwap);
-    // const history = await pDexV3Instance.getHistory();
-    // console.log("history", history);
+    const txSwap = await pDexV3Instance.createAndSendSwapRequestTx({
+      transfer: { fee: 100, info: "Swap" },
+      extra: {
+        tokenIDToSell: PRVID,
+        sellAmount: 0.001 * 1e9,
+        tokenIDToBuy:
+          "c730c34221c277158aa4b44f7eb542a50e5eb858a8fd89b68d3c83388e866162",
+        tradingFee: 0.000003e9,
+        tradePath: [
+          "0000000000000000000000000000000000000000000000000000000000000004-fe75fc6ab38c690effd73c14325e771a19c0dca5de7c7a725bcf8b002755fdab-74cd57515f7ab3b5465f6ec71743406dfde16f091109eed4b771ee4293200193",
+        ],
+        feetoken: PRVID,
+        version: 2,
+        minAcceptableAmount: 471400,
+      },
+    });
+    const history = await pDexV3Instance.getSwapHistory({
+      version: privacyVersion,
+    });
+    console.log("history", history.length);
+    console.log("tx", txSwap.txId);
+    const tx = await pDexV3Instance.getOrderSwapDetail({
+      version: privacyVersion,
+      requestTx: txSwap.txId,
+      fromStorage: true,
+    });
+    console.log("tx", tx);
   } catch (error) {
     console.log("error-TestSwap", error);
   }
