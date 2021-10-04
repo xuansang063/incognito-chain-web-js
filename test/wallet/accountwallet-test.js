@@ -1497,11 +1497,16 @@ async function TestLiquidity() {
   pDexV3Instance.setRPCTradeService(rpcCoinService);
   pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
-  const balance = await account.getBalance({
-    tokenID: PRVID,
-    version: privacyVersion,
-  });
-  return console.log("balance", balance);
+  const stakingData = await pDexV3Instance.serviceStakingHistories({
+    tokenID: '0000000000000000000000000000000000000000000000000000000000000004',
+    nftID: '7ff888813217555ad24437a4370c760642ccca4b809872ad57af5041962a7b0e'
+  })
+  // console.log("stakingData: ", stakingData);
+  // const balance = await account.getBalance({
+  //   tokenID: PRVID,
+  //   version: privacyVersion,
+  // });
+  // return console.log("balance", balance);
   // await pDexV3Instance.setStorageWithdrawLPWithPool({
   //   poolId: '111111',
   //   nftId: '22222',
@@ -1522,33 +1527,32 @@ async function TestLiquidity() {
     "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-336821fb92dd5035beb71c94be07fe429af040e7ae25e058d5972e9bcfcc1d5d",
     "0000000000000000000000000000000000000000000000000000000000000004-7a9dc93436cb29ba733ad03d3bdb841f6c7b8f6eba30b86217320b7be21cf9cb-097251ed10c56d6e01d009d7f4b033d1e23154642c3d5c0a050f812be636aeed",
   ];
-  const histories = await pDexV3Instance.getRemoveLPHistories();
-  console.log("histories: ", histories);
+  // const histories = await pDexV3Instance.getRemoveLPHistories();
   return;
-  await Promise.all([
-    await pDexV3Instance.getContributeHistories(),
-    await pDexV3Instance.getRemoveLPHistories(),
-    await pDexV3Instance.getWithdrawFeeLPHistories(),
-  ]);
-  const nft = await pDexV3Instance.getNFTTokenData({
-    version: privacyVersion,
-  });
-  const { nftToken: nftID } = nft;
-  const tokenId1 = PRVID;
-  const tokenId2 =
-    "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47";
-  const poolPairID =
-    "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-336821fb92dd5035beb71c94be07fe429af040e7ae25e058d5972e9bcfcc1d5d";
-  const res = await pDexV3Instance.createContributeTxs({
-    fee: 100,
-    tokenId1,
-    tokenId2,
-    amount1: 100,
-    amount2: 1000,
-    poolPairID,
-    nftID,
-    amp: 20000,
-  });
+  // await Promise.all([
+  //   await pDexV3Instance.getContributeHistories(),
+  //   await pDexV3Instance.getRemoveLPHistories(),
+  //   await pDexV3Instance.getWithdrawFeeLPHistories(),
+  // ]);
+  // const nft = await pDexV3Instance.getNFTTokenData({
+  //   version: privacyVersion,
+  // });
+  // const { nftToken: nftID } = nft;
+  // const tokenId1 = PRVID;
+  // const tokenId2 =
+  //   "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47";
+  // const poolPairID =
+  //   "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-336821fb92dd5035beb71c94be07fe429af040e7ae25e058d5972e9bcfcc1d5d";
+  // const res = await pDexV3Instance.createContributeTxs({
+  //   fee: 100,
+  //   tokenId1,
+  //   tokenId2,
+  //   amount1: 100,
+  //   amount2: 1000,
+  //   poolPairID,
+  //   nftID,
+  //   amp: 20000,
+  // });
 }
 
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
@@ -1556,7 +1560,7 @@ async function TestLiquidity() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestTradeService();
+  return await TestLiquidity();
   // return await TestLiquidity();
   // return TestLiquidity();
   // return await TestCreateAndSendNativeToken();
