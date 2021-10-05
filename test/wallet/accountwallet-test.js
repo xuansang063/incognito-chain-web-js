@@ -1189,17 +1189,35 @@ async function TestSwap(pDexV3Instance) {
         minAcceptableAmount: 471400,
       },
     });
-    const history = await pDexV3Instance.getSwapHistory({
-      version: privacyVersion,
-    });
-    console.log("history", history.length);
-    console.log("tx", txSwap.txId);
-    const tx = await pDexV3Instance.getOrderSwapDetail({
+    let tx = await pDexV3Instance.getOrderSwapDetail({
       version: privacyVersion,
       requestTx: txSwap.txId,
       fromStorage: true,
     });
-    console.log("tx", tx);
+    await delay(10000);
+    tx = await pDexV3Instance.getOrderSwapDetail({
+      version: privacyVersion,
+      requestTx: txSwap.txId,
+      fromStorage: true,
+    });
+    await delay(10000);
+    tx = await pDexV3Instance.getOrderSwapDetail({
+      version: privacyVersion,
+      requestTx: txSwap.txId,
+      fromStorage: true,
+    });
+    await delay(10000);
+    tx = await pDexV3Instance.getOrderSwapDetail({
+      version: privacyVersion,
+      requestTx: txSwap.txId,
+      fromStorage: true,
+    });
+    await delay(10000);
+    tx = await pDexV3Instance.getOrderSwapDetail({
+      version: privacyVersion,
+      requestTx: txSwap.txId,
+      fromStorage: true,
+    });
   } catch (error) {
     console.log("error-TestSwap", error);
   }
