@@ -18,7 +18,7 @@
     "build:gomobile-ios": "cd wasm/internal && gomobile bind -x -v -target=ios",
     "build:gomobile-android": "cd wasm/internal && gomobile bind -x -v -target=android",
     "run-test": "clear && node ./test/wallet/accountwallet-test",
-    "build:gomobile": "yarn:build && yarn build:wasm && yarn build:gomobile-ios && yarn build:gomobile-android"
+    "build:gomobile": "yarn build:wasm && yarn build:gomobile-ios && yarn build:gomobile-android && yarn build"
   },
   "repository": {
     "type": "git",
