@@ -1332,10 +1332,10 @@ async function TestTradeService() {
   pDexV3Instance.setRPCTradeService(rpcCoinService);
   pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
-  let defaultPool = await pDexV3Instance.getDefualtPool();
+  let defaultPool = await pDexV3Instance.getDefaultPool();
   console.log("defaultPool", defaultPool);
   await pDexV3Instance.setDefaultPool("213456");
-  defaultPool = await pDexV3Instance.getDefualtPool();
+  defaultPool = await pDexV3Instance.getDefaultPool();
   console.log("defaultPool", defaultPool);
   return;
   const balance = await account.getBalance({
