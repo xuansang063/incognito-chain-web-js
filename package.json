@@ -18,7 +18,9 @@
     "build:gomobile-ios": "cd wasm/internal && gomobile bind -x -v -target=ios",
     "build:gomobile-android": "cd wasm/internal && gomobile bind -x -v -target=android",
     "run-test": "clear && node ./test/wallet/accountwallet-test",
-    "build:gomobile": "yarn build:wasm && yarn build:gomobile-ios && yarn build:gomobile-android && yarn build"
+    "build:gomobile": "yarn build:wasm && yarn build:gomobile-ios && yarn build:gomobile-android && yarn build",
+    "push-code": "git add . && git commit -m 'push code' && git push",
+    "fix-permission": "ssh-agent -s && ssh-add ~/.ssh/id_rsa"
   },
   "repository": {
     "type": "git",

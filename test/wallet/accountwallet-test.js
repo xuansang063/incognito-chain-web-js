@@ -1332,6 +1332,12 @@ async function TestTradeService() {
   pDexV3Instance.setRPCTradeService(rpcCoinService);
   pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
+  let defaultPool = await pDexV3Instance.getDefualtPool();
+  console.log("defaultPool", defaultPool);
+  await pDexV3Instance.setDefaultPool("213456");
+  defaultPool = await pDexV3Instance.getDefualtPool();
+  console.log("defaultPool", defaultPool);
+  return;
   const balance = await account.getBalance({
     tokenID: PRVID,
     version: privacyVersion,
@@ -1516,9 +1522,9 @@ async function TestLiquidity() {
   pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
   const stakingData = await pDexV3Instance.serviceStakingHistories({
-    tokenID: '0000000000000000000000000000000000000000000000000000000000000004',
-    nftID: '7ff888813217555ad24437a4370c760642ccca4b809872ad57af5041962a7b0e'
-  })
+    tokenID: "0000000000000000000000000000000000000000000000000000000000000004",
+    nftID: "7ff888813217555ad24437a4370c760642ccca4b809872ad57af5041962a7b0e",
+  });
   // console.log("stakingData: ", stakingData);
   // const balance = await account.getBalance({
   //   tokenID: PRVID,
@@ -1578,7 +1584,8 @@ async function TestLiquidity() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestLiquidity();
+  await TestTradeService();
+  // return await TestLiquidity();
   // return await TestLiquidity();
   // return TestLiquidity();
   // return await TestCreateAndSendNativeToken();
