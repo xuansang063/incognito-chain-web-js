@@ -1283,9 +1283,12 @@ async function TestOrderLimit(pDexV3Instance) {
 
 async function TestApiTradeServices(pDexV3Instance) {
   try {
-    const poolid = "111";
+    const poolid =
+      "0000000000000000000000000000000000000000000000000000000000000004-116976a6896ed7001deb011b92576048bd8c670c47cd8529a5ddbba0024c701a-4c00e3bfc7e77e807b3cf58e2c6f9ea78750c4805345f69fe3f5ee33d80a3640";
     const pairId =
       "0000000000000000000000000000000000000000000000000000000000000004-1411bdcae86863b0c09d94de0c6617d6729f0c5b550f6aac236931b8989207c1";
+    const pendingOrders = await pDexV3Instance.getPendingOrder({ poolid });
+    console.log("pendingOrders", pendingOrders);
     // const tradingVolume24h = await pDexV3Instance.getTradingVolume24h(poolid);
     // console.log("tradingVolume24h", tradingVolume24h);
     // const listPools = await pDexV3Instance.getListPools(pairId);
@@ -1294,15 +1297,15 @@ async function TestApiTradeServices(pDexV3Instance) {
     // console.log("poolIDS", poolIDS);
     // const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolIDS);
     // console.log("listPoolsDetail", listPoolsDetail);
-    const listPair = await pDexV3Instance.getListPair();
-    console.log(listPair);
-    const estTrade = await pDexV3Instance.getEstimateTrade({
-      selltoken: "1",
-      buytoken: "2",
-      amount: 1,
-      feetoken: "feetoken",
-    });
-    console.log(estTrade);
+    // const listPair = await pDexV3Instance.getListPair();
+    // console.log(listPair);
+    // const estTrade = await pDexV3Instance.getEstimateTrade({
+    //   selltoken: "1",
+    //   buytoken: "2",
+    //   amount: 1,
+    //   feetoken: "feetoken",
+    // });
+    // console.log(estTrade);
     // const orderBook = await pDexV3Instance.getOrderBook({
     //   poolid: "1",
     //   decimal: 0.1,
@@ -1349,9 +1352,9 @@ async function TestTradeService() {
   // });
   // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
-  return await TestSwap(pDexV3Instance);
+  // return await TestSwap(pDexV3Instance);
   // return await TestOrderLimit(pDexV3Instance, account);
-  // return await TestApiTradeServices(pDexV3Instance);
+  return await TestApiTradeServices(pDexV3Instance);
   // const poolid = "1234";
   // const txCancel = {
   //   cancelTxId: "1",
