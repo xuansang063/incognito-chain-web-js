@@ -1130,10 +1130,10 @@ async function TestFollowDefaultPool(pDexV3Instance) {
 
 async function TestNFToken(pDexV3Instance) {
   try {
-    // const tx = await pDexV3Instance.createAndMintNftTx({
-    //   extra: { version: privacyVersion },
-    // });
-    // console.log("tx", tx);
+    const tx = await pDexV3Instance.createAndMintNftTx({
+      extra: { version: privacyVersion },
+    });
+    console.log("tx", tx);
     const nftTokenData = await pDexV3Instance.getNFTTokenData({
       version: privacyVersion,
     });
@@ -1148,6 +1148,9 @@ const ETHID =
 
 async function TestSwap(pDexV3Instance) {
   try {
+    const history = await pDexV3Instance.getSwapHistory({ version: 2 });
+    history.map((h) => console.log(h.requestime));
+    return;
     // const pairs = await pDexV3Instance.getListPair();
     // let tasks = pairs.map(
     //   async ({ tokenId1: selltoken, tokenId2: buytoken }) => {
@@ -1173,51 +1176,51 @@ async function TestSwap(pDexV3Instance) {
     // const feeToken = PRVID;
     // const tradePath = ["1-2", "3-4"];
     // const isTradingFeeInPRV = feeToken === PRVID;
-    const txSwap = await pDexV3Instance.createAndSendSwapRequestTx({
-      transfer: { fee: 100, info: "Swap" },
-      extra: {
-        tokenIDToSell: PRVID,
-        sellAmount: 0.001 * 1e9,
-        tokenIDToBuy:
-          "c730c34221c277158aa4b44f7eb542a50e5eb858a8fd89b68d3c83388e866162",
-        tradingFee: 0.000003e9,
-        tradePath: [
-          "0000000000000000000000000000000000000000000000000000000000000004-fe75fc6ab38c690effd73c14325e771a19c0dca5de7c7a725bcf8b002755fdab-74cd57515f7ab3b5465f6ec71743406dfde16f091109eed4b771ee4293200193",
-        ],
-        feetoken: PRVID,
-        version: 2,
-        minAcceptableAmount: 471400,
-      },
-    });
-    let tx = await pDexV3Instance.getOrderSwapDetail({
-      version: privacyVersion,
-      requestTx: txSwap.txId,
-      fromStorage: true,
-    });
-    await delay(10000);
-    tx = await pDexV3Instance.getOrderSwapDetail({
-      version: privacyVersion,
-      requestTx: txSwap.txId,
-      fromStorage: true,
-    });
-    await delay(10000);
-    tx = await pDexV3Instance.getOrderSwapDetail({
-      version: privacyVersion,
-      requestTx: txSwap.txId,
-      fromStorage: true,
-    });
-    await delay(10000);
-    tx = await pDexV3Instance.getOrderSwapDetail({
-      version: privacyVersion,
-      requestTx: txSwap.txId,
-      fromStorage: true,
-    });
-    await delay(10000);
-    tx = await pDexV3Instance.getOrderSwapDetail({
-      version: privacyVersion,
-      requestTx: txSwap.txId,
-      fromStorage: true,
-    });
+    // const txSwap = await pDexV3Instance.createAndSendSwapRequestTx({
+    //   transfer: { fee: 100, info: "Swap" },
+    //   extra: {
+    //     tokenIDToSell: PRVID,
+    //     sellAmount: 0.001 * 1e9,
+    //     tokenIDToBuy:
+    //       "c730c34221c277158aa4b44f7eb542a50e5eb858a8fd89b68d3c83388e866162",
+    //     tradingFee: 0.000003e9,
+    //     tradePath: [
+    //       "0000000000000000000000000000000000000000000000000000000000000004-fe75fc6ab38c690effd73c14325e771a19c0dca5de7c7a725bcf8b002755fdab-74cd57515f7ab3b5465f6ec71743406dfde16f091109eed4b771ee4293200193",
+    //     ],
+    //     feetoken: PRVID,
+    //     version: 2,
+    //     minAcceptableAmount: 471400,
+    //   },
+    // });
+    // let tx = await pDexV3Instance.getOrderSwapDetail({
+    //   version: privacyVersion,
+    //   requestTx: txSwap.txId,
+    //   fromStorage: true,
+    // });
+    // await delay(10000);
+    // tx = await pDexV3Instance.getOrderSwapDetail({
+    //   version: privacyVersion,
+    //   requestTx: txSwap.txId,
+    //   fromStorage: true,
+    // });
+    // await delay(10000);
+    // tx = await pDexV3Instance.getOrderSwapDetail({
+    //   version: privacyVersion,
+    //   requestTx: txSwap.txId,
+    //   fromStorage: true,
+    // });
+    // await delay(10000);
+    // tx = await pDexV3Instance.getOrderSwapDetail({
+    //   version: privacyVersion,
+    //   requestTx: txSwap.txId,
+    //   fromStorage: true,
+    // });
+    // await delay(10000);
+    // tx = await pDexV3Instance.getOrderSwapDetail({
+    //   version: privacyVersion,
+    //   requestTx: txSwap.txId,
+    //   fromStorage: true,
+    // });
   } catch (error) {
     console.log("error-TestSwap", error);
   }
@@ -1280,9 +1283,19 @@ async function TestOrderLimit(pDexV3Instance) {
 
 async function TestApiTradeServices(pDexV3Instance) {
   try {
-    const poolid = "111";
+    const poolid =
+      "0000000000000000000000000000000000000000000000000000000000000004-116976a6896ed7001deb011b92576048bd8c670c47cd8529a5ddbba0024c701a-4c00e3bfc7e77e807b3cf58e2c6f9ea78750c4805345f69fe3f5ee33d80a3640";
     const pairId =
       "0000000000000000000000000000000000000000000000000000000000000004-1411bdcae86863b0c09d94de0c6617d6729f0c5b550f6aac236931b8989207c1";
+    // const pendingOrders = await pDexV3Instance.getPendingOrder({ poolid });
+    // console.log("pendingOrders", pendingOrders);
+    const pricehistory = await pDexV3Instance.getPriceHistory({
+      poolid,
+      period: "15m",
+      datapoint: 100,
+      fromtime: String(new Date().getTime()),
+    });
+    console.log("pricehistory", pricehistory);
     // const tradingVolume24h = await pDexV3Instance.getTradingVolume24h(poolid);
     // console.log("tradingVolume24h", tradingVolume24h);
     // const listPools = await pDexV3Instance.getListPools(pairId);
@@ -1291,15 +1304,15 @@ async function TestApiTradeServices(pDexV3Instance) {
     // console.log("poolIDS", poolIDS);
     // const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolIDS);
     // console.log("listPoolsDetail", listPoolsDetail);
-    const listPair = await pDexV3Instance.getListPair();
-    console.log(listPair);
-    const estTrade = await pDexV3Instance.getEstimateTrade({
-      selltoken: "1",
-      buytoken: "2",
-      amount: 1,
-      feetoken: "feetoken",
-    });
-    console.log(estTrade);
+    // const listPair = await pDexV3Instance.getListPair();
+    // console.log(listPair);
+    // const estTrade = await pDexV3Instance.getEstimateTrade({
+    //   selltoken: "1",
+    //   buytoken: "2",
+    //   amount: 1,
+    //   feetoken: "feetoken",
+    // });
+    // console.log(estTrade);
     // const orderBook = await pDexV3Instance.getOrderBook({
     //   poolid: "1",
     //   decimal: 0.1,
@@ -1332,6 +1345,11 @@ async function TestTradeService() {
   pDexV3Instance.setRPCTradeService(rpcCoinService);
   pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
+  let defaultPool = await pDexV3Instance.getDefaultPool();
+  console.log("defaultPool", defaultPool);
+  await pDexV3Instance.setDefaultPool("213456");
+  defaultPool = await pDexV3Instance.getDefaultPool();
+  console.log("defaultPool", defaultPool);
   const balance = await account.getBalance({
     tokenID: PRVID,
     version: privacyVersion,
@@ -1341,9 +1359,9 @@ async function TestTradeService() {
   // });
   // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
-  return await TestSwap(pDexV3Instance);
+  // return await TestSwap(pDexV3Instance);
   // return await TestOrderLimit(pDexV3Instance, account);
-  // return await TestApiTradeServices(pDexV3Instance);
+  return await TestApiTradeServices(pDexV3Instance);
   // const poolid = "1234";
   // const txCancel = {
   //   cancelTxId: "1",
@@ -1516,9 +1534,9 @@ async function TestLiquidity() {
   pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
   const stakingData = await pDexV3Instance.serviceStakingHistories({
-    tokenID: '0000000000000000000000000000000000000000000000000000000000000004',
-    nftID: '7ff888813217555ad24437a4370c760642ccca4b809872ad57af5041962a7b0e'
-  })
+    tokenID: "0000000000000000000000000000000000000000000000000000000000000004",
+    nftID: "7ff888813217555ad24437a4370c760642ccca4b809872ad57af5041962a7b0e",
+  });
   // console.log("stakingData: ", stakingData);
   // const balance = await account.getBalance({
   //   tokenID: PRVID,
@@ -1578,7 +1596,8 @@ async function TestLiquidity() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  return await TestLiquidity();
+  await TestTradeService();
+  // return await TestLiquidity();
   // return await TestLiquidity();
   // return TestLiquidity();
   // return await TestCreateAndSendNativeToken();
