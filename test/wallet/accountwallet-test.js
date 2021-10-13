@@ -1284,16 +1284,15 @@ async function TestOrderLimit(pDexV3Instance) {
 async function TestApiTradeServices(pDexV3Instance) {
   try {
     const poolid =
-      "0000000000000000000000000000000000000000000000000000000000000004-116976a6896ed7001deb011b92576048bd8c670c47cd8529a5ddbba0024c701a-4c00e3bfc7e77e807b3cf58e2c6f9ea78750c4805345f69fe3f5ee33d80a3640";
+      "0000000000000000000000000000000000000000000000000000000000000004-a2b4472e4213ed0b7de2b8a0eba50d3a45785afc9457734c41ced83a9a8d19bd-6c5f07541684338561cbe6ca2b8a72592bbe2b0dca692e2e533f0d8bfef08933";
     const pairId =
       "0000000000000000000000000000000000000000000000000000000000000004-1411bdcae86863b0c09d94de0c6617d6729f0c5b550f6aac236931b8989207c1";
     // const pendingOrders = await pDexV3Instance.getPendingOrder({ poolid });
     // console.log("pendingOrders", pendingOrders);
     const pricehistory = await pDexV3Instance.getPriceHistory({
       poolid,
-      period: "15m",
-      datapoint: 100,
-      fromtime: String(new Date().getTime()),
+      period: "PT1H",
+      intervals: "PT24H",
     });
     console.log("pricehistory", pricehistory);
     // const tradingVolume24h = await pDexV3Instance.getTradingVolume24h(poolid);
