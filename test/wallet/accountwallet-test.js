@@ -1231,13 +1231,14 @@ async function TestOrderLimit(pDexV3Instance) {
     const tx = await pDexV3Instance.createAndSendOrderRequestTx({
       extra: {
         tokenIDToSell:
-          // "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47",
           "0000000000000000000000000000000000000000000000000000000000000004",
+        tokenIDToBuy:
+          "4b5415ac6ef90d0d87ad79a6d07b3829db3284db9286129d678eb850fb5ebf23",
         poolPairID:
-          "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
-        sellAmount: 1,
+          "0000000000000000000000000000000000000000000000000000000000000004-4b5415ac6ef90d0d87ad79a6d07b3829db3284db9286129d678eb850fb5ebf23-37f45b90fd9a31bf13c4d51d9e5df17723239eb7e8f250788edd371af1d77711",
+        sellAmount: 1690000000,
         version: privacyVersion,
-        minAcceptableAmount: 6e9,
+        minAcceptableAmount: 12,
       },
     });
     console.log("transaction", tx);
@@ -1245,15 +1246,15 @@ async function TestOrderLimit(pDexV3Instance) {
     //   version: privacyVersion,
     // });
     // console.log("nftid", nftid);
-    let history = await pDexV3Instance.getOrderLimitHistory({
-      poolid:
-        "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
-      version: privacyVersion,
-      token1ID: PRVID,
-      token2ID:
-        "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47",
-    });
-    console.log("history", history);
+    // let history = await pDexV3Instance.getOrderLimitHistory({
+    //   poolid:
+    //     "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
+    //   version: privacyVersion,
+    //   token1ID: PRVID,
+    //   token2ID:
+    //     "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47",
+    // });
+    // console.log("history", history);
     // try {
     //   const txCancel = await pDexV3Instance.createAndSendCancelOrderRequestTx({
     //     transfer: { fee: 100 },
@@ -1356,10 +1357,10 @@ async function TestTradeService() {
   console.log("balance: ", balance);
   //   version: privacyVersion,
   // });
-  return await TestNFToken(pDexV3Instance);
+  // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
   // return await TestSwap(pDexV3Instance);
-  // return await TestOrderLimit(pDexV3Instance, account);
+  return await TestOrderLimit(pDexV3Instance, account);
   // return await TestApiTradeServices(pDexV3Instance);
   // const poolid = "1234";
   // const txCancel = {
