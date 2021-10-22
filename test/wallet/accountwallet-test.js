@@ -986,11 +986,7 @@ async function TestLoadWallet() {
     wallet.Name = "Hang";
     const password = "$as90_jasLsS";
     const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
-    await wallet.loadWallet({ password, aesKey });
-    await wallet.setKeyMeasureStorage();
-    console.log(await wallet.getMeasureStorageValue());
-    return;
-    // const passphrase = "$as90_jasLsS";
+    const passphrase = "$as90_jasLsS";
     // const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
     // const mnemonic = newMnemonic();
     // console.log("mnemonic", mnemonic);
@@ -1002,13 +998,10 @@ async function TestLoadWallet() {
       "Masterkey",
       new StorageServices()
     );
-
+    await wallet.save(aesKey, false);
     await wallet.createNewAccount("phat1");
+    await wallet.save(aesKey, false);
     await wallet.createNewAccount("phat2");
-    console.log(
-      "listAccount",
-      (await wallet.listAccount()).map((account) => account.PrivateKey)
-    );
     await wallet.save(aesKey, false);
     await wallet.loadWallet({
       password: passphrase,
@@ -1018,7 +1011,6 @@ async function TestLoadWallet() {
       "\n\nlistAccount",
       (await wallet.listAccount()).map((account) => account.PrivateKey)
     );
-    await wallet.save(aesKey, false);
     // await wallet.loadWallet({
     //   password: passphrase,
     //   aesKey,
@@ -1596,13 +1588,13 @@ async function TestLiquidity() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  await TestTradeService();
+  // await TestTradeService();
   // return await TestLiquidity();
   // return await TestLiquidity();
   // return TestLiquidity();
   // return await TestCreateAndSendNativeToken();
   // return TestVerifierTx();
-  // return await TestLoadWallet();
+  return await TestLoadWallet();
   // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
