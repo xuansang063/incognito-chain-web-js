@@ -1148,9 +1148,9 @@ const ETHID =
 
 async function TestSwap(pDexV3Instance) {
   try {
-    const history = await pDexV3Instance.getSwapHistory({ version: 2 });
-    history.map((h) => console.log(h.requestime));
-    return;
+    // const history = await pDexV3Instance.getSwapHistory({ version: 2 });
+    // history.map((h) => console.log(h.requestime));
+    // return;
     // const pairs = await pDexV3Instance.getListPair();
     // let tasks = pairs.map(
     //   async ({ tokenId1: selltoken, tokenId2: buytoken }) => {
@@ -1359,7 +1359,7 @@ async function TestTradeService() {
   // });
   // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
-  // return await TestSwap(pDexV3Instance);
+  return await TestSwap(pDexV3Instance);
   // return await TestOrderLimit(pDexV3Instance, account);
   return await TestApiTradeServices(pDexV3Instance);
   // const poolid = "1234";
