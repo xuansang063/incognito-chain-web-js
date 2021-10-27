@@ -3,9 +3,10 @@ package metadata
 import (
 	"encoding/json"
 
-	"github.com/pkg/errors"
 	metadataCommon "incognito-chain/metadata/common"
 	metadataPdexv3 "incognito-chain/metadata/pdexv3"
+
+	"github.com/pkg/errors"
 )
 
 func ParseMetadata(raw json.RawMessage) (Metadata, error) {
@@ -38,7 +39,8 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &BeaconBlockSalaryRes{}
 	case BurningRequestMeta, BurningRequestMetaV2,
 		BurningForDepositToSCRequestMeta, BurningForDepositToSCRequestMetaV2,
-		BurningPBSCRequestMeta, BurningPRVERC20RequestMeta, BurningPRVBEP20RequestMeta:
+		BurningPBSCRequestMeta, BurningPRVERC20RequestMeta, BurningPRVBEP20RequestMeta,
+		BurningPDEXERC20RequestMeta, BurningPDEXBEP20RequestMeta:
 		md = &BurningRequest{}
 	case ShardStakingMeta:
 		md = &StakingMetadata{}
@@ -110,7 +112,7 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		md = &metadataPdexv3.WithdrawOrderResponse{}
 	case metadataCommon.Pdexv3UserMintNftRequestMeta:
 		md = &metadataPdexv3.UserMintNftRequest{}
-		case metadataCommon.Pdexv3StakingRequestMeta:
+	case metadataCommon.Pdexv3StakingRequestMeta:
 		md = &metadataPdexv3.StakingRequest{}
 	case metadataCommon.Pdexv3UnstakingRequestMeta:
 		md = &metadataPdexv3.UnstakingRequest{}

@@ -160,4 +160,14 @@ const (
 	BurningPRVERC20ConfirmMeta  = metadataCommon.BurningPRVERC20ConfirmMeta
 	BurningPRVBEP20RequestMeta  = metadataCommon.BurningPRVBEP20RequestMeta
 	BurningPRVBEP20ConfirmMeta  = metadataCommon.BurningPRVBEP20ConfirmMeta
+
+	// erc20/bep20 for prv token
+	IssuingPDEXERC20RequestMeta  = metadataCommon.IssuingPDEXERC20RequestMeta
+	IssuingPDEXERC20ResponseMeta = metadataCommon.IssuingPDEXERC20ResponseMeta
+	IssuingPDEXBEP20RequestMeta  = metadataCommon.IssuingPDEXBEP20RequestMeta
+	IssuingPDEXBEP20ResponseMeta = metadataCommon.IssuingPDEXBEP20ResponseMeta
+	BurningPDEXERC20RequestMeta  = metadataCommon.BurningPDEXERC20RequestMeta
+	BurningPDEXERC20ConfirmMeta  = metadataCommon.BurningPDEXERC20ConfirmMeta
+	BurningPDEXBEP20RequestMeta  = metadataCommon.BurningPDEXBEP20RequestMeta
+	BurningPDEXBEP20ConfirmMeta  = metadataCommon.BurningPDEXBEP20ConfirmMeta
 )

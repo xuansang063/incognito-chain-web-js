@@ -62,6 +62,16 @@ const (
 	BurningPRVBEP20RequestMeta  = 275
 	BurningPRVBEP20ConfirmMeta  = 151
 
+	// erc20/bep20 for pdex token
+	IssuingPDEXERC20RequestMeta  = 320
+	IssuingPDEXERC20ResponseMeta = 321
+	IssuingPDEXBEP20RequestMeta  = 322
+	IssuingPDEXBEP20ResponseMeta = 323
+	BurningPDEXERC20RequestMeta  = 324
+	BurningPDEXERC20ConfirmMeta  = 152
+	BurningPDEXBEP20RequestMeta  = 325
+	BurningPDEXBEP20ConfirmMeta  = 153
+
 	// pDEX v3
 	Pdexv3ModifyParamsMeta                  = 280
 	Pdexv3AddLiquidityRequestMeta           = 281
