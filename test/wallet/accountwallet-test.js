@@ -1148,6 +1148,19 @@ const ETHID =
 
 async function TestSwap(pDexV3Instance) {
   try {
+    let payload = {
+      selltoken: PRVID,
+      buytoken:
+        "4b5415ac6ef90d0d87ad79a6d07b3829db3284db9286129d678eb850fb5ebf23",
+      feetoken: PRVID,
+      sellamount: 1e9,
+    };
+    let data = await pDexV3Instance.getEstimateTrade(payload);
+    console.log("data1", data);
+    delete payload.sellamount;
+    payload.buyamount = 1e3;
+    data = await pDexV3Instance.getEstimateTrade(payload);
+    console.log("data2", data);
     // const history = await pDexV3Instance.getSwapHistory({ version: 2 });
     // history.map((h) => console.log(h.requestime));
     // return;
@@ -1155,14 +1168,14 @@ async function TestSwap(pDexV3Instance) {
     // let tasks = pairs.map(
     //   async ({ tokenId1: selltoken, tokenId2: buytoken }) => {
     //     if (selltoken === PRVID) {
-    //       const payload = {
-    //         selltoken,
-    //         buytoken,
-    //         feetoken: PRVID,
-    //         amount: 1e9,
-    //         slippagetolerance: 0.01,
-    //       };
-    //       const data = await pDexV3Instance.getEstimateTrade(payload);
+    // const payload = {
+    //   selltoken,
+    //   buytoken,
+    //   feetoken: PRVID,
+    //   amount: 1e9,
+    //   slippagetolerance: 0.01,
+    // };
+    // const data = await pDexV3Instance.getEstimateTrade(payload);
     //       if (data.maxGet > 0) {
     //         console.log("\nbuytoken", buytoken);
     //       }
@@ -1298,7 +1311,7 @@ async function TestApiTradeServices(pDexV3Instance) {
     // console.log("pricehistory", pricehistory);
     // const tradingVolume24h = await pDexV3Instance.getTradingVolume24h(poolid);
     // console.log("tradingVolume24h", tradingVolume24h);
-    const listPools = await pDexV3Instance.getListPools('all');
+    const listPools = await pDexV3Instance.getListPools("all");
     console.log("listPools", listPools);
     // const poolIDS = listPools.map((pool) => pool.poolId);
     // console.log("poolIDS", poolIDS);
