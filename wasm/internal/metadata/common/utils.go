@@ -99,6 +99,8 @@ func buildMetaInfo() {
 		BurningForDepositToSCRequestMeta,
 		BurningForDepositToSCRequestMetaV2,
 		ContractingRequestMeta,
+		BurningPDEXERC20RequestMeta,
+		BurningPDEXBEP20RequestMeta,
 	}
 	metaListNInfo = append(metaListNInfo, ListAndInfo{
 		list: listTpNormal,
