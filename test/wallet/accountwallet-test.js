@@ -1141,18 +1141,20 @@ const ETHID =
 async function TestSwap(pDexV3Instance) {
   try {
     let payload = {
-      selltoken: PRVID,
+      selltoken:
+        "fdd928bc86c82bd2a7c54082a68332ebb5f2cde842b1c2e0fa430ededb6e369e",
       buytoken:
-        "4b5415ac6ef90d0d87ad79a6d07b3829db3284db9286129d678eb850fb5ebf23",
+        "0000000000000000000000000000000000000000000000000000000000000b7c",
       feetoken: PRVID,
       sellamount: 1e9,
     };
-    let data = await pDexV3Instance.getEstimateTrade(payload);
-    console.log("data1", data);
-    delete payload.sellamount;
-    payload.buyamount = 1e3;
-    data = await pDexV3Instance.getEstimateTrade(payload);
-    console.log("data2", data);
+    try {
+      let data = await pDexV3Instance.getEstimateTrade(payload);
+      console.log("data1", data);
+    } catch (error) {
+      console.log("error", error, typeof error);
+    }
+
     // const history = await pDexV3Instance.getSwapHistory({ version: 2 });
     // history.map((h) => console.log(h.requestime));
     // return;
