@@ -72,6 +72,9 @@ const (
 	BurningPDEXBEP20RequestMeta  = 325
 	BurningPDEXBEP20ConfirmMeta  = 153
 
+	// pancake integration
+	BurningPBSCForDepositToSCRequestMeta = 326
+
 	// pDEX v3
 	Pdexv3ModifyParamsMeta                  = 280
 	Pdexv3AddLiquidityRequestMeta           = 281

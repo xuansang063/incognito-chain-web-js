@@ -101,6 +101,7 @@ func buildMetaInfo() {
 		ContractingRequestMeta,
 		BurningPDEXERC20RequestMeta,
 		BurningPDEXBEP20RequestMeta,
+		BurningPBSCForDepositToSCRequestMeta,
 	}
 	metaListNInfo = append(metaListNInfo, ListAndInfo{
 		list: listTpNormal,
