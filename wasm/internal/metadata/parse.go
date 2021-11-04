@@ -40,7 +40,8 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 	case BurningRequestMeta, BurningRequestMetaV2,
 		BurningForDepositToSCRequestMeta, BurningForDepositToSCRequestMetaV2,
 		BurningPBSCRequestMeta, BurningPRVERC20RequestMeta, BurningPRVBEP20RequestMeta,
-		BurningPDEXERC20RequestMeta, BurningPDEXBEP20RequestMeta:
+		BurningPDEXERC20RequestMeta, BurningPDEXBEP20RequestMeta,
+		BurningPBSCForDepositToSCRequestMeta:
 		md = &BurningRequest{}
 	case ShardStakingMeta:
 		md = &StakingMetadata{}

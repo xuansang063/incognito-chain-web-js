@@ -170,4 +170,7 @@ const (
 	BurningPDEXERC20ConfirmMeta  = metadataCommon.BurningPDEXERC20ConfirmMeta
 	BurningPDEXBEP20RequestMeta  = metadataCommon.BurningPDEXBEP20RequestMeta
 	BurningPDEXBEP20ConfirmMeta  = metadataCommon.BurningPDEXBEP20ConfirmMeta
+
+	// pancake integration
+	BurningPBSCForDepositToSCRequestMeta = metadataCommon.BurningPBSCForDepositToSCRequestMeta
 )
