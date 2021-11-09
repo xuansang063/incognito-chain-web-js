@@ -51,3 +51,26 @@ func (req AddOrderRequest) Hash() *common.Hash {
 	hash := common.HashH([]byte(rawBytes))
 	return &hash
 }
+
+func (req *AddOrderRequest) UnmarshalJSON(raw []byte) error {
+	var temp struct {
+		TokenToSell         common.Hash                         `json:"TokenToSell"`
+		PoolPairID          string                              `json:"PoolPairID"`
+		SellAmount          metadataCommon.Uint64Reader         `json:"SellAmount"`
+		MinAcceptableAmount metadataCommon.Uint64Reader         `json:"MinAcceptableAmount"`
+		Receiver            map[common.Hash]privacy.OTAReceiver `json:"Receiver"`
+		NftID               common.Hash                         `json:"NftID"`
+		metadataCommon.MetadataBase
+	}
+	err := json.Unmarshal(raw, &temp)
+	*req = AddOrderRequest{
+		TokenToSell:         temp.TokenToSell,
+		PoolPairID:          temp.PoolPairID,
+		SellAmount:          uint64(temp.SellAmount),
+		MinAcceptableAmount: uint64(temp.MinAcceptableAmount),
+		Receiver:            temp.Receiver,
+		NftID:               temp.NftID,
+		MetadataBase:        temp.MetadataBase,
+	}
+	return err
+}

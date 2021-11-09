@@ -1,9 +1,11 @@
 package pdexv3
 
 import (
+	"encoding/json"
 	"errors"
 
 	"incognito-chain/common"
+	metadataCommon "incognito-chain/metadata/common"
 	"incognito-chain/privacy"
 )
 
@@ -25,4 +27,17 @@ func isValidOTAReceiver(receiverAddress privacy.OTAReceiver, expectedShardID byt
 	}
 
 	return receiverAddress, nil
+}
+
+func (inf *ReceiverInfo) UnmarshalJSON(raw []byte) error {
+	var temp struct {
+		Address privacy.OTAReceiver         `json:"Address"`
+		Amount  metadataCommon.Uint64Reader `json:"Amount"`
+	}
+	err := json.Unmarshal(raw, &temp)
+	*inf = ReceiverInfo{
+		Address: temp.Address,
+		Amount:  uint64(temp.Amount),
+	}
+	return err
 }

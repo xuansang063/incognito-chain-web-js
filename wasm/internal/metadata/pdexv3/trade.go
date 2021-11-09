@@ -47,3 +47,26 @@ func (req TradeRequest) Hash() *common.Hash {
 	hash := common.HashH([]byte(rawBytes))
 	return &hash
 }
+
+func (req *TradeRequest) UnmarshalJSON(raw []byte) error {
+	var temp struct {
+		TradePath           []string                            `json:"TradePath"`
+		TokenToSell         common.Hash                         `json:"TokenToSell"`
+		SellAmount          metadataCommon.Uint64Reader         `json:"SellAmount"`
+		MinAcceptableAmount metadataCommon.Uint64Reader         `json:"MinAcceptableAmount"`
+		TradingFee          metadataCommon.Uint64Reader         `json:"TradingFee"`
+		Receiver            map[common.Hash]privacy.OTAReceiver `json:"Receiver"`
+		metadataCommon.MetadataBase
+	}
+	err := json.Unmarshal(raw, &temp)
+	*req = TradeRequest{
+		TradePath:           temp.TradePath,
+		TokenToSell:         temp.TokenToSell,
+		SellAmount:          uint64(temp.SellAmount),
+		MinAcceptableAmount: uint64(temp.MinAcceptableAmount),
+		TradingFee:          uint64(temp.TradingFee),
+		Receiver:            temp.Receiver,
+		MetadataBase:        temp.MetadataBase,
+	}
+	return err
+}

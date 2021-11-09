@@ -45,15 +45,15 @@ func (request *UserMintNftRequest) MarshalJSON() ([]byte, error) {
 
 func (request *UserMintNftRequest) UnmarshalJSON(data []byte) error {
 	temp := struct {
-		OtaReceiver string `json:"OtaReceiver"`
-		Amount      uint64 `json:"Amount"`
+		OtaReceiver string                      `json:"OtaReceiver"`
+		Amount      metadataCommon.Uint64Reader `json:"Amount"`
 		metadataCommon.MetadataBase
 	}{}
 	err := json.Unmarshal(data, &temp)
 	if err != nil {
 		return err
 	}
-	request.amount = temp.Amount
+	request.amount = uint64(temp.Amount)
 	request.otaReceiver = temp.OtaReceiver
 	request.MetadataBase = temp.MetadataBase
 	return nil

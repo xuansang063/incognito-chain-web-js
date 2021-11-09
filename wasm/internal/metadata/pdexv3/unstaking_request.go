@@ -60,10 +60,10 @@ func (request *UnstakingRequest) MarshalJSON() ([]byte, error) {
 
 func (request *UnstakingRequest) UnmarshalJSON(data []byte) error {
 	temp := struct {
-		StakingPoolID   string            `json:"StakingPoolID"`
-		NftID           string            `json:"NftID"`
-		OtaReceivers    map[string]string `json:"OtaReceivers"`
-		UnstakingAmount uint64            `json:"UnstakingAmount"`
+		StakingPoolID   string                      `json:"StakingPoolID"`
+		NftID           string                      `json:"NftID"`
+		OtaReceivers    map[string]string           `json:"OtaReceivers"`
+		UnstakingAmount metadataCommon.Uint64Reader `json:"UnstakingAmount"`
 		metadataCommon.MetadataBase
 	}{}
 	err := json.Unmarshal(data, &temp)
@@ -73,7 +73,7 @@ func (request *UnstakingRequest) UnmarshalJSON(data []byte) error {
 	request.stakingPoolID = temp.StakingPoolID
 	request.nftID = temp.NftID
 	request.otaReceivers = temp.OtaReceivers
-	request.unstakingAmount = temp.UnstakingAmount
+	request.unstakingAmount = uint64(temp.UnstakingAmount)
 	request.MetadataBase = temp.MetadataBase
 	return nil
 }

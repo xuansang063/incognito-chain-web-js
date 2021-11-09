@@ -43,3 +43,24 @@ func (req WithdrawOrderRequest) Hash() *common.Hash {
 	hash := common.HashH([]byte(rawBytes))
 	return &hash
 }
+
+func (req *WithdrawOrderRequest) UnmarshalJSON(raw []byte) error {
+	var temp struct {
+		PoolPairID string                              `json:"PoolPairID"`
+		OrderID    string                              `json:"OrderID"`
+		Amount     metadataCommon.Uint64Reader         `json:"Amount"`
+		Receiver   map[common.Hash]privacy.OTAReceiver `json:"Receiver"`
+		NftID      common.Hash                         `json:"NftID"`
+		metadataCommon.MetadataBase
+	}
+	err := json.Unmarshal(raw, &temp)
+	*req = WithdrawOrderRequest{
+		PoolPairID:   temp.PoolPairID,
+		OrderID:      temp.OrderID,
+		Amount:       uint64(temp.Amount),
+		Receiver:     temp.Receiver,
+		NftID:        temp.NftID,
+		MetadataBase: temp.MetadataBase,
+	}
+	return err
+}

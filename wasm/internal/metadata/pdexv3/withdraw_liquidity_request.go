@@ -59,10 +59,10 @@ func (request *WithdrawLiquidityRequest) MarshalJSON() ([]byte, error) {
 
 func (request *WithdrawLiquidityRequest) UnmarshalJSON(data []byte) error {
 	temp := struct {
-		PoolPairID   string            `json:"PoolPairID"`
-		NftID        string            `json:"NftID"`
-		OtaReceivers map[string]string `json:"OtaReceivers"`
-		ShareAmount  uint64            `json:"ShareAmount"`
+		PoolPairID   string                      `json:"PoolPairID"`
+		NftID        string                      `json:"NftID"`
+		OtaReceivers map[string]string           `json:"OtaReceivers"`
+		ShareAmount  metadataCommon.Uint64Reader `json:"ShareAmount"`
 		metadataCommon.MetadataBase
 	}{}
 	err := json.Unmarshal(data, &temp)
@@ -72,7 +72,7 @@ func (request *WithdrawLiquidityRequest) UnmarshalJSON(data []byte) error {
 	request.poolPairID = temp.PoolPairID
 	request.nftID = temp.NftID
 	request.otaReceivers = temp.OtaReceivers
-	request.shareAmount = temp.ShareAmount
+	request.shareAmount = uint64(temp.ShareAmount)
 	request.MetadataBase = temp.MetadataBase
 	return nil
 }

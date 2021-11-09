@@ -69,13 +69,13 @@ func (request *AddLiquidityRequest) MarshalJSON() ([]byte, error) {
 
 func (request *AddLiquidityRequest) UnmarshalJSON(data []byte) error {
 	temp := struct {
-		PoolPairID  string `json:"PoolPairID"` // only "" for the first contribution of pool
-		PairHash    string `json:"PairHash"`
-		OtaReceiver string `json:"OtaReceiver"` // receive nfct
-		TokenID     string `json:"TokenID"`
-		NftID       string `json:"NftID"`
-		TokenAmount uint64 `json:"TokenAmount"`
-		Amplifier   uint   `json:"Amplifier"` // only set for the first contribution
+		PoolPairID  string                      `json:"PoolPairID"` // only "" for the first contribution of pool
+		PairHash    string                      `json:"PairHash"`
+		OtaReceiver string                      `json:"OtaReceiver"` // receive nfct
+		TokenID     string                      `json:"TokenID"`
+		NftID       string                      `json:"NftID"`
+		TokenAmount metadataCommon.Uint64Reader `json:"TokenAmount"`
+		Amplifier   uint                        `json:"Amplifier"` // only set for the first contribution
 		metadataCommon.MetadataBase
 	}{}
 	err := json.Unmarshal(data, &temp)
@@ -87,7 +87,7 @@ func (request *AddLiquidityRequest) UnmarshalJSON(data []byte) error {
 	request.otaReceiver = temp.OtaReceiver
 	request.tokenID = temp.TokenID
 	request.nftID = temp.NftID
-	request.tokenAmount = temp.TokenAmount
+	request.tokenAmount = uint64(temp.TokenAmount)
 	request.amplifier = temp.Amplifier
 	request.MetadataBase = temp.MetadataBase
 	return nil
