@@ -1146,7 +1146,7 @@ async function TestSwap(pDexV3Instance) {
       buytoken:
         "0000000000000000000000000000000000000000000000000000000000000b7c",
       feetoken: PRVID,
-      sellamount: 1e9,
+      sellamount: "10000000000000000000000000000000",
     };
     try {
       let data = await pDexV3Instance.getEstimateTrade(payload);
@@ -1235,20 +1235,25 @@ async function TestSwap(pDexV3Instance) {
 
 async function TestOrderLimit(pDexV3Instance) {
   try {
-    const tx = await pDexV3Instance.createAndSendOrderRequestTx({
-      extra: {
-        tokenIDToSell:
-          "0000000000000000000000000000000000000000000000000000000000000004",
-        tokenIDToBuy:
-          "4b5415ac6ef90d0d87ad79a6d07b3829db3284db9286129d678eb850fb5ebf23",
-        poolPairID:
-          "0000000000000000000000000000000000000000000000000000000000000004-4b5415ac6ef90d0d87ad79a6d07b3829db3284db9286129d678eb850fb5ebf23-37f45b90fd9a31bf13c4d51d9e5df17723239eb7e8f250788edd371af1d77711",
-        sellAmount: 1690000000,
-        version: privacyVersion,
-        minAcceptableAmount: 12,
-      },
-    });
-    console.log("transaction", tx);
+    // try {
+    //   const tx = await pDexV3Instance.createAndSendOrderRequestTx({
+    //     extra: {
+    //       tokenIDToSell:
+    //         "0000000000000000000000000000000000000000000000000000000000000004",
+    //       tokenIDToBuy:
+    //         "4b5415ac6ef90d0d87ad79a6d07b3829db3284db9286129d678eb850fb5ebf23",
+    //       poolPairID:
+    //         "0000000000000000000000000000000000000000000000000000000000000004-4b5415ac6ef90d0d87ad79a6d07b3829db3284db9286129d678eb850fb5ebf23-37f45b90fd9a31bf13c4d51d9e5df17723239eb7e8f250788edd371af1d77711",
+    //       sellAmount: "10000000000000000000000000000",
+    //       version: privacyVersion,
+    //       minAcceptableAmount: "6900010000000000000000000000000000",
+    //     },
+    //   });
+    //   console.log("transaction", tx);
+    // } catch (error) {
+
+    // }
+
     // const { nftToken: nftid } = await pDexV3Instance.getNFTTokenData({
     //   version: privacyVersion,
     // });
@@ -1262,22 +1267,25 @@ async function TestOrderLimit(pDexV3Instance) {
     //     "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47",
     // });
     // console.log("history", history);
-    // try {
-    //   const txCancel = await pDexV3Instance.createAndSendCancelOrderRequestTx({
-    //     transfer: { fee: 100 },
-    //     extra: {
-    //       withdrawTokenID: "123456",
-    //       poolPairID: "111",
-    //       orderID: "1234",
-    //       amount: 1e9,
-    //       nftID: "nftid",
-    //       version: privacyVersion,
-    //     },
-    //   });
-    //   console.log("txCancel", txCancel);
-    // } catch (error) {
-    //   console.log("error", error);
-    // }
+    try {
+      const txCancel = await pDexV3Instance.createAndSendWithdrawOrderRequestTx(
+        {
+          transfer: { fee: 100 },
+          extra: {
+            withdrawTokenIDs: ["123456", "12345t"],
+            poolPairID: "111",
+            orderID: "1234",
+            amount: "6900010000000000000000000000000000",
+            nftID: "nftid",
+            version: privacyVersion,
+            txType: 0
+          },
+        }
+      );
+      console.log("txCancel", txCancel);
+    } catch (error) {
+      console.log("error", error);
+    }
 
     // const order = await pDexV3Instance.getOrderLimitDetail({
     //   requestTx:
@@ -1366,8 +1374,8 @@ async function TestTradeService() {
   // });
   // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
-  return await TestSwap(pDexV3Instance);
-  // return await TestOrderLimit(pDexV3Instance, account);
+  // return await TestSwap(pDexV3Instance);
+  return await TestOrderLimit(pDexV3Instance, account);
   return await TestApiTradeServices(pDexV3Instance);
   // const poolid = "1234";
   // const txCancel = {
@@ -1603,7 +1611,7 @@ async function TestLiquidity() {
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
-  // await TestTradeService();
+  await TestTradeService();
   // return await TestLiquidity();
   // return await TestLiquidity();
   // return TestLiquidity();
