@@ -1235,24 +1235,24 @@ async function TestSwap(pDexV3Instance) {
 
 async function TestOrderLimit(pDexV3Instance) {
   try {
-    // try {
-    //   const tx = await pDexV3Instance.createAndSendOrderRequestTx({
-    //     extra: {
-    //       tokenIDToSell:
-    //         "0000000000000000000000000000000000000000000000000000000000000004",
-    //       tokenIDToBuy:
-    //         "4b5415ac6ef90d0d87ad79a6d07b3829db3284db9286129d678eb850fb5ebf23",
-    //       poolPairID:
-    //         "0000000000000000000000000000000000000000000000000000000000000004-4b5415ac6ef90d0d87ad79a6d07b3829db3284db9286129d678eb850fb5ebf23-37f45b90fd9a31bf13c4d51d9e5df17723239eb7e8f250788edd371af1d77711",
-    //       sellAmount: "10000000000000000000000000000",
-    //       version: privacyVersion,
-    //       minAcceptableAmount: "6900010000000000000000000000000000",
-    //     },
-    //   });
-    //   console.log("transaction", tx);
-    // } catch (error) {
-
-    // }
+    try {
+      const tx = await pDexV3Instance.createAndSendOrderRequestTx({
+        extra: {
+          minAcceptableAmount: "300000000000",
+          poolPairID:
+            "0000000000000000000000000000000000000000000000000000000000000004-2f8d0fa112f181a314bb0c62ac46b6e9e6a92edbf32c0ae87757e9792aff6c0f-83a1b5422302e3179e1bfd12bc8c4214b176afd469dc2340512dd904864ecb3c",
+          sellAmount: "299462196086871900",
+          tokenIDToBuy:
+            "0000000000000000000000000000000000000000000000000000000000000004",
+          tokenIDToSell:
+            "2f8d0fa112f181a314bb0c62ac46b6e9e6a92edbf32c0ae87757e9792aff6c0f",
+          version: 2,
+        },
+      });
+      console.log("transaction", tx);
+    } catch (error) {
+      console.log("ERROR HERE", error);
+    }
 
     // const { nftToken: nftid } = await pDexV3Instance.getNFTTokenData({
     //   version: privacyVersion,
@@ -1278,7 +1278,7 @@ async function TestOrderLimit(pDexV3Instance) {
             amount: "6900010000000000000000000000000000",
             nftID: "nftid",
             version: privacyVersion,
-            txType: 0
+            txType: 0,
           },
         }
       );
@@ -1354,7 +1354,7 @@ async function TestTradeService() {
   let pDexV3Instance = new PDexV3();
   await setShardNumber(2);
   const account = await createAccountByPrivateKey(
-    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZC6TgtJPbuLru"
+    "112t8rnX3VTd3MTWMpfbYP8HGY4ToAaLjrmUYzfjJBrAcb8iPLkNqvVDXWrLNiFV5yb2NBpR3FDZj3VW8GcLUwRdQ61hPMWP4EKByC4ae3nU"
   );
   pDexV3Instance.setAccount(account);
   pDexV3Instance.setRPCTradeService(rpcCoinService);
