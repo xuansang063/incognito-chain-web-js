@@ -1142,11 +1142,11 @@ async function TestSwap(pDexV3Instance) {
   try {
     let payload = {
       selltoken:
-        "fdd928bc86c82bd2a7c54082a68332ebb5f2cde842b1c2e0fa430ededb6e369e",
+        "0000000000000000000000000000000000000000000000000000000000000004",
       buytoken:
-        "0000000000000000000000000000000000000000000000000000000000000b7c",
-      feetoken: PRVID,
-      sellamount: "10000000000000000000000000000000",
+        "fdd928bc86c82bd2a7c54082a68332ebb5f2cde842b1c2e0fa430ededb6e369e",
+      sellamount: "1000000000",
+      ismax: false,
     };
     try {
       let data = await pDexV3Instance.getEstimateTrade(payload);
@@ -1352,7 +1352,6 @@ async function TestApiTradeServices(pDexV3Instance) {
 async function TestTradeService() {
   //Trade services
   let pDexV3Instance = new PDexV3();
-  await setShardNumber(2);
   const account = await createAccountByPrivateKey(
     "112t8rnX3VTd3MTWMpfbYP8HGY4ToAaLjrmUYzfjJBrAcb8iPLkNqvVDXWrLNiFV5yb2NBpR3FDZj3VW8GcLUwRdQ61hPMWP4EKByC4ae3nU"
   );
@@ -1374,8 +1373,8 @@ async function TestTradeService() {
   // });
   // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
-  // return await TestSwap(pDexV3Instance);
-  return await TestOrderLimit(pDexV3Instance, account);
+  return await TestSwap(pDexV3Instance);
+  // return await TestOrderLimit(pDexV3Instance, account);
   return await TestApiTradeServices(pDexV3Instance);
   // const poolid = "1234";
   // const txCancel = {
@@ -1617,7 +1616,7 @@ async function MainRoutine() {
   // return TestLiquidity();
   // return await TestCreateAndSendNativeToken();
   // return TestVerifierTx();
-  return await TestLoadWallet();
+  // return await TestLoadWallet();
   // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
