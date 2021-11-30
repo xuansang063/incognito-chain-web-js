@@ -9,6 +9,9 @@ const {
   VerifierTx,
   PDexV3,
   setShardNumber,
+  PANCAKE_CONSTANTS,
+  WEB3_CONSTANT,
+  BSC_CONSTANT,
 } = require("../../");
 const { PaymentAddressType } = constants;
 
@@ -1351,12 +1354,18 @@ async function TestApiTradeServices(pDexV3Instance) {
 
 async function TestPancake(pDexV3Instance) {
   try {
+    console.log(
+      PANCAKE_CONSTANTS.PANCAKE_MAINNET_CONFIGS,
+      PANCAKE_CONSTANTS.PANCAKE_TESTNET_CONFIGS,
+      WEB3_CONSTANT.WEB3_MAINNET_CONFIGS,
+      WEB3_CONSTANT.WEB3_TESTNET_CONFIGS,
+      BSC_CONSTANT.BSC_MAINNET_CONFIGS,
+      BSC_CONSTANT.BSC_TESTNET_CONFIGS
+    );
+    return;
     const tokens = await pDexV3Instance.getPancakeTokens();
     console.log(tokens);
-    const paymentAddress = pDexV3Instance.getPaymentKey();
-    console.log("paymentAddress", paymentAddress);
     const tradingFee = await pDexV3Instance.estimatePancakeTradingFee({
-      walletAddress: paymentAddress,
       srcTokens:
         "7a2bbdaac326ca939aba81ffbdc36b01d52ced24e44702d3ae4c32d73e715335",
       destTokens:
@@ -1379,6 +1388,7 @@ async function TestTradeService() {
   pDexV3Instance.setRPCTradeService(rpcCoinService);
   pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
+  console.log(account.authToken);
   pDexV3Instance.setAuthToken(account.authToken);
   pDexV3Instance.setRPCApiServices(rpcApiService);
   // let defaultPool = await pDexV3Instance.getDefaultPool();
