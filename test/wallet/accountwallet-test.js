@@ -14,9 +14,9 @@ const { PaymentAddressType } = constants;
 
 // const rpcClient = "https://lb-fullnode.incognito.org/fullnode";
 //  new RpcClient("https://mainnet.incognito.org/fullnode");
-// const rpcClient = "https://testnet.incognito.org/fullnode";
+const rpcClient = "https://testnet.incognito.org/fullnode";
 // const rpcClient = new RpcClient("http://localhost:9334");
-const rpcClient = "http://139.162.55.124:18334";
+// const rpcClient = "http://139.162.55.124:18334";
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
 // const rpcClient = "https://testnet1.incognito.org/fullnode"; //testnet1
@@ -26,11 +26,11 @@ const stagingServices = "https://api-coinservice-staging.incognito.org";
 
 const rpcCoinService =
   // "https://api-coinservice.incognito.org"; //mainnet
-  // stagingServices; //testnet
-  // "https://api-coinservice-staging2.incognito.org"; // testnet1
-  "http://51.161.119.66:7001"; //dev-test-coin-service
-const rpcTxService = "http://51.161.119.66:7003";
-// `${stagingServices}/txservice`;
+  stagingServices; //testnet
+// "https://api-coinservice-staging2.incognito.org"; // testnet1
+// "http://51.161.119.66:7001"; //dev-test-coin-service
+const rpcTxService = `${stagingServices}/txservice`;
+// "http://51.161.119.66:7003";
 //  "https://api-coinservice.incognito.org/txservice"; mainnet
 // "https://api-coinservice-staging.incognito.org/txservice";
 //  "https://api-coinservice-staging2.incognito.org/txservice"; // testnet1
@@ -1349,6 +1349,26 @@ async function TestApiTradeServices(pDexV3Instance) {
   }
 }
 
+async function TestPancake(pDexV3Instance) {
+  try {
+    const tokens = await pDexV3Instance.getPancakeTokens();
+    console.log(tokens);
+    const paymentAddress = pDexV3Instance.getPaymentKey();
+    console.log("paymentAddress", paymentAddress);
+    const tradingFee = await pDexV3Instance.estimatePancakeTradingFee({
+      walletAddress: paymentAddress,
+      srcTokens:
+        "7a2bbdaac326ca939aba81ffbdc36b01d52ced24e44702d3ae4c32d73e715335",
+      destTokens:
+        "38fc5ad8434ef02ea77c860eb9d6824485de3d68b3be8455842a5bbf7b0940a5",
+      srcQties: String(1e18),
+    });
+    console.log("tradingFee", tradingFee);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function TestTradeService() {
   //Trade services
   let pDexV3Instance = new PDexV3();
@@ -1359,21 +1379,20 @@ async function TestTradeService() {
   pDexV3Instance.setRPCTradeService(rpcCoinService);
   pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
-  let defaultPool = await pDexV3Instance.getDefaultPool();
-  console.log("defaultPool", defaultPool);
-  await pDexV3Instance.setDefaultPool("213456");
-  defaultPool = await pDexV3Instance.getDefaultPool();
-  console.log("defaultPool", defaultPool);
-  const balance = await account.getBalance({
-    tokenID: PRVID,
-    version: privacyVersion,
-  });
-  console.log("balance: ", balance);
+  pDexV3Instance.setAuthToken(account.authToken);
+  pDexV3Instance.setRPCApiServices(rpcApiService);
+  // let defaultPool = await pDexV3Instance.getDefaultPool();
+  // await pDexV3Instance.setDefaultPool("213456");
+  // defaultPool = await pDexV3Instance.getDefaultPool();
+  // const balance = await account.getBalance({
+  //   tokenID: PRVID,
   //   version: privacyVersion,
   // });
+  // console.log("balance: ", balance);
+  return await TestPancake(pDexV3Instance);
   // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
-  return await TestSwap(pDexV3Instance);
+  // return await TestSwap(pDexV3Instance);
   // return await TestOrderLimit(pDexV3Instance, account);
   return await TestApiTradeServices(pDexV3Instance);
   // const poolid = "1234";
