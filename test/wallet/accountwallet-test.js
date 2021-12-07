@@ -90,6 +90,7 @@ async function setup() {
   const authTokenDt = await Axios.post(`${rpcApiService}/auth/new-token`, data);
   const authToken = authTokenDt.data.Result.Token;
   accountSender.setAuthToken(authToken);
+  console.log("auth token 2", authToken);
   accountSender.setRPCApiServices(rpcApiService, authToken);
   await accountSender.setKey(senderPrivateKeyStr);
   senderPaymentAddressStr =
@@ -1354,23 +1355,16 @@ async function TestApiTradeServices(pDexV3Instance) {
 
 async function TestPancake(pDexV3Instance) {
   try {
-    console.log(
-      PANCAKE_CONSTANTS.PANCAKE_MAINNET_CONFIGS,
-      PANCAKE_CONSTANTS.PANCAKE_TESTNET_CONFIGS,
-      WEB3_CONSTANT.WEB3_MAINNET_CONFIGS,
-      WEB3_CONSTANT.WEB3_TESTNET_CONFIGS,
-      BSC_CONSTANT.BSC_MAINNET_CONFIGS,
-      BSC_CONSTANT.BSC_TESTNET_CONFIGS
-    );
-    return;
     const tokens = await pDexV3Instance.getPancakeTokens();
-    console.log(tokens);
-    const tradingFee = await pDexV3Instance.estimatePancakeTradingFee({
-      srcTokens:
-        "7a2bbdaac326ca939aba81ffbdc36b01d52ced24e44702d3ae4c32d73e715335",
-      destTokens:
-        "38fc5ad8434ef02ea77c860eb9d6824485de3d68b3be8455842a5bbf7b0940a5",
-      srcQties: String(1e18),
+    console.log("tokens", tokens.length, tokens[0]);
+    const selltoken =
+      "e5032c083f0da67ca141331b6005e4a3740c50218f151a5e829e9d03227e33e2";
+    const buytoken =
+      "38fc5ad8434ef02ea77c860eb9d6824485de3d68b3be8455842a5bbf7b0940a5";
+    let tradingFee = await pDexV3Instance.estimatePancakeTradingFee({
+      srcTokens: selltoken,
+      destTokens: buytoken,
+      srcQties: String(69e5),
     });
     console.log("tradingFee", tradingFee);
   } catch (error) {
@@ -1384,12 +1378,19 @@ async function TestTradeService() {
   const account = await createAccountByPrivateKey(
     "112t8rnX3VTd3MTWMpfbYP8HGY4ToAaLjrmUYzfjJBrAcb8iPLkNqvVDXWrLNiFV5yb2NBpR3FDZj3VW8GcLUwRdQ61hPMWP4EKByC4ae3nU"
   );
+  const data = {
+    DeviceID: deviceID,
+  };
+  const authTokenDt = await Axios.post(
+    `${rpcApiService}/auth/new-token`,
+    data
+  );
+  const authToken = authTokenDt.data.Result.Token;
   pDexV3Instance.setAccount(account);
+  pDexV3Instance.setAuthToken(authToken);
   pDexV3Instance.setRPCTradeService(rpcCoinService);
   pDexV3Instance.setRPCClient(rpcClient);
   pDexV3Instance.setStorageServices(new StorageServices());
-  console.log(account.authToken);
-  pDexV3Instance.setAuthToken(account.authToken);
   pDexV3Instance.setRPCApiServices(rpcApiService);
   // let defaultPool = await pDexV3Instance.getDefaultPool();
   // await pDexV3Instance.setDefaultPool("213456");
@@ -1640,6 +1641,7 @@ async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
   await TestTradeService();
+  // await TestTradeService();
   // return await TestLiquidity();
   // return await TestLiquidity();
   // return TestLiquidity();
