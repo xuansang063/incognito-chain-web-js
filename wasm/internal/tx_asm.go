@@ -1,6 +1,6 @@
 package gomobile
 
-import(
+import (
 	"encoding/base64"
 	"encoding/json"
 	"math/big"
@@ -12,35 +12,36 @@ import(
 	"incognito-chain/common"
 	"incognito-chain/common/base58"
 	"incognito-chain/key/incognitokey"
+	"incognito-chain/key/wallet"
+	"incognito-chain/metadata"
 	"incognito-chain/privacy"
 	"incognito-chain/privacy/privacy_v2/mlsag"
-	"incognito-chain/metadata"
-	"incognito-chain/key/wallet"
-
 )
 
 const MaxSizeByte = (1 << 8) - 1
+
 var b58 = base58.Base58Check{}
 var b64 = base64.StdEncoding
 
 type encodedBytes []byte
-func (b encodedBytes) MarshalJSON() ([]byte, error){
+
+func (b encodedBytes) MarshalJSON() ([]byte, error) {
 	var res string
-	if len([]byte(b))==0{
+	if len([]byte(b)) == 0 {
 		res = ""
-	}else{
+	} else {
 		if common.EncodeCoinsWithBase64 {
-			res = b64.EncodeToString(b, )
+			res = b64.EncodeToString(b)
 		} else {
 			res = b58.Encode(b, common.ZeroByte)
 		}
 	}
 	return json.Marshal(res)
 }
-func (b *encodedBytes) UnmarshalJSON(src []byte) error{
+func (b *encodedBytes) UnmarshalJSON(src []byte) error {
 	var theStr string
 	json.Unmarshal(src, &theStr)
-	if len(theStr)==0{
+	if len(theStr) == 0 {
 		*b = encodedBytes([]byte{})
 		return nil
 	}
@@ -55,13 +56,14 @@ func (b *encodedBytes) UnmarshalJSON(src []byte) error{
 	}
 }
 
-func (b encodedBytes) IsBlank() bool{
-	return len([]byte(b))==0
+func (b encodedBytes) IsBlank() bool {
+	return len([]byte(b)) == 0
 }
 
 type SigPubKey struct {
 	Indexes [][]*big.Int
 }
+
 func (sigPub SigPubKey) Bytes() ([]byte, error) {
 	n := len(sigPub.Indexes)
 	if n == 0 {
@@ -131,7 +133,7 @@ func (sigPub *SigPubKey) SetBytes(b []byte) error {
 
 type Tx struct {
 	// Basic data, required
-	Version  int8   
+	Version  int8
 	Type     string
 	LockTime int64
 	Fee      uint64
@@ -142,13 +144,13 @@ type Tx struct {
 	Sig                  []byte
 	Proof                privacy.Proof
 	pubKeyLastByteSender byte
-	Metadata metadata.Metadata
+	Metadata             metadata.Metadata
 	// private field, not use for json parser, only use as temp variable
-	sigPrivKey       []byte
+	sigPrivKey []byte
 }
 
-func (tx Tx) MarshalJSON() ([]byte, error){
-	var temp = struct{
+func (tx Tx) MarshalJSON() ([]byte, error) {
+	var temp = struct {
 		// Basic data, required
 		Version  int8   `json:"Version"`
 		Type     string `json:"Type"` // Transaction type
@@ -157,57 +159,58 @@ func (tx Tx) MarshalJSON() ([]byte, error){
 		Info     []byte // 512 bytes
 
 		// Sign and Privacy proof, required
-		SigPubKey            []byte `json:"SigPubKey"` // 33 bytes
-		Sig                  []byte `json:"Sig"`       //
+		SigPubKey            []byte `json:"SigPubKey"`
+		Sig                  []byte `json:"Sig"`
 		Proof                privacy.Proof
-		PubKeyLastByteSender int    `json:"PubKeyLastByteSender"`
-		Metadata metadata.Metadata  `json:"Metadata"`
+		PubKeyLastByteSender int               `json:"PubKeyLastByteSender"`
+		Metadata             metadata.Metadata `json:"Metadata"`
 	}{
-		Version: tx.Version, 
-		Type: tx.Type,
-		LockTime: tx.LockTime,
-		Fee: tx.Fee,
-		Info: tx.Info,
-		SigPubKey: tx.SigPubKey,
-		Sig: tx.Sig,
-		Proof: tx.Proof,
+		Version:              tx.Version,
+		Type:                 tx.Type,
+		LockTime:             tx.LockTime,
+		Fee:                  tx.Fee,
+		Info:                 tx.Info,
+		SigPubKey:            tx.SigPubKey,
+		Sig:                  tx.Sig,
+		Proof:                tx.Proof,
 		PubKeyLastByteSender: int(tx.pubKeyLastByteSender),
-		Metadata: tx.Metadata,
+		Metadata:             tx.Metadata,
 	}
 	return json.Marshal(temp)
 }
 
-type CoinCache struct{
-	PublicKeys 		[]encodedBytes 			`json:"PublicKeys"`
-	Commitments 	[]encodedBytes 			`json:"Commitments"`
-	AssetTags		[]encodedBytes 			`json:"AssetTags,omitempty"`
-	Indexes 		[]uint64 					`json:"Indexes"`
+type CoinCache struct {
+	PublicKeys  []encodedBytes `json:"PublicKeys"`
+	Commitments []encodedBytes `json:"Commitments"`
+	AssetTags   []encodedBytes `json:"AssetTags,omitempty"`
+	Indexes     []uint64       `json:"Indexes"`
 }
-func MakeCoinCache() *CoinCache{
+
+func MakeCoinCache() *CoinCache {
 	return &CoinCache{
-		PublicKeys: nil,
+		PublicKeys:  nil,
 		Commitments: nil,
-		AssetTags: nil,
-		Indexes: nil,
+		AssetTags:   nil,
+		Indexes:     nil,
 	}
 }
 
 var genericError = errors.New("Generic error for ASM")
 
 // []byte equivalents are by default encoded with base64 when handled by JSON
-type InitParamsAsm struct{
-	SenderSK    privacy.PrivateKey		`json:"SenderSK"`
-	PaymentInfo []printedPaymentInfo	`json:"PaymentInfo"`
-	InputCoins  []CoinInter 	 		`json:"InputCoins"`
-	Fee         uint64 					`json:"Fee"`
-	HasPrivacy  bool 					`json:"HasPrivacy,omitempty"`
-	TokenID     string 					`json:"TokenID,omitempty"`
-	Metadata    json.RawMessage			`json:"Metadata,omitempty"`
-	Info        []byte 					`json:"Info,omitempty"`
-	Kvargs		map[string]interface{} 	`json:"Kvargs,omitempty"`
+type InitParamsAsm struct {
+	SenderSK    privacy.PrivateKey     `json:"SenderSK"`
+	PaymentInfo []printedPaymentInfo   `json:"PaymentInfo"`
+	InputCoins  []CoinInter            `json:"InputCoins"`
+	Fee         uint64                 `json:"Fee"`
+	HasPrivacy  bool                   `json:"HasPrivacy,omitempty"`
+	TokenID     string                 `json:"TokenID,omitempty"`
+	Metadata    json.RawMessage        `json:"Metadata,omitempty"`
+	Info        []byte                 `json:"Info,omitempty"`
+	Kvargs      map[string]interface{} `json:"Kvargs,omitempty"`
 
-	Cache 		CoinCache 				`json:"CoinCache"`
-	TokenParams *TokenInnerParams 		`json:"TokenParams,omitempty"`
+	Cache       CoinCache         `json:"CoinCache"`
+	TokenParams *TokenInnerParams `json:"TokenParams,omitempty"`
 }
 
 type TxPrivacyInitParams struct {
@@ -217,46 +220,47 @@ type TxPrivacyInitParams struct {
 	Fee         uint64
 	HasPrivacy  bool
 	TokenID     *common.Hash
-	Metadata 	metadata.Metadata
+	Metadata    metadata.Metadata
 	Info        []byte
 }
-func NewTxParams(sk *privacy.PrivateKey, pInfos []*privacy.PaymentInfo, inputs []privacy.PlainCoin, fee uint64, isPriv bool, tokenID *common.Hash, md metadata.Metadata, info []byte) *TxPrivacyInitParams{
-	if info==nil{
+
+func NewTxParams(sk *privacy.PrivateKey, pInfos []*privacy.PaymentInfo, inputs []privacy.PlainCoin, fee uint64, isPriv bool, tokenID *common.Hash, md metadata.Metadata, info []byte) *TxPrivacyInitParams {
+	if info == nil {
 		info = []byte("")
 	}
 	return &TxPrivacyInitParams{
-		SenderSK: sk,
+		SenderSK:    sk,
 		PaymentInfo: pInfos,
-		InputCoins: inputs,
-		Fee: fee,
-		HasPrivacy: isPriv,
-		TokenID: tokenID,
-		Metadata: md,
-		Info: info,
+		InputCoins:  inputs,
+		Fee:         fee,
+		HasPrivacy:  isPriv,
+		TokenID:     tokenID,
+		Metadata:    md,
+		Info:        info,
 	}
 }
 
-func (params *InitParamsAsm) GetInputCoins() ([]privacy.PlainCoin, []uint64){
+func (params *InitParamsAsm) GetInputCoins() ([]privacy.PlainCoin, []uint64) {
 	var resultCoins []privacy.PlainCoin
 	var resultIndexes []uint64
-	if len(params.InputCoins)==0{
+	if len(params.InputCoins) == 0 {
 		return []privacy.PlainCoin{}, []uint64{}
 	}
 	ver := params.InputCoins[0].Version
-	for _,ci := range params.InputCoins{
+	for _, ci := range params.InputCoins {
 		var c privacy.PlainCoin
 		var ind uint64
 		var err error
-		if ver==2{
+		if ver == 2 {
 			c, ind, err = ci.ToCoin()
-			if err!=nil{
+			if err != nil {
 				println(err.Error())
 				return nil, nil
 			}
-		}else {
+		} else {
 			var temp *privacy.CoinV1
 			temp, ind, err = ci.ToCoinV1()
-			if err!=nil{
+			if err != nil {
 				println(err.Error())
 				return nil, nil
 			}
@@ -268,27 +272,27 @@ func (params *InitParamsAsm) GetInputCoins() ([]privacy.PlainCoin, []uint64){
 	return resultCoins, resultIndexes
 }
 
-func (params *InitParamsAsm) GetGenericParams() *TxPrivacyInitParams{
+func (params *InitParamsAsm) GetGenericParams() *TxPrivacyInitParams {
 	var pInfos []*privacy.PaymentInfo
-	for _, payInf := range params.PaymentInfo{
+	for _, payInf := range params.PaymentInfo {
 		temp, _ := payInf.To()
 		pInfos = append(pInfos, temp)
 	}
 	tid, err := getTokenIDFromString(params.TokenID)
-	if err!=nil{
+	if err != nil {
 		println(err.Error())
 		return nil
 	}
 
 	md, err := metadata.ParseMetadata(params.Metadata)
-	if err!=nil{
+	if err != nil {
 		println("Cannot parse metadata")
 		println(string(params.Metadata))
 		println(err.Error())
 		return nil
 	}
 	var info []byte = []byte("")
-	if len(params.Info)>0{
+	if len(params.Info) > 0 {
 		info = params.Info
 	}
 	ics, _ := params.GetInputCoins()
@@ -296,30 +300,30 @@ func (params *InitParamsAsm) GetGenericParams() *TxPrivacyInitParams{
 }
 
 type printedPaymentInfo struct {
-	PaymentAddress json.RawMessage 		`json:"PaymentAddress"`
-	Amount         string 				`json:"Amount"`
-	Message        []byte 			 	`json:"Message"`
+	PaymentAddress json.RawMessage `json:"PaymentAddress"`
+	Amount         string          `json:"Amount"`
+	Message        []byte          `json:"Message"`
 }
 
-func (pp printedPaymentInfo) To() (*privacy.PaymentInfo, error){
+func (pp printedPaymentInfo) To() (*privacy.PaymentInfo, error) {
 	result := &privacy.PaymentInfo{}
 	var theStr string
 	err := json.Unmarshal(pp.PaymentAddress, &theStr)
-	if err!=nil{
+	if err != nil {
 		return nil, err
 	}
 
 	kw, err := wallet.Base58CheckDeserialize(theStr)
-	if err!=nil{
+	if err != nil {
 		return nil, err
 	}
 	result.PaymentAddress = kw.KeySet.PaymentAddress
 	num, err := strconv.ParseUint(pp.Amount, 10, 64)
-	if err!=nil{
+	if err != nil {
 		return nil, err
 	}
-	result.Amount 	= num
-	result.Message 	= pp.Message
+	result.Amount = num
+	result.Message = pp.Message
 	return result, nil
 }
 func (pp *printedPaymentInfo) From(pInf *privacy.PaymentInfo) {
@@ -329,16 +333,17 @@ func (pp *printedPaymentInfo) From(pInf *privacy.PaymentInfo) {
 	paStr := kw.Base58CheckSerialize(wallet.PaymentAddressType)
 	result := printedPaymentInfo{}
 	result.PaymentAddress, _ = json.Marshal(paStr)
-	result.Amount  = strconv.FormatUint(pInf.Amount, 10)
+	result.Amount = strconv.FormatUint(pInf.Amount, 10)
 	result.Message = pInf.Message
 	*pp = result
 }
 
 type printedUintStr uint64
-func (u printedUintStr) MarshalJSON() ([]byte, error){
+
+func (u printedUintStr) MarshalJSON() ([]byte, error) {
 	return json.Marshal(strconv.FormatUint(uint64(u), 10))
 }
-func (u *printedUintStr) UnmarshalJSON(raw []byte) error{
+func (u *printedUintStr) UnmarshalJSON(raw []byte) error {
 	var theStr string
 	json.Unmarshal(raw, &theStr)
 	temp, err := strconv.ParseUint(theStr, 10, 64)
@@ -347,100 +352,101 @@ func (u *printedUintStr) UnmarshalJSON(raw []byte) error{
 }
 
 type CoinInter struct {
-	Version    		printedUintStr	`json:"Version"`
-	Info       		encodedBytes 	`json:"Info"`
-	Index      		encodedBytes 	`json:"Index"`
-	PublicKey  		encodedBytes 	`json:"PublicKey"`
-	Commitment 		encodedBytes 	`json:"Commitment"`
-	KeyImage   		encodedBytes 	`json:"KeyImage"`
+	Version    printedUintStr `json:"Version"`
+	Info       encodedBytes   `json:"Info"`
+	Index      encodedBytes   `json:"Index"`
+	PublicKey  encodedBytes   `json:"PublicKey"`
+	Commitment encodedBytes   `json:"Commitment"`
+	KeyImage   encodedBytes   `json:"KeyImage"`
 
-	SharedRandom 	encodedBytes 	`json:"SharedRandom"`
-	SharedConcealRandom 	encodedBytes 	`json:"SharedConcealRandom"`
-	TxRandom     	encodedBytes 	`json:"TxRandom"`
-	Mask    		encodedBytes 	`json:"Randomness"`
-	Value 			printedUintStr 	`json:"Value"`
-	Amount 			encodedBytes 	`json:"CoinDetailsEncrypted"`
+	SharedRandom        encodedBytes   `json:"SharedRandom"`
+	SharedConcealRandom encodedBytes   `json:"SharedConcealRandom"`
+	TxRandom            encodedBytes   `json:"TxRandom"`
+	Mask                encodedBytes   `json:"Randomness"`
+	Value               printedUintStr `json:"Value"`
+	Amount              encodedBytes   `json:"CoinDetailsEncrypted"`
 
 	// for v1
-	SNDerivator     encodedBytes 	`json:"SNDerivator"`
+	SNDerivator encodedBytes `json:"SNDerivator"`
 	// tag is nil unless confidential asset
-	AssetTag  		encodedBytes 	`json:"AssetTag"`
+	AssetTag encodedBytes `json:"AssetTag"`
 }
-func (c CoinInter) ToCoin() (*privacy.CoinV2, uint64, error){
+
+func (c CoinInter) ToCoin() (*privacy.CoinV2, uint64, error) {
 	var err error
 	var p *privacy.Point
 	result := &privacy.CoinV2{}
 	result.SetVersion(uint8(c.Version))
 	result.SetInfo(c.Info)
-	if c.PublicKey.IsBlank(){
+	if c.PublicKey.IsBlank() {
 		result.SetPublicKey(nil)
-	}else{
+	} else {
 		p, err = (&privacy.Point{}).FromBytesS(c.PublicKey)
-		if err!=nil{
+		if err != nil {
 			return nil, 0, err
 		}
 		result.SetPublicKey(p)
 	}
 
-	if c.Commitment.IsBlank(){
+	if c.Commitment.IsBlank() {
 		result.SetCommitment(nil)
-	}else{
+	} else {
 		p, err = (&privacy.Point{}).FromBytesS(c.Commitment)
-		if err!=nil{
+		if err != nil {
 			return nil, 0, err
 		}
 		result.SetCommitment(p)
 	}
 
-	if c.KeyImage.IsBlank(){
+	if c.KeyImage.IsBlank() {
 		result.SetKeyImage(nil)
-	}else{
+	} else {
 		p, err = (&privacy.Point{}).FromBytesS(c.KeyImage)
-		if err!=nil{
+		if err != nil {
 			return nil, 0, err
 		}
 		result.SetKeyImage(p)
 	}
-	if c.SharedRandom.IsBlank(){
+	if c.SharedRandom.IsBlank() {
 		result.SetSharedRandom(nil)
-	}else{
+	} else {
 		result.SetSharedRandom((&privacy.Scalar{}).FromBytesS(c.SharedRandom))
 	}
-	if c.SharedConcealRandom.IsBlank(){
+	if c.SharedConcealRandom.IsBlank() {
 		result.SetSharedConcealRandom(nil)
-	}else{
+	} else {
 		result.SetSharedConcealRandom((&privacy.Scalar{}).FromBytesS(c.SharedConcealRandom))
 	}
 
-	if c.Amount.IsBlank(){
+	if c.Amount.IsBlank() {
 		temp := (&privacy.Scalar{}).FromUint64(uint64(c.Value))
 		result.SetAmount(temp)
-	}else{
+	} else {
 		result.SetAmount((&privacy.Scalar{}).FromBytesS(c.Amount))
 	}
 
-	if c.TxRandom.IsBlank(){
+	if c.TxRandom.IsBlank() {
 		result.SetTxRandom(nil)
-	}else{
+	} else {
 		txr := (&privacy.TxRandom{})
 		err = txr.SetBytes(c.TxRandom)
-		if err!=nil{
+		if err != nil {
 			return nil, 0, err
 		}
 		result.SetTxRandom(txr)
 	}
 
-	if c.Mask.IsBlank(){
+	if c.Mask.IsBlank() {
 		result.SetRandomness(nil)
-	}else{
+	} else {
 		result.SetRandomness((&privacy.Scalar{}).FromBytesS(c.Mask))
 	}
 
-	if c.AssetTag.IsBlank(){
+	if c.AssetTag.IsBlank() {
 		result.SetAssetTag(nil)
-	}else{
+	} else {
 		p, err = (&privacy.Point{}).FromBytesS(c.AssetTag)
-		if err!=nil{
+		if err != nil {
 			return nil, 0, err
 		}
 		result.SetAssetTag(p)
@@ -448,79 +454,79 @@ func (c CoinInter) ToCoin() (*privacy.CoinV2, uint64, error){
 	ind := big.NewInt(0).SetBytes(c.Index)
 	return result, ind.Uint64(), nil
 }
-func GetCoinInter(coin privacy.PlainCoin) CoinInter{
+func GetCoinInter(coin privacy.PlainCoin) CoinInter {
 	var amount []byte = ScalarToBytes(nil)
 	var txr []byte = ScalarToBytes(nil)
 	cv2, ok := coin.(*privacy.CoinV2)
-	if ok{
+	if ok {
 		amount = ScalarToBytes(cv2.GetAmount())
 		txr = coin.GetTxRandom().Bytes()
 	}
 
 	return CoinInter{
-		Version: printedUintStr(coin.GetVersion()),
-		Info: coin.GetInfo(),
-		PublicKey: PointToBytes(coin.GetPublicKey()),
-		Commitment: PointToBytes(coin.GetCommitment()),
-		KeyImage: PointToBytes(coin.GetKeyImage()),
-		SharedRandom: ScalarToBytes(coin.GetSharedRandom()),
+		Version:             printedUintStr(coin.GetVersion()),
+		Info:                coin.GetInfo(),
+		PublicKey:           PointToBytes(coin.GetPublicKey()),
+		Commitment:          PointToBytes(coin.GetCommitment()),
+		KeyImage:            PointToBytes(coin.GetKeyImage()),
+		SharedRandom:        ScalarToBytes(coin.GetSharedRandom()),
 		SharedConcealRandom: ScalarToBytes(coin.GetSharedConcealRandom()),
-		TxRandom: txr,
-		Mask: ScalarToBytes(coin.GetRandomness()),
-		Value: printedUintStr(coin.GetValue()),
-		Amount: amount,
-		AssetTag: PointToBytes(coin.GetAssetTag()),
+		TxRandom:            txr,
+		Mask:                ScalarToBytes(coin.GetRandomness()),
+		Value:               printedUintStr(coin.GetValue()),
+		Amount:              amount,
+		AssetTag:            PointToBytes(coin.GetAssetTag()),
 
 		SNDerivator: ScalarToBytes(coin.GetSNDerivator()),
 	}
 }
 
-func (c CoinInter) ToCoinV1() (*privacy.CoinV1, uint64, error){
+func (c CoinInter) ToCoinV1() (*privacy.CoinV1, uint64, error) {
 	var err error
 	var p *privacy.Point
 	result := &privacy.CoinV1{}
 	result.Init()
 	result.CoinDetails.SetInfo(c.Info)
-	if c.PublicKey.IsBlank(){
+	if c.PublicKey.IsBlank() {
 		result.CoinDetails.SetPublicKey(nil)
-	}else{
+	} else {
 		p, err = (&privacy.Point{}).FromBytesS(c.PublicKey)
-		if err!=nil{
+		if err != nil {
 			return nil, 0, err
 		}
 		result.CoinDetails.SetPublicKey(p)
 	}
 
-	if c.Commitment.IsBlank(){
+	if c.Commitment.IsBlank() {
 		result.CoinDetails.SetCommitment(nil)
-	}else{
+	} else {
 		p, err = (&privacy.Point{}).FromBytesS(c.Commitment)
-		if err!=nil{
+		if err != nil {
 			return nil, 0, err
 		}
 		result.CoinDetails.SetCommitment(p)
 	}
 
-	if c.KeyImage.IsBlank(){
+	if c.KeyImage.IsBlank() {
 		result.CoinDetails.SetKeyImage(nil)
-	}else{
+	} else {
 		p, err = (&privacy.Point{}).FromBytesS(c.KeyImage)
-		if err!=nil{
+		if err != nil {
 			return nil, 0, err
 		}
 		result.CoinDetails.SetKeyImage(p)
 	}
 
 	result.CoinDetails.SetValue(uint64(c.Value))
-	if c.Mask.IsBlank(){
+	if c.Mask.IsBlank() {
 		result.CoinDetails.SetRandomness(nil)
-	}else{
+	} else {
 		result.CoinDetails.SetRandomness((&privacy.Scalar{}).FromBytesS(c.Mask))
 	}
 
-	if c.SNDerivator.IsBlank(){
+	if c.SNDerivator.IsBlank() {
 		result.CoinDetails.SetSNDerivator(nil)
-	}else{
+	} else {
 		result.CoinDetails.SetSNDerivator((&privacy.Scalar{}).FromBytesS(c.SNDerivator))
 	}
 	result.CoinDetailsEncrypted.SetBytes([]byte(c.Amount))
@@ -529,14 +535,14 @@ func (c CoinInter) ToCoinV1() (*privacy.CoinV1, uint64, error){
 	return result, ind.Uint64(), nil
 }
 
-func ScalarToBytes(sc *privacy.Scalar) []byte{
-	if sc==nil{
+func ScalarToBytes(sc *privacy.Scalar) []byte {
+	if sc == nil {
 		return []byte{}
 	}
 	return sc.ToBytesS()
 }
-func PointToBytes(sc *privacy.Point) []byte{
-	if sc==nil{
+func PointToBytes(sc *privacy.Point) []byte {
+	if sc == nil {
 		return []byte{}
 	}
 	return sc.ToBytesS()
@@ -570,7 +576,7 @@ func (tx Tx) Hash() *common.Hash {
 	tx.SigPubKey = []byte{}
 	inBytes, err := json.Marshal(tx)
 	// println(fmt.Sprintf("Will hash TX : %s", string(inBytes)))
-	if err!=nil{
+	if err != nil {
 		return nil
 	}
 	hash := common.HashH(inBytes)
@@ -584,7 +590,7 @@ func (tx Tx) HashWithoutMetadataSig() *common.Hash {
 	mdHash := md.HashWithoutSig()
 	tx.Metadata = nil
 	txHash := tx.Hash()
-	if mdHash==nil || txHash==nil{
+	if mdHash == nil || txHash == nil {
 		return nil
 	}
 	// tx.SetMetadata(md)
@@ -596,14 +602,14 @@ func (tx Tx) HashWithoutMetadataSig() *common.Hash {
 func generateMlsagRing(inputCoins []privacy.PlainCoin, inputIndexes []uint64, outputCoins []*privacy.CoinV2, params *InitParamsAsm, pi int, shardID byte, ringSize int) (*mlsag.Ring, [][]*big.Int, *privacy.Point, error) {
 	coinCache := params.Cache
 	mutualLen := len(coinCache.PublicKeys)
-	if len(coinCache.Commitments)!=mutualLen || len(coinCache.Indexes)!=mutualLen{
+	if len(coinCache.Commitments) != mutualLen || len(coinCache.Indexes) != mutualLen {
 		return nil, nil, nil, errors.New("Length mismatch in coin cache")
 	}
-	if mutualLen < len(inputCoins) * (ringSize - 1) {
-		return nil, nil, nil, errors.Errorf("Not enough coins to create ring, need %d", len(inputCoins) * (ringSize - 1))
+	if mutualLen < len(inputCoins)*(ringSize-1) {
+		return nil, nil, nil, errors.Errorf("Not enough coins to create ring, expect %d", len(inputCoins)*(ringSize-1))
 	}
 	outputCoinsAsGeneric := make([]privacy.Coin, len(outputCoins))
-	for i:=0;i<len(outputCoins);i++{
+	for i := 0; i < len(outputCoins); i++ {
 		outputCoinsAsGeneric[i] = outputCoins[i]
 	}
 	sumOutputsWithFee := calculateSumOutputsWithFee(outputCoinsAsGeneric, params.Fee)
@@ -639,7 +645,7 @@ func generateMlsagRing(inputCoins []privacy.PlainCoin, inputIndexes []uint64, ou
 			}
 		}
 		row = append(row, sumInputs)
-		if i==pi{
+		if i == pi {
 			commitmentToZero = sumInputs
 		}
 		ring[i] = row
@@ -653,13 +659,13 @@ func (tx *Tx) proveAsm(params *InitParamsAsm) (*privacy.SenderSeal, error) {
 	var pInfos []*privacy.PaymentInfo
 	// currently support returning the 1st SenderSeal only
 	var senderSealToExport *privacy.SenderSeal = nil
-	for _, payInf := range params.PaymentInfo{
+	for _, payInf := range params.PaymentInfo {
 		temp, _ := payInf.To()
 		c, seal, err := privacy.NewCoinFromPaymentInfo(temp)
 		if senderSealToExport == nil {
 			senderSealToExport = seal
 		}
-		if err!=nil{
+		if err != nil {
 			return nil, err
 		}
 		outputCoins = append(outputCoins, c)
@@ -687,11 +693,14 @@ func (tx *Tx) sign(inp []privacy.PlainCoin, inputIndexes []uint64, out []*privac
 		return errors.New("Re-signing TX is not allowed")
 	}
 	ringSize := privacy.RingSize
-
+	if len(params.Cache.PublicKeys) == 0 {
+		// when no decoys are provided, sign with ring size 1
+		ringSize = 1
+	}
 
 	// Generate Ring
 	piBig, piErr := RandBigIntMaxRange(big.NewInt(int64(ringSize)))
-	if piErr!=nil{
+	if piErr != nil {
 		return piErr
 	}
 	var pi int = int(piBig.Int64())
@@ -735,14 +744,14 @@ func (tx *Tx) sign(inp []privacy.PlainCoin, inputIndexes []uint64, out []*privac
 
 func (tx *Tx) InitASM(params *InitParamsAsm, theirTime int64) (*privacy.SenderSeal, error) {
 	gParams := params.GetGenericParams()
-	if gParams==nil{
+	if gParams == nil {
 		return nil, errors.Errorf("Invalid parameters")
 	}
 	// Init tx and params (tx and params will be changed)
 	if err := tx.initializeTxAndParams(gParams, &params.PaymentInfo); err != nil {
 		return nil, err
 	}
-	if theirTime>0{
+	if theirTime > 0 {
 		tx.LockTime = theirTime
 	}
 	// if check, err := tx.IsNonPrivacyNonInput(innerParams); check {
@@ -760,7 +769,7 @@ func (tx *Tx) initializeTxAndParams(params_compat *TxPrivacyInitParams, payments
 	tx.sigPrivKey = skBytes
 	// Tx: initialize some values
 	// non-zero means it was set before
-	if tx.LockTime==0{
+	if tx.LockTime == 0 {
 		tx.LockTime = time.Now().Unix()
 	}
 	tx.Fee = params_compat.Fee
@@ -811,7 +820,7 @@ func createPrivKeyMlsag(inputCoins []privacy.PlainCoin, outputCoins []*privacy.C
 	}
 	commitmentToZeroRecomputed := new(privacy.Point).ScalarMult(privacy.PedCom.G[privacy.PedersenRandomnessIndex], sumRand)
 	match := privacy.IsPointEqual(commitmentToZeroRecomputed, commitmentToZero)
-	if !match{
+	if !match {
 		println("asset tag sum or commitment sum mismatch")
 		return nil, errors.Errorf("Error : asset tag sum or commitment sum mismatch")
 	}
@@ -856,10 +865,10 @@ func updateParamsWhenOverBalance(originPInfs *[]printedPaymentInfo, gParams *TxP
 	return nil
 }
 
-func getTokenIDFromString(s string) (common.Hash, error){
-	if len(s)==0{
+func getTokenIDFromString(s string) (common.Hash, error) {
+	if len(s) == 0 {
 		return common.PRVCoinID, nil
-	}else{
+	} else {
 		res, err := common.Hash{}.NewHashFromStr(s)
 		return *res, err
 	}
