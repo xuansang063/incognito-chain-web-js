@@ -11,7 +11,7 @@ type StakingRequest struct {
 	metadataCommon.MetadataBase
 	tokenID     string
 	otaReceiver string
-	nftID       string
+	AccessOption
 	tokenAmount uint64
 }
 
@@ -24,16 +24,16 @@ func NewStakingRequest() *StakingRequest {
 }
 
 func NewStakingRequestWithValue(
-	tokenID, nftID, otaReceiver string, tokenAmount uint64,
+	tokenID string, accessOption AccessOption, otaReceiver string, tokenAmount uint64,
 ) *StakingRequest {
 	return &StakingRequest{
 		MetadataBase: metadataCommon.MetadataBase{
 			Type: metadataCommon.Pdexv3StakingRequestMeta,
 		},
-		tokenID:     tokenID,
-		nftID:       nftID,
-		tokenAmount: tokenAmount,
-		otaReceiver: otaReceiver,
+		tokenID:      tokenID,
+		AccessOption: accessOption,
+		tokenAmount:  tokenAmount,
+		otaReceiver:  otaReceiver,
 	}
 }
 
@@ -47,13 +47,13 @@ func (request *StakingRequest) MarshalJSON() ([]byte, error) {
 	data, err := json.Marshal(struct {
 		OtaReceiver string `json:"OtaReceiver"`
 		TokenID     string `json:"TokenID"`
-		NftID       string `json:"NftID"`
+		AccessOption
 		TokenAmount uint64 `json:"TokenAmount"`
 		metadataCommon.MetadataBase
 	}{
 		OtaReceiver:  request.otaReceiver,
 		TokenID:      request.tokenID,
-		NftID:        request.nftID,
+		AccessOption: request.AccessOption,
 		TokenAmount:  request.tokenAmount,
 		MetadataBase: request.MetadataBase,
 	})
@@ -67,7 +67,7 @@ func (request *StakingRequest) UnmarshalJSON(data []byte) error {
 	temp := struct {
 		OtaReceiver string                      `json:"OtaReceiver"`
 		TokenID     string                      `json:"TokenID"`
-		NftID       string                      `json:"NftID"`
+		AccessOption
 		TokenAmount metadataCommon.Uint64Reader `json:"TokenAmount"`
 		metadataCommon.MetadataBase
 	}{}
@@ -77,7 +77,7 @@ func (request *StakingRequest) UnmarshalJSON(data []byte) error {
 	}
 	request.otaReceiver = temp.OtaReceiver
 	request.tokenID = temp.TokenID
-	request.nftID = temp.NftID
+	request.AccessOption = temp.AccessOption
 	request.tokenAmount = uint64(temp.TokenAmount)
 	request.MetadataBase = temp.MetadataBase
 	return nil
@@ -93,8 +93,4 @@ func (request *StakingRequest) TokenID() string {
 
 func (request *StakingRequest) TokenAmount() uint64 {
 	return request.tokenAmount
-}
-
-func (request *StakingRequest) NftID() string {
-	return request.nftID
 }

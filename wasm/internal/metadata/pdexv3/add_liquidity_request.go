@@ -11,7 +11,7 @@ type AddLiquidityRequest struct {
 	pairHash    string
 	otaReceiver string // receive nfct
 	tokenID     string
-	nftID       string
+	AccessOption
 	tokenAmount uint64
 	amplifier   uint // only set for the first contribution
 	metadataCommon.MetadataBase
@@ -21,33 +21,13 @@ func NewAddLiquidity() *AddLiquidityRequest {
 	return &AddLiquidityRequest{}
 }
 
-func NewAddLiquidityRequestWithValue(
-	poolPairID, pairHash,
-	otaReceiver,
-	tokenID, nftID string, tokenAmount uint64, amplifier uint,
-) *AddLiquidityRequest {
-	metadataBase := metadataCommon.MetadataBase{
-		Type: metadataCommon.Pdexv3AddLiquidityRequestMeta,
-	}
-	return &AddLiquidityRequest{
-		poolPairID:   poolPairID,
-		pairHash:     pairHash,
-		otaReceiver:  otaReceiver,
-		tokenID:      tokenID,
-		nftID:        nftID,
-		tokenAmount:  tokenAmount,
-		amplifier:    amplifier,
-		MetadataBase: metadataBase,
-	}
-}
-
 func (request *AddLiquidityRequest) MarshalJSON() ([]byte, error) {
 	data, err := json.Marshal(struct {
 		PoolPairID  string `json:"PoolPairID"` // only "" for the first contribution of pool
 		PairHash    string `json:"PairHash"`
 		OtaReceiver string `json:"OtaReceiver"` // receive nfct
 		TokenID     string `json:"TokenID"`
-		NftID       string `json:"NftID"`
+		AccessOption
 		TokenAmount uint64 `json:"TokenAmount"`
 		Amplifier   uint   `json:"Amplifier"` // only set for the first contribution
 		metadataCommon.MetadataBase
@@ -56,7 +36,7 @@ func (request *AddLiquidityRequest) MarshalJSON() ([]byte, error) {
 		PairHash:     request.pairHash,
 		OtaReceiver:  request.otaReceiver,
 		TokenID:      request.tokenID,
-		NftID:        request.nftID,
+		AccessOption: request.AccessOption,
 		TokenAmount:  request.tokenAmount,
 		Amplifier:    request.amplifier,
 		MetadataBase: request.MetadataBase,
@@ -69,11 +49,11 @@ func (request *AddLiquidityRequest) MarshalJSON() ([]byte, error) {
 
 func (request *AddLiquidityRequest) UnmarshalJSON(data []byte) error {
 	temp := struct {
-		PoolPairID  string                      `json:"PoolPairID"` // only "" for the first contribution of pool
-		PairHash    string                      `json:"PairHash"`
-		OtaReceiver string                      `json:"OtaReceiver"` // receive nfct
-		TokenID     string                      `json:"TokenID"`
-		NftID       string                      `json:"NftID"`
+		PoolPairID  string `json:"PoolPairID"` // only "" for the first contribution of pool
+		PairHash    string `json:"PairHash"`
+		OtaReceiver string `json:"OtaReceiver"` // receive nfct
+		TokenID     string `json:"TokenID"`
+		AccessOption
 		TokenAmount metadataCommon.Uint64Reader `json:"TokenAmount"`
 		Amplifier   uint                        `json:"Amplifier"` // only set for the first contribution
 		metadataCommon.MetadataBase
@@ -86,7 +66,7 @@ func (request *AddLiquidityRequest) UnmarshalJSON(data []byte) error {
 	request.pairHash = temp.PairHash
 	request.otaReceiver = temp.OtaReceiver
 	request.tokenID = temp.TokenID
-	request.nftID = temp.NftID
+	request.AccessOption = temp.AccessOption
 	request.tokenAmount = uint64(temp.TokenAmount)
 	request.amplifier = temp.Amplifier
 	request.MetadataBase = temp.MetadataBase
@@ -115,8 +95,4 @@ func (request *AddLiquidityRequest) TokenAmount() uint64 {
 
 func (request *AddLiquidityRequest) Amplifier() uint {
 	return request.amplifier
-}
-
-func (request *AddLiquidityRequest) NftID() string {
-	return request.nftID
 }

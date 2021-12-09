@@ -41,3 +41,38 @@ func (inf *ReceiverInfo) UnmarshalJSON(raw []byte) error {
 	}
 	return err
 }
+
+type AccessOTA privacy.Point
+
+func (ota AccessOTA) MarshalJSON() ([]byte, error) {
+	temp := common.Hash((privacy.Point)(ota).ToBytes())
+	return json.Marshal(temp)
+}
+
+func (ota *AccessOTA) UnmarshalJSON(data []byte) error {
+	var temp common.Hash
+	err := json.Unmarshal(data, &temp)
+	if err != nil {
+		return err
+	}
+	p, err := (&privacy.Point{}).FromBytes([32]byte(temp))
+	if p != nil {
+		*ota = AccessOTA(*p)
+	}
+	return err
+}
+
+func (ota AccessOTA) Bytes() [32]byte {
+	return privacy.Point(ota).ToBytes()
+}
+
+func (ota *AccessOTA) FromBytes(data [32]byte) error {
+	_, err := (*privacy.Point)(ota).FromBytes(data)
+	return err
+}
+
+type AccessOption struct {
+	NextOTA  *AccessOTA  `json:"NextOTA,omitempty"`
+	BurntOTA *AccessOTA  `json:"BurntOTA,omitempty"`
+	NftID    common.Hash `json:"NftID,omitempty"`
+}
