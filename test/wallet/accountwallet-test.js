@@ -1355,18 +1355,33 @@ async function TestApiTradeServices(pDexV3Instance) {
 
 async function TestPancake(pDexV3Instance) {
   try {
-    const tokens = await pDexV3Instance.getPancakeTokens();
-    console.log("tokens", tokens.length, tokens[0]);
-    const selltoken =
-      "e5032c083f0da67ca141331b6005e4a3740c50218f151a5e829e9d03227e33e2";
-    const buytoken =
-      "38fc5ad8434ef02ea77c860eb9d6824485de3d68b3be8455842a5bbf7b0940a5";
-    let tradingFee = await pDexV3Instance.estimatePancakeTradingFee({
-      srcTokens: selltoken,
-      destTokens: buytoken,
-      srcQties: String(69e5),
-    });
-    console.log("tradingFee", tradingFee);
+    // const tokens = await pDexV3Instance.getPancakeTokens();
+    // console.log("tokens", tokens.length, tokens[0]);
+    // const selltoken =
+    //   "e5032c083f0da67ca141331b6005e4a3740c50218f151a5e829e9d03227e33e2";
+    // const buytoken =
+    //   "38fc5ad8434ef02ea77c860eb9d6824485de3d68b3be8455842a5bbf7b0940a5";
+    // let tradingFee = await pDexV3Instance.estimatePancakeTradingFee({
+    //   srcTokens: selltoken,
+    //   destTokens: buytoken,
+    //   srcQties: String(69e5),
+    // });
+    // console.log("tradingFee", tradingFee);
+    // let history = await Promise.all([
+    //   // pDexV3Instance.getSwapPancakeHistory(),
+    // ]);
+    const history =  await pDexV3Instance.getSwapHistory({ version: 2 });
+
+    console.log("history[0]", history[0]);
+    // console.log(
+    //   await pDexV3Instance.getOrderSwapPancakeDetail({
+    //     version: 2,
+    //     fromStorage: false,
+    //     tradeID: 47,
+    //     requestTx:
+    //       "1c82e96328c63cd120e2256f617f9760798bdc26cc64c581a3746db402f14567",
+    //   })
+    // );
   } catch (error) {
     console.log(error);
   }
@@ -1381,10 +1396,7 @@ async function TestTradeService() {
   const data = {
     DeviceID: deviceID,
   };
-  const authTokenDt = await Axios.post(
-    `${rpcApiService}/auth/new-token`,
-    data
-  );
+  const authTokenDt = await Axios.post(`${rpcApiService}/auth/new-token`, data);
   const authToken = authTokenDt.data.Result.Token;
   pDexV3Instance.setAccount(account);
   pDexV3Instance.setAuthToken(authToken);
