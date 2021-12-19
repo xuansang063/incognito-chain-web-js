@@ -3,6 +3,7 @@ package pdexv3
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"incognito-chain/common"
 	metadataCommon "incognito-chain/metadata/common"
@@ -45,24 +46,19 @@ func (inf *ReceiverInfo) UnmarshalJSON(raw []byte) error {
 type AccessOTA privacy.Point
 
 func (ota AccessOTA) MarshalJSON() ([]byte, error) {
-	temp := common.Hash((privacy.Point)(ota).ToBytes())
-	return json.Marshal(temp)
+	return json.Marshal(ota.ToBytesS())
 }
 
 func (ota *AccessOTA) UnmarshalJSON(data []byte) error {
-	var temp common.Hash
-	err := json.Unmarshal(data, &temp)
+	var b []byte
+	err := json.Unmarshal(data, &b)
 	if err != nil {
 		return err
 	}
-	p, err := (&privacy.Point{}).FromBytes([32]byte(temp))
-	if p != nil {
-		*ota = AccessOTA(*p)
-	}
-	return err
+	return ota.FromBytesS(b)
 }
 
-func (ota AccessOTA) Bytes() [32]byte {
+func (ota AccessOTA) ToBytes() [32]byte {
 	return privacy.Point(ota).ToBytes()
 }
 
@@ -71,8 +67,24 @@ func (ota *AccessOTA) FromBytes(data [32]byte) error {
 	return err
 }
 
+func (ota AccessOTA) ToBytesS() []byte {
+	temp := ota.ToBytes()
+	return temp[:]
+}
+
+func (ota *AccessOTA) FromBytesS(data []byte) error {
+	if len(data) != 32 {
+		return fmt.Errorf("Invalid AccessOTA byte length %d", len(data))
+	}
+	var temp [32]byte
+	copy(temp[:], data)
+	*ota = AccessOTA{}
+	err := ota.FromBytes(temp)
+	return err
+}
+
 type AccessOption struct {
-	NextOTA  *AccessOTA  `json:"NextOTA,omitempty"`
-	BurntOTA *AccessOTA  `json:"BurntOTA,omitempty"`
-	NftID    common.Hash `json:"NftID,omitempty"`
+	NftID    *common.Hash `json:"NftID,omitempty"`
+	BurntOTA *AccessOTA   `json:"BurntOTA,omitempty"`
+	AccessID *common.Hash `json:"AccessID,omitempty"`
 }
