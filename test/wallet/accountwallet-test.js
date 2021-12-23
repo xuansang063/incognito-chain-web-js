@@ -1239,57 +1239,57 @@ async function TestSwap(pDexV3Instance) {
 
 async function TestOrderLimit(pDexV3Instance) {
   try {
-    try {
-      const tx = await pDexV3Instance.createAndSendOrderRequestTx({
-        extra: {
-          minAcceptableAmount: "300000000000",
-          poolPairID:
-            "0000000000000000000000000000000000000000000000000000000000000004-2f8d0fa112f181a314bb0c62ac46b6e9e6a92edbf32c0ae87757e9792aff6c0f-83a1b5422302e3179e1bfd12bc8c4214b176afd469dc2340512dd904864ecb3c",
-          sellAmount: "299462196086871900",
-          tokenIDToBuy:
-            "0000000000000000000000000000000000000000000000000000000000000004",
-          tokenIDToSell:
-            "2f8d0fa112f181a314bb0c62ac46b6e9e6a92edbf32c0ae87757e9792aff6c0f",
-          version: 2,
-        },
-      });
-      console.log("transaction", tx);
-    } catch (error) {
-      console.log("ERROR HERE", error);
-    }
-
+    // try {
+    //   const tx = await pDexV3Instance.createAndSendOrderRequestTx({
+    //     extra: {
+    //       minAcceptableAmount: "300000000000",
+    //       poolPairID:
+    //         "0000000000000000000000000000000000000000000000000000000000000004-2f8d0fa112f181a314bb0c62ac46b6e9e6a92edbf32c0ae87757e9792aff6c0f-83a1b5422302e3179e1bfd12bc8c4214b176afd469dc2340512dd904864ecb3c",
+    //       sellAmount: "299462196086871900",
+    //       tokenIDToBuy:
+    //         "0000000000000000000000000000000000000000000000000000000000000004",
+    //       tokenIDToSell:
+    //         "2f8d0fa112f181a314bb0c62ac46b6e9e6a92edbf32c0ae87757e9792aff6c0f",
+    //       version: 2,
+    //     },
+    //   });
+    //   console.log("transaction", tx);
+    // } catch (error) {
+    //   console.log("ERROR HERE", error);
+    // }
     // const { nftToken: nftid } = await pDexV3Instance.getNFTTokenData({
     //   version: privacyVersion,
     // });
     // console.log("nftid", nftid);
     // let history = await pDexV3Instance.getOrderLimitHistory({
     //   poolid:
-    //     "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
+    //     "0000000000000000000000000000000000000000000000000000000000011112-00000000000000000000000000000000000000000000000000000000000115d7-ea13985e7613aa72fe874583942dcd6b0d0aa6a28db5efe4bfedee8933751478",
     //   version: privacyVersion,
-    //   token1ID: PRVID,
+    //   token1ID:
+    //     "0000000000000000000000000000000000000000000000000000000000011112",
     //   token2ID:
-    //     "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47",
+    //     "00000000000000000000000000000000000000000000000000000000000115d7",
     // });
     // console.log("history", history);
-    try {
-      const txCancel = await pDexV3Instance.createAndSendWithdrawOrderRequestTx(
-        {
-          transfer: { fee: 100 },
-          extra: {
-            withdrawTokenIDs: ["123456", "12345t"],
-            poolPairID: "111",
-            orderID: "1234",
-            amount: "6900010000000000000000000000000000",
-            nftID: "nftid",
-            version: privacyVersion,
-            txType: 0,
-          },
-        }
-      );
-      console.log("txCancel", txCancel);
-    } catch (error) {
-      console.log("error", error);
-    }
+    // try {
+    //   const txCancel = await pDexV3Instance.createAndSendWithdrawOrderRequestTx(
+    //     {
+    //       transfer: { fee: 100 },
+    //       extra: {
+    //         withdrawTokenIDs: ["123456", "12345t"],
+    //         poolPairID: "111",
+    //         orderID: "1234",
+    //         amount: "6900010000000000000000000000000000",
+    //         nftID: "nftid",
+    //         version: privacyVersion,
+    //         txType: 0,
+    //       },
+    //     }
+    //   );
+    //   console.log("txCancel", txCancel);
+    // } catch (error) {
+    //   console.log("error", error);
+    // }
 
     // const order = await pDexV3Instance.getOrderLimitDetail({
     //   requestTx:
@@ -1370,7 +1370,7 @@ async function TestPancake(pDexV3Instance) {
     // let history = await Promise.all([
     //   // pDexV3Instance.getSwapPancakeHistory(),
     // ]);
-    const history =  await pDexV3Instance.getSwapHistory({ version: 2 });
+    const history = await pDexV3Instance.getSwapHistory({ version: 2 });
 
     console.log("history[0]", history[0]);
     // console.log(
@@ -1412,11 +1412,11 @@ async function TestTradeService() {
   //   version: privacyVersion,
   // });
   // console.log("balance: ", balance);
-  return await TestPancake(pDexV3Instance);
+  // return await TestPancake(pDexV3Instance);
   // return await TestNFToken(pDexV3Instance);
   // return await TestFollowDefaultPool(pDexV3Instance)
   // return await TestSwap(pDexV3Instance);
-  // return await TestOrderLimit(pDexV3Instance, account);
+  return await TestOrderLimit(pDexV3Instance, account);
   return await TestApiTradeServices(pDexV3Instance);
   // const poolid = "1234";
   // const txCancel = {
