@@ -1296,6 +1296,8 @@ async function TestOrderLimit(pDexV3Instance) {
     //     "220bf33f0d6db3037f1cbe99acdeb2c6735450a94becb65fb671e2293894112b",
     // });
     // console.log("order", order);
+    let h = await pDexV3Instance.getOpenOrderLimitHistoryFromApi({version: 2});
+    let h2 = await pDexV3Instance.getOpenOrderLimitHistoryFromApi({version: 2});
   } catch (error) {
     console.log("TestOrderLimit", error);
   }
