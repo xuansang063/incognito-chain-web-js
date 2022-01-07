@@ -1,4 +1,4 @@
-package gomobile
+package tx
 
 import (
 	"time"
@@ -24,7 +24,7 @@ func SignNoPrivacy(privKey *privacy.PrivateKey, hashedMessage []byte) (signature
 	return signatureBytes, sigPubKey, nil
 }
 
-func initializeTxConversion(tx *Tx, params *TxPrivacyInitParams, paymentsPtr *[]printedPaymentInfo) error {
+func initializeTxConversion(tx *Tx, params *TxParams, paymentsPtr *[]PaymentReader) error {
 	var err error
 	// Get Keyset from param
 	skBytes := *params.SenderSK
@@ -50,7 +50,6 @@ func getOutputcoinsFromPaymentInfo(paymentInfos []*privacy.PaymentInfo, tokenID 
 	var err error
 	isPRV := (tokenID == nil) || (*tokenID == common.PRVCoinID)
 	c := make([]*privacy.CoinV2, len(paymentInfos))
-	// println("token is", tokenID.String())
 	for i := 0; i < len(paymentInfos); i += 1 {
 		if isPRV {
 			c[i], _, err = privacy.NewCoinFromPaymentInfo(paymentInfos[i])
@@ -69,7 +68,7 @@ func getOutputcoinsFromPaymentInfo(paymentInfos []*privacy.PaymentInfo, tokenID 
 	return c, nil
 }
 
-func proveConversionAsm(tx *Tx, params *TxPrivacyInitParams) error {
+func proveConversion(tx *Tx, params *TxParams) error {
 	lenInputs := len(params.InputCoins)
 	inputCoins := params.InputCoins
 	var err error
@@ -94,28 +93,34 @@ func proveConversionAsm(tx *Tx, params *TxPrivacyInitParams) error {
 	return nil
 }
 
-func InitConversionASM(tx *Tx, params *InitParamsAsm, theirTime int64) error {
-	gParams := params.GetGenericParams()
+func Convert(tx *Tx, params *ExtendedParams, theirTime int64) error {
+	gParams, err := params.GetGenericParams()
+	if err != nil {
+		return err
+	}
 	if err := initializeTxConversion(tx, gParams, &params.PaymentInfo); err != nil {
 		return err
 	}
 	if theirTime > 0 {
 		tx.LockTime = theirTime
 	}
-	if err := proveConversionAsm(tx, gParams); err != nil {
+	if err := proveConversion(tx, gParams); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (txToken *TxToken) initTokenConversion(txNormal *Tx, params *InitParamsAsm) error {
+func (txToken *TxToken) initTokenConversion(txNormal *Tx, params *ExtendedParams) error {
 	txToken.TokenData.Type = CustomTokenTransfer
 	txToken.TokenData.PropertyName = ""
 	txToken.TokenData.PropertySymbol = ""
 	txToken.TokenData.Mintable = false
 	propertyID, _ := common.TokenStringToHash(params.TokenParams.TokenID)
 	txToken.TokenData.PropertyID = *propertyID
-	temp := params.TokenParams.GetCompatTokenParams()
+	temp, err := params.TokenParams.GetTokenParams()
+	if err != nil {
+		return err
+	}
 	txConvertParams := NewTxParams(
 		&params.SenderSK,
 		temp.Receiver,
@@ -131,14 +136,13 @@ func (txToken *TxToken) initTokenConversion(txNormal *Tx, params *InitParamsAsm)
 		return err
 	}
 	txNormal.Type = TxTokenConversionType
-	if err := proveConversionAsm(txNormal, txConvertParams); err != nil {
+	if err := proveConversion(txNormal, txConvertParams); err != nil {
 		return err
 	}
-	err := txToken.SetTxNormal(txNormal)
-	return err
+	return txToken.SetTxNormal(txNormal)
 }
 
-func (txToken *TxToken) initPRVFeeConversion(feeTx *Tx, params *InitParamsAsm) ([]privacy.PlainCoin, []uint64, []*privacy.CoinV2, error) {
+func (txToken *TxToken) initPRVFeeConversion(feeTx *Tx, params *ExtendedParams) ([]privacy.PlainCoin, []uint64, []*privacy.CoinV2, error) {
 	feeTx.Version = 2
 	feeTx.Type = common.TxTokenConversionType
 	inps, inputIndexes, outs, err := feeTx.provePRV(params)
@@ -149,9 +153,12 @@ func (txToken *TxToken) initPRVFeeConversion(feeTx *Tx, params *InitParamsAsm) (
 	return inps, inputIndexes, outs, nil
 }
 
-func InitTokenConversionASM(txToken *TxToken, params *InitParamsAsm, theirTime int64) error {
+func ConvertToken(txToken *TxToken, params *ExtendedParams, theirTime int64) error {
 	params.HasPrivacy = false
-	txPrivacyParams := params.GetGenericParams()
+	txPrivacyParams, err := params.GetGenericParams()
+	if err != nil {
+		return err
+	}
 	// Init tx and params (tx and params will be changed)
 	tx := &Tx{}
 	if err := tx.initializeTxAndParams(txPrivacyParams, &params.PaymentInfo); err != nil {
