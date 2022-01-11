@@ -173,4 +173,13 @@ const (
 
 	// pancake integration
 	BurningPBSCForDepositToSCRequestMeta = metadataCommon.BurningPBSCForDepositToSCRequestMeta
+
+	// Polygon bridge
+	IssuingPLGRequestMeta  = metadataCommon.IssuingPLGRequestMeta
+	IssuingPLGResponseMeta = metadataCommon.IssuingPLGResponseMeta
+	BurningPLGRequestMeta  = metadataCommon.BurningPLGRequestMeta
+	BurningPLGConfirmMeta  = metadataCommon.BurningPLGConfirmMeta
+
+	BurningPLGForDepositToSCRequestMeta = metadataCommon.BurningPLGForDepositToSCRequestMeta
+	BurningPLGConfirmForDepositToSCMeta = metadataCommon.BurningPLGConfirmForDepositToSCMeta
 )
