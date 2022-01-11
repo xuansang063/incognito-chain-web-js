@@ -12,7 +12,7 @@ func main() {
 
 	gobridge.RegisterCallback("createTransaction", internal.CreateTransaction)
 	gobridge.RegisterCallback("createConvertTx", internal.CreateConvertTx)
-	
+
 	gobridge.RegisterCallback("newKeySetFromPrivate", internal.NewKeySetFromPrivate)
 	gobridge.RegisterCallback("decryptCoin", internal.DecryptCoin)
 	gobridge.RegisterCallback("createCoin", internal.CreateCoin)
@@ -46,11 +46,13 @@ func main() {
 
 	gobridge.RegisterCallback("verifySentTx", internal.VerifySentTx)
 	gobridge.RegisterCallback("verifyReceivedTx", internal.VerifyReceivedTx)
-	gobridge.RegisterCallback("aesEncrypt", internal.AesEncrypt)
-	gobridge.RegisterCallback("aesDecrypt", internal.AesDecrypt)
 	gobridge.RegisterCallback("setShardCount", internal.SetShardCount)
+	gobridge.RegisterCallback("createOTAReceiver", internal.CreateOTAReceiver)
 	// not applicable
 	// gobridge.RegisterCallback("deriveSerialNumber", internal.DeriveSerialNumber)
+
+	// portal
+	gobridge.RegisterCallback("generateBTCMultisigAddress", internal.GenerateBTCMultisigAddress)
 
 	println("WASM loading finished")
 	<-c

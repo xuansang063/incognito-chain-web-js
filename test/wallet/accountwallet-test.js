@@ -5,32 +5,45 @@ const {
   constants,
   init,
   StorageServices,
-  newMnemonic,
-  isPaymentAddress,
   isOldPaymentAddress,
+  VerifierTx,
+  PDexV3,
+  setShardNumber,
 } = require("../../");
 const { PaymentAddressType } = constants;
 
-// const rpcClient = new RpcClient("https://mainnet.incognito.org/fullnode");
-const rpcClient = "https://testnet.incognito.org/fullnode";
+// const rpcClient = "https://lb-fullnode.incognito.org/fullnode";
+//  new RpcClient("https://mainnet.incognito.org/fullnode");
+// const rpcClient = "https://testnet.incognito.org/fullnode";
 // const rpcClient = new RpcClient("http://localhost:9334");
-// const rpcClient = new RpcClient("https://dev-test-node.incognito.org");
+const rpcClient = "http://139.162.55.124:18334";
 // const rpcClient = new RpcClient("http://54.39.158.106:9334");
 // const rpcClient = new RpcClient("http://139.162.55.124:8334");   // dev-net
 // const rpcClient = "https://testnet1.incognito.org/fullnode"; //testnet1
 // "http://139.162.55.124:8334";
 
-const rpcCoinService = "https://api-coinservice-staging.incognito.org"; //testnet
-// "https://api-coinservice-staging2.incognito.org"; // testnet1
-// "http://51.161.119.66:9009"; //dev-test-coin-service
-const rpcTxService = "https://api-coinservice-staging.incognito.org/txservice";
+const stagingServices = "https://api-coinservice-staging.incognito.org";
+
+const rpcCoinService =
+  // "https://api-coinservice.incognito.org"; //mainnet
+  // stagingServices; //testnet
+  // "https://api-coinservice-staging2.incognito.org"; // testnet1
+  "http://51.161.119.66:7001"; //dev-test-coin-service
+const rpcTxService = "http://51.161.119.66:7003";
+// `${stagingServices}/txservice`;
+//  "https://api-coinservice.incognito.org/txservice"; mainnet
+// "https://api-coinservice-staging.incognito.org/txservice";
 //  "https://api-coinservice-staging2.incognito.org/txservice"; // testnet1
-//  "http://51.161.119.66:8001"; //dev-test-coin-service
-const rpcRequestService = "http://51.161.119.66:4000"; //testnet
+
+const rpcRequestService = `${stagingServices}/airdrop-service`;
+// "https://api-coinservice.incognito.org/airdrop-service"; // mainnet
+// "http://51.161.119.66:4000"; //testnet
 // "http://51.161.119.66:6000"; // testnet-1
 //  "http://51.161.119.66:5000"; //dev-test-coin-service
 const privacyVersion = 2;
-const rpcApiService = "https://staging-api-service.incognito.org";
+const rpcApiService =
+  //  "https://api-service.incognito.org"; // mainnet
+  "https://staging-api-service.incognito.org"; // testnet
 //  "https://privacyv2-api-service.incognito.org";
 const deviceID = "9AE4B404-3E61-495D-835A-05CEE34BE251";
 let wallet;
@@ -96,7 +109,8 @@ async function TestGetBalance() {
       // "112t8rnXcSzusvgvAdGiLDU4VqHmrn5MjDLwk1Goc6szRbGcWEAmw7R876YKctQGQgniYYMMqa7ZEYSEL4XAMYShnMt8xxqis2Zrew5URfY7"
       // "112t8rnZDRztVgPjbYQiXS7mJgaTzn66NvHD7Vus2SrhSAY611AzADsPFzKjKQCKWTgbkgYrCPo9atvSMoCf9KT23Sc7Js9RKoESjDGbF2J7"
       // "112t8rneQvmymBMxTEs1LzpfN7n122hmwjoZ2NZWtruHUE82bRN14xHSvdWc1Wu3wAoczMMowRC2iifXbZRgiu9GuJLYvRJr7VLuoBfhfF8h"
-      "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
+      // "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
+      "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZCaWc76Jy56Ch"
     );
     const tokenID1 =
       "0000000000000000000000000000000000000000000000000000000000000004";
@@ -107,6 +121,7 @@ async function TestGetBalance() {
       //  tokenID2,
       // ETH
     ];
+    return console.log(typeof account.getOTAReceive());
     const keyInfo = await account.getKeyInfo({
       version: privacyVersion,
     });
@@ -216,15 +231,16 @@ async function TestCreateAndSendNativeToken() {
   //   "isPaymentAddress3",
   //   isPaymentAddress(isPaymentAddress(rf.PaymentAddressV1))
   // );
-  return;
+  // return;
   const version = privacyVersion;
   const tokenID =
     "0000000000000000000000000000000000000000000000000000000000000004";
   let fee = 100;
   let info = "SEND 6900 nano PRV";
-  let amountTransfer = 6900; // in nano PRV
+  let amountTransfer = 1e9; // in nano PRV
   const account = await createAccountByPrivateKey(
-    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZC6TgtJPbuLru"
+    "112t8rnYU5yDsbyr2RGvUYxvLf1a6FozJovLryicMY9Qoxawnnv42pXKQgnTTmiuCuXi5ccBghjuhPnpRZ4iDMV7a9GNDbVoSyCvc82GFJsr"
+    // "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZC6TgtJPbuLru"
     // "112t8rnXXD3eyD8wfx7AXmpJHdpafDpHngsWUTJB42FbVzihAyDw1s2dZ56jeSc5ZYC3u1ekjTUjHQHTeR7b58Ru9KLqEgpm5mgcaivLC4Kz"
     // "112t8rnY64dNQLtVTowvvAAM4QQcKNFWm81a5nwg2n8XqmaLby2C1kQSKK3TT6rcJbgnfNzPBtVEdQmjfMqXGQTmrXXN97LJhdRRxHXBwbmY"
     // "112t8rnr8swHUPwFhhw8THdVtXLZqo1AqnoKrg1YFpTYr7k7xyKS46jiquN32nDFMNG85cEoew8eCpFNxUw4VB8ifQhFnZSvqpcyXS7jg3NP"
@@ -253,7 +269,7 @@ async function TestCreateAndSendNativeToken() {
       transfer: { prvPayments: paymentInfosParam, fee, info },
       extra: { isEncryptMessage: true, txType: 0, version },
     });
-    console.log("Send tx succesfully with TxID: ", res.txId);
+    console.log("Send tx succesfully with TxID: ", res);
     return res;
   } catch (e) {
     console.log("Error when send PRV: ", e);
@@ -727,8 +743,10 @@ function delay(ms) {
 async function createAccountByPrivateKey(privateKey) {
   try {
     let account = new AccountWallet(Wallet);
-    account.setRPCCoinServices(rpcCoinService);
-    account.setRPCClient(rpcClient);
+    const fullNode = rpcClient;
+    const coinService = rpcCoinService;
+    account.setRPCCoinServices(coinService);
+    account.setRPCClient(fullNode);
     account.setRPCTxServices(rpcTxService);
     account.setRPCRequestServices(rpcRequestService);
     const data = {
@@ -739,11 +757,9 @@ async function createAccountByPrivateKey(privateKey) {
       data
     );
     const authToken = authTokenDt.data.Result.Token;
-    console.log("authToken", authToken);
     account.setAuthToken(authToken);
     account.setRPCApiServices(rpcApiService, authToken);
     await account.setKey(privateKey);
-    console.log("INFO", await account.getDeserializeInformation());
     return account;
   } catch (error) {
     console.log("ERROR CREATE ACCOUNT", privateKey, error);
@@ -775,10 +791,14 @@ async function TestGetTxsHistory() {
     // "112t8rnXeqsyrBC9CN4QLxpQ9Z6AVBFUhg72NbvpHYGSBogWn4mRvyZ2LeKBmRSxQCcVfiVuM6jw7PgeCFqB99Bsmqhp9T6b1MxroKENS9UG"
     // "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
     // "112t8rnXgy4Jwj2w8tWqncvzsSjpuAi2quWZZJHCD9EFMZLHAdbF6DPbKLitBdjE7TcgTLSpumHEUb2h3xJhqfR59ihVU71bNTazFzWM6MFP"
-    "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
+    // "112t8rnYKb5czEQ2yRC9zniPHYCiktMP5MiHJL5gtKKrFghqexZF7k2iXjn2GMpVUsPjXn4MpP1GELBYgbCYYSt7eL8YX2FUoo8uHQW7dFKq"
+    // "112t8rne4kpmGQe6KCjTe4JqqsvjTPxHQsw9FWaxY65XqHxUueJuLGxJvoH872vxGmbkz1gkcYgtQ1VnrCjw2wSDgtJzCVyt8nRGFHjcEfpV"
+    "112t8rnaoYv9FppLCA7u84ay2K6ybXcCwykzCLoLT1bD9jXiSpbh8DpTKuaJD8t9Myvk2yR1hHxAu7Ac9gmox1NpKqX5ooTefprXjE1s1nd3"
   );
   const version = 2;
-  const tokenID = PRVID;
+  const tokenID =
+    "a61df4d870c17a7dc62d7e4c16c6f4f847994403842aaaf21c994d1a0024b032"; //BUSD
+  // "b832e5d3b1f01a4f0623f7fe91d6673461e1f5d37d91fe78c5c2e6183ff39696";
   // "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
   // "1e0b165a96d040f6e1b57a1d7efeb5001cd4803cc9ee43fca812ce085db26c7c";
   // "880ea0787f6c1555e59e3958a595086b7802fc7a38276bcd80d4525606557fbc"; // zil
@@ -796,17 +816,18 @@ async function TestGetTxsHistory() {
   // );
   // console.log("TestGetTxsHistory-balance", balance);
   const txs = await account.getTxsHistory({
-    isPToken: false,
+    isPToken: true,
     ...params,
   });
-  const tx = txs.txsTransactor.find(
-    (t) =>
-      t.txId ===
-      "5a682b797ee0fff093a9a7c14d705d82bc2210a0a4e4cf6e5aad4155401bc1cf"
-  );
-  console.log("tx", tx);
-  const txt = await account.getTxHistoryByTxID({ ...params, txId: tx.txId });
-  console.log("txt", txt);
+  console.log(txs);
+  // const tx = txs.txsTransactor.find(
+  //   (t) =>
+  //     t.txId ===
+  //     "5a682b797ee0fff093a9a7c14d705d82bc2210a0a4e4cf6e5aad4155401bc1cf"
+  // );
+  // console.log("tx", tx);
+  // const txt = await account.getTxHistoryByTxID({ ...params, txId: tx.txId });
+  // console.log("txt", txt);
   // console.log(
   //   `\n\n`,
   //   await account.getCoinsStorage({ tokenID, version: privacyVersion })
@@ -965,39 +986,31 @@ async function TestLoadWallet() {
     wallet.Name = "Hang";
     const password = "$as90_jasLsS";
     const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
-    await wallet.loadWallet({ password, aesKey });
-    await wallet.setKeyMeasureStorage();
-    console.log(await wallet.getMeasureStorageValue());
-    return;
-    // const passphrase = "$as90_jasLsS";
+    const passphrase = "$as90_jasLsS";
     // const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
     // const mnemonic = newMnemonic();
     // console.log("mnemonic", mnemonic);
-    // await wallet.import(
-    //   // "romance suspect ostrich amount deer crane false concert present evidence atom short",
-    //   // mnemonic,
-    //   "sunny easy talent undo alter giant music slam common glide judge misery",
-    //   aesKey,
-    //   "Masterkey",
-    //   new StorageServices()
-    // );
-
-    // await wallet.createNewAccount("phat1");
-    // await wallet.createNewAccount("phat2");
-    // console.log(
-    //   "listAccount",
-    //   (await wallet.listAccount()).map((account) => account.PrivateKey)
-    // );
-    // await wallet.save(aesKey, false);
-    // await wallet.loadWallet({
-    //   password: passphrase,
-    //   aesKey,
-    // });
-    // console.log(
-    //   "\n\nlistAccount",
-    //   (await wallet.listAccount()).map((account) => account.PrivateKey)
-    // );
-    // await wallet.save(aesKey, false);
+    await wallet.import(
+      // "romance suspect ostrich amount deer crane false concert present evidence atom short",
+      // mnemonic,
+      "sunny easy talent undo alter giant music slam common glide judge misery",
+      aesKey,
+      "Masterkey",
+      new StorageServices()
+    );
+    await wallet.save(aesKey, false);
+    await wallet.createNewAccount("phat1");
+    await wallet.save(aesKey, false);
+    await wallet.createNewAccount("phat2");
+    await wallet.save(aesKey, false);
+    await wallet.loadWallet({
+      password: passphrase,
+      aesKey,
+    });
+    console.log(
+      "\n\nlistAccount",
+      (await wallet.listAccount()).map((account) => account.PrivateKey)
+    );
     // await wallet.loadWallet({
     //   password: passphrase,
     //   aesKey,
@@ -1059,27 +1072,566 @@ async function TestLoadWallet() {
   }
 }
 
+async function TestVerifierTx() {
+  try {
+    const insVerifiterTx = new VerifierTx();
+    insVerifiterTx.setRPCClient(rpcClient);
+    const txId =
+      "e77043447f1993ecc92ff2be219b87ccc90e84454dc70fe914d949485450fea2";
+    const senderSeal =
+      "d99071adad109362780b6d4b025dceeb7e84d065112b3302c57dbce1d3706a0200000001";
+    const paymentAddress =
+      "12snj4DSGwAHfeTh5mxpfqgjRRogVtuej3A9rVBHvXWxwM8Zb4GFgEuhbxrxJBHvnzB4KPsnsVP7s3cQAr77usYFdGeMEJ17bTCCrnMLzGZAX8uLK2ejK1naJinAtetqGJkHujFN1HuFJGUzeoEr";
+    const otaKey =
+      "14yCTpkbAxREZ7GPVBe7hF3U71F9vjVBrEf8fjTbx7efRWfsYQd7bEzHuAjqu1JBUgyCfpYWdDzdi2iocw3sK7Ekvfua4wNuQJW3npC";
+    const reVerifierSentTx = await insVerifiterTx.verifySentTx({
+      txId,
+      senderSeal,
+      paymentAddress,
+    });
+    console.log("reVerifierSentTx", reVerifierSentTx);
+    const reVerifierReceiverTx = await insVerifiterTx.verifyReceivedTx({
+      txId,
+      otaKey,
+    });
+    console.log("reVerifierReceiverTx", reVerifierReceiverTx);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function TestFollowDefaultPool(pDexV3Instance) {
+  const listPools = await pDexV3Instance.getListPools();
+  const poolsIDs = listPools.map((pool) => pool.poolId);
+  console.log("\npoolsIDs", poolsIDs);
+  const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolsIDs);
+  console.log("listPoolsDetail", listPoolsDetail);
+  await pDexV3Instance.followingDefaultPools({ poolsIDs });
+  const isFollowedDefaultPools = await pDexV3Instance.isFollowedDefaultPools();
+  let getListFollowingPools = await pDexV3Instance.getListFollowingPools();
+  console.log(
+    "isFollowedDefaultPools",
+    isFollowedDefaultPools,
+    "getListFollowingPools",
+    getListFollowingPools
+  );
+  await pDexV3Instance.removeFollowingPool({ poolId: "111" });
+  getListFollowingPools = await pDexV3Instance.getListFollowingPools();
+  console.log("getListFollowingPools", getListFollowingPools);
+}
+
+async function TestNFToken(pDexV3Instance) {
+  try {
+    const tx = await pDexV3Instance.createAndMintNftTx({
+      extra: { version: privacyVersion },
+    });
+    console.log("tx", tx);
+    const nftTokenData = await pDexV3Instance.getNFTTokenData({
+      version: privacyVersion,
+    });
+    console.log("nftTokenData", nftTokenData);
+  } catch (error) {
+    console.log("error-TestNFToken", error);
+  }
+}
+
+const ETHID =
+  "ffd8d42dc40a8d166ea4848baf8b5f6e9fe0e9c30d60062eb7d44a8df9e00854";
+
+async function TestSwap(pDexV3Instance) {
+  try {
+    let payload = {
+      selltoken:
+        "0000000000000000000000000000000000000000000000000000000000000004",
+      buytoken:
+        "fdd928bc86c82bd2a7c54082a68332ebb5f2cde842b1c2e0fa430ededb6e369e",
+      sellamount: "1000000000",
+      ismax: false,
+    };
+    try {
+      let data = await pDexV3Instance.getEstimateTrade(payload);
+      console.log("data1", data);
+    } catch (error) {
+      console.log("error", error, typeof error);
+    }
+
+    // const history = await pDexV3Instance.getSwapHistory({ version: 2 });
+    // history.map((h) => console.log(h.requestime));
+    // return;
+    // const pairs = await pDexV3Instance.getListPair();
+    // let tasks = pairs.map(
+    //   async ({ tokenId1: selltoken, tokenId2: buytoken }) => {
+    //     if (selltoken === PRVID) {
+    // const payload = {
+    //   selltoken,
+    //   buytoken,
+    //   feetoken: PRVID,
+    //   amount: 1e9,
+    //   slippagetolerance: 0.01,
+    // };
+    // const data = await pDexV3Instance.getEstimateTrade(payload);
+    //       if (data.maxGet > 0) {
+    //         console.log("\nbuytoken", buytoken);
+    //       }
+    //     }
+    //   }
+    // );
+    // const tokenIDToSell = ETHID;
+    // const sellAmount = 1e9;
+    // const tokenIDToBuy = PRVID;
+    // const tradingFee = 1e3;
+    // const feeToken = PRVID;
+    // const tradePath = ["1-2", "3-4"];
+    // const isTradingFeeInPRV = feeToken === PRVID;
+    // const txSwap = await pDexV3Instance.createAndSendSwapRequestTx({
+    //   transfer: { fee: 100, info: "Swap" },
+    //   extra: {
+    //     tokenIDToSell: PRVID,
+    //     sellAmount: 0.001 * 1e9,
+    //     tokenIDToBuy:
+    //       "c730c34221c277158aa4b44f7eb542a50e5eb858a8fd89b68d3c83388e866162",
+    //     tradingFee: 0.000003e9,
+    //     tradePath: [
+    //       "0000000000000000000000000000000000000000000000000000000000000004-fe75fc6ab38c690effd73c14325e771a19c0dca5de7c7a725bcf8b002755fdab-74cd57515f7ab3b5465f6ec71743406dfde16f091109eed4b771ee4293200193",
+    //     ],
+    //     feetoken: PRVID,
+    //     version: 2,
+    //     minAcceptableAmount: 471400,
+    //   },
+    // });
+    // let tx = await pDexV3Instance.getOrderSwapDetail({
+    //   version: privacyVersion,
+    //   requestTx: txSwap.txId,
+    //   fromStorage: true,
+    // });
+    // await delay(10000);
+    // tx = await pDexV3Instance.getOrderSwapDetail({
+    //   version: privacyVersion,
+    //   requestTx: txSwap.txId,
+    //   fromStorage: true,
+    // });
+    // await delay(10000);
+    // tx = await pDexV3Instance.getOrderSwapDetail({
+    //   version: privacyVersion,
+    //   requestTx: txSwap.txId,
+    //   fromStorage: true,
+    // });
+    // await delay(10000);
+    // tx = await pDexV3Instance.getOrderSwapDetail({
+    //   version: privacyVersion,
+    //   requestTx: txSwap.txId,
+    //   fromStorage: true,
+    // });
+    // await delay(10000);
+    // tx = await pDexV3Instance.getOrderSwapDetail({
+    //   version: privacyVersion,
+    //   requestTx: txSwap.txId,
+    //   fromStorage: true,
+    // });
+  } catch (error) {
+    console.log("error-TestSwap", error);
+  }
+}
+
+async function TestOrderLimit(pDexV3Instance) {
+  try {
+    try {
+      const tx = await pDexV3Instance.createAndSendOrderRequestTx({
+        extra: {
+          minAcceptableAmount: "300000000000",
+          poolPairID:
+            "0000000000000000000000000000000000000000000000000000000000000004-2f8d0fa112f181a314bb0c62ac46b6e9e6a92edbf32c0ae87757e9792aff6c0f-83a1b5422302e3179e1bfd12bc8c4214b176afd469dc2340512dd904864ecb3c",
+          sellAmount: "299462196086871900",
+          tokenIDToBuy:
+            "0000000000000000000000000000000000000000000000000000000000000004",
+          tokenIDToSell:
+            "2f8d0fa112f181a314bb0c62ac46b6e9e6a92edbf32c0ae87757e9792aff6c0f",
+          version: 2,
+        },
+      });
+      console.log("transaction", tx);
+    } catch (error) {
+      console.log("ERROR HERE", error);
+    }
+
+    // const { nftToken: nftid } = await pDexV3Instance.getNFTTokenData({
+    //   version: privacyVersion,
+    // });
+    // console.log("nftid", nftid);
+    // let history = await pDexV3Instance.getOrderLimitHistory({
+    //   poolid:
+    //     "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
+    //   version: privacyVersion,
+    //   token1ID: PRVID,
+    //   token2ID:
+    //     "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47",
+    // });
+    // console.log("history", history);
+    try {
+      const txCancel = await pDexV3Instance.createAndSendWithdrawOrderRequestTx(
+        {
+          transfer: { fee: 100 },
+          extra: {
+            withdrawTokenIDs: ["123456", "12345t"],
+            poolPairID: "111",
+            orderID: "1234",
+            amount: "6900010000000000000000000000000000",
+            nftID: "nftid",
+            version: privacyVersion,
+            txType: 0,
+          },
+        }
+      );
+      console.log("txCancel", txCancel);
+    } catch (error) {
+      console.log("error", error);
+    }
+
+    // const order = await pDexV3Instance.getOrderLimitDetail({
+    //   requestTx:
+    //     "220bf33f0d6db3037f1cbe99acdeb2c6735450a94becb65fb671e2293894112b",
+    // });
+    // console.log("order", order);
+  } catch (error) {
+    console.log("TestOrderLimit", error);
+  }
+}
+
+async function TestApiTradeServices(pDexV3Instance) {
+  try {
+    // const poolid =
+    //   "0000000000000000000000000000000000000000000000000000000000000004-a2b4472e4213ed0b7de2b8a0eba50d3a45785afc9457734c41ced83a9a8d19bd-6c5f07541684338561cbe6ca2b8a72592bbe2b0dca692e2e533f0d8bfef08933";
+    // const pairId =
+    //   "0000000000000000000000000000000000000000000000000000000000000004-1411bdcae86863b0c09d94de0c6617d6729f0c5b550f6aac236931b8989207c1";
+    // const pendingOrders = await pDexV3Instance.getPendingOrder({ poolid });
+    // console.log("pendingOrders", pendingOrders);
+    // const pricehistory = await pDexV3Instance.getPriceHistory({
+    //   poolid,
+    //   period: "PT1H",
+    //   intervals: "PT24H",
+    // });
+    // console.log("pricehistory", pricehistory);
+    // const tradingVolume24h = await pDexV3Instance.getTradingVolume24h(poolid);
+    // console.log("tradingVolume24h", tradingVolume24h);
+    const listPools = await pDexV3Instance.getListPools("all");
+    console.log("listPools", listPools);
+    // const poolIDS = listPools.map((pool) => pool.poolId);
+    // console.log("poolIDS", poolIDS);
+    // const listPoolsDetail = await pDexV3Instance.getListPoolsDetail(poolIDS);
+    // console.log("listPoolsDetail", listPoolsDetail);
+    // const listPair = await pDexV3Instance.getListPair();
+    // console.log(listPair);
+    // const estTrade = await pDexV3Instance.getEstimateTrade({
+    //   selltoken: "1",
+    //   buytoken: "2",
+    //   amount: 1,
+    //   feetoken: "feetoken",
+    // });
+    // console.log(estTrade);
+    // const orderBook = await pDexV3Instance.getOrderBook({
+    //   poolid: "1",
+    //   decimal: 0.1,
+    // });
+    // console.log(orderBook);
+    // const pricehistory = await pDexV3Instance.getPriceHistory({
+    //   poolid: "1",
+    //   period: "15m",
+    //   datapoint: 20,
+    //   fromtime: new Date().getTime(),
+    // });
+    // console.log(pricehistory);
+    // const history = await pDexV3Instance.getHistory({
+    //   poolid: "1",
+    // });
+    // console.log(history);
+  } catch (error) {
+    console.log("error here", error);
+  }
+}
+
+async function TestTradeService() {
+  //Trade services
+  let pDexV3Instance = new PDexV3();
+  const account = await createAccountByPrivateKey(
+    "112t8rnX3VTd3MTWMpfbYP8HGY4ToAaLjrmUYzfjJBrAcb8iPLkNqvVDXWrLNiFV5yb2NBpR3FDZj3VW8GcLUwRdQ61hPMWP4EKByC4ae3nU"
+  );
+  pDexV3Instance.setAccount(account);
+  pDexV3Instance.setRPCTradeService(rpcCoinService);
+  pDexV3Instance.setRPCClient(rpcClient);
+  pDexV3Instance.setStorageServices(new StorageServices());
+  let defaultPool = await pDexV3Instance.getDefaultPool();
+  console.log("defaultPool", defaultPool);
+  await pDexV3Instance.setDefaultPool("213456");
+  defaultPool = await pDexV3Instance.getDefaultPool();
+  console.log("defaultPool", defaultPool);
+  const balance = await account.getBalance({
+    tokenID: PRVID,
+    version: privacyVersion,
+  });
+  console.log("balance: ", balance);
+  //   version: privacyVersion,
+  // });
+  // return await TestNFToken(pDexV3Instance);
+  // return await TestFollowDefaultPool(pDexV3Instance)
+  return await TestSwap(pDexV3Instance);
+  // return await TestOrderLimit(pDexV3Instance, account);
+  return await TestApiTradeServices(pDexV3Instance);
+  // const poolid = "1234";
+  // const txCancel = {
+  //   cancelTxId: "1",
+  //   requesttx: "1",
+  //   status: -1,
+  // };
+  // const txCancel2 = {
+  //   cancelTxId: "2",
+  //   requesttx: "2",
+  //   status: -1,
+  // };
+  // await pDexV3Instance.setCancelingOrderTx({
+  //   poolid,
+  //   txCancel,
+  // });
+  // const cancelingTxs = await pDexV3Instance.getCancelingOrderTxs({
+  //   poolid,
+  // });
+  // console.log("cancelingTxs", cancelingTxs);
+  // const volume = await pDexV3Instance.getTradingVolume24h("all");
+  // console.log("volume", volume);
+
+  const listShare = await pDexV3Instance.getListShare();
+  console.log("listShare", listShare);
+  // const listState = await pDexV3Instance.getListState();
+  // console.log("listState", listState);
+  const estTrade = await pDexV3Instance.getEstimateTrade({
+    selltoken: PRVID,
+    buytoken: "0fff",
+    amount: 1e5,
+    feetoken: PRVID,
+  });
+  console.log("estTrade", estTrade);
+  const orders = await pDexV3Instance.getOpenOrders({ poolid: "prv-eth" });
+  console.log("orders", orders);
+}
+
+async function TestWalletBackup() {
+  const passphrase = "$as90_jasLsS";
+  const aesKey = "40b2732280dc3eab197dc83d1b2f43ca";
+  let network = "mainnet";
+  let storage = new StorageServices();
+  let wallet2 = new Wallet();
+  let wallet = new Wallet();
+  wallet.Network = network;
+  wallet2.Network = network;
+  let wallet2RootName = "Phat-masterkey";
+  let walletRootName = "masterless";
+  wallet2.RootName = wallet2RootName;
+  wallet.RootName = walletRootName;
+  await wallet2.init(aesKey, storage, "phat", "Anon");
+  let oldMnemonic = wallet2.Mnemonic;
+  await wallet2.createNewAccount("phat1");
+  await wallet2.createNewAccount("phat2");
+  await wallet2.save(aesKey, false);
+  let list = (await wallet2.getListStorageBackup({ aesKey })) || [];
+  console.log(JSON.stringify(list));
+  await wallet2.loadWallet({
+    password: passphrase,
+    aesKey,
+  });
+  list = (await wallet2.getListStorageBackup({ aesKey })) || [];
+  await wallet2.clearWalletStorage({ key: wallet2RootName });
+  await wallet2.import(
+    // "romance suspect ostrich amount deer crane false concert present evidence atom short",
+    // mnemonic,
+    oldMnemonic,
+    aesKey,
+    "masterKey",
+    storage
+  );
+  await wallet2.loadWallet({
+    password: passphrase,
+    aesKey,
+  });
+  list = (await wallet2.getListStorageBackup({ aesKey })) || [];
+  try {
+    await wallet.import(
+      // "romance suspect ostrich amount deer crane false concert present evidence atom short",
+      // mnemonic,
+      "sunny easy talent undo alter giant music slam common glide judge misery",
+      aesKey,
+      "masterKey",
+      storage
+    );
+    await wallet.createNewAccount("phat1");
+    await wallet.createNewAccount("phat2");
+    await wallet.save(aesKey, false);
+    await wallet.clearWalletStorage({ key: "masterKey" });
+    await wallet.init(aesKey, storage, "masterless", "Anon");
+    await wallet.createNewAccount("phat3");
+    await wallet.createNewAccount("phat4");
+    await wallet.save(aesKey, false);
+    //   await wallet.import(
+    //     // "romance suspect ostrich amount deer crane false concert present evidence atom short",
+    //     // mnemonic,
+    //     "sunny easy talent undo alter giant music slam common glide judge misery",
+    //     aesKey,
+    //     "masterless",
+    //     storage
+    //   );
+    //   await wallet.importAccount(
+    //     "112t8rnX2MPqXQc9q5cMvPRnj73BC6m4AnqesSGBTPwsqVGWxRuSPmJDfcPMDhrt5h4UhJCusQo1RBQUSLL5R8XnEL3tGnjHMNeeUeX38Qpz",
+    //     "phat3"
+    //   );
+    //   await wallet.save(aesKey, false);
+
+    const list = (await wallet2.getListStorageBackup({ aesKey })) || [];
+    console.log(JSON.stringify(list));
+    // await wallet.createNewAccount("phat3");
+    // await wallet.save(aesKey, false);
+    // await wallet.loadWallet({
+    //   password: passphrase,
+    //   aesKey,
+    // });
+    // console.log("list backup 2", await wallet3.getListStorageBackup({ aesKey }));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const keyboardNumberArr = () => {
+  const keyboard = ["", "AB", "DE"];
+  const input = 234;
+  let result = "";
+  const findAllString = (arrStr, result) => {
+    for (str of arrStr) {
+      // A B C
+    }
+  };
+  const findString = (str) => {
+    for (i of str) {
+      console.log("i", i);
+      findString(ke);
+    }
+  };
+  findAllString(keyboard); // ["ABC", "DEF", "GHI"]
+};
+
+async function TestStakingServices() {
+  //Trade services
+  let pDexV3Instance = new PDexV3();
+  const account = await createAccountByPrivateKey(
+    "112t8rnXZyyYeXbMB2TQaSn3JGKsehpZofrJewKWy7MgaEoc2Jg6Fa4ueD4meWEoeSkEdDTvKcTKdScJudzqpUfquYKfQvp2FQqUru4LcECf"
+  );
+  const accountInfo = await account.getDeserializeInformation();
+  console.log("accountInfo", accountInfo);
+  pDexV3Instance.setAccount(accountInfo);
+  pDexV3Instance.setRPCTradeService(
+    "https://54ed4c3d-993b-4fc1-accd-7e7e72122248.mock.pstmn.io"
+  );
+  pDexV3Instance.setStorageServices(new StorageServices());
+  const histories = await pDexV3Instance.getStakingHistories({
+    tokenID: "0004",
+    nftID: "124",
+  });
+  // const stakingInfo = await pDexV3Instance.getStakingData();
+  // console.log('histories', histories)
+}
+
+async function TestLiquidity() {
+  //Liquidity services
+  let pDexV3Instance = new PDexV3();
+  // await setShardNumber(2);
+  const account = await createAccountByPrivateKey(
+    "112t8rnY86q7sNHHZo9XEJMWgVds7kM913hc6pxqVrqzSA7LdMVZX6vgttLzGqNeHAjPofB5wHfNeKBGs6NZF7ZPfE5cge8ZC6TgtJPbuLru"
+  );
+  pDexV3Instance.setAccount(account);
+  pDexV3Instance.setRPCTradeService(rpcCoinService);
+  pDexV3Instance.setRPCClient(rpcClient);
+  pDexV3Instance.setStorageServices(new StorageServices());
+  const stakingData = await pDexV3Instance.serviceStakingHistories({
+    tokenID: "0000000000000000000000000000000000000000000000000000000000000004",
+    nftID: "7ff888813217555ad24437a4370c760642ccca4b809872ad57af5041962a7b0e",
+  });
+  // console.log("stakingData: ", stakingData);
+  // const balance = await account.getBalance({
+  //   tokenID: PRVID,
+  //   version: privacyVersion,
+  // });
+  // return console.log("balance", balance);
+  // await pDexV3Instance.setStorageWithdrawLPWithPool({
+  //   poolId: '111111',
+  //   nftId: '22222',
+  //   txId: '9e167bad6b35370e715c204cddb79561c80d1fb20d240992d2f02cf5614dacf7',
+  // })
+  // const tsx = await pDexV3Instance.updateStatusStorageWithdrawLP();p
+  // console.log('SANG TEST: ', tsx)
+  // console.log("balance: ", balance);
+  // const txMin = await pDexV3Instance.createAndMintNftTx({
+  //   extra: { version: privacyVersion },
+  // });
+  // console.log("txMin", txMin);
+  // const listShare = await pDexV3Instance.getListShare();
+  // console.log("listShare: ", listShare);
+  const poolIds = [
+    "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-13a6c00e978a0073f28b19a2a1298542341fad56d0dd4eb27f0acfcede0aef35",
+    "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-1437fbee7030f8e0d52ddb157edb2d4f61d4ca851a161f5f716d754951e57337",
+    "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-336821fb92dd5035beb71c94be07fe429af040e7ae25e058d5972e9bcfcc1d5d",
+    "0000000000000000000000000000000000000000000000000000000000000004-7a9dc93436cb29ba733ad03d3bdb841f6c7b8f6eba30b86217320b7be21cf9cb-097251ed10c56d6e01d009d7f4b033d1e23154642c3d5c0a050f812be636aeed",
+  ];
+  // const histories = await pDexV3Instance.getRemoveLPHistories();
+  return;
+  // await Promise.all([
+  //   await pDexV3Instance.getContributeHistories(),
+  //   await pDexV3Instance.getRemoveLPHistories(),
+  //   await pDexV3Instance.getWithdrawFeeLPHistories(),
+  // ]);
+  // const nft = await pDexV3Instance.getNFTTokenData({
+  //   version: privacyVersion,
+  // });
+  // const { nftToken: nftID } = nft;
+  // const tokenId1 = PRVID;
+  // const tokenId2 =
+  //   "6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47";
+  // const poolPairID =
+  //   "0000000000000000000000000000000000000000000000000000000000000004-6133dbf8e3d71a8f8e406ebd459492d34180622ba572b2d8f0fc8484b09ddd47-336821fb92dd5035beb71c94be07fe429af040e7ae25e058d5972e9bcfcc1d5d";
+  // const res = await pDexV3Instance.createContributeTxs({
+  //   fee: 100,
+  //   tokenId1,
+  //   tokenId2,
+  //   amount1: 100,
+  //   amount2: 1000,
+  //   poolPairID,
+  //   nftID,
+  //   amp: 20000,
+  // });
+}
+
 // to run this test flow, make sure the Account has enough PRV to stake & some 10000 of this token; both are version 1
 // tokenID = "084bf6ea0ad2e54a04a8e78c15081376dbdfc2ef2ce6d151ebe16dc59eae4a47";
 async function MainRoutine() {
   console.log("BEGIN WEB WALLET TEST");
   await setup();
+  await TestTradeService();
+  // return await TestLiquidity();
+  // return await TestLiquidity();
+  // return TestLiquidity();
+  // return await TestCreateAndSendNativeToken();
+  // return TestVerifierTx();
   // return await TestLoadWallet();
-  return await TestGetTxsHistory();
+  // return await TestGetTxsHistory();
   // return TestGetBurnerAddress();
   // return await TestImportAccount();
   // await TestConsolidate();
   // return await TestCreateAndSendNativeToken();
-  return await TestGetBalance();
+  // return await TestGetBalance();
   // await TestGetUnspentCoinsV1();
   // return;
   // sequential execution of tests; the wait might still be too short
   try {
     // return await TestGetTxsHistory();
     //Liquidity
-    await TestGetBalance();
+    return await TestGetBalance();
     await delay(3000);
-    await TestGetContributeHistories();
+    stGetContributeHistories();
     await delay(3000);
     await TestGetWithdrawLiquidityHistories();
     await delay(3000);
