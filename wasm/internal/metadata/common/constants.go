@@ -180,6 +180,16 @@ const (
 	BurningPBSCRequestMeta = 252
 	BurningBSCConfirmMeta  = 253
 
+	// incognito mode for polygon
+	IssuingPLGRequestMeta  = 327
+	IssuingPLGResponseMeta = 328
+	BurningPLGRequestMeta  = 329
+	BurningPLGConfirmMeta  = 153
+
+	// pPLG ( Polygon )
+	BurningPLGForDepositToSCRequestMeta = 330
+	BurningPLGConfirmForDepositToSCMeta = 154
+
 	// portal v4
 	PortalV4UnshieldRequestMeta = 262
 )
