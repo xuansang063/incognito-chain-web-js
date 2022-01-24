@@ -394,6 +394,9 @@ func TokenIDFromString(s string) (common.Hash, error) {
 		return common.PRVCoinID, nil
 	} else {
 		res, err := common.Hash{}.NewHashFromStr(s)
-		return *res, fmt.Errorf("invalid string %s for tokenID - %v", s, err)
+		if err != nil {
+			return common.Hash{}, fmt.Errorf("invalid string %s for tokenID - %v", s, err)
+		}
+		return *res, nil
 	}
 }
