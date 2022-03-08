@@ -190,6 +190,16 @@ const (
 	BurningPLGForDepositToSCRequestMeta = 330
 	BurningPLGConfirmForDepositToSCMeta = 154
 
+	// incognito mode for Fantom
+	IssuingFantomRequestMeta  = 331
+	IssuingFantomResponseMeta = 332
+	BurningFantomRequestMeta  = 333
+	BurningFantomConfirmMeta  = 155
+
+	// pFantom ( Fantom )
+	BurningFantomForDepositToSCRequestMeta = 334
+	BurningFantomConfirmForDepositToSCMeta = 156
+
 	// portal v4
 	PortalV4UnshieldRequestMeta = 262
 )
