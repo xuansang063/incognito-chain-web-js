@@ -45,6 +45,8 @@ func ParseMetadata(raw json.RawMessage) (Metadata, error) {
 		BurningPLGRequestMeta, BurningPLGForDepositToSCRequestMeta,
 		BurningFantomRequestMeta, BurningFantomForDepositToSCRequestMeta:
 		md = &BurningRequest{}
+	case BurningSOLRequestMeta, BurningSOLForDepositToSCRequestMeta:
+		md = &BurningSOLRequest{}
 	case ShardStakingMeta:
 		md = &StakingMetadata{}
 	case BeaconStakingMeta:

@@ -191,4 +191,13 @@ const (
 
 	BurningFantomForDepositToSCRequestMeta = metadataCommon.BurningFantomForDepositToSCRequestMeta
 	BurningFantomConfirmForDepositToSCMeta = metadataCommon.BurningFantomConfirmForDepositToSCMeta
+
+	// Solana bridge
+	IssuingSOLRequestMeta  = metadataCommon.IssuingSOLRequestMeta
+	IssuingSOLResponseMeta = metadataCommon.IssuingSOLResponseMeta
+	BurningSOLRequestMeta  = metadataCommon.BurningSOLRequestMeta
+	BurningSOLConfirmMeta  = metadataCommon.BurningSOLConfirmMeta
+
+	BurningSOLForDepositToSCRequestMeta = metadataCommon.BurningSOLForDepositToSCRequestMeta
+	BurningSOLConfirmForDepositToSCMeta = metadataCommon.BurningSOLConfirmForDepositToSCMeta
 )

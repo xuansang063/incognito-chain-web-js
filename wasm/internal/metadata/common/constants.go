@@ -200,6 +200,16 @@ const (
 	BurningFantomForDepositToSCRequestMeta = 334
 	BurningFantomConfirmForDepositToSCMeta = 156
 
+	// incognito mode for Solana
+	IssuingSOLRequestMeta  = 335
+	IssuingSOLResponseMeta = 336
+	BurningSOLRequestMeta  = 337
+	BurningSOLConfirmMeta  = 157
+
+	// pSOL ( Solana )
+	BurningSOLForDepositToSCRequestMeta = 338
+	BurningSOLConfirmForDepositToSCMeta = 158
+
 	// portal v4
 	PortalV4UnshieldRequestMeta = 262
 )
