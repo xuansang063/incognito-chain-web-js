@@ -182,4 +182,13 @@ const (
 
 	BurningPLGForDepositToSCRequestMeta = metadataCommon.BurningPLGForDepositToSCRequestMeta
 	BurningPLGConfirmForDepositToSCMeta = metadataCommon.BurningPLGConfirmForDepositToSCMeta
+
+	// Fantom bridge
+	IssuingFantomRequestMeta  = metadataCommon.IssuingFantomRequestMeta
+	IssuingFantomResponseMeta = metadataCommon.IssuingFantomResponseMeta
+	BurningFantomRequestMeta  = metadataCommon.BurningFantomRequestMeta
+	BurningFantomConfirmMeta  = metadataCommon.BurningFantomConfirmMeta
+
+	BurningFantomForDepositToSCRequestMeta = metadataCommon.BurningFantomForDepositToSCRequestMeta
+	BurningFantomConfirmForDepositToSCMeta = metadataCommon.BurningFantomConfirmForDepositToSCMeta
 )
