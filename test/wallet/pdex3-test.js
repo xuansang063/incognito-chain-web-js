@@ -1,3 +1,4 @@
+
 const {
     PRV_ID,
     PRIVACY_VERSION,
@@ -6,11 +7,13 @@ const {
 
 let wallet;
 let accountSender;
+let pDexV3Instance;
 
 async function setup() {
     const data = await setupWallet();
     wallet = data.wallet;
     accountSender = data.accountSender;
+    pDexV3Instance = data.pDexV3Instance;
 }
 
 async function TestGetBalance() {
@@ -51,10 +54,20 @@ async function TestGetTxsHistory() {
     }
 }
 
+async function TestGetListShare() {
+    try {
+        const share = await pDexV3Instance.getListShare();
+        console.log('TestGetListShare: ', share)
+    } catch (error) {
+        console.log('TestGetListShare error: ', error)
+    }
+}
+
 async function RunTest() {
     console.log("BEGIN WEB PDEX3 TEST");
     await setup();
-    // await TestGetBalance()
+    await TestGetBalance();
+    await TestGetListShare();
     // await TestGetTxsHistory()
 }
 

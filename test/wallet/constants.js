@@ -4,13 +4,14 @@ const {
     Account: AccountWallet,
     init,
     StorageServices,
+    PDexV3,
 } = require("../../");
 
 const TEST_NET = {
     fullNode: 'https://testnet.incognito.org/fullnode',
-    coinService: 'http://51.89.21.38:8096',
-    pubsubService: 'http://51.89.21.38:9096',
-    requestService: 'http://51.89.21.38:8096',
+    coinService: 'https://api-coinservice-staging.incognito.org',
+    pubsubService: 'https://api-coinservice-staging.incognito.org/txservice',
+    requestService: 'https://api-coinservice-staging.incognito.org',
     apiService: 'https://staging-api-service.incognito.org',
     portalService: 'http://51.161.119.66:8020'
 }
@@ -24,16 +25,26 @@ const MAIN_NET = {
     portalService: 'https://api-portalv4.incognito.org'
 }
 
-const SERVICE = MAIN_NET;
+const NEXT_OTA = {
+    fullNode: 'http://139.162.55.124:8334',
+    coinService: 'http://51.89.21.38:4095',
+    pubsubService: 'http://51.89.21.38:4096',
+    requestService: 'http://51.89.21.38:4095',
+    apiService: 'https://staging-api-service.incognito.org',
+    portalService: 'https://api-portalv4.incognito.org'
+}
+
+const SERVICE = NEXT_OTA;
 
 const PRV_ID            = "0000000000000000000000000000000000000000000000000000000000000004";
-const PRIVATE_KEY_STR   = "112t8rne4kpmGQe6KCjTe4JqqsvjTPxHQsw9FWaxY65XqHxUueJuLGxJvoH872vxGmbkz1gkcYgtQ1VnrCjw2wSDgtJzCVyt8nRGFHjcEfpV"
+const PRIVATE_KEY_STR   = "112t8rnXdAqwz4XVnLqfcopFuQbof6n141BPKY1uHfwmyir324SNod9sWSFNXDBSNKXp26SXPhNdVFNyeeqiCs6Tc8yrcsVPaBWrk5auTrNP"
 const DEVICE_ID         = "9AE4B404-3E61-495D-835A-05CEE34BE251";
 const PRIVACY_VERSION   = 2;
 
 async function setupWallet() {
     let wallet;
     let accountSender;
+    let pDexV3Instance = new PDexV3();
 
     /**---> Init wallet <---*/
     await init();
@@ -60,9 +71,19 @@ async function setupWallet() {
     accountSender.setAuthToken(authToken);
     accountSender.setRPCApiServices(SERVICE.apiService, authToken);
     await accountSender.setKey(PRIVATE_KEY_STR);
+
+    /**---> Config pdex3 instance <---*/
+    pDexV3Instance.setAccount(accountSender);
+    pDexV3Instance.setAuthToken(authToken);
+    pDexV3Instance.setRPCTradeService(SERVICE.coinService);
+    pDexV3Instance.setRPCClient(SERVICE.fullNode);
+    pDexV3Instance.setStorageServices(new StorageServices());
+    pDexV3Instance.setRPCApiServices(SERVICE.apiService);
+
     return {
         wallet,
         accountSender,
+        pDexV3Instance,
     }
 }
 
