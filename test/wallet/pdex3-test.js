@@ -1,6 +1,6 @@
-
 const {
     PRV_ID,
+    ACCESS_ID,
     PRIVACY_VERSION,
     setupWallet
 } = require("./constants")
@@ -37,20 +37,20 @@ async function TestGetBalance() {
     }
 }
 
-async function TestGetTxsHistory() {
+async function TestGetBalanceAccessOTA() {
     try {
-        const params = {
-            tokenID: PRV_ID,
+        const keyInfo = await accountSender.getKeyInfo({
             version: PRIVACY_VERSION,
-            isPToken: true,
-        };
-        const txs = await accountSender.getTxsHistory({
-            isPToken: true,
-            ...params,
         });
-        console.log('TestGetTxsHistory: ', txs)
-    } catch(e) {
-        console.log("TestGetTxsHistory error: ", e);
+        console.log("KEY INFO", keyInfo, ACCESS_ID);
+        const balance = await accountSender.getBalance({
+            tokenID: ACCESS_ID,
+            version: PRIVACY_VERSION,
+            isNFT: true,
+        })
+        console.log("BALANCE ACCESS_OTA", balance);
+    } catch (e) {
+        console.log("TestGetBalance error: ", e);
     }
 }
 
@@ -63,12 +63,26 @@ async function TestGetListShare() {
     }
 }
 
+async function TestGetNFTData() {
+    try {
+        const start = new Date().getTime()
+        const data = await pDexV3Instance.getNFTTokenData({ version: PRIVACY_VERSION });
+        const end = new Date().getTime()
+        console.log('NFT DATA: ', data);
+        console.log('NFT LOAD TIME: ', end - start);
+    } catch (error) {
+        console.log('TestGetNFTData error: ', error);
+    }
+}
+
 async function RunTest() {
     console.log("BEGIN WEB PDEX3 TEST");
     await setup();
-    await TestGetBalance();
-    await TestGetListShare();
+    // await TestGetBalance();
+    // await TestGetBalanceAccessOTA();
+    // await TestGetListShare();
     // await TestGetTxsHistory()
+    await TestGetNFTData();
 }
 
 RunTest()
