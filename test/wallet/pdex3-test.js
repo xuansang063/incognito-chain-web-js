@@ -75,6 +75,18 @@ async function TestGetNFTData() {
     }
 }
 
+async function TestGetLPHistory() {
+    try {
+        const start = new Date().getTime()
+        const data = await pDexV3Instance.getRemoveLPHistoriesApi({ version: PRIVACY_VERSION });
+        const end = new Date().getTime()
+        console.log('TestGetLPHistory: ', data);
+        console.log('TestGetLPHistory TIME: ', end - start);
+    } catch (error) {
+        console.log('TestGetLPHistory error: ', error);
+    }
+}
+
 async function RunTest() {
     console.log("BEGIN WEB PDEX3 TEST");
     await setup();
@@ -82,7 +94,8 @@ async function RunTest() {
     // await TestGetBalanceAccessOTA();
     // await TestGetListShare();
     // await TestGetTxsHistory()
-    await TestGetNFTData();
+    // await TestGetNFTData();
+    await TestGetLPHistory();
 }
 
 RunTest()
