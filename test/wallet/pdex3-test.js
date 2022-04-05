@@ -57,7 +57,7 @@ async function TestGetBalanceAccessOTA() {
 async function TestGetListShare() {
     try {
         const share = await pDexV3Instance.getListShare();
-        console.log('TestGetListShare: ', share)
+        // console.log('TestGetListShare: ', share)
     } catch (error) {
         console.log('TestGetListShare error: ', error)
     }
@@ -92,10 +92,10 @@ async function RunTest() {
     await setup();
     // await TestGetBalance();
     // await TestGetBalanceAccessOTA();
-    // await TestGetListShare();
+    await TestGetListShare();
     // await TestGetTxsHistory()
     // await TestGetNFTData();
-    await TestGetLPHistory();
+    // await TestGetLPHistory();
 }
 
 RunTest()
