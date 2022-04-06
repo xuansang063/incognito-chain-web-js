@@ -48,6 +48,7 @@ module.exports = (env, argv) => {
   const isProduction = argv.mode === "production";
 
   const cfg = {
+    name: "wallet",
     devtool: "source-map",
     entry: {
       wallet: "./lib/wallet.js",
@@ -84,6 +85,7 @@ module.exports = (env, argv) => {
     ...aliasConfig,
   };
   const nodeCfg = {
+    name: "lib",
     devtool: "source-map",
     entry: {
       inc: "./lib/lib.js",
