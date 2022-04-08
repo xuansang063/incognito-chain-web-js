@@ -123,8 +123,8 @@ async function RunTest() {
     // await TestGetTxsHistory()
     // await TestGetNFTData();
     // await TestGetLPHistory();
-    // await TestGetOrderHistory();
-    await TestGetOpenOrderHistory();
+    await TestGetOrderHistory();
+    // await TestGetOpenOrderHistory();
 }
 
 RunTest()
