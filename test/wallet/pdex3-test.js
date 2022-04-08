@@ -77,13 +77,40 @@ async function TestGetNFTData() {
 
 async function TestGetLPHistory() {
     try {
-        const start = new Date().getTime()
         const data = await pDexV3Instance.getRemoveLPHistoriesApi({ version: PRIVACY_VERSION });
-        const end = new Date().getTime()
         console.log('TestGetLPHistory: ', data);
-        console.log('TestGetLPHistory TIME: ', end - start);
     } catch (error) {
         console.log('TestGetLPHistory error: ', error);
+    }
+}
+
+async function TestGetOrderHistory() {
+    try {
+        const listNFTToken = await pDexV3Instance.getNFTTokenIDs();
+        const poolID =
+            '0000000000000000000000000000000000000000000000000000000000000004-292f55f94a828084236d61125f49d6b4cdd93ba74bbf161a40564a0d1a3f142f-0eafc9bb42b577d2fbd8401571c31eeae6833e4665e5312e4948725e9ad6dc78'
+        const data = await pDexV3Instance.getOrderLimitHistoryFromApi({
+            poolid: poolID,
+            listNFTToken,
+            version: PRIVACY_VERSION,
+        });
+        console.log('TestGetOrderHistory: ', data);
+    } catch (error) {
+        console.log('TestGetOrderHistory error: ', error);
+    }
+}
+
+async function TestGetOpenOrderHistory() {
+    try {
+        const listNFTToken = await pDexV3Instance.getNFTTokenIDs();
+        const data = await pDexV3Instance.getOpenOrderLimitHistoryFromApi({
+            listNFTToken,
+        });
+        console.log('TestGetOpenOrderHistory: ', data);
+        console.log('TestGetOpenOrderHistory length: ', data.length);
+
+    } catch (error) {
+        console.log('TestGetOpenOrderHistory error: ', error);
     }
 }
 
@@ -92,10 +119,12 @@ async function RunTest() {
     await setup();
     // await TestGetBalance();
     // await TestGetBalanceAccessOTA();
-    await TestGetListShare();
+    // await TestGetListShare();
     // await TestGetTxsHistory()
     // await TestGetNFTData();
     // await TestGetLPHistory();
+    // await TestGetOrderHistory();
+    await TestGetOpenOrderHistory();
 }
 
 RunTest()
