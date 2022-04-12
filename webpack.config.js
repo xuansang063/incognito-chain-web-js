@@ -133,5 +133,57 @@ module.exports = (env, argv) => {
     ...(isProduction ? prodConfig : devConfig),
     ...aliasConfig,
   };
-  return [cfg, nodeCfg];
+
+  const webCfg = {
+    name: "wallet-web",
+    devtool: "source-map",
+    entry: {
+      "wallet": "./lib/wallet-web.js",
+    },
+    output: {
+      path: path.resolve(__dirname),
+      filename: "build/web/[name].js",
+      library: "",
+      libraryTarget: "umd",
+    },
+    target: "web",
+    node: {
+      fs: "empty",
+    },
+    module: {
+      defaultRules: [
+        {
+          type: "javascript/auto",
+          resolve: {}
+        },
+        {
+          test: /\.json$/i,
+          type: "json"
+        }
+      ],
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: "babel-loader",
+          options: {
+            plugins: ["lodash", "@babel/plugin-proposal-class-properties"],
+            presets: ["@babel/preset-env"],
+          },
+        },
+        {
+          test: /\.wasm$/,
+          loader: 'wasm-loader'
+        },
+      ],
+    },
+    plugins: [
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 1,
+      }),
+    ],
+    ...(isProduction ? prodConfig : devConfig),
+    ...aliasConfig,
+  };
+  return [cfg, nodeCfg, webCfg];
 };
