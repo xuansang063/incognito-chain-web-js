@@ -185,5 +185,6 @@ module.exports = (env, argv) => {
     ...(isProduction ? prodConfig : devConfig),
     ...aliasConfig,
   };
-  return [cfg, nodeCfg, webCfg];
+  // return [cfg, nodeCfg, webCfg];
+  return [cfg, nodeCfg];
 };

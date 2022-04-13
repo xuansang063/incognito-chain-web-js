@@ -13,7 +13,8 @@ const TEST_NET = {
     pubsubService: 'https://api-coinservice-staging.incognito.org/txservice',
     requestService: 'https://api-coinservice-staging.incognito.org',
     apiService: 'https://staging-api-service.incognito.org',
-    portalService: 'http://51.161.119.66:8020'
+    portalService: 'http://51.161.119.66:8020',
+    shardCount: 7,
 }
 
 const MAIN_NET = {
@@ -22,7 +23,8 @@ const MAIN_NET = {
     pubsubService: 'https://api-coinservice.incognito.org/txservice',
     requestService: 'https://api-coinservice.incognito.org',
     apiService: 'https://api-service.incognito.org',
-    portalService: 'https://api-portalv4.incognito.org'
+    portalService: 'https://api-portalv4.incognito.org',
+    shardCount: 7,
 }
 
 const NEXT_OTA = {
@@ -31,7 +33,8 @@ const NEXT_OTA = {
     pubsubService: 'http://51.89.21.38:4096',
     requestService: 'http://51.89.21.38:4095',
     apiService: 'https://staging-api-service.incognito.org',
-    portalService: 'https://api-portalv4.incognito.org'
+    portalService: 'https://api-portalv4.incognito.org',
+    shardCount: 2,
 }
 
 const SERVICE = NEXT_OTA;
