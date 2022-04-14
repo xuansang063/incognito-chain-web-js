@@ -77,7 +77,7 @@ async function TestGetNFTData() {
 
 async function TestGetLPHistory() {
     try {
-        const data = await pDexV3Instance.getContributeHistories({ version: PRIVACY_VERSION });
+        const data = await pDexV3Instance.getWithdrawFeeLPHistories({ version: PRIVACY_VERSION });
         console.log('TestGetLPHistory: ', data);
     } catch (error) {
         console.log('TestGetLPHistory error: ', error);
